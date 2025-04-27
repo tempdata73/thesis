@@ -7,6 +7,7 @@
 \usepackage{hyperref}
 \usepackage{mathtools}
 \usepackage{graphicx}
+\usepackage{amsthm}
 \usepackage[spanish]{babel}
 
 % \graphicspath{{../figs}}
@@ -19,6 +20,8 @@
 \newtheorem{theorem}{Teorema}
 \newtheorem{lemma}{Lema}
 \newtheorem{corollary}{Corolario}
+
+\DeclareMathOperator{\lcm}{lcm}
 
 \begin{document}
 
@@ -40,6 +43,8 @@ experimentos que realicé sugieren que en la práctica tiene complejidad constan
 solamente una solución y tiene una complejidad más que lineal con respecto a la magnitud del lado
 derecho de la desigualdad (habíamos dicho que era exponencial en nuestras pláticas si mal no
 recuerdo, pero los experimentos que hice indican otra cosa).
+
+% TODO
 
 \section*{2. Prerrequisitos}
 
@@ -100,11 +105,13 @@ $(5, -8)$ son dos pares de coeficientes de Bézout asociados a 3 y 5.
 \end{definition}
 
 \begin{theorem}
+	\label{th:dioph:existence}
 	Sean $a, b \in \mathbb{Z} \setminus\lbrace 0 \rbrace$. La ecuación $ax + by = c$ tiene solución
 	en los enteros si y solo si $\gcd\lbrace a, b \rbrace \mid c$.
 \end{theorem}
 
 \begin{theorem}
+	\label{th:dioph:gen}
 	Sean $a, b, c \in \mathbb{Z}$ tales que $a, b \neq 0$ y sea $(x_0, y_0)$ una solución particular
 	de la ecuación $ax + by = c$. Entonces todas las soluciones de la ecuación están dadas por
 	\begin{equation*}
@@ -164,10 +171,157 @@ esencialmente entero.
 \end{definition}
 
 Para asegurar unicidad, forzamos a que la primera entrada del múltiplo coprimo de $v$ sea positivo.
-Por el Corolario ~\ref{cor:gcd} tenemos que el múltiplo coprimo de un vector esencialmente entero
+Por el Corolario \ref{cor:gcd} tenemos que el múltiplo coprimo de un vector esencialmente entero
 es, en efecto, un vector coprimo.
 
-\section*{Método simple}
+\begin{theorem}
+	Sea $v \in \mathbb{R}^n$ un vector esencialmente entero distinto de cero y sea $w$ su múltiplo
+	coprimo. Entonces la familia de capas enteras $\left\lbrace H_{w, k||w||_2^{-2}} \vcentcolon k
+	\in \mathbb{Z} \right\rbrace$ cubre a $\mathbb{Z}^n$.
+\end{theorem}
+\begin{proof}
+	TODO. Reproducir demostración de \cite{sip} porque esto me ayuda a mostrar el lema
+	\ref{eq:num_layers}.
+\end{proof}
+
+\section*{Problema entero simple}
+Sea $p \in \mathbb{R}^n \setminus\lbrace 0 \rbrace$ un vector esencialmente entero con entradas no
+negativas y sea $l \in \mathbb{R}_{\geq 0}$ un escalar. Consideremos el problema de programación
+entera
+\begin{align}
+	\text{máx.} ~& p^Tx, \label{eq:simple:obj} \\
+	\text{s. a.} ~& p^Tx \leq l, \label{eq:simple:boundary} \\
+				  & x \in \mathbb{Z}_{\geq 0}^n. \nonumber
+\end{align}
+
+% TODO: explicar la estrategia/motivación para resolver este problema.
+
+\begin{lemma}
+	\label{lemma:num_layers}
+
+	Sea $p \in \mathbb{R}^n \setminus \lbrace 0 \rbrace$ un vector esencialmente entero y sea $l \in
+	\mathbb{R}_{\geq 0}$ un escalar. Entonces el número de capas enteras entre 0 y l está
+	determinado por
+	\begin{equation}
+		\label{eq:num_layers}
+		\eta \coloneq
+		\left\lfloor
+			l \cdot \frac{\lcm\lbrace p_1, \ldots, p_n \rbrace}{\gcd\lbrace p_1, \ldots, p_n \rbrace}
+		\right\rfloor.
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	TODO
+\end{proof}
+
+A causa del Lema \ref{lemma:num_layers} podemos enumerar las capas enteras que se encuentran entre
+el origen y la frontera de la restricción \ref{eq:simple:boundary}. Consideremos la $k$-ésima capa
+entera, donde $k \in \lbrace 0, \ldots, \eta \rbrace$. Queremos caracterizar la colección de puntos
+enteros que se encuentran sobre esta capa entera. Es decir, buscamos resolver la ecuación entera
+\begin{equation}
+	\label{eq:dioph:complete}
+	p_1x_1 + \cdots + p_nx_n = k.
+\end{equation}
+
+\begin{lemma}
+	Sea $v \in \mathbb{R}^n$ un vector y sea $t \in \mathbb{R}$ un escalar. Definamos el $H_{v, t}$
+	hiperplano afino como
+	\begin{equation*}
+		H_{v, t} \coloneq \ker(x \mapsto v^Tx) + t \cdot v.
+	\end{equation*}
+	Entonces $H_{v, t} = H_{r \cdot v, t}$ para todo escalar $r \in \mathbb{R}$.
+\end{lemma}
+\begin{proof}
+	TODO (?)
+\end{proof}
+
+Sea $q$ el múltiplo coprimo de $p$. Debido al lema anterior, resolver la ecuación
+(\ref{eq:dioph:complete}) es equivalente a resolver
+\begin{equation}
+	\label{eq:dioph:complete:coprime}
+	q_1x_1 + \cdots q_nx_n = k.
+\end{equation}
+
+Definamos $g_{n-1} \coloneq \gcd\lbrace q_1, \ldots, q_{n-1}\rbrace$. Así, obtenemos la
+ecuación equivalente
+\begin{equation*}
+	g_{n-1} \left(
+		\frac{q_1}{g_{n-1}}x_1 + \cdots + \frac{q_{n-1}}{g_{n-1}}x_{n-1}
+		\right)
+	+ q_nx_n = k.
+\end{equation*}
+Si dejamos que $\omega_{n-1}$ sea lo que está dentro de los paréntesis en el primer término, encontramos que
+podemos reducir el grado de esta ecuación si, en su lugar, resolvemos el sistema de ecuaciones
+\begin{equation}
+	\label{eq:dioph:system}
+	\begin{cases}
+		g_{n-1}\omega_{n-1} + q_nx_n &= k, \\
+		\frac{q_1}{g_{n-1}}x_1 + \cdots + \frac{q_{n-1}}{g_{n-1}}x_{n-1} &= \omega_{n-1}.
+	\end{cases}
+\end{equation}
+Observemos que $\gcd\lbrace g_{n-1}, q_n \rbrace = 1$ y también $\gcd\lbrace q_1/g_{n-1}, \ldots,
+q_{n-1}/g_{n-1}\rbrace = 1$. Por el Teorema \ref{th:dioph:existence} se sigue que ambas ecuaciones
+tienen una infinidad de soluciones y, por el Teorema \ref{th:dioph:gen}, podemos generarlas a partir
+de una solución particular. Como el valor de $\omega_n$ depende explícitamente de la primera
+ecuación, enfoquémonos en ella primero. Consideremos la ecuación auxiliar
+\begin{equation}
+	\label{eq:dioph:orig:aux}
+	g_{n-1}\omega_n + q_nx_n = 1.
+\end{equation}
+Si $(\omega_{n-1}^{(0)}, x_n^{(0)})$ es una solución particular de esta ecuación auxiliar, entonces
+$(k\omega_{n-1}^{(0)}, kx_n^{(0)})$ es una solución particular de la primera ecuación de
+(\ref{eq:dioph:system}). Pero $g_{n-1}$ y $q_n$ son coprimos, por lo que sus coeficientes de Bézout
+asociados proveen una solución particular de esta ecuación auxiliar. Debido al Teorema
+\ref{th:dioph:gen}, obtenemos una enumeración de soluciones de la primera ecuación del sistema
+(\ref{eq:dioph:system}):
+\begin{equation*}
+	\begin{cases}
+		x_n = kx_n^{(0)} - g_{n-1}t_{n-1}, \\
+		\omega_{n-1} = k\omega_{n-1}^{(0)} + q_nt_{n-1},
+	\end{cases}
+\end{equation*}
+donde $t_{n-1} \in \mathbb{Z}$. Ahora bien, como $x_1, \ldots, x_{n - 1} \geq 0$ por la formulación
+del problema (\ref{eq:simple:obj}), se debe cumplir $\omega_{n-1} \geq 0$, pues las $p$ es un vector
+con entradas no negativas. Así también, se debe cumplir $x_n \geq 0$. Es de esta forma que obtenemos
+cotas inferiores y superiores para $t_{n-1}$:
+\begin{equation}
+	\label{eq:bounds}
+	\left\lceil -k \cdot \frac{\omega_{n-1}^{(0)}}{q_n} \right\rceil
+	\leq
+	t_{n-1}
+	\leq
+	\left\lfloor k \cdot \frac{x_n^{(0)}}{g_{n-1}} \right\rfloor.
+\end{equation}
+Si no existe $t_{n-1} \in \mathbb{Z}$ tal que se satisfaga esta desigualdad, entonces podemos
+concluir que no existen puntos factibles sobre la $k$-ésima capa entera y, por lo tanto, podemos
+continuar la búsqueda de puntos factibles en la $k-1$-ésima capa entera.
+
+En caso contrario, fijamos una $t_{n-1}$ factible, de tal forma que $\omega_{n-1}$ está
+completamente determinada. Es de esta manera que ahora somos capaces de resolver la segunda ecuación
+del sistema (\ref{eq:dioph:system}). Nos encontramos en una situación completamente análoga a cuando
+buscábamos resolver (\ref{eq:dioph:complete:coprime}). No obstante, esta ecuación es de un grado
+menor. Así pues, continuamos este proceso inductivamente (TODO: recursivamente?) hasta que debamos
+resolver la ecuación en dos variables
+\begin{equation*}
+	ax_1 + bx_2 = \omega_2,
+\end{equation*}
+para algunos enteros $a, b$ coprimos. Encontramos las soluciones a partir de sus coeficientes de
+Bézout asociados y también del Teorema \ref{th:dioph:gen}. Acotamos por medio de (\ref{eq:bounds})
+y, en caso de que exista una $t_2$ factible, hemos logrado obtener un punto entero factible. A
+diferencia de $t_{n - 1}$, si no existe $t_i$ factible para alguna $i \in \{2, \ldots, n - 2\}$, no
+podemos concluir que la $k$-ésima capa entera no contiene puntos enteros factibles. Más bien, la
+elección del parámetro $t_{i + 1}$ en la iteración anterior fue incorrecta, por lo que debemos
+escoger otro $t_{i + 1}$ factible, en caso de que exista.
+
+Finalmente, si iniciamos la búsqueda en la $\eta$-ésima (c.f. \ref{eq:num_layers}) capa entera y
+vamos descartando uno a uno las capas hasta encontrar un punto factible, se sigue inmediatamente que
+ese punto es también óptimo.
+
+% TODO: escribir el algoritmo en pseudocódigo.
+
+Observemos que si $x^{(0)} \coloneq (x_1^{(0)}, \ldots x_n^{(0)})$ es una solución a esta ecuación
+auxiliar, entonces $kx^{(0)}$ es una solución particular de (\ref{eq:dioph:complete:coprime}). Pero
+$\gcd\lbrace q_1, \ldots, q_n \rbrace = 1$, con lo que $x^{(0)}$.
 
 La idea del método es la siguiente. Para empezar, nos concentramos exclusivamente en vectores de
 utilidad $c \in \mathbb{R}^n$ proyectivamente racionales. Sea $c'$ el múltiplo coprimo de $c$,
