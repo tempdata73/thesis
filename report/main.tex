@@ -7,8 +7,8 @@
 \usepackage{hyperref}
 \usepackage{mathtools}
 \usepackage{graphicx}
-\usepackage{amsthm}
 \usepackage[spanish]{babel}
+\usepackage{amsthm}
 
 % \graphicspath{{../figs}}
 
@@ -19,147 +19,136 @@
 \newtheorem{definition}{Definición}
 \newtheorem{theorem}{Teorema}
 \newtheorem{lemma}{Lema}
-\newtheorem{corollary}{Corolario}
+\newtheorem{example}{Ejemplo}
 
 \DeclareMathOperator{\lcm}{lcm}
+% \renewcommand{\gcd}{m.c.m}
 
 \begin{document}
 
 \maketitle
 
-\section*{1. Resumen}
+\begin{abstract}
+\end{abstract}
 
-Diseñé un método que encuentra todas las soluciones a problemas de la forma
-\begin{align*}
-	\text{máx. } & c^tx, \\
-	\text{s.a. } & c^tx \leq s, \\
-				 & x \in \mathbb{Z}^n,
-\end{align*}
-y que corre en tiempo lineal con respecto a la magnitud del lado derecho de la desigualdad pero
-exponencial con respecto al número de dimensiones. Además de encontrar todas las posibles
-soluciones, es más rápido que \textit{branch \& bound}. A pesar de tener complejidad lineal, los
-experimentos que realicé sugieren que en la práctica tiene complejidad constante. Aquellos dos
-últimos puntos contrastan significativamente con \textit{B\&B}, pues este algoritmo encuentra
-solamente una solución y tiene una complejidad más que lineal con respecto a la magnitud del lado
-derecho de la desigualdad (habíamos dicho que era exponencial en nuestras pláticas si mal no
-recuerdo, pero los experimentos que hice indican otra cosa).
+\section*{Introducción}
+\section*{Preliminares}  % MAYBE
+En términos generales, los prerrequisitos necesarios para un entendimiento suficiente de los
+resultados expuestos en esta tesis son de álgebra, en particular de divisibilidad y ecuaciones
+lineales enteras o diofantinas; de álgebra lineal y álgebra lineal numérica; y, evidentemente,
+de programación lineal. Dividimos, pues, los preliminares en tres subsecciones correspondientes que
+servirán para refrescar la memoria al lector, pero también para que seamos capaces de hacer
+referencia a resultados establecidos en la medida en que desarrollamos los nuestros.
 
-% TODO
-
-\section*{2. Prerrequisitos}
-
-\begin{definition}
-	Dados los enteros $a$ y $b$, diremos que $a$ divide a $b$ (y escribimos $a \mid b$) si existe un
-	entero $r$ tal que $a \cdot r = b$.
-\end{definition}
-
-\begin{definition}
-	\label{def:gcd}
-	Dados dos enteros $a$ y $b$ distintos de cero, su máximo común divisor es el entero $d$ que satisface
-	\begin{enumerate}
-		\item $d \mid a$ y $d \mid b$ ($d$ es un divisor común de $a$ y $b$).
-		\item Si $d' \mid a$ y $d' \mid b$, entonces $d' \leq d$ ($d$ es el máximo de los divisores comúnes).
-	\end{enumerate}
-\end{definition}
-
-Escribimos $d = \gcd\lbrace a, b\rbrace$ para denotar que $d$ es el máximo común divisor de $a$ y $b$. Así
-también, si $a_1, a_2, \ldots, a_n$ son enteros distintos de cero, definimos su máximo común
-de manera inductiva: para $n = 2$ usamos la definición ~\ref{def:gcd} y si $n > 2$ entonces
-\begin{equation*}
-	\gcd\lbrace a_1, a_2, \ldots, a_n\rbrace = \gcd\lbrace a_1, \gcd\lbrace a_2, \ldots,
-	a_n\rbrace\rbrace.
-\end{equation*}
-
-\begin{definition}
-	Sean $a, b, c \in \mathbb{Z}$. Decimos que $c$ es combinación lineal entera de $a$ y $b$ si
-	existen enteros $x$ y $y$ tales que $c = ax + by$.
-\end{definition}
+\subsection*{Álgebra}
+Nos enfocamos principalmente en obtener condiciones necesarias y suficientes para encontrar
+soluciones enteras a problemas del tipo
+\begin{equation}
+	\label{prerreq:algebra:eq:dioph}
+	ax + by = c
+\end{equation}
+con $a, b$ y $c$ enteros. Este tipo de ecuación, así como sus variantes con más de dos variables,
+recibe el nombre ecuación lineal entera o, también, de ecuación lineal diofantina.
 
 \begin{theorem}
-	Sean $a, b, d \in \mathbb{Z}\setminus\lbrace 0 \rbrace$. Entonces $d = \gcd\lbrace a, b \rbrace$
-	si y solo si $d$ es la mínima combinación lineal entera positiva de $a$ y $b$.
-\end{theorem}
-
-\begin{definition}
-	Sea $d$ el máximo común divisor de los enteros $a$ y $b$. Llamamos coeficientes de Bézout
-	asociados a $a$ y $b$ a los enteros $x, y$ que satisfacen $d = ax + by$.
-\end{definition}
-
-Cabe mencionar que los coeficientes de Bézout no son únicos. Por ejemplo, 1 es el máximo común
-divisor de 3 y 5, de tal forma que se cumple $1 = 5(2) + 3(-3) = 5(5) + 3(-8)$. Así, $(2, -3)$ y
-$(5, -8)$ son dos pares de coeficientes de Bézout asociados a 3 y 5.
-
-\begin{definition}
-	Sean $a, b \in \mathbb{Z}\setminus\lbrace 0 \rbrace$. Decimos que $a$ y $b$ son coprimos si
-	$\gcd\lbrace a, b \rbrace = 1$.
-\end{definition}
-
-\begin{corollary}
-	\label{cor:gcd}
-	Si $d = \gcd\lbrace a, b\rbrace$, entonces $\gcd\lbrace \frac{a}{d}, \frac{b}{d} \rbrace = 1$.
-\end{corollary}
-
-\begin{definition}
-	Sean $a, b, c \in \mathbb{Z}$. Una pareja de enteros $(x_0, y_0)$ es una solución de la ecuación
-	$ax + by = 0$ si se satisface $ax_0 + by_0 = c$.
-\end{definition}
-
-\begin{theorem}
-	\label{th:dioph:existence}
-	Sean $a, b \in \mathbb{Z} \setminus\lbrace 0 \rbrace$. La ecuación $ax + by = c$ tiene solución
-	en los enteros si y solo si $\gcd\lbrace a, b \rbrace \mid c$.
+	\label{prerreq:th:dioph:existence}
+	Sean $a, b \in \mathbb{Z}$ no ambos iguales a cero. La ecuación \ref{prerreq:algebra:eq:dioph}
+	tiene solución en los enteros si y solo si $\gcd\lbrace a, b \rbrace$ divide a $c$.
 \end{theorem}
 
 \begin{theorem}
-	\label{th:dioph:gen}
-	Sean $a, b, c \in \mathbb{Z}$ tales que $a, b \neq 0$ y sea $(x_0, y_0)$ una solución particular
-	de la ecuación $ax + by = c$. Entonces todas las soluciones de la ecuación están dadas por
+	\label{prerreq:th:dioph:gen}
+	Sean $a, b, c \in \mathbb{Z}$ tales que $a, b$ no son ambos iguales a cero, y sea $(x_0, y_0)$ una
+	solución particular de la ecuación \ref{prerreq:algebra:eq:dioph}. Entonces todas las soluciones
+	de la ecuación están dadas por
 	\begin{equation*}
 		\begin{cases}
 			x = x_0 + \frac{b}{d} \cdot t, \\
 			y = y_0 + \frac{a}{d} \cdot t,
 		\end{cases}
 	\end{equation*}
-	donde $d = \gcd\lbrace a, b \rbrace$ y $t \in \mathbb{Z}$.
+	donde $d \coloneq \gcd\lbrace a, b \rbrace$ y $t \in \mathbb{Z}$.
 \end{theorem}
 
-Dada la generalización del máximo común divisor a más de dos enteros, bien es cierto que podemos
-aplicar inducción para generalizar también las definiciones y resultados anteriores. Decimos, por
-ejemplo, que un vector $v \in \mathbb{Z}^n \setminus \lbrace 0 \rbrace$ es coprimo si $\gcd\lbrace
-v_1, \ldots, v_n \rbrace = 1$. De ser este el caso, existen coeficientes de Bézout $x_1, \ldots,
-x_n \in \mathbb{Z}$ asociados a $v$ que satisfacen $v_1x_1 + \ldots + v_nx_n = 1$. Podemos decir, en
-forma más compacta, que $x = (x_1, \ldots, x_n) \in \mathbb{Z}^n$ es un vector de Bézout asociado a
-$v$ y por lo tanto se cumple $v^Tx = 1$.
+\subsection*{Álgebra lineal}
+\subsection*{Programación lineal}
 
-Los siguientes teoremas, lemas y definiciones fueron tomadas de \cite{sip}.
+\section*{Metodología}
+En esta sección se desarolla el algoritmo para resolver prácticamente cualquier tipo de problemas de
+programación lineal entera (c.f. Definición TODO: mostrar definición). Se divide en tres
+subsecciones que desarollan el modelo de forma incremental.
 
-\begin{definition}
-	Sea $v \in \mathbb{R}^n$ un vector. Decimos que el hiperplano afino
-	\begin{equation*}
-		H_{v, t} \coloneq \ker(x \mapsto v^Tx) + t \cdot v
-	\end{equation*}
-	es una capa entera si contiene al menos un punto entero, es decir, si contiene un punto cuyas
-	entradas son todas enteras.
-\end{definition}
+En primer lugar, consideraremos el caso cuando las únicas dos restricciones son de no-negatividad
+($x \geq 0$) y una presupuestaria ($p^Tx \leq u$ para algún escalar $u$). A partir de ello,
+generaremos una sucesión de ecuaciones lineales enteras cuya solución provee el óptimo para el
+problema.
 
-\begin{lemma}
-	Sea $v \in \mathbb{R}^n$ un vector distinto de cero y sea $x \in \mathbb{R}^n$ un punto. Sea $t_x
-	\coloneq \frac{v^Tx}{||v||_2^2}$. Entonces $x \in H_{v, t_x}$.
-\end{lemma}
+En segundo lugar, nos deshacemos de la restricción de no-negatividad y agregamos $m$ restricciones
+de la forma $Ax \leq b$ además de la presupuestaria. Este es el parteaguas donde el algoritmo toma
+relevancia, pero donde también aumenta en complejidad y supone ciertas dificultades con la
+estabilidad numérica. Discutiremos en extensión posibles modificaciones y/o direcciones que puedan
+mejorar significativamente la estabilidad de nuestro método.
 
+En tercer lugar, eliminamos la restricción presupuestaria y, por lo tanto, nuestro algoritmo será
+capaz de resolver problemas lineales enteros en su forma general. Ciertamente esta subsección es la
+más corta, pues lo único que hacemos es agregar implícitamente una restricción presupuestaria válida
+resolviendo el problema lineal relajado. Es de esta manera que podremos hacer uso de los resultados
+obtenidos en la segunda fase.
+
+Ahora bien, para que los siguientes resultados sean válidos, debemos agregar una condición a la
+clase de vectores objetivo $p \in \mathbb{R}^n$ de tal manera que cumplan con la siguiente
+definición:
 \begin{definition}
 	Sea $v \in \mathbb{R}^n$ un vector. Decimos que $v$ es esencialmente entero si existe un vector
 	$w \in \mathbb{Z}^n$ y un escalar $k \in \mathbb{R}$ tal que $v = kw$. De otra forma, decimos
 	que $v$ es esencialmente irracional.
 \end{definition}
+En otras palabras, decimos que $v \in \mathbb{R}^n$ es esencialmente entero si es un múltiplo real
+de un vector entero. Por las siguientes razones descartamos a los vectores esencialmente
+irracionales de nuestro análisis: en primer lugar, porque la motivación de este trabajo es la
+asignación de recursos que tienen un costo asociado, el cual es necesariamente racional; en segundo
+lugar, porque todo número representable en cualquier sistema de aritmética finita es necesariamente
+racional. Independientemente del caso, solamente son de nuestro interés los vectores racionales,
+pero no es difícil ver que todo vector $v$ en $\mathbb{Q}^n$ es esencialmente entero.
 
-Es decir, decimos que $v$ es esencialmente entero si es un múltiplo real de un vector entero. Por
-las siguientes razones descartamos a los vectores esencialmente irracionales de nuestro análisis: en
-primer lugar, porque la motivación de este trabajo es la asignación de recursos que tienen un costo
-asociado, el cual es necesariamente racional; en segundo lugar, porque todo número representable en
-cualquier sistema de aritmética finita es necesariamente racional. Independientemente del caso,
-solamente son de nuestro interés los vectores racionales, pero todo vector $v$ en $\mathbb{Q}^n$ es
-esencialmente entero.
+\subsection*{Primera fase}
+A lo largo de esta subsección hacemos mucho uso de resultados cubiertos en un curso básico de
+álgebra. No obstante, si el lector no se siente familiarizado con el tema o si desea refrescar su
+memoria, es recomendable que lea la sección de preliminares.
+
+Sean $p \in \mathbb{R}^n$ un vector esencialmente entero, $u \in \mathbb{R}$ un escalar y
+consideremos el problema lineal entero
+\begin{align}
+	\text{máx.} ~& p^Tx \label{phase-1:ip:obj} \\
+	\text{s. a.} ~& p^Tx \leq u \label{phase-1:ip:prep} \\
+				 & x \in \mathbb{Z}_{\geq 0}^n \label{phase-1:ip:non-negative}.
+\end{align}
+La idea para resolver este tipo de problemas es la siguiente: cada escalar $t \in \mathbb{R}$ define
+un hiperplano afino
+\begin{equation}
+	\label{phase-1:hyper}
+	H_{p, t} \coloneq \ker\left( x \mapsto p^Tx \right) + t \cdot p
+\end{equation}
+donde se cumple que todo punto $x \in H_{p, t}$ tiene un mismo nivel de utilidad $p^Tx$. Si logramos
+encontrar puntos factibles para el problema \ref{phase-1:ip:obj} entonces obtendremos una
+cota inferior para el valor objetivo. Además, si somos capaces de determinar un escalar $t \leq u$
+cuyo hiperplano afino asociado $H_{p, t}$ es el último\footnote{Con esto nos referimos a que no
+existe un escalar $t < t' \leq u$ tal que $H_{p, t'}$ contiene puntos factibles.} en contener puntos
+factibles, entonces la colección de esos puntos conforman la solución del problema.
+
+\begin{definition}
+	Sean $v \in \mathbb{R}^n$ un vector y $t \in \mathbb{R}$ un escalar. Decimos que su hiperplano
+	afino asociado $H_{v, t}$ (c. f. \ref{phase-1:hyper}) es una capa entera si contiene al menos un
+	punto entero.
+\end{definition}
+
+\begin{lemma}
+	Sea $v \in \mathbb{R}^n$ un vector distinto de cero y sea $x \in \mathbb{R}^n$ un punto.
+	Entonces $x \in H_{v, t_x}$, donde $t_x \coloneq \frac{v^Tx}{||v_2^2||}$.
+\end{lemma}
+\begin{proof}
+	Ver \cite{sip}.
+\end{proof}
 
 \begin{definition}
 	Sea $v \in \mathbb{R}^n$ un vector esencialmente entero y sea $(w_1, \ldots, w_n) \in
@@ -171,68 +160,58 @@ esencialmente entero.
 \end{definition}
 
 Para asegurar unicidad, forzamos a que la primera entrada del múltiplo coprimo de $v$ sea positivo.
-Por el Corolario \ref{cor:gcd} tenemos que el múltiplo coprimo de un vector esencialmente entero
-es, en efecto, un vector coprimo.
-
+Por el Corolario (TODO: mostrar corolario)  tenemos que el múltiplo coprimo de un vector
+esencialmente entero es, en efecto, un vector coprimo. Cualquier vector coprimo define una familia
+de capas enteras y, sorprendentemente, esa familia contiene a todos los puntos enteros en el
+espacio, como lo indica el siguiente teorema.
 \begin{theorem}
+	\label{phase-1:th:family}
 	Sea $v \in \mathbb{R}^n$ un vector esencialmente entero distinto de cero y sea $w$ su múltiplo
 	coprimo. Entonces la familia de capas enteras $\left\lbrace H_{w, k||w||_2^{-2}} \vcentcolon k
 	\in \mathbb{Z} \right\rbrace$ cubre a $\mathbb{Z}^n$.
 \end{theorem}
 \begin{proof}
-	TODO. Reproducir demostración de \cite{sip} porque esto me ayuda a mostrar el lema
-	\ref{eq:num_layers}.
+	Ver \cite{sip}.
 \end{proof}
 
-\section*{Problema entero simple}
-Sea $p \in \mathbb{R}^n \setminus\lbrace 0 \rbrace$ un vector esencialmente entero con entradas no
-negativas y sea $l \in \mathbb{R}_{\geq 0}$ un escalar. Consideremos el problema de programación
-entera
-\begin{align}
-	\text{máx.} ~& p^Tx, \label{eq:simple:obj} \\
-	\text{s. a.} ~& p^Tx \leq l, \label{eq:simple:boundary} \\
-				  & x \in \mathbb{Z}_{\geq 0}^n. \nonumber
-\end{align}
-
-% TODO: explicar la estrategia/motivación para resolver este problema.
-
 \begin{lemma}
-	\label{lemma:num_layers}
-
-	Sea $p \in \mathbb{R}^n \setminus \lbrace 0 \rbrace$ un vector esencialmente entero y sea $l \in
-	\mathbb{R}_{\geq 0}$ un escalar. Entonces el número de capas enteras entre 0 y l está
+	\label{phase-1:num-layers}
+	Sea $p \in \mathbb{R}^n$ un vector esencialmente entero y sea $u \in
+	\mathbb{R}_{\geq 0}$ un escalar. Entonces el número de capas enteras entre 0 y u está
 	determinado por
 	\begin{equation}
 		\label{eq:num_layers}
 		\eta \coloneq
 		\left\lfloor
-			l \cdot \frac{\lcm\lbrace p_1, \ldots, p_n \rbrace}{\gcd\lbrace p_1, \ldots, p_n \rbrace}
+			u \cdot \frac{\lcm\lbrace p_1, \ldots, p_n \rbrace}{\gcd\lbrace p_1, \ldots, p_n \rbrace}
 		\right\rfloor.
 	\end{equation}
 \end{lemma}
 \begin{proof}
-	TODO
+	% TODO
 \end{proof}
 
-A causa del Lema \ref{lemma:num_layers} podemos enumerar las capas enteras que se encuentran entre
-el origen y la frontera de la restricción \ref{eq:simple:boundary}. Consideremos la $k$-ésima capa
-entera, donde $k \in \lbrace 0, \ldots, \eta \rbrace$. Queremos caracterizar la colección de puntos
-enteros que se encuentran sobre esta capa entera. Es decir, buscamos resolver la ecuación entera
+Ahora bien, somos de caracterizar una cubierta de $\mathbb{Z}^n$ a partir de capas enteras asociadas
+a nuestro vector esencialmente entero $p$. Además, debido al lema anterior, obtenemos una
+enumeración finita que nos permite analizar si la $k$-ésima capa entera contiene puntos factibles
+para el problema \ref{phase-1:ip:obj}. Observemos que si $k \in \lbrace 0, \ldots \eta \rbrace$,
+entonces la restricción \ref{phase-1:ip:prep} se satisface automáticamente y, por lo tanto, debemos
+exigir solamente no-negatividad.
+
+Buscamos resolver la ecuación entera
 \begin{equation}
 	\label{eq:dioph:complete}
 	p_1x_1 + \cdots + p_nx_n = k.
 \end{equation}
 
 \begin{lemma}
-	Sea $v \in \mathbb{R}^n$ un vector y sea $t \in \mathbb{R}$ un escalar. Definamos el $H_{v, t}$
-	hiperplano afino como
-	\begin{equation*}
-		H_{v, t} \coloneq \ker(x \mapsto v^Tx) + t \cdot v.
-	\end{equation*}
-	Entonces $H_{v, t} = H_{r \cdot v, t}$ para todo escalar $r \in \mathbb{R}$.
+	\label{phase-1:lemma:invariance}
+	Sea $v \in \mathbb{R}^n$ un vector y sea $t \in \mathbb{R}$ un escalar. Sea $H_{v, t}$ su
+	hiperplano afino asociado (c. f. \ref{phase-1:hyper}). Entonces $H_{v, t} = H_{r \cdot v, t}$
+	para todo escalar $r \in \mathbb{R}$.
 \end{lemma}
 \begin{proof}
-	TODO (?)
+	% TODO (?)
 \end{proof}
 
 Sea $q$ el múltiplo coprimo de $p$. Debido al lema anterior, resolver la ecuación
@@ -260,19 +239,19 @@ podemos reducir el grado de esta ecuación si, en su lugar, resolvemos el sistem
 	\end{cases}
 \end{equation}
 Observemos que $\gcd\lbrace g_{n-1}, q_n \rbrace = 1$ y también $\gcd\lbrace q_1/g_{n-1}, \ldots,
-q_{n-1}/g_{n-1}\rbrace = 1$. Por el Teorema \ref{th:dioph:existence} se sigue que ambas ecuaciones
-tienen una infinidad de soluciones y, por el Teorema \ref{th:dioph:gen}, podemos generarlas a partir
-de una solución particular. Como el valor de $\omega_n$ depende explícitamente de la primera
-ecuación, enfoquémonos en ella primero. Consideremos la ecuación auxiliar
+q_{n-1}/g_{n-1}\rbrace = 1$. Por el Teorema \ref{prerreq:th:dioph:existence} se sigue que ambas
+ecuaciones tienen una infinidad de soluciones y, por el Teorema \ref{prerreq:th:dioph:gen}, podemos
+generarlas a partir de una solución particular. Como el valor de $\omega_n$ depende explícitamente
+de la primera ecuación, enfoquémonos en ella primero. Consideremos la ecuación auxiliar
 \begin{equation}
 	\label{eq:dioph:orig:aux}
 	g_{n-1}\omega_n + q_nx_n = 1.
 \end{equation}
 Si $(\omega_{n-1}^{(0)}, x_n^{(0)})$ es una solución particular de esta ecuación auxiliar, entonces
 $(k\omega_{n-1}^{(0)}, kx_n^{(0)})$ es una solución particular de la primera ecuación de
-(\ref{eq:dioph:system}). Pero $g_{n-1}$ y $q_n$ son coprimos, por lo que sus coeficientes de Bézout
+(\ref{eq:dioph:system}). Pero $g_{n-1}$ y $q_n$ son coprimos, y entonces sus coeficientes de Bézout
 asociados proveen una solución particular de esta ecuación auxiliar. Debido al Teorema
-\ref{th:dioph:gen}, obtenemos una enumeración de soluciones de la primera ecuación del sistema
+\ref{prerreq:th:dioph:gen}, obtenemos una enumeración de soluciones de la primera ecuación del sistema
 (\ref{eq:dioph:system}):
 \begin{equation*}
 	\begin{cases}
@@ -281,7 +260,7 @@ asociados proveen una solución particular de esta ecuación auxiliar. Debido al
 	\end{cases}
 \end{equation*}
 donde $t_{n-1} \in \mathbb{Z}$. Ahora bien, como $x_1, \ldots, x_{n - 1} \geq 0$ por la formulación
-del problema (\ref{eq:simple:obj}), se debe cumplir $\omega_{n-1} \geq 0$, pues las $p$ es un vector
+del problema (\ref{phase-1:ip:obj}), se debe cumplir $\omega_{n-1} \geq 0$, pues $p$ es un vector
 con entradas no negativas. Así también, se debe cumplir $x_n \geq 0$. Es de esta forma que obtenemos
 cotas inferiores y superiores para $t_{n-1}$:
 \begin{equation}
@@ -300,151 +279,27 @@ En caso contrario, fijamos una $t_{n-1}$ factible, de tal forma que $\omega_{n-1
 completamente determinada. Es de esta manera que ahora somos capaces de resolver la segunda ecuación
 del sistema (\ref{eq:dioph:system}). Nos encontramos en una situación completamente análoga a cuando
 buscábamos resolver (\ref{eq:dioph:complete:coprime}). No obstante, esta ecuación es de un grado
-menor. Así pues, continuamos este proceso inductivamente (TODO: recursivamente?) hasta que debamos
+menor. Así pues, continuamos este proceso recursivamente hasta que debamos
 resolver la ecuación en dos variables
 \begin{equation*}
 	ax_1 + bx_2 = \omega_2,
 \end{equation*}
 para algunos enteros $a, b$ coprimos. Encontramos las soluciones a partir de sus coeficientes de
-Bézout asociados y también del Teorema \ref{th:dioph:gen}. Acotamos por medio de (\ref{eq:bounds})
+Bézout asociados y también del Teorema \ref{prerreq:th:dioph:gen}. Acotamos por medio de (\ref{eq:bounds})
 y, en caso de que exista una $t_2$ factible, hemos logrado obtener un punto entero factible. A
 diferencia de $t_{n - 1}$, si no existe $t_i$ factible para alguna $i \in \{2, \ldots, n - 2\}$, no
 podemos concluir que la $k$-ésima capa entera no contiene puntos enteros factibles. Más bien, la
 elección del parámetro $t_{i + 1}$ en la iteración anterior fue incorrecta, por lo que debemos
 escoger otro $t_{i + 1}$ factible, en caso de que exista.
 
-Finalmente, si iniciamos la búsqueda en la $\eta$-ésima (c.f. \ref{eq:num_layers}) capa entera y
-vamos descartando uno a uno las capas hasta encontrar un punto factible, se sigue inmediatamente que
-ese punto es también óptimo.
+% TODO: agregar algoritmo? Debido a lo discutido en esta subsección no es difícil mostrar que es
+% correcto. Maybe agregarlo como teorema?
 
-% TODO: escribir el algoritmo en pseudocódigo.
+\subsection*{Segunda fase}
+\subsection*{Tercera fase}
 
-Observemos que si $x^{(0)} \coloneq (x_1^{(0)}, \ldots x_n^{(0)})$ es una solución a esta ecuación
-auxiliar, entonces $kx^{(0)}$ es una solución particular de (\ref{eq:dioph:complete:coprime}). Pero
-$\gcd\lbrace q_1, \ldots, q_n \rbrace = 1$, con lo que $x^{(0)}$.
-
-La idea del método es la siguiente. Para empezar, nos concentramos exclusivamente en vectores de
-utilidad $c \in \mathbb{R}^n$ proyectivamente racionales. Sea $c'$ el múltiplo coprimo de $c$,
-entonces el número de \textit{c-layers} entre 0 y la frontera de la restricción $p^tx \leq s$ está
-dado por $\eta \coloneq \lfloor s \cdot p'_n / p_n \rfloor$.
-
-Ahora bien, buscamos caracterizar la colección de puntos enteros que se encuentran en el $k$-ésimo
-\textit{c-layer} con $k \in \{0, 1, \ldots, \eta\}$. Es decir, buscamos resolver la ecuación entera
-\begin{equation*}
-	p'_1x_1 + p'_2x_2 + \cdots + p'_nx_n = k.
-\end{equation*}
-Como $\text{gcd}(p'_1, \ldots, p'_n) = 1$, se sigue que para cualquier $k \in \mathbb{Z}$ existe una
-infinidad de soluciones enteras parametrizadas por una solución inicial $(x_1^{(0)}, \ldots,
-x_n^{(0)})$ y $n - 1$ parámetros $t_1, \ldots, t_{n-1}$. Para obtener la solución inicial notemos
-que podemos resolver el sistema auxiliar
-\begin{equation*}
-	p'_1x_1 + p'_2x_2 + \cdots + p'_nx_n = 1,
-\end{equation*}
-donde una solución son los coeficientes de Bézout de $p'_1, \ldots, p'_n$. Luego, a esta solución la
-multiplicamos por $k$ y de esta forma obtenemos $x^{(0)}$. Finalmente, para obtener una solución
-factible (no negativa) ``simplemente'' acotamos los parámetros. La forma en la que acoto actualmente
-los parámetros es recursivamente.
-
-Consideremos el caso $n = 2$. La solución a la ecuación entera está dada por
-\begin{equation*}
-	\begin{cases}
-		x_1 = kx_1^{(0)} + p'_2t, \\
-		x_2 = kx_2^{(0)} - p'_1t,
-	\end{cases}
-\end{equation*}
-donde $x_1^{(0)}$ y $x_2^{(0)}$ son los coeficientes de Bézout de $p'_1$ y $p'_2$. Como buscamos
-factibilidad, se debe cumplir 
-\begin{equation*}
-	\frac{-k\cdot x_1^{(0)}}{p'_2} \leq t \leq \frac{k \cdot x_2^{(0)}}{p'_1}, ~~ t \in \mathbb{Z}.
-\end{equation*}
-
-Luego, para acotar los parámetros en $n$ dimensiones, definimos $w \coloneq p'_1x_1 + \ldots +
-p'_{n-1}x_{n-1}$ y resolvemos el sistema $w + p'_nx_n = k$. Con esto regresamos al caso $n = 2$ y
-tenemos que el parámetro $n - 1$ debe satisfacer
-\begin{equation*}
-	\frac{-k\cdot w^{(0)}}{p'_n} \leq t_{n-1} \leq \frac{k \cdot x_n^{(0)}}{1}, ~~ t_{n-1} \in \mathbb{Z}.
-\end{equation*}
-No es difícil ver que $w^{(0)} = 1$ y $x_n^{(0)} = 0$. Una vez resuelto este sistema, buscamos
-resolver
-\begin{equation*}
-	p'_1 x_1 + \cdots + p'_{n-1}x_{n-1} = w = kw^{(0)} + p'_nt_{n-1}
-\end{equation*}
-para cada $t_{n-1}$ factible y repetimos el proceso anterior hasta poder acotar $t_1$.
-Es de esta forma que la complejidad con respecto a la dimensión $d$ es entonces $n^d$. Notemos que
-$t_i = 0$ es factible para todo $i \in \{2, 3, \ldots, n - 1\}$, así que en términos prácticos
-valdría la pena resolver primero $p'_1x_1 + p'_2x_2 = k$ y checar si existe una $t_1$ factible. Si
-este es el caso entonces obtendríamos inmediatamente una solución factible con $(x_1, x_2, 0,
-\ldots, 0)$.
-
-Finalmente, como nos encontramos en un problema de maximización, para obtener el óptimo empezamos
-nuestra búsqueda en los \textit{c-layers} más cercanos a la frontera. Es decir, resolvemos las
-ecuaciones con $k = \eta$, luego con $k = \eta - 1$, etcétera y terminamos el algoritmo una vez que
-encontremos una solución factible.
-
-\section*{3. Experimentos numéricos}
-Por el momento solo he realizado experimentos cuando la dimensión $n$ es 2. En ambas figuras
-\ref{fig:3d} y \ref{fig:4d} podemos notar que el método que diseñé (``diophantine'') es
-relativamente constante con respecto al \textit{slack}, que denota la magnitud del lado derecho en
-la desigualdad $p^tx \leq s$.
-
-También se cumple en ambas figuras que el algoritmo de \textit{B\&B} sí tiene una dependencia
-inherente con respecto a $s$: en un inicio se mantiene constante pues $s$ es demasiado pequeña y no
-hay efecto real en cuanto al tiempo de convergencia; luego, el tiempo aumenta en proporción a $n$
-(cabe mencionar que las gráficas están a escala logarítmica, no sé si haya sido la mejor elección
-para interpretarlas) y eventualmente aumentos en $s$ no afectan al tiempo. Esto último coincide con
-la presencia de múltiples soluciones enteras, lo cual parece razonable: mientras más soluciones
-enteras haya, más probabilidad tiene \textit{B\&B} de encontrarse con una y por lo tanto el tiempo
-de convergencia esperado es compensado por esta mayor probablidad.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.7\textwidth]{../figs/cmp-expanded-three-digits.png}
-	\caption{Comparación de tiempos entre el método de \textit{Branch \& Bound} y el que diseñé
-	cuando los precios tienen tres cifras decimales.}
-    \label{fig:3d}
-\end{figure}
-
-Una consecuencia sorprendente de lo expuesto es la siguiente: \textit{Branch \& Bound} es sumamente
-sensible al redondeo numérico. En efecto, mientras más cifras decimales tengan las entradas $p_1,
-\ldots, p_n$, los puntos enteros que se encuentran sobre la $k$-ésima $c$-layer están más
-distanciados, por lo que el número de puntos enteros factibles se reduce drásticamente (en un orden
-de 10), y entonces \textit{B\&B} tomará significativamente más tiempo en encontrar una solución.
-Así pues, para compensar de nuevo el tiempo de convergencia necesitamos aumentar el \textit{slack}
-$s$, pero esto afecta completamente el problema original.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.7\textwidth]{../figs/cmp-expanded-four-digits.png}
-	\caption{Comparación de tiempos entre el método de \textit{Branch \& Bound} y el que diseñé
-	cuando los precios tienen cuatro cifras decimales.}
-    \label{fig:4d}
-\end{figure}
-
-
-\section*{4. Siguientes pasos}
-
-\begin{itemize}
-    \item Implementar el algoritmo ``diophantine'' para más de dos dimensiones y comparar resultados
-		con \textit{B\&B}.
-	\item Pensar en otras alternativas para generalizar el método a más de dos dimensiones.
-		Encontré algo que se llama la forma normal de Smith para resolver sistemas de ecuaciones
-		enteras (ecuaciones lineales enteras en más de dos dimensiones se pueden transformar a
-		sistemas de ecuaciones). Investigar.
-    \item Gráficas, gráficas gráficas: tiempos vs cifras decimales, tiempos vs dimensión, gráficas
-		que transmitan mejor el mensaje.
-	\item Posibles aplicaciones (?) o exponerlo como casos degenerados del simplex/b\&b (?).
-\end{itemize}
-
-\section*{5. Notas}
-\begin{itemize}
-	\item Siento que este método puede generalizarse un poco más para agregar otro tipo de
-		restricciones al problema original. Solo habría que ver cómo determinar $t_i$'s factibles.
-		Esto puede verse como un problema lineal no-entero sobre $t$ y por lo tanto puede resolverse
-		más rápido (?).
-	\item Si el punto anterior es cierto, entonces este método es otro acercamiento para resolver
-		problemas simétricos (c.f. \cite{sip}) sin hacer uso de órbitas ni mucho menos de
-		transitividad y por lo tanto es un poco más general.
-\end{itemize}
+\section*{Resultados}
+\section*{Conclusiones}
 
 \bibliographystyle{alpha}
 \bibliography{refs}
