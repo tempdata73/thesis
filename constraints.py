@@ -105,20 +105,20 @@ def solve_lattice(c_p, A, b, u):
         for i in range(n - 1, -1, -1):
             mask[min(i + 1, n - 1)] = True
             mask[i] = False
+
             try:
                 params = la.solve_triangular(M[mask, :], rhs[mask], lower=True)
-
-                # check params are integers
-                if not np.allclose(params, params.astype(int), rtol=1e-9):
-                    continue
-
-                # check the non-active constraint is satisfied
-                if np.allclose(M[~mask] @ params, rhs[~mask]):
-                    x = k * w + h @ params
-                    return x
-
             except np.linalg.LinAlgError:
                 continue
+
+            # check params are integers
+            if not np.allclose(params, params.astype(int), rtol=1e-9):
+                continue
+
+            # check the non-active constraint is satisfied
+            if np.allclose(M[~mask] @ params, rhs[~mask]):
+                x = k * w + h @ params
+                return x
 
         mask[0] = True
 
