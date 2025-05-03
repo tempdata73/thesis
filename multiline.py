@@ -134,16 +134,22 @@ if __name__ == "__main__":
     FILENAME = "3d-4dig"
     NUM_ITER = 50
 
-    p = np.array([9.9314, 9.7751, 9.5357])
+    p = np.array([9.9314, 9.7752, 9.5358])
 
     # equivalent diophantine prices (p == p_1 / p_2)
-    p_1 = np.array([99314, 97751, 95357])
+    p_1 = np.array([99314, 97752, 95358])
     p_2 = np.ones_like(p_1) * 10_000
 
     # finding coprime multiple of the projectively rational vector
     m = math.lcm(*p_2)
     c_p = p_1 * (m // p_2)
     c_p = c_p // np.dot(c_p, bezout(c_p))
+    print(c_p / p)
+
+    c_p = p_1 * (m // p_2)
+    g = np.dot(c_p, bezout(c_p))
+    print(m / g)
+    exit(0)
 
     slack = np.logspace(2, 7, num=100, base=10.0, dtype=int)
     stats: dict[str, dict[str, list[float]]] = {
