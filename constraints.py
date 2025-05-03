@@ -59,7 +59,7 @@ def lattice_projection(c_p):
 
     for i in range(len(q) - 2):
         q[i:] = q[i:] // g[i]
-        g[i + 1] = math.gcd(*q[i + 1:])
+        g[i + 1] = math.gcd(*q[i + 1 :])
         x_p[i], w_p[i + 1] = _bezout(q[i], g[i + 1])
 
     q[-2:] = q[-2:] // g[-1]
@@ -75,13 +75,13 @@ def lattice_projection(c_p):
 
     for i in range(n - 2):
         for j in range(i):
-            H[i, j] = q[j] * x_p[i] * np.prod(w_p[j + 2:i + 1])
+            H[i, j] = q[j] * x_p[i] * np.prod(w_p[j + 2 : i + 1])
         H[i, i] = g[i + 1]
 
     # last two rows
     for i in (-2, -1):
         for j in range(n - 2):
-            H[i, j] = -q[j] * x_p[i] * np.prod(w_p[j + 2:-1])
+            H[i, j] = -q[j] * x_p[i] * np.prod(w_p[j + 2 : -1])
     H[-2, -1] = q[-1]
     H[-1, -1] = -q[-2]
 
@@ -94,7 +94,7 @@ def solve_lattice(c_p, A, b, u):
     h, w = lattice_projection(c_p)
 
     # transformed constraints
-    M =  r @ h
+    M = r @ h
     rhs_1 = q.T @ b
     rhs_2 = r @ w
 
@@ -128,7 +128,7 @@ def solve_lattice(c_p, A, b, u):
 
 
 p = np.array([9.9314, 9.7752, 9.5358, 9.4289])
- 
+
 # diophantine prices (p == p_1 / p_2)
 p_1 = np.array([99312, 91272, 93535, 94399])
 p_2 = np.ones_like(p_1) * 10_000
