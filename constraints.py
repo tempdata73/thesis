@@ -112,10 +112,13 @@ def solve_lattice(c_p, A, b, u):
                 continue
 
             # check params are integers
-            if not np.allclose(params, params.astype(int), rtol=1e-9):
+            if not np.allclose(params, params.astype(int), rtol=1e-5):
                 continue
 
             # check the non-active constraint is satisfied
+            print(params)
+            print(M[~mask] @ params, "\t", rhs[~mask])
+            print("x: ", k * w + h @ params)
             if np.allclose(M[~mask] @ params, rhs[~mask]):
                 x = k * w + h @ params
                 return x
@@ -130,8 +133,8 @@ def solve_lattice(c_p, A, b, u):
 p = np.array([9.9314, 9.7752, 9.5358, 9.4289])
 
 # diophantine prices (p == p_1 / p_2)
-p_1 = np.array([99312, 91272, 93535, 94399])
-p_2 = np.ones_like(p_1) * 10_000
+p_1 = np.array([99, 91, 95, 93])
+p_2 = np.ones_like(p_1) * 10
 
 A = np.eye(4)
 b = np.ones(4)
