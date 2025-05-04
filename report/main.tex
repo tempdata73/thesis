@@ -116,8 +116,8 @@ A lo largo de esta subsección hacemos mucho uso de resultados cubiertos en un c
 álgebra. No obstante, si el lector no se siente familiarizado con el tema o si desea refrescar su
 memoria, es recomendable que lea la sección de preliminares.
 
-Sean $p \in \mathbb{R}^n$ un vector esencialmente entero, $u \in \mathbb{R}$ un escalar y
-consideremos el problema lineal entero
+Sean $p \in \mathbb{R}^n$ un vector no negativo esencialmente entero, $u \in \mathbb{R}_{\geq 0}$ un
+escalar y consideremos el problema lineal entero
 \begin{align}
 	\text{máx.} ~& p^Tx \label{phase-1:ip:obj} \\
 	\text{s. a.} ~& p^Tx \leq u \label{phase-1:ip:prep} \\
@@ -191,8 +191,8 @@ espacio, como lo indica el siguiente teorema.
 	% TODO
 \end{proof}
 
-Ahora bien, somos de caracterizar una cubierta de $\mathbb{Z}^n$ a partir de capas enteras asociadas
-a nuestro vector esencialmente entero $p$. Además, debido al lema anterior, obtenemos una
+Ahora bien, somos capaces de caracterizar una cubierta de $\mathbb{Z}^n$ a partir de capas enteras
+asociadas a nuestro vector esencialmente entero $p$. Además, debido al lema anterior, obtenemos una
 enumeración finita que nos permite analizar si la $k$-ésima capa entera contiene puntos factibles
 para el problema \ref{phase-1:ip:obj}. Observemos que si $k \in \lbrace 0, \ldots \eta \rbrace$,
 entonces la restricción \ref{phase-1:ip:prep} se satisface automáticamente y, por lo tanto, debemos
@@ -296,6 +296,132 @@ escoger otro $t_{i + 1}$ factible, en caso de que exista.
 % correcto. Maybe agregarlo como teorema?
 
 \subsection*{Segunda fase}
+Sean $p \in \mathbb{R}^n$ un vector esencialmente entero, $A \in \mathbb{R}^{m \times n}$ una matriz
+de rango completo con $n \leq m$ y $b \in \mathbb{R}^m$ un vector. Consideramos ahora el problema
+lineal entero
+\begin{align}
+	\text{máx.} ~& p^Tx, \label{phase-2:ip:obj} \\
+	\text{s. a.} ~& p^Tx \leq u, \label{phase-2:ip:prep} \\
+				  & Ax \leq b, \label{phase-2:ip:rest} \\
+				  & x \in \mathbb{Z}^n.
+\end{align}
+Observemos que este problema se reduce a \ref{phase-1:ip:obj} si $m = n$ con $A = -I_n$ y $b = 0_n$.
+Seguiremos la misma lógica que en la subsección pasada en cuanto a establecer ecuaciones lineales
+diofantinas. No obstante, esto lo haremos para establecer una relación lineal entre $x \in
+\mathbb{Z}^n$ y el vector de parámetros $t \in \mathbb{Z}^{n-1}$. Si procedemos de aquella forma y
+nos enfocamos en una capa entera $H_{p, k}$ con $k \leq u$, podremos, en primer lugar, deshacernos
+de la restricción \ref{phase-2:ip:prep} y, en segundo lugar, de reducir el problema lineal
+\ref{phase-2:ip:obj} a uno de factibilidad.
+
+Sea $q$ el múltiplo coprimo de $p$. Deseamos resolver la ecuación \ref{eq:dioph:complete:coprime}.
+Procedemos con la misma estrategia que en la subsección anterior, solamente que ahora vamos hacia
+adelante en vez de hacia atrás. Por conveniencia, definimos $g_1 \coloneq \gcd\lbrace q_1, \ldots,
+q_n \rbrace = 1$ y también $\omega_1 \coloneq k$, con lo que obtenemos
+\begin{equation*}
+	\frac{q_1}{g_1}x_1 + g_2
+	\underbrace{\left( \frac{q_2}{g_2 \cdot g_1}x_2 + \cdots + \frac{q_n}{g_2 \cdot
+	g_1}x_n \right)}_{=\vcentcolon \omega_2} = k = \omega_1.
+\end{equation*}
+
+donde $g_2 \coloneq \gcd\lbrace \frac{q_2}{g_1}, \ldots \frac{q_n}{g_1}\rbrace$. Porque $q$ es
+coprimo, se sigue que $\gcd\lbrace \frac{q_1}{g_1}, g_2\rbrace = 1$ y por lo tanto la ecuación
+anterior tiene solución para todo $\omega_1 \in \mathbb{Z}$. Así también, una solución particular
+está constituida por los coeficientes de Bézout asociados a $\frac{q_1}{g_1}$ y $g_2$, de tal forma que la
+solución general está dada por
+\begin{equation*}
+	\begin{cases}
+		x_1 &= \omega_1 \cdot x_1^{(0)} + g_2 \cdot t_1, \\
+		\omega_2 &= \omega_1 \cdot \omega_2^{(0)} - \frac{q_1}{g_1} \cdot t_1,
+	\end{cases}
+\end{equation*}
+donde $t_1 \in \mathbb{Z}$. Ahora bien, deseamos resolver la ecuación
+\begin{equation*}
+	\frac{q_2}{g_2 \cdot g_1}x_2 + \frac{q_3}{g_2 \cdot g_1} + \cdots + \frac{q_n}{g_2 \cdot g_1}x_n
+	= \omega_2,
+\end{equation*}
+por lo que definimos $g_3 \coloneq \gcd\lbrace \frac{q_3}{g_2 \cdot g_1}, \ldots \frac{q_n}{g_2
+\cdot g_1} \rbrace$, de tal forma que obtenemos
+\begin{equation*}
+	\frac{q_2}{g_2 \cdot g_1}x_2 + g_3 \underbrace{ \left( \frac{q_3}{g_3 \cdot g_2 \cdot g_1} + \cdots +
+	\frac{q_n}{g_3 \cdot g_2 \cdot g_1}x_n \right)}_{=\vcentcolon \omega_3} = \omega_2.
+\end{equation*}
+Por un razonamiento similar al anterior, existen soluciones para todo $\omega_2 \in \mathbb{Z}$ y
+por lo tanto los coeficientes de Bézout asociados a $\frac{q_2}{g_2 \cdot g_1}$ y $g_3$ proveen una
+solución particular, de donde podemos generar la solución general
+\begin{equation*}
+	\begin{cases}
+		x_2 &= \omega_2 \cdot x_2^{(0)} + g_3 \cdot t_2, \\
+		\omega_3 &= \omega_2 \cdot \omega_3^{(0)} - \frac{q_2}{g_2 \cdot g_1} \cdot t_2,
+	\end{cases}
+\end{equation*}
+donde $t_2 \in \mathbb{Z}$. De manera inductiva, encontramos que, para $i \in \{1, \ldots, n - 2\}$,
+la $i$-ésima solución general está dada por
+\begin{equation}
+	\begin{cases}
+		\label{phase-2:recurrence}
+		x_i &= \omega_i \cdot x_i^{(0)} + g_{i+1} \cdot t_i, \\
+		\omega_{i+1} &= \omega_i \cdot \omega_{i+1}^{(0)} - \frac{q_i}{\prod_{j=1}^{i}g_j} \cdot t_i,
+	\end{cases}
+\end{equation}
+con $t_i \in \mathbb{Z}$. Para $i = n - 1$ obtenemos la ecuación
+\begin{equation*}
+	\frac{q_{n-1}}{\prod_{j=1}^{n-2}g_j}x_{n-1} + \frac{q_n}{\prod_{j=1}^{n-2}g_j}x_n =
+	\omega_{n-1},
+\end{equation*}
+que, por construcción, también tiene solución para todo $\omega_{n-1} \in \mathbb{Z}$. Finalmente,
+las últimas dos soluciones son
+\begin{equation}
+	\label{phase-2:eq:last-solutions}
+	\begin{cases}
+		x_{n-1} &= \omega_{n-1} \cdot x_{n-1}^{(0)} + \frac{q_n}{\prod_{j=1}^{n-2}g_j} \cdot t_{n-1}, \\
+		x_n &= \omega_{n-1} \cdot x_{n}^{(0)} - \frac{q_{n-1}}{\prod_{j=1}^{n-2}g_j} \cdot
+		t_{n-1},
+	\end{cases}
+\end{equation}
+donde $t_{n-1} \in \mathbb{Z}$.
+
+Ahora bien, deseamos expresar al $x = (x_1, \ldots, x_n)$ como una transformación lineal del vector
+de parámetros $t \coloneq (t_1, \ldots, t_{n-1})$. Para ello, debemos encontrar una forma cerrada a
+la siguiente relación de recurrencia obtenida en \ref{phase-2:recurrence}:
+\begin{equation*}
+	\begin{cases}
+		\omega_1 &= k, \\
+		\omega_{i + 1} &= \omega_i \cdot \omega_{i + 1}^{(0)} - \frac{q_i}{\prod_{j=1}^{i}g_j} \cdot t_i.
+	\end{cases}
+\end{equation*}
+Si ``desenvolvemos'' las igualdades, encontramos que
+\begin{align}
+	\omega_i &= k \cdot \prod_{j=2}^{i} \omega_j^{(0)} -
+			 \sum_{j=1}^{i - 1}\frac{q_j}{\prod_{\ell=1}^{j}g_\ell} \cdot
+			 \prod_{\ell=j+2}^{i}\omega_\ell^{(0)} \cdot t_j.
+	% k\omega_2^{(0)}\omega_3^{(0)}\cdots\omega_i^{(0)}
+	% 		 - \frac{q_1}{g_1}\omega_3^{(0)}\omega_4^{(0)} \cdots \omega_i^{(0)} t_1
+	% 		 - \frac{q_2}{g_1g_2}\omega_4^{(0)}\omega_5^{(0)} \cdots \omega_i^{(0)} t_2
+	% 		 - \cdots 
+	% 		 - \frac{q_{i-1}}{g_1g_2 \cdots g_{i-1}}t_{i-1} \\
+\end{align}
+Donde, por conveniencia, asignamos a la suma vacía el valor de cero y al producto vacío el valor de
+uno. Por simpleza, definimos los coeficientes $a_{ij} \in \mathbb{Z}$ con $j < i$ como
+\begin{equation}
+	\label{phase-2:eq:coeffs}
+	a_{ij} \coloneq \frac{q_j}{\prod_{\ell = 1}^{j}g_\ell} \cdot \prod_{\ell = j +
+	2}^{i}\omega_\ell^{(0)}.
+\end{equation}
+Así pues, juntando esto último con \ref{phase-2:recurrence}, obtenemos para $i \in \{1, \ldots, n -
+2\}$, 
+\begin{align}
+	x_i &= w_i \cdot x_i^{(0)} + g_{i + 1}t_i \nonumber \\
+		&= k \cdot \prod_{j=2}^{i}\omega_j^{(0)} \cdot x_i^{(0)} - \sum_{j=1}^{i - 1}a_{ij}x_i^{(0)}
+		t_j + g_{i + 1}t_i.
+\end{align}
+Similarmente, sustituyendo en \ref{phase-2:eq:last-solutions},
+\begin{align*}
+	x_{n-1} &= k \cdot \prod_{j=2}^{n-1} \omega_j^{(0)} \cdot x_{n-1}^{(0)} - \sum_{j=1}^{n-2}
+	a_{n-1,j}x_{n-1}^{(0)} t_j + \frac{q_n}{\prod_{j=1}^{n-2}g_j} t_{n-1}, \\
+	x_{n} &= k \cdot \prod_{j=2}^{n-1} \omega_j^{(0)} \cdot x_{n}^{(0)} - \sum_{j=1}^{n-2}a_{n,j}x_n^{(0)}t_j -
+	\frac{q_{n-1}}{\prod_{j=1}^{n-2} g_j}t_{n-1}.
+\end{align*}
+
 \subsection*{Tercera fase}
 
 \section*{Resultados}
