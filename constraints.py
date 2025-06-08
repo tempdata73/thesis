@@ -130,25 +130,68 @@ def solve_lattice(c_p, A, b, u):
         return None
 
 
-p = np.array([9.9314, 9.7752, 9.5358, 9.4289])
+def solve_feasibility_naive(c_p, A, b, u):
+    import pulp as pl
+
+    m, n = A.shape
+    h, w = lattice_projection(c_p)
+    print(w)
+
+    lhs = A @ h
+    rhs_1 = b 
+    rhs_2 = A @ w
+
+    # build model and do initial solve
+    prob = pl.LpProblem("feasibility problem")
+    t = [pl.LpVariable(f"t_{j}", cat="Integer") for j in range(n - 1)]
+
+    for i in range(m):
+        prob += pl.lpDot(lhs[i], t) <= rhs_1[i] - u * rhs_2[i]
+
+    solver = pl.PULP_CBC_CMD(msg=False)
+    status = solver.solve(prob)
+
+    # solve with warmed state
+    k = u
+    while status == -1:
+        k -= 1
+        print(f"on c-layer = {k}")
+
+        # update model solution
+        for i in range(m):
+            prob.constraints[f"_C{i + 1}"].changeRHS(rhs_1[i] - k * rhs_2[i])
+        status = solver.solve(prob)
+
+        if (k == 0) and (status == -1):
+            msg = "problem is infeasible"
+            raise ValueError(msg)
+
+
+    params = np.array([t_i.varValue for t_i in t])
+    return h @ params + k * w
+
+
+p = np.array([9.913, 9.891, 9.514, 9.379])
 
 # diophantine prices (p == p_1 / p_2)
-p_1 = np.array([99, 91, 95, 93])
-p_2 = np.ones_like(p_1) * 10
-
-A = np.eye(4)
-b = np.ones(4)
+p_1 = np.array([9913, 9891, 9514, 9379])
+p_2 = np.ones_like(p_1) * 1_000
 
 # coprime multiple of p
 m = math.lcm(*p_2)
 c_p = p_1 * (m // p_2)
 c_p = c_p // np.dot(c_p, bezout(c_p))
 
-s = sum(p_1) - 1
-# num_layers = math.floor(s * c_p[-1] / p[-1])
+s = sum(p) - 1
+num_layers = math.floor(s * c_p[-1] / p[-1])
+print(f"{s=}")
+print(f"{num_layers=}")
 
-x = solve_lattice(c_p, A, b, s)
+# constraints
+n = len(p)
+A = -np.eye(n)
+b = np.zeros(n)
 
+x = solve_feasibility_naive(c_p, A, b, num_layers)
 print(f"solution: {x}")
-print(f"objective: {np.dot(x, c_p)}")
-print(sum(p_1) - 1)
+print(f"objective: {np.dot(x, p)}")
