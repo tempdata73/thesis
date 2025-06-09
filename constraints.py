@@ -88,54 +88,11 @@ def lattice_projection(c_p):
     return H, w
 
 
-def solve_lattice(c_p, A, b, u):
-    n = len(c_p)
-    q, r = qr(A, mode="economic")
-    h, w = lattice_projection(c_p)
-
-    # transformed constraints
-    M = r @ h
-    rhs_1 = q.T @ b
-    rhs_2 = r @ w
-
-    mask = np.ones(n, dtype=bool)
-    for k in range(u, -1, -1):
-        rhs = rhs_1 - k * rhs_2
-
-        for i in range(n - 1, -1, -1):
-            mask[min(i + 1, n - 1)] = True
-            mask[i] = False
-
-            try:
-                params = la.solve_triangular(M[mask, :], rhs[mask], lower=True)
-            except np.linalg.LinAlgError:
-                continue
-
-            # check params are integers
-            if not np.allclose(params, params.astype(int), rtol=1e-5):
-                continue
-
-            # check the non-active constraint is satisfied
-            print(params)
-            print(M[~mask] @ params, "\t", rhs[~mask])
-            print("x: ", k * w + h @ params)
-            if np.allclose(M[~mask] @ params, rhs[~mask]):
-                x = k * w + h @ params
-                return x
-
-        mask[0] = True
-
-    else:
-        print("problem is infeasible")
-        return None
-
-
 def solve_feasibility_naive(c_p, A, b, u):
     import pulp as pl
 
     m, n = A.shape
     h, w = lattice_projection(c_p)
-    print(w)
 
     lhs = A @ h
     rhs_1 = b 
@@ -171,10 +128,74 @@ def solve_feasibility_naive(c_p, A, b, u):
     return h @ params + k * w
 
 
-p = np.array([9.913, 9.891, 9.514, 9.379])
+def solve_feasibility_backtrack(c_p, A, b, u, depth=1):
+    print(f"\n{depth=}")
+    print(f"cost vector: {c_p}")
+    print(f"{u=}")
+
+    if len(c_p) == 2:
+        x_p, y_p = _bezout(c_p[0], c_p[1])
+        lb = math.ceil(-u * y_p / c_p[0])
+        ub = math.floor(u * x_p / c_p[1])
+
+        print("on base case")
+        print(f"cost vector: {c_p}")
+        print(f"particular solutions: ({x_p}, {y_p})")
+        print(f"feasible interval: ({lb}, {ub})")
+
+        for t in range(lb, ub + 1):
+            x = u * x_p - t * c_p[1]
+            y = u * y_p + t * c_p[0]
+            lhs = A[:, 0] * x + A[:, 1] * y
+
+            if np.all(lhs <= b):
+                print(f"solution: (x, y) = ({x}, {y})")
+                return [x, y]
+
+        return None
+
+    g_next = math.gcd(*c_p[1:])
+    x_p, w_p = _bezout(c_p[0], g_next)
+    lb = math.ceil(-u * w_p / c_p[0])
+    ub = math.floor(u * x_p / g_next)
+
+    print(f"particular solutions: (x_p, w_p) = ({x_p}, {w_p})")
+    print(f"feasible interval: ({lb}, {ub})")
+
+    for t in range(lb, ub + 1):
+        x = u * x_p - t * g_next
+        w = u * w_p + t * c_p[0]
+        rhs = b - A[:, 0] * x
+
+        print(f"on parameter {t=}")
+        print(f"solution: (x, w) = ({x}, {w})")
+
+        x_rest = solve_feasibility_backtrack(
+            c_p[1:] // g_next, A[:, 1:], rhs, w, depth + 1
+        )
+
+        if x_rest is not None:
+            return [x, *x_rest]
+
+        print(f"\nbacktracking: {depth=}")
+    return None
+
+
+def solve_lattice(c_p, A, b, u):
+    print(f"ON C-LAYER: {u}\n")
+    while (x := solve_feasibility_backtrack(c_p, A, b, u)) is None:
+        if u == 0:
+            msg = "problem is infeasible"
+            raise ValueError(msg)
+        print(f"ON C-LAYER: {u}\n")
+        u -= 1
+    return x
+
+
+p = np.array([9.982, 9.990, 9.113, 9.313])
 
 # diophantine prices (p == p_1 / p_2)
-p_1 = np.array([9913, 9891, 9514, 9379])
+p_1 = np.array([9982, 9990, 9113, 9313])
 p_2 = np.ones_like(p_1) * 1_000
 
 # coprime multiple of p
@@ -183,15 +204,19 @@ c_p = p_1 * (m // p_2)
 c_p = c_p // np.dot(c_p, bezout(c_p))
 
 s = sum(p) - 1
-num_layers = math.floor(s * c_p[-1] / p[-1])
+num_layers = math.ceil(s * c_p[-1] / p[-1])
 print(f"{s=}")
-print(f"{num_layers=}")
+print(f"{num_layers=}\n")
 
 # constraints
 n = len(p)
-A = -np.eye(n)
-b = np.zeros(n)
+A = np.eye(n)
+b = np.ones(n)
 
-x = solve_feasibility_naive(c_p, A, b, num_layers)
+x = solve_lattice(c_p, A, b, num_layers)
+x = np.asarray(x, dtype=int)
+
+# x = solve_feasibility_naive(c_p, A, b, num_layers)
+print()
 print(f"solution: {x}")
 print(f"objective: {np.dot(x, p)}")
