@@ -1,9 +1,20 @@
 # custom
 jl/*
 
+# report sketch
 report/*
 !report/main.tex
 !report/main.pdf
+!report/refs.bib
+
+# thesis
+thesis/*
+!thesis/main.tex
+!thesis/preamble.tex
+!thesis/refs.bib
+!thesis/main.pdf
+!thesis/chapters/
+
 
 logs/*
 

@@ -1,0 +1,140 @@
+\chapter{Prerrequisitos}
+
+\noindent
+En los siguientes capítulos usaremos extensivamente resultados básicos de teoría de números y de
+programación lineal, por lo que es provechoso recopilarlos en las siguientes secciones. En
+particular, va se destaca la importancia de las ecuaciones lineales diofantinas para la construcción
+de nuestro algoritmo. En este capítulo consideramos pertinente no incluir demostraciones, pues los
+enunciados son mostrados en cualquier clase de álgebra superior o de programación lineal, por
+ejemplo. La referencia principal para la sección de teoría de números es \cite{carmen}. Finalmente,
+a lo largo de este capítulo tanto como de esta tesis excluimos al cero del conjunto de los números
+naturales.
+
+\section{Teoría de Números}
+\subsection{Máximo común divisor y mínimo común múltiplo}
+
+\noindent
+En primer lugar, introducimos el símbolo de relación ``$\mid$'' para indicar divisibilidad. Dados
+dos enteros $a, b$, decimos que $b$ divide a $a$ (y escribimos $b \mid a$) si existe un entero $k$
+tal que $a = k \cdot b$. Así también, denotamos el conjunto de divisores de $a$ como
+\begin{equation*}
+	D(a) \coloneq \lbrace b \in \Z \vcentcolon b \mid a \rbrace.
+\end{equation*}
+Si $a$ es distinto de cero, encontramos que $D(a)$ es finito, puesto que si $b \mid a$, entonces
+$|b| \leq |a|$, lo cual implica que $|D(a)| \leq 2|a|$. En caso de que $a$ sea nulo, obtenemos $D(a)
+= \Z$. Observemos también que $\lbrace -1, 1 \rbrace \subseteq D(a)$ para todo entero $a$.
+
+\begin{definition}
+	\label{prerreq:def:gcd}
+	Sean $a_1, \ldots, a_n$ enteros no todos iguales a cero, entonces definimos su máximo común
+	divisor $d$ como el elemento maximal del conjunto $\bigcap_{i=1}^{n}D(a_i)$, y escribimos $d =
+	\gcd{a_1, \ldots, a_n}$. Si $\gcd{a_1, \ldots, a_n} = 1$, entonces decimos que $a_1, \ldots,
+	a_n$ son coprimos.
+\end{definition}
+
+Puesto que $a_i \neq 0$ para alguna $i$ en la definición anterior, encontramos que el conjunto
+$\bigcap_{i=1}^{n}D(a_i)$ es finito y, como también es no vacío, en efecto existe un elemento maximal.
+Es decir, el máximo común divisor $d$ siempre está bien definido.
+
+% FIX: no me gusta la redacción
+\begin{observation}
+	No porque una colección de enteros sea coprima ($\gcd{a_1, \ldots, a_n} = 1$) se sigue que
+	estos enteros sean coprimos a pares ($\gcd{a_i, a_j} = 1$ para todo $i, j$). Por ejemplo,
+	los enteros $1, 3, 3$ son coprimos pero evidentemente $3, 3$ no lo son.
+\end{observation}
+
+\begin{definition}
+	Decimos que $c \in \Z$ es una combinación lineal entera de un conjunto de enteros $a_1, \ldots,
+	a_n$ si existen enteros $x_1, \ldots, x_n$ tales que $c = a_1x_1 + \cdots + a_nx_n$.
+\end{definition}
+
+El siguiente teorema, a pesar de su simpleza, es central para los resultados obtenidos en esta
+tesis.
+\begin{theorem}
+	\label{prerreq:th:bezout}
+	Sea $d$ un entero y sean $a_1, \ldots, a_n$ una colección de enteros no todos iguales a cero.
+	Entonces $d = \gcd{a_1, \ldots, a_n}$ si y solo si $d$ es la mínima combinación lineal entera
+	positiva de $a_1, \ldots, a_n$.
+\end{theorem}
+
+% TODO: agregar un ejemplo
+
+\begin{corollary}
+	Si $d = \gcd{a_1, \ldots, a_n}$, entonces $\gcd{\frac{a_1}{d}, \ldots, \frac{a_n}{d}} = 1$.
+\end{corollary}
+
+Además del máximo común divisor, requeriremos al mínimo común múltiplo, empero en menor medida. Sea
+$a$ un entero y denotamos el conjunto de sus múltiplos como
+\begin{equation*}
+	M(a) \coloneq \lbrace x \in \Z \vcentcolon a \mid x \rbrace.
+\end{equation*}
+Si $a$ es nulo, entoncees $M(a) = \lbrace 0 \rbrace$. En caso contrario encontramos que $M(a)$ es un
+conjunto infinito. Ánalogamente a la Definición \ref{prerreq:def:gcd}, definimos al mínimo común
+múltiplo $m$ de una colección de enteros $a_1, \ldots, a_n \in \Z \setminus \lbrace 0 \rbrace$ como
+el elemento minimal de $\N \cap \bigcap_{i=1}^{n}M(a_i)$. Escribimos $m = \lcm{a_1, \ldots, a_n}$.
+Para observar que está bien definido, basta mencionar que el producto $|a_1 \cdots a_n|$ es un
+elemento de la intersección y por lo tanto esta no es vacía.
+
+\subsection{Ecuaciones lineales diofantinas}
+
+\noindent
+Sea $c \in \Z$ y sean $a_1, \ldots, a_n$ enteros. Una ecuación lineal diofantina es una ecuación
+donde queremos encontrar enteros $x_1, \ldots, x_n$ que satisfagan
+\begin{equation*}
+	a_1x_1 + \cdots + a_nx_n = c.
+\end{equation*}
+Será de nuestro interés en las siguientes secciones resolver iterativamente este tipo de ecuaciones.
+Por el momento basta mencionar que podemos enfocarnos en el caso $n = 2$ sin ninguna pérdida de
+generalidad. Los siguientes resultados abordan el problema de determinar existencia y unicidad para
+las ecuaciones lineales diofantinas, así como la construcción de sus soluciones.
+
+\begin{theorem}[Existencia]
+	\label{prerreq:th:existence}
+	Sean $a, b \in \Z$, no ambos cero. La ecuación $ax + by = c$ tiene solución si y solo si
+	$\gcd{a, b} \mid c$.
+\end{theorem}
+
+Para construir el conjunto de soluciones a una ecuación lineal diofantina, encontramos primero una
+solución particular.
+\begin{definition}
+	\label{prerreq:def:bezout}
+	Sea $d \coloneq \gcd{a, b}$ y sean $x', y'$ enteros tales que $ax' + by' = d$ (c.f.
+	\ref{prerreq:th:bezout}). Decimos entonces que $x', y'$ son coeficientes de Bézout asociados a
+	$a, b$, respectivamente.
+\end{definition}
+
+\begin{observation}
+	Los coeficientes de Bézout asociados a un par de enteros no son únicos. en efecto, si $x', y'$
+	son coeficientes de Bézout de $a, b$, entonces $x' + b$, $y' - a$ también lo son:
+	\begin{equation*}
+		a(x' + b) + b(y' - a) = ax' + by' + ab - ab = ax' + by' = d.
+	\end{equation*}
+	Para fines de esta tesis basta la existencia de estos coeficientes, por lo que decimos de manera
+	indistinta ``los coeficientes de Bézout'' y ``una elección de coeficientes de Bézout''.
+\end{observation}
+
+Definamos $d \coloneq \gcd{a, b}$ y supongamos que la ecuación $ax + by = c$ tiene solución.
+Entonces $d \mid c$, por lo que existe $c' \in \Z$ tal que $c = c' \cdot d$. Sean $x', y'$ los
+coeficientes de Bézout asociados a $a, b$ respectivamente. Entonces
+\begin{equation*}
+	a(c' \cdot x') + b(c' \cdot y') = c'(ax' + by') = c'd = c,
+\end{equation*}
+por lo que $c' \cdot x', c' \cdot y'$ es una ecuación particular a la ecuación $ax + by = c$.
+
+\begin{theorem}[Construcción]
+	\label{prerreq:th:construction}
+	Sea $(x_0, y_0)$ una solución particular de la ecuación lineal diofantina $ax + by = c$.
+	Entonces todas las soluciones de la ecuación están dadas por
+	\begin{equation}
+		\label{prerreq:eq:construction}
+		\begin{cases}
+			x = x_0 + \frac{b}{d}t, \\
+			y = y_0 - \frac{a}{d}t,
+		\end{cases}
+	\end{equation}
+	donde $d \coloneq \gcd{a, b}$ y $t \in \Z$.
+\end{theorem}
+
+% TODO: agregar un ejemplo
+
+\section{Programación lineal}

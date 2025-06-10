@@ -1,0 +1,30 @@
+% packages
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{hyperref}
+% \usepackage{natbib}
+\usepackage{cleveref}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+% theorems
+\newtheorem{theorem}{Teorema}[chapter]
+\newtheorem{corollary}[theorem]{Corolario}
+\newtheorem{lemma}[theorem]{Lema}
+\newtheorem{definition}[theorem]{Definición}
+
+\theoremstyle{remark}
+\newtheorem*{observation}{Observación}
+
+% custom commands
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+
+\renewcommand{\gcd}[1]{\mathop{\mathrm{mcd}{\left\lbrace #1 \right\rbrace}}}
+\newcommand{\lcm}[1]{\mathop{\mathrm{mcm}{\left\lbrace #1 \right\rbrace}}}
