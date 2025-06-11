@@ -1,4 +1,8 @@
 % packages
+\usepackage{tikz}
+\usepackage{subcaption}
+\usepackage{caption}
+
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
 \usepackage[T1]{fontenc}
@@ -16,6 +20,7 @@
 \newtheorem{corollary}[theorem]{Corolario}
 \newtheorem{lemma}[theorem]{Lema}
 \newtheorem{definition}[theorem]{Definición}
+\newtheorem{example}[theorem]{Ejemplo}
 
 \theoremstyle{remark}
 \newtheorem*{observation}{Observación}
@@ -25,6 +30,11 @@
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\R}{\mathbb{R}}
+
+% vectors and linear algebra
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\renewcommand{\ker}[1]{\mathop{\mathrm{ker}{\left\lbrace #1 \right\rbrace}}}
+\renewcommand{\vec}[1]{\boldsymbol{#1}}
 
 \renewcommand{\gcd}[1]{\mathop{\mathrm{mcd}{\left\lbrace #1 \right\rbrace}}}
 \newcommand{\lcm}[1]{\mathop{\mathrm{mcm}{\left\lbrace #1 \right\rbrace}}}
