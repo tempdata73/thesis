@@ -5,7 +5,15 @@ import numpy as np
 from time import perf_counter_ns
 
 
+# math module has not yet implemented a sign function
+# see (https://bugs.python.org/msg59154)
+sign = lambda x: int(math.copysign(1.0, x))  # noqa: E731
+
+
 def _bezout(a: int, b: int) -> tuple[int, int]:
+    sgn_a, sgn_b = sign(a), sign(b)
+    a, b = abs(a), abs(b)
+
     prev_r, r = a, b
     prev_x, x = 1, 0
     prev_y, y = 0, 1
@@ -17,7 +25,7 @@ def _bezout(a: int, b: int) -> tuple[int, int]:
         prev_x, x = x, prev_x - q * x
         prev_y, y = y, prev_y - q * y
 
-    return prev_x, prev_y
+    return sgn_a * prev_x, sgn_b * prev_y
 
 
 def bezout(integers: list[int]) -> list[int]:
@@ -36,43 +44,6 @@ def bezout(integers: list[int]) -> list[int]:
         coeffs.append(y)
 
     return coeffs
-
-
-def feasible_point(c_p, k):
-    n = len(c_p)
-    a = c_p[0] if n == 2 else math.gcd(*c_p[:-1])
-    b = c_p[-1]
-    g = math.gcd(a, b)
-
-    if k % g != 0:
-        print("[ERROR]: problem is infeasible")
-        return None
-
-    k = k // g
-    a = a // g
-    b = b // g
-    x, y = _bezout(a, b)
-
-    # bounds for integer parameters
-    lb = math.ceil(-k * x / b)
-    ub = math.floor(k * y / a)
-
-    if ub < lb:
-        return None
-    elif n == 2:
-        x_1 = k * x + b * lb
-        x_2 = k * y - a * lb
-        return [x_1.item(), x_2.item()]
-
-    for t in range(lb, ub + 1):
-        w = k * x + b * t
-        point = feasible_point(c_p[:-1], w)
-
-        if point is not None:
-            x_n = k * y - a * t
-            return [*point, x_n.item()]
-
-    return None
 
 
 def solve_pulp(p, s, num_iter=100):
@@ -102,19 +73,115 @@ def solve_pulp(p, s, num_iter=100):
     return res, (mu_ns, std_ns)
 
 
-def solve_dioph(c_p, p, s, num_iter=100):
-    times = np.zeros(num_iter)
+def feasible_point_finite(c_p, eta):
+    if len(c_p) == 2:
+        x_prime, y_prime = _bezout(c_p[0], c_p[1])
+        lb = math.ceil(-eta  * x_prime / c_p[1])
+        ub = math.floor(eta * y_prime / c_p[0])
 
-    num_layers = math.floor(s * c_p[-1] / p[-1])
+        if ub < lb:
+            return None
+
+        x = eta * x_prime + lb * c_p[1]
+        y = eta * y_prime - lb * c_p[0]
+        return (x.item(), y.item())
+
+    g = math.gcd(*c_p[1:])
+    x_prime, omega_prime = _bezout(c_p[0], g)
+
+    # bounds for feasible parameters
+    lb = math.ceil(-eta * x_prime / g)
+    ub = math.floor(eta * omega_prime / c_p[0])
+
+    for t in range(lb, ub + 1):
+        omega = eta * omega_prime - t * c_p[0]
+        x = eta * x_prime + t * g
+        rest = feasible_point_finite((c_p[1:] / g).astype(int), omega)
+
+        if rest is not None:
+            return (x, *rest)
+    return None
+
+
+def feasible_point_infinite(c_p, eta):
+    if len(c_p) == 2:
+        x_prime, y_prime = _bezout(c_p[0], c_p[1])
+
+        # cases for bounds depending on the signs of c_p
+        bound_1 = -eta * x_prime / c_p[1]
+        bound_2 = eta * y_prime / c_p[0]
+        lb = -math.inf
+        ub = math.inf
+
+        if (c_p[0] >= 0) and (c_p[1] >= 0):
+            lb = math.ceil(bound_1)
+            ub = math.floor(bound_2)
+            t = lb
+
+        elif (c_p[0] <= 0) and (c_p[1] <= 0):
+            lb = math.ceil(bound_2)
+            ub = math.floor(bound_1)
+            t = lb
+
+        elif (c_p[0] <= 0) and (c_p[1] >= 0):
+            lb = math.ceil(max(bound_1, bound_2))
+            t = lb
+
+        elif (c_p[0] >= 0) and (c_p[1] <= 0):
+            ub = math.floor(min(bound_1, bound_2))
+            t = ub
+        else:
+            msg = "trichotomy fails. this should never happen"
+            raise AssertionError(msg)
+
+        if ub < lb:
+            return None
+
+        x = eta * x_prime + t * c_p[1]
+        y = eta * y_prime - t * c_p[0]
+        return (x.item(), y.item())
+
+    g = math.gcd(*c_p[1:])
+    x_prime, omega_prime = _bezout(c_p[0], g)
+
+    # only lower bounds are needed
+    lb = math.ceil(-eta * x_prime / g)
+    t = lb
+
+    while True:
+        omega = eta * omega_prime - t * c_p[0]
+        x = eta * x_prime + t * g
+        rest = feasible_point_infinite((c_p[1:] / g).astype(int), omega)
+
+        if rest is not None:
+            return (x, *rest)
+
+        t += 1
+
+
+def solve_dioph(c_p, k, s, num_iter=100):
+    times = np.zeros(num_iter)
+    eta = math.ceil(s / k)
+
     for i in range(num_iter):
         start = perf_counter_ns()
-        for k in range(num_layers, 0, -1):
-            res = feasible_point(c_p, k)
-            if res is not None:
-                break
+
+        if np.all(c_p >= 0.0):
+            # problem is infeasible
+            if s < 0:
+                x = None
+
+            # finite case: eta layer may not contain feasible points
+            while eta >= 0:
+                if (x := feasible_point_finite(c_p, eta)) is not None:
+                    x = np.asarray(x)
+                    break
+                eta -= 1
         else:
-            print(f"[ERROR:] could not find solution with slack {s}")
-            res = np.zeros_like(c_p)
+            # infinite case: eta layer contains feasible points
+            x = feasible_point_infinite(c_p, eta)
+            x = np.asarray(x)
+
         times[i] = perf_counter_ns() - start
         print(".", end="")
     print()
@@ -124,34 +191,26 @@ def solve_dioph(c_p, p, s, num_iter=100):
     std_ns = times.std(ddof=1)
     print(f"[INFO]: took {mu_ns * 1e-6:0.4f} ± {std_ns * 1e-6:0.4f} ms to solve")
 
-    return np.asarray(res), (mu_ns, std_ns)
+    return x, (mu_ns, std_ns)
 
 
 if __name__ == "__main__":
-    import json
     import matplotlib.pyplot as plt
 
     FILENAME = "3d-4dig"
-    NUM_ITER = 50
+    NUM_ITER = 5
 
-    p = np.array([9.9314, 9.7752, 9.5358])
+    p = np.array([9.9314, 9.7752, -9.5358])
 
-    # equivalent diophantine prices (p == p_1 / p_2)
-    p_1 = np.array([99314, 97752, 95358])
-    p_2 = np.ones_like(p_1) * 10_000
+    # finding coprime multiple of projectively rational vector
+    num_decimals = 4
+    p_1 = np.array([99314, 97752, -95358])
+    g = math.gcd(*p_1)
+    c_p = p_1 // g
+    multiplier = g / math.pow(10, num_decimals)
+    np.testing.assert_almost_equal(p, multiplier * c_p)
 
-    # finding coprime multiple of the projectively rational vector
-    m = math.lcm(*p_2)
-    c_p = p_1 * (m // p_2)
-    c_p = c_p // np.dot(c_p, bezout(c_p))
-    print(c_p / p)
-
-    c_p = p_1 * (m // p_2)
-    g = np.dot(c_p, bezout(c_p))
-    print(m / g)
-    exit(0)
-
-    slack = np.logspace(2, 7, num=100, base=10.0, dtype=int)
+    slack = np.logspace(2, 4, num=100, base=10.0, dtype=int)
     stats: dict[str, dict[str, list[float]]] = {
         "pulp": {
             "mean": [0.0] * len(slack),
@@ -171,12 +230,14 @@ if __name__ == "__main__":
         pulp_sol, (mu, std) = solve_pulp(p, s, num_iter=NUM_ITER)
         stats["pulp"]["mean"][i] = mu
         stats["pulp"]["std"][i] = std
+        print(f"{pulp_sol=}")
 
         # diophantine method
         print("[INFO]: solving with diophantine")
-        dioph_sol, (mu, std) = solve_dioph(c_p, p, s, num_iter=NUM_ITER)
+        dioph_sol, (mu, std) = solve_dioph(c_p, multiplier, s, num_iter=NUM_ITER)
         stats["dioph"]["mean"][i] = mu
         stats["dioph"]["std"][i] = std
+        print(f"{dioph_sol=}")
 
         # cannot guarantee both solutions to be equal
         dioph_obj = np.dot(p, dioph_sol)
@@ -200,7 +261,8 @@ if __name__ == "__main__":
     ax.set_ylabel("time [ns]")
     ax.set_xlabel("slack")
     ax.legend()
+    plt.show()
 
-    plt.savefig(f"figs/{FILENAME}.pdf")
-    with open(f"times/{FILENAME}.json", "w") as outfile:
-        json.dump(stats, outfile)
+    # plt.savefig(f"figs/{FILENAME}.pdf")
+    # with open(f"times/{FILENAME}.json", "w") as outfile:
+        # json.dump(stats, outfile)
