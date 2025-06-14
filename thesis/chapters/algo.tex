@@ -82,6 +82,13 @@ soluciones otorgan candidatos para puntos óptimos de un problema lineal.
 	es una capa entera si contiene al menos un punto entero.
 \end{definition}
 
+Todo hiperplano afino $H_{\vec{v}, t}$ es invariante ante reescalamientos en $\vec{v}$. Es decir, si
+$r \in \R \setminus \lbrace 0 \rbrace$ es un escalar, entonces $H_{\vec{v}, t} = H_{r\vec{v}, t/r}$.
+En particular, el conjunto de hiperplanos afinos asociados a un vector $\vec{v}$ esencialmente
+entero es igual al conjunto de hiperplanos afinos asociados a su múltiplo coprimo $\vec{w}$. Ahora
+bien, cualquier vector coprimo induce una familia de capas enteras y, sorprendentemente, esa familia
+forma una cobertura de $\Z^n$, como lo indica el Teorema \ref{phase-1:th:cover}.
+
 \begin{figure}
 	\centering
 	\begin{tikzpicture}[scale=1.0, xscale=1, yscale=0.7]
@@ -114,41 +121,20 @@ soluciones otorgan candidatos para puntos óptimos de un problema lineal.
 	\label{phase-1:fig:c-layer}
 \end{figure}
 
-Cualquier vector coprimo induce una familia de capas enteras y, sorprendentemente, esa familia
-contiene a todos los puntos enteros en el espacio, como lo indica el siguiente teorema.
-
 \begin{lemma}[\cite{herr}]
 	Sean $\vec{v}, \vec{x} \in \R^n$ con $\vec{v}$ distinto de cero. Entonces $\vec{x} \in
 	H_{\vec{v}, t_{\vec{x}}}$, donde $t_{\vec{x}} \coloneq \frac{\vec{v}^T\vec{x}}{\norm{\vec{v}}^2}$.
 \end{lemma}
 
 \begin{theorem}[\cite{herr}]
+	\label{phase-1:th:cover}
 	Sea $\vec{v} \in \R^n$ un vector esencialmente entero y sea $\vec{w}$ su múltiplo coprimo.
-	Entonces la familir de capas enteras $\left\lbrace H_{\vec{w}, k\norm{\vec{w}}^{-2}} \vcentcolon k
+	Entonces la familia de capas enteras $\left\lbrace H_{\vec{w}, k\norm{\vec{w}}^{-2}} \vcentcolon k
 			\in \Z \right\rbrace$ cubre a $\Z^n$.
 \end{theorem}
 \begin{proof}
 	% XXX: poner la demostración (?)
 \end{proof}
-
-% \begin{theorem}
-% 	Sea $\vec{v} \in \R^n$ un vector esencialmente entero y sea $u \in \R$ un escalar. Entonces el
-% 	número de capas enteras $\eta$ entre 0 y $u$ está determinado por
-% 	\begin{equation}
-% 		\eta = \left\lfloor
-% 			u \cdot \frac{\lcm{\vec{v}_1, \ldots, \vec{v}_n}}{\gcd{\vec{v}_1, \ldots, \vec{v}_n}}
-% 			\right\rfloor
-% 	\end{equation}
-% 	si $u \geq 0$. En caso de que $u$ sea negativo, tenemos
-% 	\begin{equation}
-% 		\eta = \left\lceil
-% 			u \cdot \frac{\lcm{\vec{v}_1, \ldots, \vec{v}_n}}{\gcd{\vec{v}_1, \ldots, \vec{v}_n}}
-% 			\right\rceil
-% 	\end{equation}
-% \end{theorem}
-% \begin{proof}
-% 	% TODO: demostrar el caso cuando u \geq 0, el otro es similar.
-% \end{proof}
 
 \section{Fase 1: una restricción presupuestaria}
 
@@ -158,13 +144,193 @@ Consideremos el programa lineal
 \begin{subequations}
 	\label{phase-1:formulation}
 	\begin{align}
-		\max_{\vec{x} \in \R^n} \quad
+		\max_{\vec{x} \in \Z^n} \quad
 			& \vec{p}^T\vec{x}, \label{phase-1:formulation:obj} \\
 		\text{s.a.} \quad
-			& \vec{p}^T\vec{x} \geq u, \label{phase-1:formulation:c_1} \\
-			& \vec{x} \in \Z_{\geq 0}^n. \nonumber
+			& \vec{p}^T\vec{x} \leq u, \label{phase-1:formulation:c_1} \\
+			& \vec{x} \geq \vec{0}. \nonumber
 	\end{align}
 \end{subequations}
+
+\begin{observation}
+	Debido a la restricción presupuestaria (\ref{phase-1:formulation:c_1}), encontramos que el
+	politopo está acotado por arriba. Así pues, el problema o bien es infactible, o bien tiene un
+	valor óptimo finito.
+\end{observation}
+
+Cada escalar $t \in \R$ induce un hiperplano afino $H_{\vec{p}, t}$ donde se cumple que todo punto
+$\vec{x} \in H_{\vec{p}, t}$ tiene un mismo nivel de utilidad (\ref{phase-1:formulation:obj}). Como
+observamos previamente,
+\begin{equation*}
+	\left \lbrace H_{\vec{p}, t} \vcentcolon t \in \R \right\rbrace
+	=
+	\left \lbrace H_{\vec{q}, t} \vcentcolon t \in \R \right\rbrace.
+\end{equation*}
+A causa del Teorema \ref{phase-1:th:cover}, somos capaces de caracterizar todos los puntos enteros a
+partir de $\vec{q}$. Aún más, obtenemos una enumeración de las capas enteras, lo cual nos permite
+analizar si la $k$-ésima capa entera contiene puntos factibles para el problema.
+
+Para respetar la restricción presupuestaria (\ref{phase-1:formulation:c_1}), podemos encontrar el
+primer\footnote{
+	% TODO: explicar a qué me refiero con esto.
+} entero $\eta$ que satisfaga $\vec{q}^T\vec{x} \leq u$ para todo $\vec{x} \in H_{\vec{q},
+\eta\norm{\vec{q}}^{-2}}$. De esta manera, encontramos que las capas enteras que contienen puntos
+enteros que respetan la restricción (\ref{phase-1:formulation:c_1}) son parametrizadas por $k \in
+\lbrace \eta, \eta - 1, \ldots \rbrace$.
+
+Ahora bien, para la $k$-ésima capa entera, se cumple que el nivel de utilidad
+(\ref{phase-1:formulation:obj}) es $k$. En efecto, si $\vec{x} \in H_{\vec{q},
+k\norm{\vec{q}}^{-2}}$, entonces
+\begin{equation*}
+	\vec{x} = \vec{q}^{\perp} + k\norm{\vec{q}}^{-2}\vec{q},
+\end{equation*}
+donde $\vec{q}^{\perp}$ es un vector ortogonal a $\vec{q}$. Se cumple inmediatamente que
+$\vec{q}^T\vec{x} = k$. De esta manera, deducimos que si la $\eta$-ésima capa entera contiene puntos
+no negativos, entonces las soluciones se encuentra en esa capa.
+
+\begin{lemma}
+	\label{phase-1:lemma:eta}
+	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q}$ su múltiplo coprimo, de
+	tal manera que $\vec{p} = k\vec{q}$ para algún escalar $k \in \R$. Entonces la primera capa
+	entera $H_{\vec{q}, \eta \norm{\vec{q}}^{-2}}$ que satisface la restricción presupuestaria
+	(\ref{phase-1:formulation:c_1}) está parametrizada por $\eta \coloneq \lfloor u/k \rfloor$.
+\end{lemma}
+\begin{proof}
+	% TODO: demostrar
+\end{proof}
+
+\begin{theorem}
+	\label{phase-1:th:feasibility}
+	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q}$ su múltiplo coprimo.
+	Entonces se cumple lo siguiente con respecto al problema (\ref{phase-1:formulation}):
+	\begin{enumerate}
+		\item El problema es infactible si y solo si $\vec{q} \geq \vec{0}$ y $u < 0$.
+		\item Si el problema es factible, su valor óptimo es $\eta$.
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	% TODO: demostrar
+\end{proof}
+
+Supongamos, pues, que el problema (\ref{phase-1:formulation}) tiene solución. Los puntos enteros que
+se encuentran en la $\eta$-ésima capa entera satisfacen la ecuación lineal diofantina
+\begin{equation}
+	\label{phase-1:eq:dioph}
+	\vec{q}^T\vec{x} = q_1x_1 + q_2x_2 + \cdots + q_nx_n = \eta.
+\end{equation}
+En la sección de Teoría de Números mostramos bajo qué condiciones existen soluciones a este tipo de
+ecuaciones y también cómo construirlas cuando solamente tenemos dos incógnitas. Por conveniencia
+definamos $g_1 \coloneq \gcd{q_1, \ldots, q_n} = 1$ y $\omega_1 \coloneq \eta$. De manera análoga a
+una formulación de programación dinámica hacia adelante, podemos definir también
+$g_2 \coloneq \gcd{\frac{q_2}{g_1}, \ldots, \frac{q_n}{g_1}}$, con lo que la ecuación anterior es
+equivalente a la ecuación
+\begin{equation}
+	\label{phase-1:eq:forward}
+	\frac{q_1}{g_1}x_1 + g_2
+		\underbrace{
+		\left(\frac{q_2}{g_2 \cdot g_1}x_2 + \cdots + \frac{q_n}{g_2 \cdot g_1}x_n\right)}_{\coloneq
+		\omega_2}
+	= \omega_1.
+\end{equation}
+No es difícil observar que $\gcd{\frac{q_1}{g_1}, g_2} = 1$ y por lo tanto existen soluciones
+enteras para todo $\omega_1 \in \Z$. Como estos coeficientes son coprimos, encontramos que sus
+coeficientes de Bézout asociados (c.f. Definición \ref{prerreq:def:bezout}) $x_1', \omega_2'$ son
+soluciones particulares de la ecuación
+\begin{equation*}
+	\frac{q_1}{g_1}x_1 + g_2\omega_2 = 1,
+\end{equation*}
+con lo que las soluciones de la ecuación (\ref{phase-1:eq:forward}) están dadas por
+\begin{equation*}
+	\begin{cases}
+		x_1 = \omega_1x_1' + g_2t_1, \\
+		\omega_2 = \omega_1\omega_2' - \frac{q_1}{g_1}t_1,
+	\end{cases}
+\end{equation*}
+donde $t_1 \in \Z$. Como la restricción de no negatividad se debe satisfacer ($x_1 \geq 0$),
+encontramos que
+\begin{equation*}
+	t_1 \geq \left\lceil -\frac{\omega_1x_1'}{g_2} \right\rceil.
+\end{equation*}
+Siguiendo el razonamiento de la formulación dinámica en (\ref{phase-1:eq:forward}), fijamos $t_1$ y
+resolvemos la ecuación
+\begin{equation*}
+	\frac{q_2}{g_2 \cdot g_1}x_2 +
+	\frac{q_3}{g_2 \cdot g_1}x_3 +
+	\cdots +
+	\frac{q_n}{g_2 \cdot g_1}x_n
+	= \omega_2.
+\end{equation*}
+Por construcción, los coeficientes de las incógnitas en el lado izquierdo de la ecuación son
+coprimos y por lo tanto existen una infinidad de soluciones para todo $\omega_2 \in \Z$. Por el
+mismo razonamiento que el anterior, encontramos que las soluciones son
+\begin{equation*}
+	\begin{cases}
+		x_2 = \omega_2x_2' + g_3t_2, \\
+		\omega_3 = \omega_2\omega_3' - \frac{q_2}{g_2 \cdot g_1}t_2,
+	\end{cases}
+\end{equation*}
+donde $t_2 \in \Z$ es un parámetro, $\omega_3$ y $g_3$ están definidos de forma análoga al paso
+anterior, y $x_2', \omega_3'$ son los coeficientes de Bézout asociados a $\frac{q_2}{g_2 \cdot g_2}$
+y $g_3$, respectivamente. Por la restricción de no negatividad ($x_2 \geq 0$), se debe cumplir
+\begin{equation*}
+	t_2 \geq \left\lceil -\frac{\omega_2x_2'}{g_3} \right\rceil.
+\end{equation*}
+
+De manera general, en el $i$-ésimo paso de la formulación dinámica para $i \in \lbrace 1, \ldots, n
+- 2 \rbrace$, encontramos
+\begin{equation}
+	\label{phase-1:eq:recursive}
+	\begin{cases}
+		x_i = \omega_ix_i' + g_{i + 1}t_i, \\
+		\omega_{i + 1} = \omega_i\omega_{i + 1}' - \frac{q_i}{\prod_{j=1}^{i}g_j}t_i,
+	\end{cases}
+\end{equation}
+donde $t_i \in \Z$ satisface, debido a la restricción de no negatividad,
+\begin{equation}
+	\label{phase-1:eq:param-bound}
+	t_i \geq \left\lceil -\frac{\omega_ix_i'}{g_{i + 1}} \right\rceil.
+\end{equation}
+Finalmente, en el último paso, obtenemos la ecuación lineal diofantina
+\begin{equation}
+	\label{phase-1:eq:stopping}
+	\frac{q_{n-1}}{\prod_{j=1}^{n-2}g_j}x_{n-1} +
+	\frac{q_{n}}{\prod_{j=1}^{n-2}g_j}x_n
+	= \omega_{n-1}.
+\end{equation}
+Nuevamente, los coeficientes de las incógnitas son coprimos. Por lo tanto, las soluciones están
+dadas por
+\begin{equation}
+	\label{phase-1:eq:lastsol}
+	\begin{cases}
+		x_{n-1} = \omega_{n-1}x_{n-1}' + \frac{q_n}{\prod_{j=1}^{n-2}g_j}t_{n-1}, \\
+		x_n = \omega_{n-1}x_n' - \frac{q_{n-1}}{\prod_{j=1}^{n-2}g_j}t_{n-1},
+	\end{cases}
+\end{equation}
+donde ahora $t_{n-1} \in \Z$ debe satisfacer
+\begin{equation}
+	\label{phase-1:eq:feasible-param}
+	\left\lceil -\frac{\omega_{n-1}x_{n-1}'}{q_n} \cdot \prod_{j=1}^{n-2}g_j \right\rceil
+	\leq
+	t_{n-1}
+	\leq
+	\left\lfloor \frac{\omega_{n-1}x_n'}{q_{n-1}} \cdot \prod_{j=1}^{n-2}g_j \right\rfloor.
+\end{equation}
+
+Como supusimos que el problema es factible (podemos determinar rápidamente si no lo es debido al
+Teorema \ref{phase-1:th:feasibility}), existe un vector de parámetros $\vec{t} = (t_1, \ldots,
+t_{n-1})$ que satisface las desigualdades (\ref{phase-1:eq:param-bound}) y
+(\ref{phase-1:eq:feasible-param}) y por lo tanto que provee una solución al problema
+(\ref{phase-1:formulation}). Para encontrar estos parámetros, usamos la técnica de
+\textit{backtracking}, en donde hacemos una elección de $t_1, \ldots, t_{n-2} \in \Z$ que satisfaga
+(\ref{phase-1:eq:param-bound}) y determinamos si existe $t_n \in \Z$ que satisfaga
+(\ref{phase-1:eq:feasible-param}). En caso de que no exista tal parámetro, cambiamos nuestra
+elección de $t_1, \ldots, t_{n-2}$. Ciertamente la decisión simple es realizar el cambio $t_{n-2}
+\leftarrow t_{n-2} - 1$, aunque también realizar $t_1 \leftarrow t_1 - 1$ puede resultar
+beneficioso. Independientemente del caso, eventualmente obtendremos un vector de parámetros $\vec{t}
+\in \Z^{n-1}$ que satisfaga las desigualdades necesarias y, por lo tanto, eventualmente obtendremos
+un punto entero óptimo.
+
+% TODO: mostrar la comparación con branch and bound.
 
 \section{Fase 2: múltiples restricciones junto con la presupuestaria}
 \subsection{Estrategias alternativas para el problema de factibilidad}
