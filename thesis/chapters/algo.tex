@@ -35,8 +35,6 @@ este algoritmo para que sea capaz de resolver problemas lineales mixtos.
 	que $\vec{v} = k\vec{w}$. Además, decimos que $\vec{w}$ es el múltiplo coprimo de $\vec{v}$ si sus
 	entradas son coprimas (c.f. \ref{prerreq:def:gcd}) y si su primera entrada es no negativa.
 \end{definition}
-
-\noindent
 En otras palabras, decimos que $\vec{v}$ es esencialmente entero si es un múltiplo real de un vector
 entero.
 \begin{example}
@@ -44,14 +42,12 @@ entero.
 	y $(2, -1)^T$ es su múltiplo coprimo. Contrariamente, el vector $(\sqrt{2}, \sqrt{3})^T$ no es
 	esencialmente entero.
 \end{example}
-
 \begin{observation}
 	Todo vector $\vec{v}$ cuyas entradas son racionales ($\vec{v} \in \Q^n$) es esencialmente
 	entero. En efecto, $\vec{v}_i = \frac{p_i}{q_i}$ para algunos enteros $p_i$ y $q_i$ con $q_i$
 	distinto de cero. Si definimos $q \coloneq \lcm{q_1, \ldots, q_n} \neq 0$ y $\vec{w} \coloneq
 	q\vec{v}$, se sigue que $\vec{v} = \frac{1}{q}\vec{w}$ y también $\vec{w} \in \Z^n$.
 \end{observation}
-
 \begin{observation}
 	Todo vector $\vec{v}$ esencialmente entero tiene a lo más dos vectores coprimos asociados. Sean
 	$k \in \R$ y $\vec{w} \in \Z^n$ tales que $\vec{v} = k\vec{w}$. Entonces
@@ -81,7 +77,6 @@ soluciones otorgan candidatos para puntos óptimos de un problema lineal.
 	\end{equation}
 	es una capa entera si contiene al menos un punto entero.
 \end{definition}
-
 Todo hiperplano afino $H_{\vec{v}, t}$ es invariante ante reescalamientos en $\vec{v}$. Es decir, si
 $r \in \R \setminus \lbrace 0 \rbrace$ es un escalar, entonces $H_{\vec{v}, t} = H_{r\vec{v}, t/r}$.
 En particular, el conjunto de hiperplanos afinos asociados a un vector $\vec{v}$ esencialmente
@@ -168,52 +163,72 @@ observamos previamente,
 \end{equation*}
 A causa del Teorema \ref{phase-1:th:cover}, somos capaces de caracterizar todos los puntos enteros a
 partir de $\vec{q}$. Aún más, obtenemos una enumeración de las capas enteras, lo cual nos permite
-analizar si la $k$-ésima capa entera contiene puntos factibles para el problema.
+determinar si la $k$-ésima capa entera contiene puntos factibles para el problema.
 
-Para respetar la restricción presupuestaria (\ref{phase-1:formulation:c_1}), podemos encontrar el
-primer\footnote{
-	% TODO: explicar a qué me refiero con esto.
-} entero $\eta$ que satisfaga $\vec{q}^T\vec{x} \leq u$ para todo $\vec{x} \in H_{\vec{q},
-\eta\norm{\vec{q}}^{-2}}$. De esta manera, encontramos que las capas enteras que contienen puntos
-enteros que respetan la restricción (\ref{phase-1:formulation:c_1}) son parametrizadas por $k \in
-\lbrace \eta, \eta - 1, \ldots \rbrace$.
-
-Ahora bien, para la $k$-ésima capa entera, se cumple que el nivel de utilidad
-(\ref{phase-1:formulation:obj}) es $k$. En efecto, si $\vec{x} \in H_{\vec{q},
-k\norm{\vec{q}}^{-2}}$, entonces
+Observemos que el nivel de utilidad (\ref{phase-1:formulation:obj}) para la $k$-ésima capa entera
+es $k$. En efecto, si $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$, entonces
 \begin{equation*}
 	\vec{x} = \vec{q}^{\perp} + k\norm{\vec{q}}^{-2}\vec{q},
 \end{equation*}
-donde $\vec{q}^{\perp}$ es un vector ortogonal a $\vec{q}$. Se cumple inmediatamente que
-$\vec{q}^T\vec{x} = k$. De esta manera, deducimos que si la $\eta$-ésima capa entera contiene puntos
-no negativos, entonces las soluciones se encuentra en esa capa.
+donde $\vec{q}^{\perp}$ es un vector ortogonal a $\vec{q}$. Por lo tanto,
+\begin{equation*}
+	\vec{q}^T\vec{x} = \vec{q}^T\vec{q}^{\perp} + k\norm{\vec{q}}^{-2}\vec{q}^T\vec{q}
+	= 0 + k \norm{\vec{q}}^{-2} \norm{\vec{q}}^{2} = k.
+\end{equation*}
+
+Para respetar la restricción presupuestaria (\ref{phase-1:formulation:c_1}), podemos encontrar el
+primer\footnote{
+	Con esto nos referimos a que no existen $\xi \in \Z$ y $\vec{x} \in H_{\vec{q},
+	\xi\norm{\vec{q}}^{-2}}$ que satisfagan $\eta < \xi$ y $\vec{q}^T\vec{x} \leq u$.
+} entero $\eta$ que satisfaga $\vec{q}^T\vec{x} \leq u$ para todo $\vec{x} \in H_{\vec{q},
+\eta\norm{\vec{q}}^{-2}}$. De esta manera, encontramos que las capas enteras que contienen puntos
+enteros que respetan el presupuesto son parametrizadas por $k \in \lbrace \eta, \eta - 1, \ldots
+\rbrace$. Debido a la observación anterior, se cumple inmediatamente que $\vec{q}^T\vec{x} = k$. De
+esta manera, deducimos que si la $\eta$-ésima capa entera contiene puntos no negativos, entonces las
+soluciones se encuentran en esa capa. En caso contrario, descendemos a la $(\eta - 1)$-ésima capa
+entera y verificamos no negatividad, etcétera.
 
 \begin{lemma}
 	\label{phase-1:lemma:eta}
 	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q}$ su múltiplo coprimo, de
-	tal manera que $\vec{p} = k\vec{q}$ para algún escalar $k \in \R$. Entonces la primera capa
-	entera $H_{\vec{q}, \eta \norm{\vec{q}}^{-2}}$ que satisface la restricción presupuestaria
-	(\ref{phase-1:formulation:c_1}) está parametrizada por $\eta \coloneq \lfloor u/k \rfloor$.
+	manera que $\vec{p} = m\vec{q}$ para algún escalar $m \in \R$. Entonces la primera capa entera
+	$H_{\vec{q}, \eta \norm{\vec{q}}^{-2}}$ que satisface la restricción presupuestaria
+	(\ref{phase-1:formulation:c_1}) está parametrizada por $\eta \coloneq \lfloor u/m \rfloor$.
 \end{lemma}
 \begin{proof}
 	% TODO: demostrar
 \end{proof}
-
 \begin{theorem}
 	\label{phase-1:th:feasibility}
 	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q}$ su múltiplo coprimo.
 	Entonces se cumple lo siguiente con respecto al problema (\ref{phase-1:formulation}):
 	\begin{enumerate}
 		\item El problema es infactible si y solo si $\vec{q} \geq \vec{0}$ y $u < 0$.
-		\item Si el problema es factible, su valor óptimo es $\eta$.
+		\item Si el problema es factible y $\vec{q} \geq \vec{0}$, entonces la $k$-ésima capa entera
+			contiene un número finito de puntos factibles, donde $k \in \lbrace \eta, \eta - 1,
+			\ldots \rbrace$.
+		\item Si el problema es factible y $\vec{q}_i < 0$ para algún $i \in \lbrace 2, \ldots, n
+			\rbrace$, entonces la $\eta$-ésima capa entera contiene un número infinito de puntos
+			factibles.
 	\end{enumerate}
 \end{theorem}
 \begin{proof}
 	% TODO: demostrar
 \end{proof}
+\begin{corollary}
+	Si $\vec{q}_i < 0$ para algún $i \in \lbrace 2, \ldots, n \rbrace$, entonces el valor óptimo del
+	problema (\ref{phase-1:formulation}) es $\eta / m$ y existe una infinidad de soluciones.
+\end{corollary}
 
-Supongamos, pues, que el problema (\ref{phase-1:formulation}) tiene solución. Los puntos enteros que
-se encuentran en la $\eta$-ésima capa entera satisfacen la ecuación lineal diofantina
+Supongamos, pues, que el problema (\ref{phase-1:formulation}) tiene solución. Debido al Teorema
+anterior, conviene dividir en dos casos el análisis para construir un algoritmo que resuelva
+problemas de este tipo. Evidentemente, los resultados obtenidos en una parte serán de utilidad para
+desarrollar la otra.
+
+\subsection{El caso infinito}
+\noindent
+Los puntos enteros que se encuentran en la $\eta$-ésima capa entera satisfacen la ecuación lineal
+diofantina
 \begin{equation}
 	\label{phase-1:eq:dioph}
 	\vec{q}^T\vec{x} = q_1x_1 + q_2x_2 + \cdots + q_nx_n = \eta.
@@ -306,31 +321,126 @@ dadas por
 		x_n = \omega_{n-1}x_n' - \frac{q_{n-1}}{\prod_{j=1}^{n-2}g_j}t_{n-1},
 	\end{cases}
 \end{equation}
-donde ahora $t_{n-1} \in \Z$ debe satisfacer
+Para que ahora se satisfagan las condiciones de no negatividad de $x_{n-1}$ y de $x_n$, encontramos
+que $t_{n-1} \in \Z$ debe cumplir ciertas desigualdades según los signos de $q_{n-1}$ y de $q_n$.
+Por conveniencia, definamos
+\begin{equation*}
+	b_1 \coloneq -\frac{\omega_{n-1}x_{n-1}'}{q_n} \cdot \prod_{j=1}^{n-2}g_j,
+	\quad b_2 \coloneq \frac{\omega_{n-1}x_{n}'}{q_{n-1}} \cdot \prod_{j=1}^{n-2}g_j.
+\end{equation*}
+Entonces se verifica que
 \begin{equation}
 	\label{phase-1:eq:feasible-param}
-	\left\lceil -\frac{\omega_{n-1}x_{n-1}'}{q_n} \cdot \prod_{j=1}^{n-2}g_j \right\rceil
-	\leq
-	t_{n-1}
-	\leq
-	\left\lfloor \frac{\omega_{n-1}x_n'}{q_{n-1}} \cdot \prod_{j=1}^{n-2}g_j \right\rfloor.
+	t_{n-1} \in 
+	\begin{cases}
+		\big[ \lceil b_1 \rceil, \lfloor b_2 \rfloor \big] & \text{si } 0 < q_{n-1}, q_n, \\
+		\big[ \lceil b_2 \rceil, \lfloor b_1 \rfloor \big] & \text{si } q_{n-1}, q_n < 0, \\
+		\big[ \lceil \max\lbrace b_1 ,  b_2 \rbrace \rceil, \infty \big) & \text{si } q_{n-1} < 0 < q_n, \\
+		\big( -\infty, \lfloor \min\lbrace b_1, b_2\rbrace \rfloor \big] & \text{si } q_n < 0 < q_{n-1}.
+	\end{cases}
 \end{equation}
 
-Como supusimos que el problema es factible (podemos determinar rápidamente si no lo es debido al
-Teorema \ref{phase-1:th:feasibility}), existe un vector de parámetros $\vec{t} = (t_1, \ldots,
-t_{n-1})$ que satisface las desigualdades (\ref{phase-1:eq:param-bound}) y
-(\ref{phase-1:eq:feasible-param}) y por lo tanto que provee una solución al problema
-(\ref{phase-1:formulation}). Para encontrar estos parámetros, usamos la técnica de
-\textit{backtracking}, en donde hacemos una elección de $t_1, \ldots, t_{n-2} \in \Z$ que satisfaga
-(\ref{phase-1:eq:param-bound}) y determinamos si existe $t_n \in \Z$ que satisfaga
-(\ref{phase-1:eq:feasible-param}). En caso de que no exista tal parámetro, cambiamos nuestra
-elección de $t_1, \ldots, t_{n-2}$. Ciertamente la decisión simple es realizar el cambio $t_{n-2}
-\leftarrow t_{n-2} - 1$, aunque también realizar $t_1 \leftarrow t_1 - 1$ puede resultar
-beneficioso. Independientemente del caso, eventualmente obtendremos un vector de parámetros $\vec{t}
-\in \Z^{n-1}$ que satisfaga las desigualdades necesarias y, por lo tanto, eventualmente obtendremos
-un punto entero óptimo.
+Como supusimos que el problema es factible, existe un vector de parámetros $\vec{t} \in \Z^{n-1}$
+que satisface las desigualdades (\ref{phase-1:eq:param-bound}) y (\ref{phase-1:eq:feasible-param}) y
+por lo tanto que provee una solución al problema (\ref{phase-1:formulation}). Para encontrar estos
+parámetros, usamos la técnica de \textit{backtracking}, en donde hacemos una elección de $t_1,
+\ldots, t_{n-2} \in \Z$ que satisfagan (\ref{phase-1:eq:param-bound}) y determinamos si existe
+$t_{n-1} \in \Z$ que satisfaga (\ref{phase-1:eq:feasible-param}). En caso de que no exista tal
+parámetro, cambiamos nuestra elección de $t_1, \ldots, t_{n-2}$. Ciertamente la decisión más simple
+es realizar el cambio $t_{n-2} \leftarrow t_{n-2} - 1$. Cabe destacar que si los signos de $q_{n-1}$
+y $q_n$ son distintos, entonces no es necesario realizar \textit{backtracking}, pues el algoritmo
+termina en la primera iteración. Independientemente del caso, eventualmente obtendremos un vector de
+parámetros $\vec{t}$ que satisfaga las desigualdades necesarias y, por lo tanto, eventualmente
+obtendremos un punto entero óptimo.
 
-% TODO: mostrar la comparación con branch and bound.
+\subsection{El caso finito}
+\noindent
+Resulta valioso mencionar que, como $\vec{p} \geq 0$, el problema (\ref{phase-1:formulation}) es una
+instancia particular del famoso problema de la mochila:
+\begin{subequations}
+	\label{knapsack-formulation}
+	\begin{align}
+		\max_{\vec{x} \in \Z^n} \quad
+			& \vec{u}^T\vec{x}, \\
+		\text{s.a.} \quad
+			& \vec{w}^T\vec{x} \leq c, \\
+			& \vec{x} \geq \vec{0},
+	\end{align}
+\end{subequations}
+donde los vectores positivos $\vec{u}, \vec{w} \in \Z^n$ son conocidos como vector de útiles y
+vector de pesos, respectivamente. Como no acotamos $\vec{x}$, el problema recibe el nombre de
+problema de la mochila no acotado. Pero también como $\vec{u} = \vec{w}$, el problema
+también puede considerado como un problema de la suma de conjuntos no acotado. En
+nuestro análisis de resultados compararemos los tiempos de terminación de nuestro algoritmo con
+los de Ramificación y Acotamiento, \texttt{MTU1}, \texttt{MTU2}, al igual que una formulación de
+programación dinámica alternativa (\cite{martello}).
+
+% TODO: citar branch and bound y redactar mejor el párrafo anterior.
+
+De acuerdo al Teorema \ref{phase-1:th:feasibility}, el número de puntos factibles sobre la
+$\eta$-ésima capa entera es finito y, por lo tanto, puede ser cero. No obstante, al igual que en la
+sección anterior, somos capaces de caracterizar todos los puntos enteros que se encuentran en
+cualquier capa entera. Consecuentemente, si determinamos que no hay ningún punto factible en la
+$\eta$-ésima capa entera, descendemos a la $(\eta -1)$-ésima capa entera y realizamos el mismo
+análisis.
+
+Además, observemos que en realidad es suficiente con descender hasta la 0-ésima capa entera, pues
+los puntos enteros sobre capas menores tienen utilidades negativas. De acuerdo al Teorema
+\ref{phase-1:th:feasibility}, estos no pueden ser factibles. Concluimos entonces que basta con
+analizar las capas enteras con parámetros $k \in \lbrace \eta, \eta - 1, \ldots, 0 \rbrace$ y
+terminamos una vez que encontremos un punto no negativo.
+
+Así pues, sea $k \in \lbrace \eta, \eta - 1, \ldots, 0 \rbrace$. Al igual que en el caso anterior,
+deseamos resolver la ecuación lineal diofantina
+\begin{equation*}
+	\vec{q}^T\vec{x} = q_1x_1 + q_2x_2 + \cdots + q_nx_n = k.
+\end{equation*}
+Implementamos la misma estrategia para plantear una formulación dinámica,
+\begin{equation*}
+	\frac{q_1}{g_1}x_1 + g_2\omega_2 = \omega_1.
+\end{equation*}
+No obstante, en este caso podemos interpretar $\omega_2$ de tal manera que obtengamos más
+información. Así como $\omega_1 \coloneq k$  es el presupuesto disponible en un inicio, $\omega_2$
+es el presupuesto disponible después de utilizar parte de él para adquirir $x_1 \geq 0$ unidades.
+Por lo tanto, es posible agregar la restricción $\omega_2 \geq 0$. Similarmente, en el $i$-ésimo
+paso de la formulación dinámica, somos capaces de agregar la restricción de que el presupuesto
+restante $\omega_{i + 1}$ sea no negativo. Combinando esto con la no negatividad de $x_i$, obtenemos
+de (\ref{phase-1:eq:recursive}),
+\begin{equation}
+	\label{phase-1:finite:eq:param-bounds}
+	\left\lceil -\frac{\omega_ix_i'}{g_{i+1}} \right\rceil
+	\leq
+	t_i
+	\leq
+	\left\lfloor \frac{\omega_i\omega_{i+1}'}{q_i} \prod_{j=1}^{i}g_j \right\rceil.
+\end{equation}
+para todo $i \in \lbrace 1, \ldots, n - 2\rbrace$. Después, como $0 < q_{n - 1}, q_n$, se sigue de
+(\ref{phase-1:eq:lastsol}),
+\begin{equation}
+	\label{phase-1:finite:eq:param-bounds-last}
+	\left\lceil -\frac{\omega_{n-1}x_{n-1}'}{q_n} \cdot \prod_{j=1}^{n-2}g_j \right\rceil
+	\leq
+	t_{n - 1}
+	\leq
+	\left\lfloor \frac{\omega_{n-1}x_{n}'}{q_{n-1}} \cdot \prod_{j=1}^{n-2}g_j \right\rfloor.
+\end{equation}
+
+De igual manera que el caso infinito, hacemos \textit{backtracking} en caso de encontrarnos con que
+$t_i \in \Z$ no puede satisfacer (\ref{phase-1:finite:eq:param-bounds}) si $i \in \lbrace 1, \ldots,
+n - 2\rbrace$, o si $t_{n - 2} \in \Z$ no puede satisfacer
+(\ref{phase-1:finite:eq:param-bounds-last}). En este caso, puede ser que en cualquier nivel $t_i$ no
+se satisfaga la desigualdad y por lo tanto que necesitemos cambiar uno de $t_1, \ldots, t_{i -
+1}$. Ciertamente, la elección más simple es realizar el cambio $t_{i - 1} \leftarrow t_{i - 1} \pm
+1$ siempre y cuando continúe satisfaciendo sus cotas correspondientes.
+
+El número de elecciones $t_1, \ldots, t_{n - 1} \in \Z$ es finito para la $k$-ésima capa entera.
+Decidimos, finalmente, descender a la $(k - 1)$-capa entera y repetir el proceso si en ninguna de esas
+elecciones se satisfacen ambas (\ref{phase-1:finite:eq:param-bounds}) y
+(\ref{phase-1:finite:eq:param-bounds-last}). Evidentemente, $\vec{0} \in \Z^n$ es factible y se
+encuentra en la 0-ésima capa, por lo que este proceso está asegurado en terminar si es que el
+problema es factible, lo cual supusimos desde un inicio.
+
+\subsection{Análisis de resultados}
 
 \section{Fase 2: múltiples restricciones junto con la presupuestaria}
 \subsection{Estrategias alternativas para el problema de factibilidad}
