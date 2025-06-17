@@ -117,6 +117,7 @@ forma una cobertura de $\Z^n$, como lo indica el Teorema \ref{phase-1:th:cover}.
 \end{figure}
 
 \begin{lemma}[\cite{herr}]
+	\label{phase-1:lemma:layer}
 	Sean $\vec{v}, \vec{x} \in \R^n$ con $\vec{v}$ distinto de cero. Entonces $\vec{x} \in
 	H_{\vec{v}, t_{\vec{x}}}$, donde $t_{\vec{x}} \coloneq \frac{\vec{v}^T\vec{x}}{\norm{\vec{v}}^2}$.
 \end{lemma}
@@ -196,7 +197,14 @@ entera y verificamos no negatividad, etcétera.
 	(\ref{phase-1:formulation:c_1}) está parametrizada por $\eta \coloneq \lfloor u/m \rfloor$.
 \end{lemma}
 \begin{proof}
-	% TODO: demostrar
+	Sea $\vec{x}$ tal que $\vec{p}^T\vec{x} \leq u$. Entonces buscamos el mayor entero $\eta$ que
+	satisfaga $\vec{q}^T\vec{x} \leq u/m$ para todo $\vec{x} \in H_{\vec{q},
+	\eta\norm{\vec{q}}^{-2}}$. Por el Lema \ref{phase-1:lemma:layer} sabemos que
+	\begin{equation*}
+		\eta\norm{\vec{q}}^{-2} = \frac{\vec{q}^T\vec{x}}{\norm{\vec{q}}^2} \leq
+		\frac{u/m}{\norm{\vec{q}}^2},
+	\end{equation*}
+	de donde se sigue inmediatamente que $\eta = \lfloor u/m \rfloor$.
 \end{proof}
 \begin{theorem}
 	\label{phase-1:th:feasibility}
@@ -204,21 +212,98 @@ entera y verificamos no negatividad, etcétera.
 	Entonces se cumple lo siguiente con respecto al problema (\ref{phase-1:formulation}):
 	\begin{enumerate}
 		\item El problema es infactible si y solo si $\vec{q} \geq \vec{0}$ y $u < 0$.
+		\item Si $\vec{q}_i < 0$ para algún $i \in \lbrace 2, \ldots, n
+			\rbrace$, entonces la $\eta$-ésima capa entera contiene un número infinito de puntos
+			factibles.
 		\item Si el problema es factible y $\vec{q} \geq \vec{0}$, entonces la $k$-ésima capa entera
 			contiene un número finito de puntos factibles, donde $k \in \lbrace \eta, \eta - 1,
 			\ldots \rbrace$.
-		\item Si el problema es factible y $\vec{q}_i < 0$ para algún $i \in \lbrace 2, \ldots, n
-			\rbrace$, entonces la $\eta$-ésima capa entera contiene un número infinito de puntos
-			factibles.
 	\end{enumerate}
 \end{theorem}
-\begin{proof}
-	% TODO: demostrar
+\begin{proof} \hfill
+	\begin{enumerate}
+		\item Supongamos que $\vec{q} \geq 0$ y $u < 0$. Si $\vec{x} \in \Z_{\geq \vec{0}}^n$
+			entonces $\vec{q}^T\vec{x} \geq 0 > u$ y por lo tanto $\vec{x}$ no es factible. Luego,
+			\begin{equation}
+				\label{infeasibility}
+				\Z_{\geq \vec{0}}^{n} \cap \lbrace \vec{x} \vcentcolon \vec{q}^T\vec{x} 
+				\leq u \rbrace = \emptyset,
+			\end{equation}
+			y el problema no es factible. Mostramos la otra implicación por contraposición. Si $u
+			\geq 0$ observamos que $\vec{0}$ es factible. Se debe cumplir $u < 0$. Similarmente, si
+			$q_i < 0$ para algún $i \in \lbrace 2, \ldots, n \rbrace$ encontramos que $\lceil u/q_i
+			\rceil\vec{e}_i$ es factible:
+			\begin{equation}
+				\vec{q}^T\left\lceil \frac{u}{q_i} \right\rceil\vec{e}_i
+				= q_i \left\lceil \frac{u}{q_i} \right\rceil
+				\leq q_i \frac{u}{q_i} = u,
+			\end{equation}
+			además, como $u < 0$, concluimos que $\lceil u/q_i \rceil\vec{e}_i$ es no negativo.
+		\item Como $\vec{q}$ es un vector cuyas entradas son coprimas, sabemos de una generalización
+			del Teorema \ref{prerreq:th:existence} que existe $\vec{x} \in \Z^n$ tal que
+			$\vec{q}^T\vec{x} = \eta$. Definamos los siguientes conjuntos de índices
+			\begin{equation}
+				I^+ \coloneq \lbrace i \vcentcolon q_i > 0 \rbrace,
+				\quad I^0 \coloneq \lbrace i \vcentcolon q_i = 0 \rbrace,
+				\quad I^- \coloneq \lbrace i \vcentcolon q_i < 0 \rbrace.
+			\end{equation}
+			Podemos suponer sin pérdida de generalidad que $x_i = 0$ para todo $i \in I^0$.
+			Supongamos que $x_j < 0$ para algún $i \in I^+ \cup I^-$. Cabe resaltar que estos dos
+			conjuntos son disjuntos. Supongamos que $j \in I^-$. Sean $\lbrace c_i \rbrace_{i \in
+			I^+}$ escalares positivos que satisfagan
+			\begin{equation}
+				\label{proof:non-negativity}
+				x_j + \sum_{i \in I^+}q_ic_i \geq 0.
+			\end{equation}
+			Observemos que $x_i - c_iq_j \geq 0$ para todo $i \in I^+$, pues $q_j < 0$. Definamos el
+			vector $\vec{x}^+ \in \Z^n$ de manera que
+			\begin{equation}
+				\vec{x}^+_k = \begin{cases}
+					x_i - c_iq_j & k \in I^+, \\
+					x_j + \sum_{i \in I^+}q_ic_i & k = j, \\
+					x_k & \text{e.o.c}.
+				\end{cases}
+			\end{equation}
+			Se verifica que $x^+$ es no negativo y, además,
+			\begin{align*}
+				\vec{q}^T\vec{x}^+
+				&= \sum_{k \in I^+}q_k(x_k - c_kq_j) + q_j\left(x_j + \sum_{i \in I^+}c_iq_i\right)
+				+ \sum_{k \in I^- \cup I^0 \setminus \lbrace j \rbrace}q_kx_k \\
+				&= \sum_{k \in I^+}q_kx_k + q_jx_j + \sum_{k \in I^- \cup I^0 \setminus \lbrace j
+				\rbrace}q_kx_k - q_j\sum_{k \in I^+}q_kc_k + q_j\sum_{i \in I^+}q_ic_i \\
+				&= \vec{q}^T\vec{x} = \eta.
+			\end{align*}
+			Así pues, tenemos existencia. Para concluir que hay un número infinito de puntos, basta
+			observar que si la elección de coeficientes $\lbrace c_i \rbrace_{i \in I^+}$ satisface
+			(\ref{proof:non-negativity}), entonces cualquier múltiplo positivo de estos coeficientes
+			también lo satisface. Finalmente, la demostración para el caso $j \in I^+$ es
+			completamente análoga.
+		\item Se sigue que $u \geq 0$. Definamos
+			\begin{equation}
+				P_k \coloneq H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap \Z_{\geq \vec{0}}^n
+				= \left\lbrace \vec{x} \in \Z^n \vcentcolon \vec{q}^T\vec{x} \leq k,
+					\vec{x} \geq \vec{0} \right\rbrace.
+			\end{equation}
+			Observemos que $P_k = \emptyset$ para todo $k$ negativo, pues $\vec{q} \geq 0$. El
+			hiperplano afino $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ interseca los ejes positivos en
+			$\frac{k}{q_i}\vec{e}_i$. Definamos $\ell_i \coloneq \lceil k/q_i \rceil$. No es difícil
+			ver que $P_k$ está contenido en el prisma cuyas aristas son $\ell_i$:
+			\begin{equation}
+				P_k \subseteq \prod_{i = 1}^{n} [0, \ell_i] \cap \Z^n.
+			\end{equation}
+			Pero $\left| [0, \ell_i] \cap \Z^n \right| = \ell_i$. Así, $|P_k| \leq \ell_1 \times
+			\cdots \times \ell_n < \infty$.
+	\end{enumerate}
 \end{proof}
 \begin{corollary}
 	Si $\vec{q}_i < 0$ para algún $i \in \lbrace 2, \ldots, n \rbrace$, entonces el valor óptimo del
-	problema (\ref{phase-1:formulation}) es $\eta / m$ y existe una infinidad de soluciones.
+	problema (\ref{phase-1:formulation}) es $m\eta$ y existe una infinidad de soluciones.
 \end{corollary}
+\begin{proof}
+	Por el Teorema anterior sabemos que existen una infinidad de soluciones, así que sea $\vec{x}^*$
+	una de ellas. Entonces $\vec{q}^T\vec{x}^* = \eta$, pero $\vec{p} = m\vec{q}$, por lo que
+	obtenemos $\vec{p}^T\vec{x}^* = m\eta$.
+\end{proof}
 
 Supongamos, pues, que el problema (\ref{phase-1:formulation}) tiene solución. Debido al Teorema
 anterior, conviene dividir en dos casos el análisis para construir un algoritmo que resuelva
