@@ -161,7 +161,7 @@ def feasible_point_infinite(c_p, eta):
 
 def solve_dioph(c_p, k, s, num_iter=100):
     times = np.zeros(num_iter)
-    eta = math.ceil(s / k)
+    eta = math.floor(s / k)
 
     for i in range(num_iter):
         start = perf_counter_ns()
@@ -200,14 +200,15 @@ if __name__ == "__main__":
     FILENAME = "3d-4dig"
     NUM_ITER = 5
 
-    p = np.array([9.9314, 9.7752, -9.5358])
+    p = np.array([9.9314, 9.7752, 9.5358, 9.1353])
 
     # finding coprime multiple of projectively rational vector
     num_decimals = 4
-    p_1 = np.array([99314, 97752, -95358])
+    p_1 = np.array([99314, 97752, 95358, 91353])
     g = math.gcd(*p_1)
     c_p = p_1 // g
     multiplier = g / math.pow(10, num_decimals)
+    print(f"{multiplier=}")
     np.testing.assert_almost_equal(p, multiplier * c_p)
 
     slack = np.logspace(2, 4, num=100, base=10.0, dtype=int)
