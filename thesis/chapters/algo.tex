@@ -355,8 +355,8 @@ obtendremos un punto entero óptimo.
 
 \subsection{El caso finito}
 \noindent
-Resulta valioso mencionar que, como $\vec{p} \geq 0$, el problema (\ref{phase-1:formulation}) es una
-instancia particular del famoso problema de la mochila:
+Debido a que $\vec{p} > \vec{0}$, resulta valioso mencionar que el problema
+(\ref{phase-1:formulation}) es una instancia particular del famoso Problema de la Mochila
 \begin{subequations}
 	\label{knapsack-formulation}
 	\begin{align}
@@ -368,14 +368,11 @@ instancia particular del famoso problema de la mochila:
 	\end{align}
 \end{subequations}
 donde los vectores positivos $\vec{u}, \vec{w} \in \Z^n$ son conocidos como vector de útiles y
-vector de pesos, respectivamente. Como no acotamos $\vec{x}$, el problema recibe el nombre de
-problema de la mochila no acotado. Pero también como $\vec{u} = \vec{w}$, el problema
-también puede considerado como un problema de la suma de conjuntos no acotado. En
-nuestro análisis de resultados compararemos los tiempos de terminación de nuestro algoritmo con
-los de Ramificación y Acotamiento, \texttt{MTU1}, \texttt{MTU2}, al igual que una formulación de
-programación dinámica alternativa (\cite{martello}).
-
-% TODO: citar branch and bound y redactar mejor el párrafo anterior.
+vector de pesos, respectivamente. Puesto que no acotamos $\vec{x}$, el problema recibe el nombre de
+Problema de la Mochila no Acotado. Pero también como $\vec{u} = \vec{w}$, el problema
+también puede ser considerado como un Problema de la Suma de Conjuntos no Acotado. En nuestro análisis
+de resultados comparamos los tiempos de terminación de nuestro algoritmo con los de Ramificación y
+Acotamiento, \texttt{MTU2} (\cite{martello}), y una formulación alternativa de programación dinámica.
 
 De acuerdo al Teorema \ref{phase-1:th:feasibility}, el número de puntos factibles sobre la
 $\eta$-ésima capa entera es finito y, por lo tanto, puede ser cero. No obstante, al igual que en la
@@ -439,6 +436,68 @@ elecciones se satisfacen ambas (\ref{phase-1:finite:eq:param-bounds}) y
 (\ref{phase-1:finite:eq:param-bounds-last}). Evidentemente, $\vec{0} \in \Z^n$ es factible y se
 encuentra en la 0-ésima capa, por lo que este proceso está asegurado en terminar si es que el
 problema es factible, lo cual supusimos desde un inicio.
+
+Con respecto a la complejidad algorítmica de este procedimiento podemos decir lo siguiente.
+Supongamos que modificamos el algoritmo para que encuentre todas las soluciones. Definamos
+\begin{equation}
+	\label{phase-1:def:feasible-layer}
+	P_k \coloneq H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap \Z_{\geq \vec{0}}^n
+	=
+	\lbrace \vec{x} \in \Z^n \vcentcolon \vec{q}^T\vec{x} = k, \vec{x} \geq \vec{0}
+	\rbrace,
+\end{equation}
+y sea $T(n)$ el tiempo requerido para encontrar todos los puntos en $P_k$ o determinar que este
+conjunto es vacío\footnote{Estamos suponiendo implícitamente que el tiempo no depende del lado
+	derecho $k$, por lo que depende exclusivamente de la dimensión del politopo. Es la creencia del
+	autor que en realidad el tiempo es linealmente decreciente en $k$ puesto que la probabilidad de
+	que haya puntos enteros en $P_k$ es mayor a medida que $k$ aumenta. Si bien los resultados
+	numéricos apuntan a que esta hipótesis es cierta, el autor prefirió decir que el tiempo es
+constante a falta de un mejor argumento teórico.}. Es razonable suponer que $T(n)$ es exponencial en
+$n$. En efecto, cada par $(x_i, \omega_{i + 1})$ genera un intervalo de factibilidad $[t_i^{\min},
+t_i^{\max}]$. Este intervalo ciertamente depende de las elecciones previas de $t_1, \ldots, t_{i -
+1}$. Para encontrar todos los puntos en $P_k$, el algoritmo recorre todas las posibilidades:
+\begin{equation}
+	\label{phase-1:complexity:bounds}
+	\prod_{i=1}^{\tau_1} \min_{t_1, \ldots, t_{i-1}} \lbrace t_i^{\max} - t_i^{\min} \rbrace
+	\leq T(n) \leq
+	\prod_{i=1}^{\tau_2} \max_{t_1, \ldots, t_{i-1}} \lbrace t_i^{\max} - t_i^{\min} \rbrace,
+\end{equation}
+donde $1 \leq \tau_1 \leq n$ es el entero más grande que asegura que  $\min_{t_1, \ldots, t_{i -
+1}}\lbrace t_i^{\max} - t_i^{\min} \rbrace$ sea positivo para todo $i \in \lbrace 1, \ldots, \tau_1
+\rbrace$. Definimos $\tau_2$ de manera análoga. Se cumple que $\tau_1 \leq \tau_2$. Sean
+$\ell_{\min}, \ell_{\max}$ las longitudes del intervalo de factibilidad más pequeño y del más grande
+en todos los niveles, respectivamente. Es decir, definimos
+\begin{align}
+	\ell_{\min} &\coloneq \min_{1 \leq i \leq \tau_1} \left\lbrace \min_{t_1, \ldots, t_{i - 1}} \lbrace
+	t_i^{\max} - t_i^{\min} \rbrace \right\rbrace,
+	\\
+	\ell_{\max} &\coloneq \max_{1 \leq i \leq \tau_2} \left\lbrace \max_{t_1, \ldots, t_{i - 1}} \lbrace
+	t_i^{\max} - t_i^{\max} \rbrace \right\rbrace.
+\end{align}
+Si $P_k$ es vacío, se sigue que no existe ningún intervalo factible en el nivel $n$, lo que implica
+que $\tau_2 < n$. En caso contrario, el algoritmo recorre hasta el último nivel, por lo que $\tau_1
+= \tau_2 = n$. De (\ref{phase-1:complexity:bounds}), obtenemos
+\begin{equation}
+	\ell_{\min}^{n} \leq T(n) \leq \ell_{\max}^{n}.
+\end{equation}
+En el peor de los casos, nuestro algoritmo recorre todas las capas enteras. Se sigue que
+\begin{equation}
+	\label{phase-1:time}
+	\text{Tiempo de ejecución}
+	= \mathcal{O} \left(\sum_{k=1}^{\eta} T(n) \right)
+	= \mathcal{O}(\eta \cdot T(n))
+	= \mathcal{O}(\eta \cdot c^{n}),
+\end{equation}
+para alguna $c > 1$.
+
+Ahora bien, este razonamiento aplica a la modificación del algoritmo en donde decidimos buscar todas
+las soluciones posibles. En realidad solo nos interesa encontrar un punto óptimo, por lo que podemos
+concluir que una cota superior para la complejidad de nuestro algoritmo es (\ref{phase-1:time}).
+Concluimos esta sección diciendo haremos uso del mismo razonamiento para determinar la complejidad
+algorítmica de nuestro método en la segunda fase de su construcción. Finalmente, observemos también
+que, para problemas del tipo (\ref{phase-1:formulation}), la solución siempre se encuentra
+razonablemente cerca de la frontera presupuestaria $\vec{p}^T\vec{x} = u$, así que a excepción de
+casos degenerados, nunca recorre nuestro algoritmo todas las capas enteras.
 
 \subsection{Análisis de resultados}
 
