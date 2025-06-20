@@ -149,15 +149,97 @@ Entonces se verifica que
 \end{equation}
 
 \begin{lemma}
+	\label{lemma:t-existence}
 	Existe un vector $\vec{t} \in \Z^{n-1}$ que satisface ambos (\ref{eq:param-lb}) y
 	(\ref{eq:feasible-param}).
 \end{lemma}
 \begin{proof}
+	Tenemos cuatro casos, pero observemos que los dos en donde $\vec{q}_{n - 1}$ y $\vec{q}_n$
+	tienen signo distinto no son difíciles: si $\vec{q}_{n - 1} <0 < \vec{q}_n$, entonces el vector
+	$\vec{t} \in \Z^{n-1}$ dado por
+	\begin{equation*}
+		\vec{t}_i \coloneq \begin{cases}
+			\left\lceil -\frac{\omega_i x_i'}{g_{i + 1}} \right\rceil, & i < n - 1, \\
+			\lceil \max\lbrace b_1, b_2 \rbrace \rceil, & i = n - 1,
+		\end{cases}
+	\end{equation*}
+	satisface ambos (\ref{eq:param-lb}) y (\ref{eq:feasible-param}). El caso $\vec{q}_n < 0 <
+	\vec{q}_{n - 1}$ es completamente similar.
+
+	Ahora bien, supongamos que $0 < \vec{q}_{n - 1}, \vec{q}_n$. Podemos suponer sin pérdida de
+	generalidad que $\vec{q}_{n - 2} < 0$. En efecto, como $\vec{q}_i < 0$ para alguna $i \in
+	\lbrace 2, \ldots, n \rbrace$, somos capaces permutar las entradas $i$ y $n - 2$ de $\vec{q}$ en
+	el problema (\ref{theory:formulation}). Observemos que
+	\begin{align*}
+		b_2 - 1 &\leq \lfloor b_2 \rfloor \leq b_2, \\
+		b_1 &\leq \lceil b_1 \rceil \leq b_1 + 1.
+	\end{align*}
+	De donde obtenemos
+	\begin{equation*}
+		b_2 - b_1 - 2 \leq \lfloor b_2 \rfloor - \lceil b_1 \rceil \leq b_2 - b_1.
+	\end{equation*}
+	Así pues, para que el intervalo $[\lceil b_1 \rceil, \lfloor b_2 \rfloor]$ esté bien definido,
+	es suficiente con mostrar que existe un escalar $\omega_{n - 1}$ que satisfaga $b_2 - b_1 \geq
+	2$. Tenemos
+	\begin{equation}
+		\label{proof:b-sub}
+		b_2 - b_1 = \omega_{n - 1}\prod_{j = 1}^{n-1}g_j \cdot
+			\left(\frac{x_{n-1}'}{\vec{q}_n} + \frac{x_n'}{\vec{q}_{n - 1}}\right)
+	\end{equation}
+	Como $x_{n - 1}'$ y $x_n'$ son coeficientes de Bézout asociados a los dos coeficientes en
+	(\ref{eq:last-equation}) que son coprimos, se cumple
+	\begin{equation*}
+		\frac{\vec{q}_{n - 1}}{\prod_{j = 1}^{n-1}g_j}x_{n-1}' +
+		\frac{\vec{q}_{n}}{\prod_{j = 1}^{n-1}g_j}x_{n}' = 1,
+	\end{equation*}
+	lo que implica que
+	\begin{equation*}
+		\frac{x_{n-1}'}{\vec{q}_n} + \frac{x_n'}{\vec{q}_{n - 1}} = \frac{\prod_{j =
+		1}^{n-1}g_j}{\vec{q}_{n-1}\vec{q}_n}.
+	\end{equation*}
+	Sustituyendo en (\ref{proof:b-sub}),
+	\begin{equation}
+		\label{proof:omega-sub}
+		b_2 - b_1 = \omega_{n-1}\cdot \frac{\prod_{j=1}^{n-1}g_j^2}{\vec{q}_{n-1}\vec{q}_n} \geq 2
+		\iff \omega_{n-1} \geq 2\frac{\vec{q}_{n-1}\vec{q}_n}{\prod_{j=1}^{n-1}g_j^2}.
+	\end{equation}
+	De (\ref{eq:recurrence}) sabemos que
+	\begin{equation*}
+		\omega_{n-1} = \omega_{n-2}\omega_{n-1}' -
+		\frac{\vec{q}_{n-2}}{\prod_{j=1}^{n-2}g_j}t_{n-2}.
+	\end{equation*}
+	Sustituyendo en (\ref{proof:omega-sub}), usando el hecho de que $\vec{q}_{n-2} < 0$ y despejando
+	$t_{n-2}$, encontramos que $\lceil b_2 \rceil - \lfloor b_1 \rfloor \geq 0$ si
+	\begin{equation*}
+		t_{n-2} \geq \frac{\omega_{n-2}\omega_{n-1}'}{\vec{q}_{n-2}}\prod_{j=1}^{n-2}g_j
+		- 2\frac{\vec{q}_{n-1}\vec{q}_n}{\vec{q}_{n-2}g_{n-1}^2}
+		\prod_{j=1}^{n-2}g_j^{-1}
+	\end{equation*}
+	Llamemos $c$ al lado derecho de esta desigualdad. Así pues, definimos el vector
+	$\vec{t} \in \Z^{n-1}$ de manera que
+	\begin{equation*}
+		\vec{t}_i \coloneq \begin{cases}
+			\left\lceil -\frac{\omega_i x_i'}{\vec{q}_i} \right\rceil, & i < n - 2, \\[1em]
+			\left\lceil \max\left\lbrace -\frac{\omega_ix_i'}{\vec{q}_i}, c \right\rbrace
+			\right\rceil, & i = n -2, \\[0.8em]
+			\lceil b_1 \rceil, & i = n - 1.
+		\end{cases}
+	\end{equation*}
+	Se verifica que $\vec{t}$ satisface ambos (\ref{eq:param-lb}) y (\ref{eq:feasible-param}).
+	Finalmente, el caso $\vec{q}_{n-1}, \vec{q}_n < 0$ es completamente similar.
 \end{proof}
+
+En síntesis, por el Teorema (\ref{theory:th:feasibility}) sabemos que la solución se encuentra en
+la $\eta$-ésima capa entera. Por lo tanto, debemos encontrar una solución no negativa a la ecuación
+lineal diofantina (\ref{eq:dioph}). Por el Lema \ref{lemma:t-existence} sabemos que existe un vector
+$\vec{t} \in \Z^{n-1}$ que satisface ambos (\ref{eq:param-lb}) y (\ref{eq:feasible-param}). Si
+definimos $\vec{x}$ como lo indican (\ref{eq:recurrence}) y (\ref{eq:last-solution}) usando
+$\vec{t}$, entonces $\vec{x}$ es una solución entera no negativa. Observemos que podemos construir
+los vectores $\vec{t}$ y $\vec{x}$ simúltaneamente. De esta manera, obtenemos el siguiente Teorema.
 
 \begin{theorem}
 	El problema (\ref{theory:formulation}) se puede resolver a través de encontrar la solución de
-	$n$ ecuaciones lineales diofantinas en dos incógnitas.
+	solamente una ecuación lineal diofantina en $n$ incógnitas.
 \end{theorem}
 
 \section{Múltiples restricciones}
