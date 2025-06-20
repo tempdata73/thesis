@@ -130,10 +130,11 @@ están dadas por
 Para que ahora se satisfagan las condiciones de no negatividad de $\vec{x}_{n-1}$ y de $\vec{x}_n$,
 encontramos que la variable libre $t_{n-1} \in \Z$ debe cumplir ciertas desigualdades según los
 signos de $q_{n-1}$ y de $q_n$. Definamos, por conveniencia,
-\begin{equation*}
+\begin{equation}
+	\label{eq:lr-bounds}
 	b_1 \coloneq -\frac{\omega_{n-1}x_{n-1}'}{\vec{q}_n} \cdot \prod_{j=1}^{n-1}g_j,
 	\quad b_2 \coloneq \frac{\omega_{n-1}x_{n}'}{\vec{q}_{n-1}} \cdot \prod_{j=1}^{n-1}g_j.
-\end{equation*}
+\end{equation}
 Entonces se verifica que
 \begin{equation}
 	\label{eq:feasible-param}
@@ -239,7 +240,7 @@ los vectores $\vec{t}$ y $\vec{x}$ simúltaneamente. De esta manera, obtenemos e
 
 \begin{theorem}
 	El problema (\ref{theory:formulation}) se puede resolver a través de encontrar la solución de
-	solamente una ecuación lineal diofantina en $n$ incógnitas.
+	una ecuación lineal diofantina en $n$ incógnitas.
 \end{theorem}
 
 \section{Múltiples restricciones}
@@ -256,103 +257,160 @@ Ahora consideremos el problema
 			& \vec{x} \geq \vec{0}. \nonumber
 	\end{align}
 \end{subequations}
-% TODO: mencionar que ahora la solución no necesariamente se encuentra en la \eta-ésima
-% capa entera. Mostrar un contraejemplo. La dificultad en este caso infinito radica
-% en que no hay manera de descender a la siguiente capa.
+Nuevamente, añadimos la condición de que $\vec{p}$ sea esencialmente entero y dejamos que $\vec{q}$
+sea su múltiplo coprimo con $\vec{q}_i < 0$ para alguna $i \in \lbrace 2, \ldots, n \rbrace$.
+Ciertamente, la solución ahora no se encuentra necesariamente en la $\eta$-ésima capa entera. Por
+ejemplo, si dejamos que $A \coloneq \vec{q}^T$ y $b \coloneq u - m$, la solución se encontrará en la
+$\xi$-ésima capa entera, donde
+\begin{equation*}
+	\xi \coloneq \left\lfloor \frac{u}{m} - 1 \right\rfloor < \eta.
+\end{equation*}
+No obstante, si el problema (\ref{formulation:multiple}) es factible, sabemos que la solución se
+encontrará en alguna capa entera con parámetro $k \in \lbrace \eta, \eta - 1, \ldots \rbrace$, pues
+todavía contamos con una restricción presupuestaria que se debe satisfacer.
 
-Seguiremos la misma lógica que en la sección pasada en cuanto a resolver ecuaciones lineales
-diofantinas. No obstante, esto lo haremos para establecer una relación lineal entre $\vec{x} \in
-\Z^n$ y $\vec{t} \in \Z^{n-1}$. Si procedemos de aquella forma y nos enfocamos en la $k$-ésima capa
-entera con $k \leq \eta$, podremos, en primer lugar, deshacernos de la restricción presupuestaria y,
-en segundo lugar, de reducir el problema (\ref{formulation:multiple}) a uno de factibilidad.
-
-% TODO: arreglar párrafo: la relación es inducida, no se ha establecido ninguna hasta el momento
-Como mencionamos, deseamos expresar al $x = (x_1, \ldots, x_n)$ como una transformación lineal del
-vector de parámetros $t \coloneq (t_1, \ldots, t_{n-1})$. Para ello, debemos encontrar una forma
-cerrada a la relación de recurrencia obtenida en \ref{eq:recurrence}:
+En esta sección buscamos establecer una relación lineal entre $\vec{t}$ y $\vec{x}$ que nos permita
+deshacernos de la restricción presupuestaria y reducir la dimensión del problema tanto en dimensión
+como en número de restricciones. Para ello, nos fijamos en la $k$-ésima capa entera y resolvemos 
+la ecuación lineal diofantina
+\begin{equation*}
+	\vec{q}_1\vec{x}_1 + \cdots \vec{q}_n\vec{x}_n = k.
+\end{equation*}
+Observemos que la única diferencia entre esta ecuación y (\ref{eq:dioph}) es el lado derecho de la
+igualdad. Entonces, podemos hacer uso de los resultados anteriores si definimos $\omega_1 \coloneq
+k$ en vez de $\omega_1 \coloneq \eta$. A partir de esto último junto con (\ref{eq:recurrence}),
+descubrimos una relación de recurrencia que los coeficientes $\omega_i$ deben satisfacer:
 \begin{equation}
 	\label{eq:omega-recurrence}
 	\begin{cases}
 		\omega_1 &= k, \\
-		\omega_{i + 1} &= \omega_i \cdot \omega_{i + 1}^{(0)} - \frac{q_i}{\prod_{j=1}^{i}g_j} \cdot t_i.
+		\omega_{i + 1} &= \omega_i \cdot \omega_{i + 1}' - \frac{\vec{q}_i}{\prod_{\ell=1}^{i}g_\ell} \cdot t_i.
 	\end{cases}
 \end{equation}
-
 \begin{lemma}
 	La forma cerrada de la relación de recurrencia (\ref{eq:omega-recurrence}) está dada por
 	\begin{equation}
 		\label{eq:omega-formula}
-		\omega_i = k \cdot \prod_{j=2}^{i} \omega_j^{(0)} -
-				 \sum_{j=1}^{i - 1}\frac{q_j}{\prod_{\ell=1}^{j}g_\ell} \cdot
-				 \prod_{\ell=j+2}^{i}\omega_\ell^{(0)} \cdot t_j.
+		\omega_i =
+		k \cdot \prod_{j=2}^{i} \omega_j'
+		- \sum_{j=1}^{i - 1}\frac{\vec{q}_j}{\prod_{\ell=1}^{j}g_\ell}
+		\cdot \prod_{\ell=j+2}^{i}\omega_\ell' \cdot t_j.
 	\end{equation}
-	Donde, por conveniencia, asignamos el valor de cero a la suma vacía y el valor de uno al
-	producto vacío.
 \end{lemma}
 \begin{proof}
+	Lo demostramos inductivamente. Observemos que
+	\begin{equation*}
+		\omega_1 =
+		k \cdot \prod_{j=2}^{1} \omega_j'
+		- \sum_{j=1}^{0}\frac{\vec{q}_j}{\prod_{\ell=1}^{j}g_\ell}
+		\cdot \prod_{\ell=j+2}^{1}\omega_\ell' \cdot t_j
+		= k,
+	\end{equation*}
+	debido a que definimos el producto vacío como 1 y la suma vacía como 0. Supongamos
+	inductivamente que (\ref{eq:omega-formula}) se satisface para alguna $i \in \N$. Entonces,
+	tenemos
+	\begin{align*}
+		\omega_{i + 1}
+		&=
+		k \cdot \prod_{j=2}^{i + 1} \omega_j'
+		- \sum_{j=1}^{i}\frac{\vec{q}_j}{\prod_{\ell=1}^{j}g_\ell}
+		\cdot \prod_{\ell=j+2}^{i + 1}\omega_\ell' \cdot t_j \\
+		&=
+		k \cdot \prod_{j=2}^{i} \omega_j' \cdot \omega_{i+1}
+		- \sum_{j=1}^{i - 1}\frac{\vec{q}_j}{\prod_{\ell=1}^{j}g_\ell}
+		\cdot \prod_{\ell=j+2}^{i}\omega_\ell' \cdot t_j \cdot \omega_{i + 1}'
+		- \frac{\vec{q}_i}{\prod_{\ell = 1}^{i}g_\ell}
+		\cdot \prod_{\ell = i + 2}^{i + 1}\omega_\ell' \cdot t_i \\
+		&= 
+		\left( k \cdot \prod_{j=2}^{i} \omega_j'
+		- \sum_{j=1}^{i - 1}\frac{\vec{q}_j}{\prod_{\ell=1}^{j}g_\ell}
+		\cdot \prod_{\ell=j+2}^{i}\omega_\ell' \cdot t_j \right) \omega_{i+1}'
+		- \frac{\vec{q}_i}{\prod_{\ell = 1}^{i}g_\ell} \cdot t_i  \\
+		&= \omega_i \cdot \omega_{i + 1}' - \frac{\vec{q}_i}{\prod_{\ell = 1}^{i}g_\ell} \cdot t_i.
+	\end{align*}
+	Por el principio de inducción se sigue que (\ref{eq:omega-formula}) satisface
+	(\ref{eq:omega-recurrence}) para todo $i \in \N$. Así, esta fórmula es la forma cerrada de la
+	relación de recurrencia propuesta.
 \end{proof}
 
-Por simpleza, definimos los coeficientes $a_{ij} \in \mathbb{Z}$ con $j < i$ como
+Por conveniencia, definimos los coeficientes $m_{ij} \in \mathbb{Z}$ con $i > j$ como
 \begin{equation}
 	\label{phase-2:eq:coeffs}
-	a_{ij} \coloneq \frac{q_j}{\prod_{\ell = 1}^{j}g_\ell} \cdot \prod_{\ell = j +
-	2}^{i}\omega_\ell^{(0)}.
+	m_{ij} \coloneq \frac{\vec{q}_j}{\prod_{\ell = 1}^{j}g_\ell} \cdot \prod_{\ell = j +
+	2}^{i}\omega_\ell'.
 \end{equation}
 Así pues, juntando esto último con \ref{eq:recurrence}, obtenemos para $i \in \{1, \ldots, n -
 2\}$, 
 \begin{align}
-	x_i &= w_i \cdot x_i^{(0)} + g_{i + 1}t_i \nonumber \\
-		&= k \cdot \prod_{j=2}^{i}\omega_j^{(0)} \cdot x_i^{(0)} - \sum_{j=1}^{i - 1}a_{ij}x_i^{(0)}
-		t_j + g_{i + 1}t_i \label{eq:x:i}.
+	\vec{x}_i &= \omega_i \cdot x_i' + g_{i + 1}\vec{t}_i \nonumber \\
+		&= k \cdot \prod_{j=2}^{i}\omega_j' \cdot x_i' - \sum_{j=1}^{i - 1}m_{ij}x_i'
+		\vec{t}_j + g_{i + 1}\vec{t}_i \label{eq:x:i}.
 \end{align}
 Similarmente, sustituyendo en \ref{eq:last-solution},
-\begin{align}
-	x_{n-1} &= k \cdot \prod_{j=2}^{n-1} \omega_j^{(0)} \cdot x_{n-1}^{(0)} - \sum_{j=1}^{n-2}
-	a_{n-1,j}x_{n-1}^{(0)} t_j + \frac{q_n}{\prod_{j=1}^{n-2}g_j} t_{n-1}, \label{eq:x:-1}\\
-	x_{n} &= k \cdot \prod_{j=2}^{n-1} \omega_j^{(0)} \cdot x_{n}^{(0)} - \sum_{j=1}^{n-2}a_{n,j}x_n^{(0)}t_j -
-	\frac{q_{n-1}}{\prod_{j=1}^{n-2} g_j}t_{n-1} \label{eq:x:last}.
-\end{align}
+\begin{subequations}
+	\label{eq:x:last}
+	\begin{align}
+		\vec{x}_{n-1} &= k \cdot \prod_{j=2}^{n-1} \omega_j' \cdot x_{n-1}' - \sum_{j=1}^{n-2}
+		m_{n-1,j}x_{n-1}' \vec{t}_j + \frac{\vec{q}_n}{\prod_{j=1}^{n-2}g_j} \vec{t}_{n-1}, \\
+		\vec{x}_{n} &= k \cdot \prod_{j=2}^{n-1} \omega_j' \cdot x_{n}' - \sum_{j=1}^{n-2}
+		m_{n,j}x_{n}' \vec{t}_j - \frac{\vec{q}_{n - 1}}{\prod_{j=1}^{n-2}g_j} \vec{t}_{n-1}.
+	\end{align}
+\end{subequations}
 
-Ahora tenemos todos los elementos para expresar a $\vec{x}$ como una transformación lineal de
-$\vec{t}$. Definimos $\vec{\omega}' \in \Z^n$ como
+Con este trabajo anterior, ya podemos establecer una relación lineal entre $\vec{t} \in \Z^{n-1}$ y
+$\vec{x} \in \Z^n$. Definimos $\vec{\omega} \in \Z^n$ como
 \begin{equation}
 	\label{eq:vec-omega}
 	\vec{\omega}_i \coloneq \vec{x}_i' \cdot \prod_{j = 2}^{\min{\lbrace i, n - 1 \rbrace}}\omega_j'.
 \end{equation}
-Similarmente, definimos la matriz $T \in \Z^{n \times (n - 1)}$ como
+También definimos la matriz $M \in \Z^{n \times (n - 1)}$ a través de
 \begin{equation}
 	\label{eq:mat-T}
-	T_{ij} \coloneq \begin{cases}
-		a_{ij}x_i', &\quad j < i, \\
+	M_{ij} \coloneq \begin{cases}
+		m_{ij}x_i', &\quad j < i, \\
 		g_{i + 1},  &\quad i = j < n - 1, \\
-		\frac{q_n}{\prod_{k=1}^{n-2}g_k}, &\quad i = j = n - 1, \\
-		-\frac{q_{n-1}}{\prod_{k=1}^{n-2}g_k}, &\quad i = n, j = n - 1, \\
-		0, &\quad \text{e.o.c.}.
+		\frac{\vec{q}_n}{\prod_{k=1}^{n-2}g_k}, &\quad i = j = n - 1, \\
+		-\frac{\vec{q}_{n-1}}{\prod_{k=1}^{n-2}g_k}, &\quad i = n, j = n - 1, \\
+		0, &\quad \text{e.o.c.}
 	\end{cases}
 \end{equation}
-
-Así pues, de (\ref{eq:x:i}), (\ref{eq:x:-1}) y (\ref{eq:x:last}), encontramos que
+De (\ref{eq:x:i}) y (\ref{eq:x:last}) obtenemos
 \begin{equation}
 	\label{eq:transf}
-	\vec{x} = k\vec{\omega}' - T\vec{t}.
+	\vec{x} = k\vec{\omega} - M\vec{t}.
 \end{equation}
-Por lo tanto, de la restricción (\ref{formulation:multiple:constraints}) obtenemos
+
+Consecuentemente, de la restricción (\ref{formulation:multiple:constraints}) obtenemos
 \begin{equation}
-	A\vec{x} \leq \vec{b} \iff AT\vec{t} \geq kA\vec{\omega}' - \vec{b}.
+	A\vec{x} \leq \vec{b} \iff AT\vec{t} \geq kA\vec{\omega} - \vec{b}.
 \end{equation}
-De esta manera, encontramos que el problema (\ref{formulation:multiple}) es equivalente a
+Dependiendo de los signos de $\vec{q}_{n-1}$ y de $\vec{q}_n$ (c.f. \ref{eq:feasible-param})
+obtenemos un problema de maximización equivalente a (\ref{formulation:multiple}). Por ejemplo, si
+$\vec{q}_{n-1} < 0 < \vec{q}_n$, el problema equivalente es
 \begin{subequations}
 	\label{formulation:lattice}
 	\begin{align}
 		\max_{k \in \Z, \vec{t} \in \Z^{n-1}}
 			& k, \\
 		\text{s.a.} \quad
-			& AT\vec{t} \geq kA\vec{\omega}' - \vec{b}, \\
-			& \vec{t}_i \geq \left\lceil \frac{-\vec{\omega}_i'}{g_{i + 1}} \right\rceil \\
-			& k \leq \eta. \nonumber
+			& k \leq \eta, \label{lattice:c-layer} \\
+			& AM\vec{t} \geq kA\vec{\omega}' - \vec{b}, \label{lattice:constraints} \\
+			& \vec{t}_i \geq \left\lceil \frac{-\vec{\omega}_i'}{g_{i + 1}} \right\rceil, \quad
+			\forall i \in \lbrace 1, \ldots, n - 2 \rbrace, \label{lattice:pos-1} \\
+			& \vec{t}_{n - 1} \geq \left\lceil \max\lbrace b_1, b_2 \rbrace \right\rceil,
+			\label{lattice:pos-2},
 	\end{align}
 \end{subequations}
-En este caso, el vector objetivo es ortogonal a la última restricción.
+donde $b_1$ y $b_2$ están definidos en (\ref{eq:lr-bounds}). Podemos decir un par de cosas acerca de
+este nuevo problema. La primera restricción corresponde a la restricción presupuestaria, y todavía es
+ortogonal al vector objetivo. El politopo generado por la segunda restricción parece ser que es
+dilatado o expandido en función de $k$. Naturalmente, las direcciones en donde se dilata y donde se
+expande depende de los coeficientes de la matriz de restricciones $A$. Finalmente, las últimas dos
+restricciones, como lo hemos mostrado en el Lema \ref{lemma:t-existence}, son suficientes para
+asegurar no negatividad de $\vec{x}$.
+
+A pesar de que sigamos teniendo una restricción ortogonal al vector objetivo, esta parece ser más
+fácil de manejar.
 
 % XXX: esto es experimental
 Supongamos, sin pérdida de generalidad que $A$ tiene $m$ renglones linealmente independientes. De
