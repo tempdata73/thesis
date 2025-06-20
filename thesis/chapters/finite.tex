@@ -47,7 +47,7 @@ es el presupuesto disponible después de utilizar parte de él para adquirir $x_
 Por lo tanto, es posible agregar la restricción $\omega_2 \geq 0$. Similarmente, en el $i$-ésimo
 paso de la formulación dinámica, somos capaces de agregar la restricción de que el presupuesto
 restante $\omega_{i + 1}$ sea no negativo. Combinando esto con la no negatividad de $x_i$, obtenemos
-de (\ref{phase-1:eq:recursive}),
+de (\ref{eq:recurrence}),
 \begin{equation}
 	\label{phase-1:finite:eq:param-bounds}
 	\left\lceil -\frac{\omega_ix_i'}{g_{i+1}} \right\rceil
@@ -57,7 +57,7 @@ de (\ref{phase-1:eq:recursive}),
 	\left\lfloor \frac{\omega_i\omega_{i+1}'}{q_i} \prod_{j=1}^{i}g_j \right\rceil.
 \end{equation}
 para todo $i \in \lbrace 1, \ldots, n - 2\rbrace$. Después, como $0 < q_{n - 1}, q_n$, se sigue de
-(\ref{phase-1:eq:lastsol}),
+(\ref{eq:last-solution}),
 \begin{equation}
 	\label{phase-1:finite:eq:param-bounds-last}
 	\left\lceil -\frac{\omega_{n-1}x_{n-1}'}{q_n} \cdot \prod_{j=1}^{n-2}g_j \right\rceil

@@ -455,12 +455,29 @@ descendemos a la $(\eta - 1)$-ésima capa entera y buscamos puntos enteros no ne
 % TODO: hay una expresión bonita para la expresión m\eta = m floor(u / m)
 \begin{corollary}
 	Si $\vec{q}_i < 0$ para algún $i \in \lbrace 2, \ldots, n \rbrace$, entonces el valor óptimo del
-	problema (\ref{theory:formulation}) es $m\eta$ y existe una infinidad de soluciones.
+	problema (\ref{theory:formulation}) es $m\eta$. Además, $\eta$ es el múltiplo de $m$ más grande
+	(en valor absoluto) que satisface $m\eta \leq u$.
 \end{corollary}
 \begin{proof}
 	Por el Teorema anterior sabemos que existen una infinidad de soluciones, así que sea $\vec{x}^*$
 	una de ellas. Entonces $\vec{q}^T\vec{x}^* = \eta$, pero $\vec{p} = m\vec{q}$, por lo que
 	obtenemos $\vec{p}^T\vec{x}^* = m\eta$.
+
+	Ahora bien, recordemos que $\eta = \lfloor u/m \rfloor$ por el Lema \ref{phase-1:lemma:eta}.
+	Supongamos que $\xi \in \Z$ satisface $m\xi \leq u$ y también $\lfloor u/m \rfloor < \xi$. Si $m
+	> 0$ encontramos que
+	\begin{equation*}
+		m\left\lfloor \frac{u}{m} \right\rfloor < m\xi \leq u
+		\implies \left\lfloor \frac{u}{m} \right\rfloor < \xi \leq \frac{u}{m},
+	\end{equation*}
+	pero esto contradice las propiedades de la función piso. Ahora bien, si $m < 0$, entonces
+	\begin{equation*}
+		\xi \geq \frac{u}{m} \geq \left\lfloor \frac{u}{m} \right\rfloor
+		\implies m\xi \leq u \leq m \left\lfloor \frac{u}{m} \right\rfloor \leq u,
+	\end{equation*}
+	lo que implica que $\xi$ no es el múltiplo más grande de $m$ que satisface $m\xi \leq u$.
+	Independientemente obtenemos una contradicción, por lo que debe ser el caso que, en efecto,
+	$\eta$ es el múltiplo más grande de $m$ que satisface $m\eta \leq u$.
 \end{proof}
 
 Concluimos este capítulo con lo siguiente. Suponiendo que el problema (\ref{theory:formulation})

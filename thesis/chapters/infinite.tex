@@ -1,127 +1,296 @@
 \chapter{El caso infinito}
+
+% TODO: resumen del capítulo
+
+\section{Una restricción presupuestaria}
 \noindent
 Los puntos enteros que se encuentran en la $\eta$-ésima capa entera satisfacen la ecuación lineal
 diofantina
 \begin{equation}
-	\label{phase-1:eq:dioph}
-	\vec{q}^T\vec{x} = q_1x_1 + q_2x_2 + \cdots + q_nx_n = \eta.
+	\label{eq:dioph}
+	\vec{q}^T\vec{x} = \vec{q}_1\vec{x}_1 + \vec{q}_2\vec{x}_2 + \cdots + \vec{q}_n\vec{x}_n = \eta.
 \end{equation}
 En la sección de Teoría de Números mostramos bajo qué condiciones existen soluciones a este tipo de
-ecuaciones y también cómo construirlas cuando solamente tenemos dos incógnitas. Por conveniencia
-definamos $g_1 \coloneq \gcd{q_1, \ldots, q_n} = 1$ y $\omega_1 \coloneq \eta$. De manera análoga a
-una formulación de programación dinámica hacia adelante, podemos definir también
-$g_2 \coloneq \gcd{\frac{q_2}{g_1}, \ldots, \frac{q_n}{g_1}}$, con lo que la ecuación anterior es
-equivalente a la ecuación
-\begin{equation}
-	\label{phase-1:eq:forward}
-	\frac{q_1}{g_1}x_1 + g_2
-		\underbrace{
-		\left(\frac{q_2}{g_2 \cdot g_1}x_2 + \cdots + \frac{q_n}{g_2 \cdot g_1}x_n\right)}_{\coloneq
-		\omega_2}
-	= \omega_1.
-\end{equation}
-No es difícil observar que $\gcd{\frac{q_1}{g_1}, g_2} = 1$ y por lo tanto existen soluciones
-enteras para todo $\omega_1 \in \Z$. Como estos coeficientes son coprimos, encontramos que sus
-coeficientes de Bézout asociados (c.f. Definición \ref{prerreq:def:bezout}) $x_1', \omega_2'$ son
-soluciones particulares de la ecuación
+ecuaciones y también cómo construirlas cuando solamente tenemos dos incógnitas. Partimos de la
+observación que podemos resolver recursivamente esta ecuación. Definamos, por conveniencia,
+$g_1 \coloneq \gcd{\vec{q}_1, \ldots, \vec{q}_n}$ y también $\omega_1 \coloneq \eta$. Como
+$\vec{q}_1, \ldots, \vec{q}_n$ son coprimos, sabemos que $g_1 = 1$. Además, definamos
 \begin{equation*}
-	\frac{q_1}{g_1}x_1 + g_2\omega_2 = 1,
+	\omega_2 \coloneq \frac{\vec{q}_2}{g_2 \cdot g_1}\vec{x}_1 + \cdots + \frac{\vec{q}_n}{g_2 \cdot
+	g_1}\vec{x}_n,
 \end{equation*}
-con lo que las soluciones de la ecuación (\ref{phase-1:eq:forward}) están dadas por
+donde $g_2 \coloneq \gcd{\vec{q}_2/g_1, \ldots, \vec{q}_n/g_1}$. Así, la ecuación (\ref{eq:dioph})es
+equivalente a
+\begin{equation}
+	\label{eq:dioph:first-step}
+	\frac{q_1}{g_1}\vec{x}_1 + g_2\omega_2 = \omega_1.
+\end{equation}
+Observemos que
+\begin{equation*}
+	\gcd{\frac{\vec{q}_1}{g_1}, g_2}
+	= \gcd{\frac{\vec{q}_1}{g_1}, \gcd{\frac{\vec{q}_2}{g_1}, \ldots, \frac{\vec{q}_n}{g_1}}}
+	= \gcd{\vec{q}_1, \vec{q}_2, \ldots, \vec{q}_n} = 1.
+\end{equation*}
+Por lo tanto, existen soluciones enteras para todo $\omega_1 \in \Z$. Como $\vec{q}_1/g_1$ y $g_2$
+son coprimos, encontramos que sus coeficientes de Bézout asociados (c.f. Definición
+\ref{prerreq:def:bezout}) $x_1', \omega_2'$ son soluciones particulares de la ecuación
+\begin{equation*}
+	\frac{q_1}{g_1}\vec{x}_1 + g_2\omega_2 = 1.
+\end{equation*}
+Deducimos que las soluciones de la ecuación (\ref{eq:dioph:first-step}) están dadas por
 \begin{equation*}
 	\begin{cases}
-		x_1 = \omega_1x_1' + g_2t_1, \\
+		\vec{x}_1 = \omega_1x_1' + g_2t_1, \\
 		\omega_2 = \omega_1\omega_2' - \frac{q_1}{g_1}t_1,
 	\end{cases}
 \end{equation*}
-donde $t_1 \in \Z$. Como la restricción de no negatividad se debe satisfacer ($x_1 \geq 0$),
-encontramos que
+donde $t_1 \in \Z$ es una variable libre. La restricción de no negatividad $\vec{x}_1 \geq 0$ se debe
+satisfacer, así que
 \begin{equation*}
 	t_1 \geq \left\lceil -\frac{\omega_1x_1'}{g_2} \right\rceil.
 \end{equation*}
-Siguiendo el razonamiento de la formulación dinámica en (\ref{phase-1:eq:forward}), fijamos $t_1$ y
-resolvemos la ecuación
-\begin{equation*}
-	\frac{q_2}{g_2 \cdot g_1}x_2 +
-	\frac{q_3}{g_2 \cdot g_1}x_3 +
+
+Para el siguiente paso de la recursión fijamos $t_1$ y resolvemos la ecuación
+\begin{equation}
+	\label{eq:dioph:second-step}
+	\frac{\vec{q}_2}{g_2 \cdot g_1}\vec{x}_2 +
+	\frac{\vec{q}_3}{g_2 \cdot g_1}\vec{x}_3 +
 	\cdots +
-	\frac{q_n}{g_2 \cdot g_1}x_n
+	\frac{\vec{q}_n}{g_2 \cdot g_1}\vec{x}_n
 	= \omega_2.
+\end{equation}
+Como $g_2 = \gcd{\vec{q}_2/g_1, \ldots, \vec{q}_n}$, sabemos del Corolario \ref{prerreq:cor:gcd} que
+\begin{equation*}
+	\gcd{\frac{\vec{q}_2}{g_2 \cdot g_1}, \ldots, \frac{\vec{q}_n}{g_2 \cdot g_1}} = 1.
 \end{equation*}
-Por construcción, los coeficientes de las incógnitas en el lado izquierdo de la ecuación son
-coprimos y por lo tanto existen una infinidad de soluciones para todo $\omega_2 \in \Z$. Por el
-mismo razonamiento que el anterior, encontramos que las soluciones son
+En el mismo espíritu que el primer paso de la recursión, definimos
+\begin{equation*}
+	\omega_3 \coloneq \frac{\vec{q}_3}{g_3 \cdot g_2 \cdot g_1}\vec{x}_1 + \cdots + \frac{\vec{q}_n}{g_3
+	\cdot g_2 \cdot g_1}\vec{x}_n,
+\end{equation*}
+donde
+\begin{equation*}
+	g_3 \coloneq  \gcd{\frac{\vec{q}_3}{g_2 \cdot g_1}, \ldots, \frac{\vec{q}_n}{g_2 \cdot g_1}}.
+\end{equation*}
+Por lo que la ecuación (\ref{eq:dioph:second-step}) es equivalente a
+\begin{equation}
+	\label{eq:dioph:second-step:short}
+	\frac{\vec{q}_2}{g_2 \cdot g_1}\vec{x}_2 + g_3\omega_3 = \omega_2.
+\end{equation}
+Nuevamente, tenemos
+\begin{equation*}
+	\gcd{\frac{\vec{q}_2}{g_2 \cdot g_1}, g_3} = 1,
+\end{equation*}
+y entonces (\ref{eq:dioph:second-step:short}) tiene una infinidad de soluciones para todo $\omega_2 \in
+\Z$, las cuales están dadas por
 \begin{equation*}
 	\begin{cases}
-		x_2 = \omega_2x_2' + g_3t_2, \\
+		\vec{x}_2 = \omega_2x_2' + g_3t_2, \\
 		\omega_3 = \omega_2\omega_3' - \frac{q_2}{g_2 \cdot g_1}t_2,
 	\end{cases}
 \end{equation*}
-donde $t_2 \in \Z$ es un parámetro, $\omega_3$ y $g_3$ están definidos de forma análoga al paso
-anterior, y $x_2', \omega_3'$ son los coeficientes de Bézout asociados a $\frac{q_2}{g_2 \cdot g_2}$
-y $g_3$, respectivamente. Por la restricción de no negatividad ($x_2 \geq 0$), se debe cumplir
+donde $t_2 \in \Z$ es una variable libre, y $x_2', \omega_3'$ son los coeficientes de Bézout
+asociados a $\frac{\vec{q}_2}{g_2 \cdot g_2}$ y $g_3$, respectivamente. Por la restricción de no
+negatividad $\vec{x}_2 \geq 0$ se debe satisfacer
 \begin{equation*}
 	t_2 \geq \left\lceil -\frac{\omega_2x_2'}{g_3} \right\rceil.
 \end{equation*}
 
-De manera general, en el $i$-ésimo paso de la formulación dinámica para $i \in \lbrace 1, \ldots, n
-- 2 \rbrace$, encontramos
+De manera general, para $i \in \lbrace 1, \ldots, n - 2 \rbrace$, el $i$-ésimo paso de la recursión
+provee las soluciones
 \begin{equation}
-	\label{phase-1:eq:recursive}
+	\label{eq:recurrence}
 	\begin{cases}
-		x_i = \omega_ix_i' + g_{i + 1}t_i, \\
-		\omega_{i + 1} = \omega_i\omega_{i + 1}' - \frac{q_i}{\prod_{j=1}^{i}g_j}t_i,
+		\vec{x}_i = \omega_ix_i' + g_{i + 1}t_i, \\
+		\omega_{i + 1} = \omega_i\omega_{i + 1}' - \frac{\vec{q}_i}{\prod_{j=1}^{i}g_j}t_i,
 	\end{cases}
 \end{equation}
-donde $t_i \in \Z$ satisface, debido a la restricción de no negatividad,
+donde $t_i \in \Z$ satisface, debido a la restricción de no negatividad $\vec{x}_i \geq 0$,
 \begin{equation}
-	\label{phase-1:eq:param-bound}
+	\label{eq:param-lb}
 	t_i \geq \left\lceil -\frac{\omega_ix_i'}{g_{i + 1}} \right\rceil.
 \end{equation}
-Finalmente, en el último paso, obtenemos la ecuación lineal diofantina
+
+En el último paso obtenemos la ecuación lineal diofantina
 \begin{equation}
-	\label{phase-1:eq:stopping}
-	\frac{q_{n-1}}{\prod_{j=1}^{n-2}g_j}x_{n-1} +
-	\frac{q_{n}}{\prod_{j=1}^{n-2}g_j}x_n
+	\label{eq:last-equation}
+	\frac{q_{n-1}}{\prod_{j=1}^{n-1}g_j}\vec{x}_{n-1} +
+	\frac{q_{n}}{\prod_{j=1}^{n-1}g_j}\vec{x}_n
 	= \omega_{n-1}.
 \end{equation}
-Nuevamente, los coeficientes de las incógnitas son coprimos. Por lo tanto, las soluciones están
-dadas por
+Por construcción, los coeficientes de $\vec{x}_{n - 1}$ y $\vec{x}_n$ son coprimos. Las soluciones
+están dadas por
 \begin{equation}
-	\label{phase-1:eq:lastsol}
+	\label{eq:last-solution}
 	\begin{cases}
-		x_{n-1} = \omega_{n-1}x_{n-1}' + \frac{q_n}{\prod_{j=1}^{n-2}g_j}t_{n-1}, \\
-		x_n = \omega_{n-1}x_n' - \frac{q_{n-1}}{\prod_{j=1}^{n-2}g_j}t_{n-1},
+		\vec{x}_{n-1} = \omega_{n-1}x_{n-1}' + \frac{\vec{q}_n}{\prod_{j=1}^{n-1}g_j}t_{n-1}, \\
+		\vec{x}_n = \omega_{n-1}x_n' - \frac{\vec{q}_{n-1}}{\prod_{j=1}^{n-1}g_j}t_{n-1},
 	\end{cases}
 \end{equation}
-Para que ahora se satisfagan las condiciones de no negatividad de $x_{n-1}$ y de $x_n$, encontramos
-que $t_{n-1} \in \Z$ debe cumplir ciertas desigualdades según los signos de $q_{n-1}$ y de $q_n$.
-Por conveniencia, definamos
+Para que ahora se satisfagan las condiciones de no negatividad de $\vec{x}_{n-1}$ y de $\vec{x}_n$,
+encontramos que la variable libre $t_{n-1} \in \Z$ debe cumplir ciertas desigualdades según los
+signos de $q_{n-1}$ y de $q_n$. Definamos, por conveniencia,
 \begin{equation*}
-	b_1 \coloneq -\frac{\omega_{n-1}x_{n-1}'}{q_n} \cdot \prod_{j=1}^{n-2}g_j,
-	\quad b_2 \coloneq \frac{\omega_{n-1}x_{n}'}{q_{n-1}} \cdot \prod_{j=1}^{n-2}g_j.
+	b_1 \coloneq -\frac{\omega_{n-1}x_{n-1}'}{\vec{q}_n} \cdot \prod_{j=1}^{n-1}g_j,
+	\quad b_2 \coloneq \frac{\omega_{n-1}x_{n}'}{\vec{q}_{n-1}} \cdot \prod_{j=1}^{n-1}g_j.
 \end{equation*}
 Entonces se verifica que
 \begin{equation}
-	\label{phase-1:eq:feasible-param}
+	\label{eq:feasible-param}
 	t_{n-1} \in 
 	\begin{cases}
-		\big[ \lceil b_1 \rceil, \lfloor b_2 \rfloor \big] & \text{si } 0 < q_{n-1}, q_n, \\
-		\big[ \lceil b_2 \rceil, \lfloor b_1 \rfloor \big] & \text{si } q_{n-1}, q_n < 0, \\
-		\big[ \lceil \max\lbrace b_1 ,  b_2 \rbrace \rceil, \infty \big) & \text{si } q_{n-1} < 0 < q_n, \\
-		\big( -\infty, \lfloor \min\lbrace b_1, b_2\rbrace \rfloor \big] & \text{si } q_n < 0 < q_{n-1}.
+		\big[ \lceil b_1 \rceil, \lfloor b_2 \rfloor \big] & \text{si } 0 < \vec{q}_{n-1}, \vec{q}_n, \\
+		\big[ \lceil b_2 \rceil, \lfloor b_1 \rfloor \big] & \text{si } \vec{q}_{n-1}, \vec{q}_n < 0, \\
+		\big[ \lceil \max\lbrace b_1 ,  b_2 \rbrace \rceil, \infty \big) & \text{si } \vec{q}_{n-1}
+		< 0 < \vec{q}_n, \\
+		\big( -\infty, \lfloor \min\lbrace b_1, b_2\rbrace \rfloor \big] & \text{si } \vec{q}_n < 0
+		< \vec{q}_{n-1}.
 	\end{cases}
 \end{equation}
 
-Como supusimos que el problema es factible, existe un vector de parámetros $\vec{t} \in \Z^{n-1}$
-que satisface las desigualdades (\ref{phase-1:eq:param-bound}) y (\ref{phase-1:eq:feasible-param}) y
-por lo tanto que provee una solución al problema (\ref{theory:formulation}). Para encontrar estos
-parámetros, usamos la técnica de \textit{backtracking}, en donde hacemos una elección de $t_1,
-\ldots, t_{n-2} \in \Z$ que satisfagan (\ref{phase-1:eq:param-bound}) y determinamos si existe
-$t_{n-1} \in \Z$ que satisfaga (\ref{phase-1:eq:feasible-param}). En caso de que no exista tal
-parámetro, cambiamos nuestra elección de $t_1, \ldots, t_{n-2}$. Ciertamente la decisión más simple
-es realizar el cambio $t_{n-2} \leftarrow t_{n-2} - 1$. Cabe destacar que si los signos de $q_{n-1}$
-y $q_n$ son distintos, entonces no es necesario realizar \textit{backtracking}, pues el algoritmo
-termina en la primera iteración. Independientemente del caso, eventualmente obtendremos un vector de
-parámetros $\vec{t}$ que satisfaga las desigualdades necesarias y, por lo tanto, eventualmente
-obtendremos un punto entero óptimo.
+\begin{lemma}
+	Existe un vector $\vec{t} \in \Z^{n-1}$ que satisface ambos (\ref{eq:param-lb}) y
+	(\ref{eq:feasible-param}).
+\end{lemma}
+\begin{proof}
+\end{proof}
+
+\begin{theorem}
+	El problema (\ref{theory:formulation}) se puede resolver a través de encontrar la solución de
+	$n$ ecuaciones lineales diofantinas en dos incógnitas.
+\end{theorem}
+
+\section{Múltiples restricciones}
+\noindent
+Ahora consideremos el problema
+\begin{subequations}
+	\label{formulation:multiple}
+	\begin{align}
+		\max_{\vec{x} \in \Z^n} \quad
+			& \vec{p}^T\vec{x}, \label{formulation:multiple:objective} \\
+		\text{s.a.} \quad
+			& \vec{p}^T\vec{x} \leq u, \label{formulation:multiple:constraint:budget} \\
+			& A\vec{p} \leq \vec{b}, \label{formulation:multiple:constraints} \\
+			& \vec{x} \geq \vec{0}. \nonumber
+	\end{align}
+\end{subequations}
+% TODO: mencionar que ahora la solución no necesariamente se encuentra en la \eta-ésima
+% capa entera. Mostrar un contraejemplo. La dificultad en este caso infinito radica
+% en que no hay manera de descender a la siguiente capa.
+
+Seguiremos la misma lógica que en la sección pasada en cuanto a resolver ecuaciones lineales
+diofantinas. No obstante, esto lo haremos para establecer una relación lineal entre $\vec{x} \in
+\Z^n$ y $\vec{t} \in \Z^{n-1}$. Si procedemos de aquella forma y nos enfocamos en la $k$-ésima capa
+entera con $k \leq \eta$, podremos, en primer lugar, deshacernos de la restricción presupuestaria y,
+en segundo lugar, de reducir el problema (\ref{formulation:multiple}) a uno de factibilidad.
+
+% TODO: arreglar párrafo: la relación es inducida, no se ha establecido ninguna hasta el momento
+Como mencionamos, deseamos expresar al $x = (x_1, \ldots, x_n)$ como una transformación lineal del
+vector de parámetros $t \coloneq (t_1, \ldots, t_{n-1})$. Para ello, debemos encontrar una forma
+cerrada a la relación de recurrencia obtenida en \ref{eq:recurrence}:
+\begin{equation}
+	\label{eq:omega-recurrence}
+	\begin{cases}
+		\omega_1 &= k, \\
+		\omega_{i + 1} &= \omega_i \cdot \omega_{i + 1}^{(0)} - \frac{q_i}{\prod_{j=1}^{i}g_j} \cdot t_i.
+	\end{cases}
+\end{equation}
+
+\begin{lemma}
+	La forma cerrada de la relación de recurrencia (\ref{eq:omega-recurrence}) está dada por
+	\begin{equation}
+		\label{eq:omega-formula}
+		\omega_i = k \cdot \prod_{j=2}^{i} \omega_j^{(0)} -
+				 \sum_{j=1}^{i - 1}\frac{q_j}{\prod_{\ell=1}^{j}g_\ell} \cdot
+				 \prod_{\ell=j+2}^{i}\omega_\ell^{(0)} \cdot t_j.
+	\end{equation}
+	Donde, por conveniencia, asignamos el valor de cero a la suma vacía y el valor de uno al
+	producto vacío.
+\end{lemma}
+\begin{proof}
+\end{proof}
+
+Por simpleza, definimos los coeficientes $a_{ij} \in \mathbb{Z}$ con $j < i$ como
+\begin{equation}
+	\label{phase-2:eq:coeffs}
+	a_{ij} \coloneq \frac{q_j}{\prod_{\ell = 1}^{j}g_\ell} \cdot \prod_{\ell = j +
+	2}^{i}\omega_\ell^{(0)}.
+\end{equation}
+Así pues, juntando esto último con \ref{eq:recurrence}, obtenemos para $i \in \{1, \ldots, n -
+2\}$, 
+\begin{align}
+	x_i &= w_i \cdot x_i^{(0)} + g_{i + 1}t_i \nonumber \\
+		&= k \cdot \prod_{j=2}^{i}\omega_j^{(0)} \cdot x_i^{(0)} - \sum_{j=1}^{i - 1}a_{ij}x_i^{(0)}
+		t_j + g_{i + 1}t_i \label{eq:x:i}.
+\end{align}
+Similarmente, sustituyendo en \ref{eq:last-solution},
+\begin{align}
+	x_{n-1} &= k \cdot \prod_{j=2}^{n-1} \omega_j^{(0)} \cdot x_{n-1}^{(0)} - \sum_{j=1}^{n-2}
+	a_{n-1,j}x_{n-1}^{(0)} t_j + \frac{q_n}{\prod_{j=1}^{n-2}g_j} t_{n-1}, \label{eq:x:-1}\\
+	x_{n} &= k \cdot \prod_{j=2}^{n-1} \omega_j^{(0)} \cdot x_{n}^{(0)} - \sum_{j=1}^{n-2}a_{n,j}x_n^{(0)}t_j -
+	\frac{q_{n-1}}{\prod_{j=1}^{n-2} g_j}t_{n-1} \label{eq:x:last}.
+\end{align}
+
+Ahora tenemos todos los elementos para expresar a $\vec{x}$ como una transformación lineal de
+$\vec{t}$. Definimos $\vec{\omega}' \in \Z^n$ como
+\begin{equation}
+	\label{eq:vec-omega}
+	\vec{\omega}_i \coloneq \vec{x}_i' \cdot \prod_{j = 2}^{\min{\lbrace i, n - 1 \rbrace}}\omega_j'.
+\end{equation}
+Similarmente, definimos la matriz $T \in \Z^{n \times (n - 1)}$ como
+\begin{equation}
+	\label{eq:mat-T}
+	T_{ij} \coloneq \begin{cases}
+		a_{ij}x_i', &\quad j < i, \\
+		g_{i + 1},  &\quad i = j < n - 1, \\
+		\frac{q_n}{\prod_{k=1}^{n-2}g_k}, &\quad i = j = n - 1, \\
+		-\frac{q_{n-1}}{\prod_{k=1}^{n-2}g_k}, &\quad i = n, j = n - 1, \\
+		0, &\quad \text{e.o.c.}.
+	\end{cases}
+\end{equation}
+
+Así pues, de (\ref{eq:x:i}), (\ref{eq:x:-1}) y (\ref{eq:x:last}), encontramos que
+\begin{equation}
+	\label{eq:transf}
+	\vec{x} = k\vec{\omega}' - T\vec{t}.
+\end{equation}
+Por lo tanto, de la restricción (\ref{formulation:multiple:constraints}) obtenemos
+\begin{equation}
+	A\vec{x} \leq \vec{b} \iff AT\vec{t} \geq kA\vec{\omega}' - \vec{b}.
+\end{equation}
+De esta manera, encontramos que el problema (\ref{formulation:multiple}) es equivalente a
+\begin{subequations}
+	\label{formulation:lattice}
+	\begin{align}
+		\max_{k \in \Z, \vec{t} \in \Z^{n-1}}
+			& k, \\
+		\text{s.a.} \quad
+			& AT\vec{t} \geq kA\vec{\omega}' - \vec{b}, \\
+			& \vec{t}_i \geq \left\lceil \frac{-\vec{\omega}_i'}{g_{i + 1}} \right\rceil \\
+			& k \leq \eta. \nonumber
+	\end{align}
+\end{subequations}
+En este caso, el vector objetivo es ortogonal a la última restricción.
+
+% XXX: esto es experimental
+Supongamos, sin pérdida de generalidad que $A$ tiene $m$ renglones linealmente independientes. De
+\cite{alex} sabemos que $A$ tiene una forma normal de Hermite, de manera que $[B, 0] \coloneq AU$ es una
+matriz no singular, donde $U \in \Z^{n \times n}$ es una matriz unimodular. Del Corolario 5.3b de
+\cite{alex}, deducimos que si $k$ es el máximo entero que satisface
+\begin{align}
+	k &\leq \eta, \\
+	B^{-1}\left(k A\vec{\omega}' - \vec{b}\right) \in \Z^m,
+\end{align}
+entonces podemos definir
+\begin{equation}
+	\vec{\tilde{y}} \coloneq U\begin{pmatrix}
+		\inv{B}\left(kA\vec{\omega}' - \vec{b}\right)
+		\\ 0
+	\end{pmatrix} \in \Z^n.
+\end{equation}
+Observemos que se satisface $A\vec{\tilde{y}} = kA\vec{\omega} - \vec{b}$. Finalmente, nos
+encontramos con un problema de factibilidad
+\begin{align*}
+	T\vec{t} = \vec{\tilde{y}}, \\
+	\vec{t}_i \geq \left\lceil -\frac{\vec{\omega}_i'}{g_{i + 1}} \right\rceil.
+\end{align*}
