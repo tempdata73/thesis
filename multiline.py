@@ -3,47 +3,7 @@ import pulp
 import numpy as np
 
 from time import perf_counter_ns
-
-
-# math module has not yet implemented a sign function
-# see (https://bugs.python.org/msg59154)
-sign = lambda x: int(math.copysign(1.0, x))  # noqa: E731
-
-
-def _bezout(a: int, b: int) -> tuple[int, int]:
-    sgn_a, sgn_b = sign(a), sign(b)
-    a, b = abs(a), abs(b)
-
-    prev_r, r = a, b
-    prev_x, x = 1, 0
-    prev_y, y = 0, 1
-
-    while r != 0:
-        q = prev_r // r
-
-        prev_r, r = r, prev_r - q * r
-        prev_x, x = x, prev_x - q * x
-        prev_y, y = y, prev_y - q * y
-
-    return sgn_a * prev_x, sgn_b * prev_y
-
-
-def bezout(integers: list[int]) -> list[int]:
-    a, b = integers[0], integers[1]
-    x, y = _bezout(a, b)
-
-    coeffs: list[int] = [x, y]
-    for i in range(2, len(integers)):
-        a = a * x + b * y
-        b = integers[i]
-        x, y = _bezout(a, b)
-
-        for j in range(i):
-            coeffs[j] *= x
-
-        coeffs.append(y)
-
-    return coeffs
+from utils import bezout_2d
 
 
 def solve_pulp(p, s, num_iter=100):
@@ -75,7 +35,7 @@ def solve_pulp(p, s, num_iter=100):
 
 def feasible_point_finite(c_p, eta):
     if len(c_p) == 2:
-        x_prime, y_prime = _bezout(c_p[0], c_p[1])
+        x_prime, y_prime = bezout_2d(c_p[0], c_p[1])
         lb = math.ceil(-eta  * x_prime / c_p[1])
         ub = math.floor(eta * y_prime / c_p[0])
 
@@ -87,7 +47,7 @@ def feasible_point_finite(c_p, eta):
         return (x.item(), y.item())
 
     g = math.gcd(*c_p[1:])
-    x_prime, omega_prime = _bezout(c_p[0], g)
+    x_prime, omega_prime = bezout_2d(c_p[0], g)
 
     # bounds for feasible parameters
     lb = math.ceil(-eta * x_prime / g)
@@ -105,7 +65,7 @@ def feasible_point_finite(c_p, eta):
 
 def feasible_point_infinite(c_p, eta):
     if len(c_p) == 2:
-        x_prime, y_prime = _bezout(c_p[0], c_p[1])
+        x_prime, y_prime = bezout_2d(c_p[0], c_p[1])
 
         # cases for bounds depending on the signs of c_p
         bound_1 = -eta * x_prime / c_p[1]
@@ -142,7 +102,7 @@ def feasible_point_infinite(c_p, eta):
         return (x.item(), y.item())
 
     g = math.gcd(*c_p[1:])
-    x_prime, omega_prime = _bezout(c_p[0], g)
+    x_prime, omega_prime = bezout_2d(c_p[0], g)
 
     # only lower bounds are needed
     lb = math.ceil(-eta * x_prime / g)
