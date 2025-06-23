@@ -4,7 +4,9 @@
 
 \section{Una restricción presupuestaria}
 \noindent
-Los puntos enteros que se encuentran en la $\eta$-ésima capa entera satisfacen la ecuación lineal
+De acuerdo al Teorema \ref{theory:th:feasibility}, las soluciones del problema
+(\ref{theory:formulation}) se encuentran en la $\eta$-ésima capa entera. Así, los puntos enteros que
+se encuentran sobre esa capa satisfacen la ecuación lineal diofantina
 diofantina
 \begin{equation}
 	\label{eq:dioph}
@@ -29,7 +31,7 @@ Observemos que
 \begin{equation*}
 	\gcd{\frac{\vec{q}_1}{g_1}, g_2}
 	= \gcd{\frac{\vec{q}_1}{g_1}, \gcd{\frac{\vec{q}_2}{g_1}, \ldots, \frac{\vec{q}_n}{g_1}}}
-	= \gcd{\vec{q}_1, \vec{q}_2, \ldots, \vec{q}_n} = 1.
+	= \gcd{\frac{\vec{q}_1}{g_1}, \frac{\vec{q}_2}{g_1}, \ldots, \frac{\vec{q}_n}{g_1}} = 1.
 \end{equation*}
 Por lo tanto, existen soluciones enteras para todo $\omega_1 \in \Z$. Como $\vec{q}_1/g_1$ y $g_2$
 son coprimos, encontramos que sus coeficientes de Bézout asociados (c.f. Definición
@@ -59,7 +61,8 @@ Para el siguiente paso de la recursión fijamos $t_1$ y resolvemos la ecuación
 	\frac{\vec{q}_n}{g_2 \cdot g_1}\vec{x}_n
 	= \omega_2.
 \end{equation}
-Como $g_2 = \gcd{\vec{q}_2/g_1, \ldots, \vec{q}_n}$, sabemos del Corolario \ref{prerreq:cor:gcd} que
+Como $g_2 = \gcd{\vec{q}_2/g_1, \ldots, \vec{q}_n/g_1}$, sabemos del Corolario \ref{prerreq:cor:gcd}
+que
 \begin{equation*}
 	\gcd{\frac{\vec{q}_2}{g_2 \cdot g_1}, \ldots, \frac{\vec{q}_n}{g_2 \cdot g_1}} = 1.
 \end{equation*}
@@ -129,7 +132,7 @@ están dadas por
 \end{equation}
 Para que ahora se satisfagan las condiciones de no negatividad de $\vec{x}_{n-1}$ y de $\vec{x}_n$,
 encontramos que la variable libre $t_{n-1} \in \Z$ debe cumplir ciertas desigualdades según los
-signos de $q_{n-1}$ y de $q_n$. Definamos, por conveniencia,
+signos de $\vec{q}_{n-1}$ y de $\vec{q}_n$. Definamos, por conveniencia,
 \begin{equation}
 	\label{eq:lr-bounds}
 	b_1 \coloneq -\frac{\omega_{n-1}x_{n-1}'}{\vec{q}_n} \cdot \prod_{j=1}^{n-1}g_j,
@@ -239,13 +242,21 @@ $\vec{t}$, entonces $\vec{x}$ es una solución entera no negativa. Observemos qu
 los vectores $\vec{t}$ y $\vec{x}$ simúltaneamente. De esta manera, obtenemos el siguiente Teorema.
 
 \begin{theorem}
+	\label{infinite:th:complexity}
 	El problema (\ref{theory:formulation}) se puede resolver a través de encontrar la solución de
 	una ecuación lineal diofantina en $n$ incógnitas.
 \end{theorem}
 
 \section{Múltiples restricciones}
 \noindent
-Ahora consideremos el problema
+En esta sección hacemos una discusión extensiva sobre la dificultad de agregar más restricciones al
+problema (\ref{theory:formulation}). El autor considera que es de suma importancia mostrar los
+``puntos débiles'' en lo que llevamos construido de teoría hasta este punto. A causa de la falta de
+resultados fuertes y concretos, creemos que es sensato hacer el estilo de esta discusión más
+relajado y un tanto informal.
+
+Sea $A \in \Q^{m \times n}$ una matriz racional con renglones linealmente independientes y sea $b
+\in \Q^m$ un vector. Consideremos el problema
 \begin{subequations}
 	\label{formulation:multiple}
 	\begin{align}
@@ -253,15 +264,22 @@ Ahora consideremos el problema
 			& \vec{p}^T\vec{x}, \label{formulation:multiple:objective} \\
 		\text{s.a.} \quad
 			& \vec{p}^T\vec{x} \leq u, \label{formulation:multiple:constraint:budget} \\
-			& A\vec{p} \leq \vec{b}, \label{formulation:multiple:constraints} \\
+			& A\vec{p} = \vec{b}, \label{formulation:multiple:constraints} \\
 			& \vec{x} \geq \vec{0}. \nonumber
 	\end{align}
 \end{subequations}
+En el caso donde solamente estaba presente la restricción presupuestaria, encontramos una relación
+entre el vector de soluciones $\vec{x} \in \Z^n$ y el vector de variables libres $\vec{t} \in
+\Z^{n-1}$. Hemos manejado esta relación de manera recursiva. En la primera parte de esta sección
+buscamos exhibir una transformación afina entre estos dos vectores. A partir de ello, plantearemos
+un problema de maximización sobre $\vec{t}$ y analizaremos cómo su solución se relaciona con la de
+este problema más general.
+
 Nuevamente, añadimos la condición de que $\vec{p}$ sea esencialmente entero y dejamos que $\vec{q}$
-sea su múltiplo coprimo con $\vec{q}_i < 0$ para alguna $i \in \lbrace 2, \ldots, n \rbrace$.
-Ciertamente, la solución ahora no se encuentra necesariamente en la $\eta$-ésima capa entera. Por
-ejemplo, si dejamos que $A \coloneq \vec{q}^T$ y $b \coloneq u - m$, la solución se encontrará en la
-$\xi$-ésima capa entera, donde
+sea su múltiplo coprimo con $\vec{q}_i < 0$ para alguna $i \in \lbrace 2, \ldots, n \rbrace$. De
+ahora en adelante, nos concentramos en $\vec{q}$ en vez de $\vec{p}$. Ciertamente, la solución no se
+encuentra necesariamente en la $\eta$-ésima capa entera. Por ejemplo, si dejamos que $A \coloneq
+\vec{q}^T$ y $b \coloneq u - m$, la solución se encontrará en la $\xi$-ésima capa entera, donde
 \begin{equation*}
 	\xi \coloneq \left\lfloor \frac{u}{m} - 1 \right\rfloor < \eta.
 \end{equation*}
@@ -269,10 +287,9 @@ No obstante, si el problema (\ref{formulation:multiple}) es factible, sabemos qu
 encontrará en alguna capa entera con parámetro $k \in \lbrace \eta, \eta - 1, \ldots \rbrace$, pues
 todavía contamos con una restricción presupuestaria que se debe satisfacer.
 
-En esta sección buscamos establecer una relación lineal entre $\vec{t}$ y $\vec{x}$ que nos permita
-deshacernos de la restricción presupuestaria y reducir la dimensión del problema tanto en dimensión
-como en número de restricciones. Para ello, nos fijamos en la $k$-ésima capa entera y resolvemos 
-la ecuación lineal diofantina
+En primer lugar, buscamos establecer una relación lineal entre $\vec{t}$ y $\vec{x}$ que permita
+deshacernos de la restricción presupuestaria. Para ello, nos fijamos en la $k$-ésima capa entera y
+resolvemos la ecuación lineal diofantina
 \begin{equation*}
 	\vec{q}_1\vec{x}_1 + \cdots \vec{q}_n\vec{x}_n = k.
 \end{equation*}
@@ -296,6 +313,8 @@ descubrimos una relación de recurrencia que los coeficientes $\omega_i$ deben s
 		- \sum_{j=1}^{i - 1}\frac{\vec{q}_j}{\prod_{\ell=1}^{j}g_\ell}
 		\cdot \prod_{\ell=j+2}^{i}\omega_\ell' \cdot t_j.
 	\end{equation}
+	Donde, por conveniencia, le asignamos el valor de 0 a la suma vacía y el valor de 1 al producto
+	vacío.
 \end{lemma}
 \begin{proof}
 	Lo demostramos inductivamente. Observemos que
@@ -374,19 +393,54 @@ También definimos la matriz $M \in \Z^{n \times (n - 1)}$ a través de
 		0, &\quad \text{e.o.c.}
 	\end{cases}
 \end{equation}
-De (\ref{eq:x:i}) y (\ref{eq:x:last}) obtenemos
+De (\ref{eq:x:i}) y (\ref{eq:x:last}) encontramos que
 \begin{equation}
 	\label{eq:transf}
 	\vec{x} = k\vec{\omega} - M\vec{t}.
 \end{equation}
+Observemos que $M$ es triangular inferior cuya diagonal principal es distinta de cero. A partir de
+ello, deducimos que sus columnas son linealmente independientes. Por lo tanto, la colección de
+hiperplanos afinos
+\begin{equation*}
+	\lbrace k\vec{\omega} - M\vec{t} \vcentcolon t \in \Z^{n-1}, k \in \Z \rbrace
+\end{equation*}
+es una cubierta de $\Z^n$.
 
-Consecuentemente, de la restricción (\ref{formulation:multiple:constraints}) obtenemos
+Nos gustaría establecer un problema de maximización sobre $\vec{t}$ que sea equivalente a
+(\ref{formulation:multiple}). Es decir, nos gustaría proponer una proposición que diga que $\vec{t}$
+es solución de este problema hipótetico si y solo si $\vec{x} \coloneq k\vec{\omega} - M\vec{t}$ es
+solución de \ref{formulation:multiple}. Y es aquí donde nos encontramos con nuestra primera barrera.
+Ciertamente, de la restricción (\ref{formulation:multiple:constraints}) obtenemos
+\begin{equation*}
+	A\vec{x} = \vec{b} \iff AT\vec{t} = kA\vec{\omega} - \vec{b},
+\end{equation*}
+así que esta multitud de $m$ restricciones no constituye el meollo del asunto.
+
+En realidad, la dificultad se encuentra en la demostración del Lema \ref{lemma:t-existence}. Fuimos
+capaces de determinar una condición suficiente para asegurar que los intervalos $[\lceil b_1 \rceil,
+\lfloor b_2 \rfloor]$ o $[\lceil b_2 \rceil, \lfloor b_1 \rfloor]$ estén bien definidos, según los
+signos de $\vec{q}_{n-1}$ y $\vec{q}_n$. Sin embargo, esta condición no es necesaria. De esta manera
+existen vectores $\vec{x}$ no negativos sobre la $k$-ésima capa entera, pero que provienen de
+vectores $\vec{t}$ que no satisfacen ambos (\ref{eq:param-lb}) y (\ref{eq:feasible-param}). Es
+decir, tenemos
 \begin{equation}
-	A\vec{x} \leq \vec{b} \iff AT\vec{t} \geq kA\vec{\omega} - \vec{b}.
+	\label{eq:multiple:strict-subset}
+	\lbrace k\vec{\omega} - M\vec{t} \vcentcolon \vec{t} ~\text{satisface \ref{eq:param-lb} y
+	\ref{eq:feasible-param}} \rbrace
+	\subset \lbrace \vec{x} \vcentcolon \vec{x} \geq \vec{0} \rbrace.
 \end{equation}
-Dependiendo de los signos de $\vec{q}_{n-1}$ y de $\vec{q}_n$ (c.f. \ref{eq:feasible-param})
-obtenemos un problema de maximización equivalente a (\ref{formulation:multiple}). Por ejemplo, si
-$\vec{q}_{n-1} < 0 < \vec{q}_n$, el problema equivalente es
+Cabe resaltar que esta dificultad se encuentra en dos de los cuatro casos. A saber, esta primera
+barrera existe si $0 < \vec{q}_{n - 1}, \vec{q}_n$ o bien $\vec{q}_n,\vec{q}_{n-1} < 0$. Una
+manera de circunnavegar la situación en el primer caso es permutar $\vec{q}_{n-1}$ con $\vec{q}_j <
+0$, donde $j \in \lbrace 2, \ldots n - 2\rbrace$. Este elemento existe porque alguna entrada
+$\vec{q}$ debe ser negativa. Desafortunadamente, esta estrategia no es necesariamente válida para el
+segundo caso.
+
+Supongamos, empero, que somos capaces de deshacernos de este limitante y de alguna manera
+establecemos la igualdad de los conjuntos en (\ref{eq:multiple:strict-subset}). Dependiendo de los
+signos de $\vec{q}_{n-1}$ y de $\vec{q}_n$ (c.f. \ref{eq:feasible-param}) obtenemos un problema de
+maximización equivalente a (\ref{formulation:multiple}). Por ejemplo, si $\vec{q}_{n-1} < 0 <
+\vec{q}_n$, el problema equivalente es
 \begin{subequations}
 	\label{formulation:lattice}
 	\begin{align}
@@ -394,43 +448,77 @@ $\vec{q}_{n-1} < 0 < \vec{q}_n$, el problema equivalente es
 			& k, \\
 		\text{s.a.} \quad
 			& k \leq \eta, \label{lattice:c-layer} \\
-			& AM\vec{t} \geq kA\vec{\omega}' - \vec{b}, \label{lattice:constraints} \\
+			& AM\vec{t} = kA\vec{\omega}' - \vec{b}, \label{lattice:constraints} \\
 			& \vec{t}_i \geq \left\lceil \frac{-\vec{\omega}_i'}{g_{i + 1}} \right\rceil, \quad
 			\forall i \in \lbrace 1, \ldots, n - 2 \rbrace, \label{lattice:pos-1} \\
 			& \vec{t}_{n - 1} \geq \left\lceil \max\lbrace b_1, b_2 \rbrace \right\rceil,
-			\label{lattice:pos-2},
+			\label{lattice:pos-2}
 	\end{align}
 \end{subequations}
 donde $b_1$ y $b_2$ están definidos en (\ref{eq:lr-bounds}). Podemos decir un par de cosas acerca de
-este nuevo problema. La primera restricción corresponde a la restricción presupuestaria, y todavía es
-ortogonal al vector objetivo. El politopo generado por la segunda restricción parece ser que es
-dilatado o expandido en función de $k$. Naturalmente, las direcciones en donde se dilata y donde se
-expande depende de los coeficientes de la matriz de restricciones $A$. Finalmente, las últimas dos
-restricciones, como lo hemos mostrado en el Lema \ref{lemma:t-existence}, son suficientes para
-asegurar no negatividad de $\vec{x}$.
+este nuevo problema. La primera restricción corresponde a la restricción presupuestaria, y la
+ortogonalidad todavía se mantiene con respecto al vector objetivo. El politopo generado por la
+segunda restricción parece ser que es dilatado o expandido en función de $k$. Naturalmente, las
+direcciones donde se dilata y donde se expande dependen de los coeficientes de la matriz de
+restricciones $A$. Finalmente, las últimas dos restricciones, como lo hemos mostrado en el Lema
+\ref{lemma:t-existence}, son suficientes para asegurar no negatividad de $\vec{x}$.
 
-A pesar de que sigamos teniendo una restricción ortogonal al vector objetivo, esta parece ser más
-fácil de manejar.
+Recordemos que $A$ tiene $m$ renglones independientes. Supongamos, sin pérdida de generalidad, que
+$A$ es una matriz entera, al igual que $\vec{b}$ es un vector entero. La estrategia que emplearemos
+para resolver el problema (\ref{formulation:lattice}) será desacoplarlo y resolverlo de manera
+jerárquica. Primero resolvemos el problema de maximización
+\begin{subequations}
+	\label{subformulation:lattice}
+	\begin{align}
+		\max_{k \in \Z}
+			& ~ k, \\
+		\text{s.a.} \quad
+		k &\leq \eta, \\
+			A\tilde{\vec{y}} &= kA\vec{\omega} - \vec{b}.
+	\end{align}
+\end{subequations}
+Luego, dada la solución $k \in \Z$, buscamos resolver el problema de factibilidad
+\begin{subequations}
+	\label{subformulation:feasibility}
+	\begin{align}
+		M\vec{t} &= \tilde{\vec{y}}, \\
+		\vec{t}_i &\geq \left\lceil \frac{-\vec{\omega}_i'}{g_{i + 1}} \right\rceil, \quad
+		\forall i \in \lbrace 1, \ldots, n - 2 \rbrace, \\
+		\vec{t}_{n - 1} &\geq \left\lceil \max\lbrace b_1, b_2 \rbrace \right\rceil,
+	\end{align}
+\end{subequations}
 
-% XXX: esto es experimental
-Supongamos, sin pérdida de generalidad que $A$ tiene $m$ renglones linealmente independientes. De
-\cite{alex} sabemos que $A$ tiene una forma normal de Hermite, de manera que $[B, 0] \coloneq AU$ es una
-matriz no singular, donde $U \in \Z^{n \times n}$ es una matriz unimodular. Del Corolario 5.3b de
-\cite{alex}, deducimos que si $k$ es el máximo entero que satisface
-\begin{align}
-	k &\leq \eta, \\
-	B^{-1}\left(k A\vec{\omega}' - \vec{b}\right) \in \Z^m,
-\end{align}
-entonces podemos definir
+De \cite{alex} sabemos que $A$ tiene una forma normal de Hermite, de manera que $[B, 0] \coloneq AU$
+es una matriz triangular inferior no singular, y $U \in \Z^{n \times n}$ es una matriz unimodular.
+Definamos el conjunto
+\begin{equation}
+	\label{eq:multiple:feasible}
+	K \coloneq \lbrace k \in \Z \vcentcolon \inv{B}\left(k A\vec{\omega}' - \vec{b}\right) \in \Z^m
+	\rbrace \cap \lbrace k \in \Z \vcentcolon k \leq \eta \rbrace.
+\end{equation}
+Del Corolario 5.3b de \cite{alex} deducimos que si $K$ es vacío, entonces el problema
+(\ref{subformulation:lattice}) es infactible y, por lo tanto, (\ref{formulation:lattice}) también lo
+es. En caso contrario, dejamos que $k$ sea el elemento maximal de $K$ y definimos
 \begin{equation}
 	\vec{\tilde{y}} \coloneq U\begin{pmatrix}
 		\inv{B}\left(kA\vec{\omega}' - \vec{b}\right)
-		\\ 0
-	\end{pmatrix} \in \Z^n.
+		\\ \vec{0}_{n - m}
+	\end{pmatrix}.
 \end{equation}
-Observemos que se satisface $A\vec{\tilde{y}} = kA\vec{\omega} - \vec{b}$. Finalmente, nos
-encontramos con un problema de factibilidad
-\begin{align*}
-	T\vec{t} = \vec{\tilde{y}}, \\
-	\vec{t}_i \geq \left\lceil -\frac{\vec{\omega}_i'}{g_{i + 1}} \right\rceil.
-\end{align*}
+Observemos que $\tilde{\vec{y}} \in \Z^n$ y, además, se verifica $A\vec{\tilde{y}} = kA\vec{\omega}
+- \vec{b}$. De esta manera, $k \in \Z$ es solución de (\ref{subformulation:lattice}).
+
+Ahora bien, nos enfocamos en el problema de factibilidad (\ref{subformulation:feasibility}).
+Recordemos que $M \in \Z^{n \times (n - 1)}$ es una matriz triangular inferior. Así, podemos
+resolver las primeras $n - 1$ ecuaciones de $M\vec{t} = \vec{\tilde{y}}$ de la misma forma que se
+resuelve todo sistema triangular. Si encontramos que $\vec{t}_i$.
+
+\section{Análisis de resultados}
+\noindent
+Una consecuencia del Teorema \ref{infinite:th:complexity} es que la complejidad algoritmítica del
+problema (\ref{theory:formulation}) es lineal en la dimensión $n$ siempre y cuando $\vec{q}_i < 0$
+para alguna $i \in \lbrace 2, \ldots, n\rbrace$. En esta sección describimos un algoritmo cuyo
+tiempo de terminación es $\mathcal{O}(n)$. A través de los resultados obtenidos previamente, somos
+capaces de mostrar que nuestro algoritmo es correcto. Finalmente, implementamos nuestro algoritmo en
+el lenguaje de programación Python y comparamos sus tiempos de terminación con los de la
+implementación de Ramificación y Acotamiento en la librería PuLP. 
