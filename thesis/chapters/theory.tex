@@ -170,7 +170,6 @@ por lo que $(c' \cdot x', c' \cdot y')$ es una solución particular de la ecuaci
 
 \subsection{Programación lineal}
 
-
 \section{Fundamentos}
 \noindent
 Esta sección constituye el primer paso para la construcción de nuestro algoritmo. Se divide en dos
@@ -297,9 +296,8 @@ sorprendentemente, esa familia forma una cobertura de $\Z^n$, como lo indica el 
 \end{theorem}
 
 Pasemos a considerar el programa lineal (\ref{theory:formulation}) donde $\vec{p}$ es un vector
-esencialmente entero y $\vec{q}$ es su múltiplo coprimo. Supongamos que $\vec{p}_i \neq 0$ para todo
-$i \in \lbrace 1, \ldots, n \rbrace$, por lo que también se cumple que $\vec{q}_i \neq 0$. Comúnmente
-a la función objetivo (\ref{theory:objective}) le daremos el nombre de utilidad y a la restricción
+esencialmente entero y $\vec{q}$ es su múltiplo coprimo. Comúnmente a la función objetivo
+(\ref{theory:objective}) le daremos el nombre de utilidad y a la restricción
 (\ref{theory:constraint:budget}) la llamaremos restricción presupuestaria, así como presupuesto al
 lado derecho de esta restricción.
 \begin{observation}
@@ -392,9 +390,14 @@ descendemos a la $(\eta - 1)$-ésima capa entera y buscamos puntos enteros no ne
 			$\vec{q}^T\vec{x} = \eta$. Definamos los siguientes conjuntos de índices
 			\begin{equation*}
 				I^+ \coloneq \lbrace i \vcentcolon q_i > 0 \rbrace,
-				\quad I^- \coloneq \lbrace i \vcentcolon q_i < 0 \rbrace.
+				\quad I^\circ \coloneq \lbrace \ell \vcentcolon q_\ell = 0 \rbrace.
+				\quad I^- \coloneq \lbrace j \vcentcolon q_j < 0 \rbrace.
 			\end{equation*}
-			Cabe resaltar que estos dos conjuntos forman una partición de $\lbrace 1, \ldots,
+			Podemos suponer sin pérdida de generalidad que $I^\circ$ es vacío. En efecto, si $x_\ell
+			< 0$ para algún $\ell \in I^\circ$, al redefinir $x_\ell \leftarrow 0$ se satisface
+			$\vec{q}^T\vec{x} = \eta$.
+
+			Entonces, ambos conjuntos $I^+$ e $I^-$ forman una partición de $\lbrace 1, \ldots,
 			n\rbrace$. Podemos escoger escalares positivos $c_1, \ldots, c_n$ que satisfagan
 			simultáneamente
 			\begin{align}
@@ -452,34 +455,6 @@ descendemos a la $(\eta - 1)$-ésima capa entera y buscamos puntos enteros no ne
 			Entonces la $k$-ésima capa entera contiene un número finito de puntos factibles.
 	\end{enumerate}
 \end{proof}
-% TODO: hay una expresión bonita para la expresión m\eta = m floor(u / m)
-\begin{corollary}
-	Si $\vec{q}_i < 0$ para algún $i \in \lbrace 2, \ldots, n \rbrace$, entonces el valor óptimo del
-	problema (\ref{theory:formulation}) es $m\eta$. Además, $\eta$ es el múltiplo de $m$ más grande
-	(en valor absoluto) que satisface $m\eta \leq u$.
-\end{corollary}
-\begin{proof}
-	Por el Teorema anterior sabemos que existen una infinidad de soluciones, así que sea $\vec{x}^*$
-	una de ellas. Entonces $\vec{q}^T\vec{x}^* = \eta$, pero $\vec{p} = m\vec{q}$, por lo que
-	obtenemos $\vec{p}^T\vec{x}^* = m\eta$.
-
-	Ahora bien, recordemos que $\eta = \lfloor u/m \rfloor$ por el Lema \ref{phase-1:lemma:eta}.
-	Supongamos que $\xi \in \Z$ satisface $m\xi \leq u$ y también $\lfloor u/m \rfloor < \xi$. Si $m
-	> 0$ encontramos que
-	\begin{equation*}
-		m\left\lfloor \frac{u}{m} \right\rfloor < m\xi \leq u
-		\implies \left\lfloor \frac{u}{m} \right\rfloor < \xi \leq \frac{u}{m},
-	\end{equation*}
-	pero esto contradice las propiedades de la función piso. Ahora bien, si $m < 0$, entonces
-	\begin{equation*}
-		\xi \geq \frac{u}{m} \geq \left\lfloor \frac{u}{m} \right\rfloor
-		\implies m\xi \leq u \leq m \left\lfloor \frac{u}{m} \right\rfloor \leq u,
-	\end{equation*}
-	lo que implica que $\xi$ no es el múltiplo más grande de $m$ que satisface $m\xi \leq u$.
-	Independientemente obtenemos una contradicción, por lo que debe ser el caso que, en efecto,
-	$\eta$ es el múltiplo más grande de $m$ que satisface $m\eta \leq u$.
-\end{proof}
-
 Concluimos este capítulo con lo siguiente. Suponiendo que el problema (\ref{theory:formulation})
 tiene solución, el Teorema \ref{theory:th:feasibility} nos sugiere dividir nuestro análisis en dos
 casos: uno donde $\vec{p}_i$ es negativo y por lo tanto hay una infinidad de soluciones en la
@@ -490,3 +465,848 @@ de las razones por las que el autor decidió ordenar de tal manera los casos: po
 sabemos exactamente dónde buscar la solución. Sobra decir que las técnicas que desarrollemos en el
 siguiente capítulo, el del caso infinito, serán de gran utilidad para analizar el caso más
 interesante.
+
+\subsection{Una ecuación lineal diofantina}
+\noindent
+De acuerdo al Teorema \ref{theory:th:feasibility}, las soluciones del problema
+(\ref{theory:formulation}) se encuentran en una capa entera $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$.
+Así, los puntos $\vec{x} \in \Z^n$ que se encuentran sobre esa capa satisfacen la ecuación lineal
+diofantina
+\begin{equation}
+	\label{eq:dioph}
+	\vec{q}^T\vec{x} = \vec{q}_1\vec{x}_1 + \vec{q}_2\vec{x}_2 + \cdots + \vec{q}_n\vec{x}_n = k.
+\end{equation}
+En la sección de Teoría de Números mostramos bajo qué condiciones existen soluciones a este tipo de
+ecuaciones y también cómo construirlas cuando solamente tenemos dos incógnitas. Partimos de la
+observación que podemos resolver recursivamente esta ecuación. Definamos, por conveniencia,
+$g_1 \coloneq \gcd{\vec{q}_1, \ldots, \vec{q}_n}$ y también $\omega_1 \coloneq k$. Como
+$\vec{q}$ es un vector coprimo, sabemos que $g_1 = 1$. Además, definamos
+\begin{equation*}
+	\omega_2 \coloneq \frac{\vec{q}_2}{g_2 \cdot g_1}\vec{x}_1 + \cdots + \frac{\vec{q}_n}{g_2 \cdot
+	g_1}\vec{x}_n,
+\end{equation*}
+donde $g_2 \coloneq \gcd{\vec{q}_2/g_1, \ldots, \vec{q}_n/g_1}$. Así, la ecuación (\ref{eq:dioph})es
+equivalente a
+\begin{equation}
+	\label{eq:dioph:first-step}
+	\frac{q_1}{g_1}\vec{x}_1 + g_2\omega_2 = \omega_1.
+\end{equation}
+Observemos que
+\begin{equation*}
+	\gcd{\frac{\vec{q}_1}{g_1}, g_2}
+	= \gcd{\frac{\vec{q}_1}{g_1}, \gcd{\frac{\vec{q}_2}{g_1}, \ldots, \frac{\vec{q}_n}{g_1}}}
+	= \gcd{\frac{\vec{q}_1}{g_1}, \frac{\vec{q}_2}{g_1}, \ldots, \frac{\vec{q}_n}{g_1}} = 1.
+\end{equation*}
+Por lo tanto, existen soluciones enteras para todo $\omega_1 \in \Z$. Como $\vec{q}_1/g_1$ y $g_2$
+son coprimos, encontramos que sus coeficientes de Bézout asociados (c.f. Definición
+\ref{prerreq:def:bezout}) $x_1', \omega_2'$ son soluciones particulares de la ecuación
+\begin{equation*}
+	\frac{q_1}{g_1}\vec{x}_1 + g_2\omega_2 = 1.
+\end{equation*}
+Deducimos que las soluciones de la ecuación (\ref{eq:dioph:first-step}) están dadas por
+\begin{equation*}
+	\begin{cases}
+		\vec{x}_1 = \omega_1x_1' + g_2t_1, \\
+		\omega_2 = \omega_1\omega_2' - \frac{q_1}{g_1}t_1,
+	\end{cases}
+\end{equation*}
+donde $t_1 \in \Z$ es una variable libre.
+
+\begin{observation}
+	Los coeficientes de Bézout $x_1'$ y $\omega_2'$ dependen exclusivamente de $\vec{q}$ y no del
+	punto $\vec{x}$. En efecto, $x_1'$ está asociado a $\vec{q}_1/g_1$ y $\omega_2'$ está asociado a
+	$g_2$. Pero ambos $g_1$ y $g_2$ son el máximo común divisor de $\vec{q}_1, \ldots \vec{q}_n$ y
+	$\vec{q}_1/g_1, \ldots, \vec{q}_n/g_1$, respectivamente. 
+\end{observation}
+
+Para el siguiente paso de la recursión fijamos $t_1$ y resolvemos la ecuación
+\begin{equation}
+	\label{eq:dioph:second-step}
+	\frac{\vec{q}_2}{g_2 \cdot g_1}\vec{x}_2 +
+	\frac{\vec{q}_3}{g_2 \cdot g_1}\vec{x}_3 +
+	\cdots +
+	\frac{\vec{q}_n}{g_2 \cdot g_1}\vec{x}_n
+	= \omega_2.
+\end{equation}
+Como $g_2 = \gcd{\vec{q}_2/g_1, \ldots, \vec{q}_n/g_1}$, sabemos del Corolario \ref{prerreq:cor:gcd}
+que
+\begin{equation*}
+	\gcd{\frac{\vec{q}_2}{g_2 \cdot g_1}, \ldots, \frac{\vec{q}_n}{g_2 \cdot g_1}} = 1.
+\end{equation*}
+En el mismo espíritu que el primer paso de la recursión, definimos
+\begin{equation*}
+	\omega_3 \coloneq \frac{\vec{q}_3}{g_3 \cdot g_2 \cdot g_1}\vec{x}_3 + \cdots + \frac{\vec{q}_n}{g_3
+	\cdot g_2 \cdot g_1}\vec{x}_n,
+\end{equation*}
+donde
+\begin{equation*}
+	g_3 \coloneq  \gcd{\frac{\vec{q}_3}{g_2 \cdot g_1}, \ldots, \frac{\vec{q}_n}{g_2 \cdot g_1}}.
+\end{equation*}
+Por lo que la ecuación (\ref{eq:dioph:second-step}) es equivalente a
+\begin{equation}
+	\label{eq:dioph:second-step:short}
+	\frac{\vec{q}_2}{g_2 \cdot g_1}\vec{x}_2 + g_3\omega_3 = \omega_2.
+\end{equation}
+Nuevamente, tenemos
+\begin{equation*}
+	\gcd{\frac{\vec{q}_2}{g_2 \cdot g_1}, g_3} = 1,
+\end{equation*}
+y entonces (\ref{eq:dioph:second-step:short}) tiene una infinidad de soluciones para todo $\omega_2 \in
+\Z$, las cuales están dadas por
+\begin{equation*}
+	\begin{cases}
+		\vec{x}_2 = \omega_2x_2' + g_3t_2, \\
+		\omega_3 = \omega_2\omega_3' - \frac{q_2}{g_2 \cdot g_1}t_2,
+	\end{cases}
+\end{equation*}
+donde $t_2 \in \Z$ es una variable libre, y $x_2', \omega_3'$ son los coeficientes de Bézout
+asociados a $\frac{\vec{q}_2}{g_2 \cdot g_2}$ y $g_3$, respectivamente.
+
+De manera general, para $i \in \lbrace 1, \ldots, n - 2 \rbrace$, el $i$-ésimo paso de la recursión
+provee las soluciones
+\begin{equation}
+	\label{eq:recurrence}
+	\begin{cases}
+		\vec{x}_i = \omega_ix_i' + g_{i + 1}t_i, \\
+		\omega_{i + 1} = \omega_i\omega_{i + 1}' - \frac{\vec{q}_i}{\prod_{j=1}^{i}g_j}t_i,
+	\end{cases}
+\end{equation}
+donde $t_i \in \Z$ es la $i$-ésima variable libre. Es valioso mencionar, otra vez, que los
+coeficientes de Bézout $x_i', \omega_{i+1}'$ dependen exclusivamente de $\vec{q}$ a través de sus
+entradas $\vec{q}_i$ y de los máximos común divisores entre ellas. Es decir, ni $x_i'$ ni $\omega_{i
++ 1}'$ dependen de la elección $\vec{x} \in \Z^n$.
+
+En el último paso obtenemos la ecuación lineal diofantina
+\begin{equation}
+	\label{eq:last-equation}
+	\frac{q_{n-1}}{\prod_{j=1}^{n-1}g_j}\vec{x}_{n-1} +
+	\frac{q_{n}}{\prod_{j=1}^{n-1}g_j}\vec{x}_n
+	= \omega_{n-1}.
+\end{equation}
+Por construcción, los coeficientes de $\vec{x}_{n - 1}$ y $\vec{x}_n$ son coprimos. Las soluciones
+están dadas por
+\begin{equation}
+	\label{eq:last-solution}
+	\begin{cases}
+		\vec{x}_{n-1} = \omega_{n-1}x_{n-1}' + \frac{\vec{q}_n}{\prod_{j=1}^{n-1}g_j}t_{n-1}, \\
+		\vec{x}_n = \omega_{n-1}x_n' - \frac{\vec{q}_{n-1}}{\prod_{j=1}^{n-1}g_j}t_{n-1},
+	\end{cases}
+\end{equation}
+donde $x_{n-1}', x_n'$ son los coeficientes de Bézout asociados a
+$\frac{\vec{q}_n}{\prod_{j=1}^{n-1}g_j}$ y $\frac{\vec{q}_{n-1}}{\prod_{j=1}^{n-1}g_j}$,
+respectivamente.
+
+Finalmente, por la restricción de no negatividad $\vec{x} \geq 0$ en el problema
+(\ref{theory:formulation}), podemos acotar nuestra elección de variables libres $t_i \in \Z$ a
+partir de (\ref{eq:recurrence}). De la primera igualdad encontramos que necesariamente se debe
+satisfacer
+\begin{equation}
+	\label{eq:param-lb}
+	t_i \geq \left\lceil -\frac{\omega_ix_i'}{g_{i + 1}} \right\rceil,
+\end{equation}
+para $i \in \lbrace 1, \ldots, n - 2\rbrace$. Para determinar intervalos de no negatividad de
+$x_{n-1}$ y $x_n$, observamos de (\ref{eq:last-solution}) que dependemos de los signos de
+$\vec{q}_{n-1}$ y de $\vec{q}_n$. Mucho tendremos que decir en los siguientes dos capítulos sobre
+cómo acotar mejor $t_1, \ldots, t_{n-1}$ para asegurar la no negatividad de $\vec{x}$. Así pues,
+relegamos la discusión cuando analicemos separadamente el caso infinito y el caso finito.
+
+Ahora bien, hemos encontrado una relación entre el vector de soluciones $\vec{x} \in \Z^n$ y el
+vector de variables libres $\vec{t} \in \Z^{n-1}$. Hemos manejado esta relación de manera recursiva
+a través de (\ref{eq:recurrence}). Resultará conveniente encontrar una forma cerrada a la relación
+de recurrencia inducida. Para ello, recordemos que $\vec{x}$ se encuentra sobre la capa entera
+$H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ y por lo tanto satisface (\ref{eq:dioph}). Recordemos, también,
+que en el primer paso definimos $\omega_1 \coloneq k$. Combinando estos dos últimos puntos, obtenemos
+\begin{equation}
+	\label{eq:omega-recurrence}
+	\begin{cases}
+		\omega_1 &= k, \\
+		\omega_{i + 1} &= \omega_i \cdot \omega_{i + 1}' - \frac{\vec{q}_i}{\prod_{\ell=1}^{i}g_\ell} \cdot t_i.
+	\end{cases}
+\end{equation}
+\begin{lemma}
+	La forma cerrada de la relación de recurrencia (\ref{eq:omega-recurrence}) está dada por
+	\begin{equation}
+		\label{eq:omega-formula}
+		\omega_i =
+		k \cdot \prod_{j=2}^{i} \omega_j'
+		- \sum_{j=1}^{i - 1}\frac{\vec{q}_j}{\prod_{\ell=1}^{j}g_\ell}
+		\cdot \prod_{\ell=j+2}^{i}\omega_\ell' \cdot t_j.
+	\end{equation}
+	Donde, por conveniencia, le asignamos el valor de 0 a la suma vacía y el valor de 1 al producto
+	vacío.
+\end{lemma}
+\begin{proof}
+	Lo demostramos inductivamente. Observemos que
+	\begin{equation*}
+		\omega_1 =
+		k \cdot \prod_{j=2}^{1} \omega_j'
+		- \sum_{j=1}^{0}\frac{\vec{q}_j}{\prod_{\ell=1}^{j}g_\ell}
+		\cdot \prod_{\ell=j+2}^{1}\omega_\ell' \cdot t_j
+		= k,
+	\end{equation*}
+	debido a que definimos el producto vacío como 1 y la suma vacía como 0. Supongamos
+	inductivamente que (\ref{eq:omega-formula}) se satisface para alguna $i \in \N$. Entonces,
+	tenemos
+	\begin{align*}
+		\omega_{i + 1}
+		&=
+		k \cdot \prod_{j=2}^{i + 1} \omega_j'
+		- \sum_{j=1}^{i}\frac{\vec{q}_j}{\prod_{\ell=1}^{j}g_\ell}
+		\cdot \prod_{\ell=j+2}^{i + 1}\omega_\ell' \cdot t_j \\
+		&=
+		k \cdot \prod_{j=2}^{i} \omega_j' \cdot \omega_{i+1}'
+		- \sum_{j=1}^{i - 1}\frac{\vec{q}_j}{\prod_{\ell=1}^{j}g_\ell}
+		\cdot \prod_{\ell=j+2}^{i}\omega_\ell' \cdot t_j \cdot \omega_{i + 1}'
+		- \frac{\vec{q}_i}{\prod_{\ell = 1}^{i}g_\ell}
+		\cdot \prod_{\ell = i + 2}^{i + 1}\omega_\ell' \cdot t_i \\
+		&= 
+		\left( k \cdot \prod_{j=2}^{i} \omega_j'
+		- \sum_{j=1}^{i - 1}\frac{\vec{q}_j}{\prod_{\ell=1}^{j}g_\ell}
+		\cdot \prod_{\ell=j+2}^{i}\omega_\ell' \cdot t_j \right) \omega_{i+1}'
+		- \frac{\vec{q}_i}{\prod_{\ell = 1}^{i}g_\ell} \cdot t_i  \\
+		&= \omega_i \cdot \omega_{i + 1}' - \frac{\vec{q}_i}{\prod_{\ell = 1}^{i}g_\ell} \cdot t_i.
+	\end{align*}
+	Por el principio de inducción se sigue que (\ref{eq:omega-formula}) satisface
+	(\ref{eq:omega-recurrence}) para todo $i \in \N$. Así, esta fórmula es la forma cerrada de la
+	relación de recurrencia propuesta.
+\end{proof}
+
+Por conveniencia, definimos los coeficientes $m_{ij} \in \mathbb{Z}$ con $i > j$ como
+\begin{equation}
+	\label{phase-2:eq:coeffs}
+	m_{ij} \coloneq \frac{\vec{q}_j}{\prod_{\ell = 1}^{j}g_\ell} \cdot \prod_{\ell = j +
+	2}^{i}\omega_\ell'.
+\end{equation}
+Así pues, juntando esto último con \ref{eq:recurrence}, obtenemos para $i \in \{1, \ldots, n -
+2\}$, 
+\begin{align}
+	\vec{x}_i &= \omega_i \cdot x_i' + g_{i + 1}\vec{t}_i \nonumber \\
+		&= k \cdot \prod_{j=2}^{i}\omega_j' \cdot x_i' - \sum_{j=1}^{i - 1}m_{ij}x_i'
+		\vec{t}_j + g_{i + 1}\vec{t}_i \label{eq:x:i}.
+\end{align}
+Similarmente, sustituyendo en \ref{eq:last-solution},
+\begin{subequations}
+	\label{eq:x:last}
+	\begin{align}
+		\vec{x}_{n-1} &= k \cdot \prod_{j=2}^{n-1} \omega_j' \cdot x_{n-1}' - \sum_{j=1}^{n-2}
+		m_{n-1,j}x_{n-1}' \vec{t}_j + \frac{\vec{q}_n}{\prod_{j=1}^{n-2}g_j} \vec{t}_{n-1}, \\
+		\vec{x}_{n} &= k \cdot \prod_{j=2}^{n-1} \omega_j' \cdot x_{n}' - \sum_{j=1}^{n-2}
+		m_{n,j}x_{n}' \vec{t}_j - \frac{\vec{q}_{n - 1}}{\prod_{j=1}^{n-2}g_j} \vec{t}_{n-1}.
+	\end{align}
+\end{subequations}
+
+Con este trabajo anterior, ya podemos establecer una relación lineal entre $\vec{t} \in \Z^{n-1}$ y
+$\vec{x} \in \Z^n$. Definimos $\vec{\omega} \in \Z^n$ como
+\begin{equation}
+	\label{eq:vec-omega}
+	\vec{\omega}_i \coloneq x_i' \cdot \prod_{j = 2}^{\min{\lbrace i, n - 1 \rbrace}}\omega_j'.
+\end{equation}
+También definimos la matriz $M \in \Z^{n \times (n - 1)}$ a través de
+\begin{equation}
+	\label{eq:mat-T}
+	M_{ij} \coloneq \begin{cases}
+		-m_{ij}x_i', &\quad j < i, \\
+		g_{i + 1},  &\quad i = j < n - 1, \\
+		\frac{\vec{q}_n}{\prod_{k=1}^{n-1}g_k}, &\quad i = j = n - 1, \\
+		-\frac{\vec{q}_{n-1}}{\prod_{k=1}^{n-1}g_k}, &\quad i = n, j = n - 1, \\
+		0, &\quad \text{e.o.c.}
+	\end{cases}
+\end{equation}
+De (\ref{eq:x:i}) y (\ref{eq:x:last}) encontramos que
+\begin{equation}
+	\label{eq:transf}
+	\vec{x} = k\vec{\omega} + M\vec{t}.
+\end{equation}
+
+En una observación pasada mencionamos que los coeficientes de Bézout $\omega_i', x_i'$ están
+asociados a términos exclusivamente dependientes de $\vec{q}$, por lo que no dependen de la elección
+$\vec{x} \in \Z$. De esta manera, $\vec{\omega}$ depende exclusivamente de $\vec{q}$. El mismo
+razonamiento aplica para la matriz $M$. Entonces, como $\vec{q}$ es fijo, se sigue que
+$\vec{\omega}$ y $M$ lo son también.
+
+\begin{lemma} \label{lemma:iso1} El vector $\vec{\omega} \in \Z^n$ satisface $\vec{q}^T\vec{\omega}
+	= 1$. \end{lemma} \begin{proof} Primero mostramos por inducción hacia atrás que se cumple
+	\begin{equation} \label{eq:omega-induction} \sum_{j=i}^{n}\vec{q}_j\vec{\omega}_j =
+		\prod_{j=2}^{i}\omega_j' \cdot \prod_{j=1}^{i}g_j, \end{equation} para todo $i \in \lbrace
+		1, \ldots, n - 1\rbrace$. Empezamos con el caso base $i = n - 1$: \begin{equation}
+			\label{eq:omega-base-case} \vec{q}_{n-1}\vec{\omega}_{n-1} + \vec{q}_n\vec{\omega}_n =
+			\prod_{j=2}^{n-1}\omega_j' \cdot \left(\vec{q}_{n-1}x_{n-1}' + \vec{q}_nx_n'\right).
+		\end{equation} Recordemos que $x_{n-1}'$ y $x_n'$ son coeficientes de Bézout asociados a los
+		coeficientes del lado izquierdo de (\ref{eq:last-equation}), los cuales son coprimos.
+		Entonces se cumple
+	\begin{equation*}
+		\frac{\vec{q}_{n-1}}{\prod_{j=1}^{n-1}g_j}x_{n-1}' +
+		\frac{\vec{q}_n}{\prod_{j=1}^{n-1}g_j}x_n' = 1,
+	\end{equation*}
+	lo cual implica 
+	\begin{equation*}
+		\vec{q}_{n-1}x_{n-1}' + \vec{q}_nx_n' = \prod_{j=1}^{n-1}g_j.
+	\end{equation*}
+	Sustituyendo en (\ref{eq:omega-base-case}), obtenemos
+	\begin{equation*}
+		\vec{q}_{n-1}\vec{\omega}_{n-1} + \vec{q}_n\vec{\omega}_n  =
+		\prod_{j=2}^{n-1}\omega_j' \cdot \prod_{j=1}^{n-1}g_j.
+	\end{equation*}
+	Supongamos inductivamente que (\ref{eq:omega-induction}) se satisface para alguna $2 \leq i \leq
+	n - 1$. Entonces tenemos
+	\begin{align*}
+		\sum_{j=i-1}^{n}\vec{q}_j\vec{\omega}_j
+		&= \vec{q}_{i-1}\vec{\omega}_{i-1} + \sum_{j=i}^{n}\vec{q}_j\vec{\omega}_j \\
+		&= \prod_{j=2}^{i-1}\omega_j' \cdot \vec{q}_{i-1}x_{i-1}' + \prod_{j=2}^{i}\omega_j' \cdot
+		\prod_{j=1}^{i}g_j \\
+		&= \prod_{j=2}^{i-1}\omega_j' \cdot \left( \vec{q}_{i-1}x_{i-1}' + \omega_i'
+			\prod_{j=1}^{i}g_j \right).
+	\end{align*}
+	Nuevamente, $x_{i-1}'$ y $\omega_i'$ son coeficientes de Bézout asociados, respectivamente, a
+	$\frac{\vec{q}_{i-1}}{\prod_{j=1}^{i-1}g_j}$ y $g_i$, los cuales son coprimos. De esta manera
+	satisfacen
+	\begin{equation*}
+		\frac{\vec{q}_{i-1}}{\prod_{j=1}^{i-1}g_j}x_{i-1}' +
+		g_i \omega_i' = 1,
+	\end{equation*}
+	por lo tanto,
+	\begin{equation*}
+		\vec{q}_{i-1}x_{i-1}' + \omega_i'\prod_{j=1}^{i}g_j' = \prod_{j=1}^{i-1}g_j.
+	\end{equation*}
+	Sustituyendo, obtenemos el resultado (\ref{eq:omega-induction}) para $i - 1$. Así, por inducción
+	hacía atrás, (\ref{eq:omega-induction}) se cumple para todo $i \in \lbrace 1, \ldots, n - 1
+	\rbrace$. Finalmente, para demostrar el Lema, observamos que
+	\begin{equation*}
+		\vec{q}^T\vec{\omega} = \sum_{j=1}^{n}\vec{q}_j\vec{\omega}_j = \prod_{j=2}^{1}\omega_j'
+		\cdot \prod_{j=1}^{1}g_j = g_1 = 1.
+	\end{equation*}
+	El primer producto es uno por ser el producto vacío. Recordemos también que $g_1$ es el máximo
+	común divisor de $\vec{q}_1, \ldots, \vec{q}_n$, los cuales son coprimos, y entonces $g_1 = 1$.
+\end{proof}
+\begin{corollary}
+	\label{lemma:iso2}
+	El vector $\vec{q}$ genera $\ker{M^T}$ si $\vec{q}_n \neq 0$.
+\end{corollary}
+\begin{proof}
+	La matriz $M$ es triangular inferior cuya diagonal principal es distinta de cero. En efecto,
+	para todo $i \in \lbrace 1, \ldots, n - 2\rbrace$, tenemos
+	\begin{equation*}
+		M_{ii} = g_{i + 1} = \gcd{\frac{\vec{q}_i}{\prod_{j=1}^{i}g_j}, \ldots,
+		\frac{\vec{q}_n}{\prod_{j=1}^{i}g_j}}.
+	\end{equation*}
+	Pero el máximo común divisor entre cualesquiera enteros siempre es positivo. También tenemos,
+	$M_{n-1, n-1} = \vec{q}_n \neq 0$. Se sigue que las columnas de $M$ son linealmente
+	independientes, y entonces su imagen tiene dimensión $n - 1$. Por lo tanto, $M^T$ tiene $n - 1$
+	renglones linealmente independientes. Se sigue por el Teorema de la Dimensión que $\dim
+	\ker{M^T} = 1$, así que basta mostrar que $\vec{q} \in \ker{M^T}$.
+
+	Sea $\vec{x} \in \Z^n$. Por el Teorema \ref{phase-1:th:cover}, existe una capa entera
+	$H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ que contiene a $\vec{x}$. Así, $\vec{x}$ satisface la
+	ecuación lineal diofantina $\vec{q}^T\vec{x} = k$. Por construcción, existe $\vec{t} \in
+	\Z^{n-1}$ tal que $\vec{x} = k\vec{\omega} + M\vec{t}$. Luego,
+	\begin{equation*}
+		k = \vec{q}^T\vec{x} = k \vec{q}^T\vec{\omega} + \vec{q}^TM\vec{t} = k +
+		(\vec{q}^TM)\vec{t}.
+	\end{equation*}
+	De donde obtenemos $(\vec{q}^TM)\vec{t} = 0$. Pero $\vec{x}$ fue arbitrario, así que también lo
+	fue $\vec{t}$. Entonces se debe cumplir $\vec{q}^TM = 0$, lo que implica que $\vec{q} \in
+	\ker{M^T}$.
+\end{proof}
+\begin{corollary}
+	\label{cor:iso3}
+	El vector $\vec{q}$ genera un espacio isomorfo a $\ker{M^T}$.
+\end{corollary}
+\begin{proof}
+	% TODO: prove
+\end{proof}
+
+Hasta este punto, la gran mayoría de nuestra argumentación para demostrar los resultados ha sido
+fundamentada a través de las capas enteras $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$, así como por el
+Teorema \ref{phase-1:th:cover}. Sin embargo, estas capas enteras contienen puntos que, en el
+contexto de programación lineal entera, no son de interés, a saber, contienen puntos no enteros. Nos
+gustaría concentrarnos exclusivamente en estos puntos enteros, al mismo tiempo que buscamos
+caracterizarlos por medio de $\vec{q}$. La siguiente Definición hará que logremos este primer
+objetivo de enfocarnos exclusivamente en los puntos enteros, mientras que el Teorema
+\ref{th:lattice} permitirá que los caractericemos a partir de $\vec{q}$.
+
+\begin{definition}[\cite{alex}]
+	Decimos que un subconjunto $\Lambda$ de $\R^n$ es un grupo aditivo si
+	\begin{enumerate}
+		\item $0 \in \Lambda$
+		\item si $x, y \in \Lambda$, entonces $x + y \in \Lambda$ y $-x \in \Lambda$.
+	\end{enumerate}
+	Además, decimos que $\Lambda$ es una red si existen vectores $\vec{v}_1, \ldots, \vec{v}_n$
+	linealmente independientes tales que
+	\begin{equation*}
+		\Lambda = \lbrace \lambda_1\vec{v}_1 + \cdots + \lambda_n\vec{v}_n \vcentcolon \lambda_i \in
+		\Z \rbrace.
+	\end{equation*}
+	A los vectores $\vec{v_1}, \ldots, \vec{v}_n$ los llamamos la base de la red $\Lambda$.
+\end{definition}
+
+\begin{example}
+	No es difícil ver que $\Z^n$ es un grupo aditivo. Si consideramos los vectores canónicos
+	$\vec{e}_1, \ldots, \vec{e}_n$, entonces encontramos que son linealmente independientes, pero
+	también se cumple
+	\begin{equation*}
+		\Z^n = \lbrace \lambda_1\vec{e}_1 + \cdots + \lambda_n\vec{e}_n \vcentcolon \lambda_i \in
+		\Z \rbrace.
+	\end{equation*}
+	De esta, manera $\Z^n$ es una red que tiene como base canónica a los vectores $\vec{e}_1,
+	\ldots, \vec{e}_n$.
+\end{example}
+
+\begin{theorem}
+	\label{th:lattice}
+	Supongamos que $\vec{q}_n \neq 0$. Entonces $\vec{\omega}$ y las columnas de $M$ forman una base
+	de la red $\Z^n$.
+\end{theorem}
+\begin{proof}
+	En el Lema \ref{lemma:iso2} mostramos que las columnas de $M$ son linealmente independientes.
+	Mostremos que $\vec{\omega}$ es linealmente independiente de las columnas de $M$. Supongamos que
+	no lo es, por lo que existen escalares $\lambda_1, \ldots, \lambda_{n-1}$ tales que
+	\begin{equation*}
+		\vec{\omega} = \lambda_1 \vec{m}_1 + \cdots + \lambda_{n-1} \vec{m}_{n-1},
+	\end{equation*}
+	donde $\vec{m}_1, \ldots, \vec{m}_{n-1}$ son las columnas de $M$. De los Lemas \ref{lemma:iso1}
+	y \ref{lemma:iso2} obtenemos
+	\begin{equation*}
+		1 = \vec{q}^T\vec{\omega} = \lambda_1 \vec{q}^T\vec{m}_1 + \cdots + \lambda_{n-1}
+		\vec{q}^T\vec{m}_{n-1} = 0,
+	\end{equation*}
+	lo cual es una contradicción. Se sigue que $\lbrace \vec{\omega}, \vec{m}_1, \ldots,
+	\vec{m}_{n-1}\rbrace$ es un conjunto de vectores linealmente independiente.
+
+	Ahora bien, sea $\vec{x} \in \Z^n$, por lo que se encuentra sobre una capa entera, y entonces
+	satisface la ecuación lineal diofantina $\vec{q}^T\vec{x} = k$ para alguna $k \in \Z$. Por
+	construcción, existe un vector $\vec{t} \in \Z^{n-1}$ tal que
+	\begin{equation*}
+		\vec{x} = k\vec{\omega} + M\vec{t} = k\vec{\omega} + \vec{t}_1\vec{m}_1 + \cdots +
+		\vec{t}_{n-1}\vec{m}_{n-1}.
+	\end{equation*}
+	Como $\vec{x}$ fue arbitrario, se sigue que
+	\begin{equation*}
+		\Z^n = \lbrace
+		k\vec{\omega} + \vec{t}_1\vec{m}_1 + \cdots + \vec{t}_{n-1}\vec{m}_{n-1}
+		\vcentcolon k, \vec{t}_1, \ldots, \vec{t}_{n-1} \in \Z
+		\rbrace.
+	\end{equation*}
+	De esta manera, se cumple que $\lbrace \vec{\omega}, \vec{m}_1, \ldots, \vec{m}_{n-1}\rbrace$ es
+	una base de $\Z^n$.
+\end{proof}
+
+Informalmente, a partir de $\vec{q}$ descomponemos la red $\Z^n$ como una suma de dos subredes
+isomorfas a $\Z$ y $\Z^{n-1}$, cuyas bases están dadas por $\vec{\omega}$ y las columnas de $M$,
+respectivamente. El vector $\vec{\omega}$ es una solución particular de la ecuación no homogénea
+$\vec{q}^T\vec{\omega} = 1$, mientras que las columnas de $M$ forman una base del conjunto de
+soluciones de la ecuación homogénea $\vec{q}^T\vec{m} = 0$.
+
+Luego, como $\vec{q}$ es un vector coprimo arbitrario, tenemos que cualquier vector coprimo y, por
+extensión cualquier vector esencialmente entero, admite una descomposición de $\Z^n$ en dos
+subredes. Ciertamente, esta idea de descomponer el espacio completo a partir de soluciones
+particulares y homogéneas no es novedosa.
+
+\subsection{Múltiples restricciones}
+\noindent
+En esta sección hacemos una discusión extensiva sobre la dificultad de agregar más restricciones al
+problema (\ref{theory:formulation}). Sea $\vec{p} \in \R^n$ esencialmente entero y consideremos su
+múltiplo coprimo $\vec{q} \in \Z^n$. Sea $A \in \Q^{m \times n}$ una matriz racional con renglones
+linealmente independientes y sea $\vec{b} \in \Q^m$ un vector. Consideremos el problema
+\begin{subequations}
+	\label{formulation:multiple}
+	\begin{align}
+		\max_{\vec{x} \in \Z^n} \quad
+			& \vec{q}^T\vec{x}, \label{formulation:multiple:objective} \\
+		\text{s.a.} \quad
+			& \vec{q}^T\vec{x} \leq u, \label{formulation:multiple:constraint:budget} \\
+			& A\vec{q} = \vec{b}, \label{formulation:multiple:constraints} \\
+			& \vec{x} \geq \vec{0}. \nonumber
+	\end{align}
+\end{subequations}
+Ciertamente, la solución no se encuentra necesariamente en la $\eta$-ésima capa entera. Por ejemplo,
+si dejamos que $A \coloneq \vec{q}^T$ y $b \coloneq u - m$, la solución se encontrará en la
+$\xi$-ésima capa entera, donde
+\begin{equation*}
+	\xi \coloneq \left\lfloor \frac{u}{m} - 1 \right\rfloor < \eta.
+\end{equation*}
+No obstante, si el problema (\ref{formulation:multiple}) es factible, sabemos que la solución se
+encontrará en alguna capa entera con parámetro $k \in \lbrace \eta, \eta - 1, \ldots \rbrace$, pues
+todavía contamos con una restricción presupuestaria que se debe satisfacer.
+\begin{observation}
+	Recordemos del Teorema \ref{theory:th:feasibility} que, si tenemos solamente la restricción
+	presupuestaria, entonces la utilidad máxima es $\eta$ si $\vec{q}_i < 0$ para alguna $i \in
+	\lbrace 2, \ldots, n - 1\rbrace$. Al igual que en el caso finito, ahora no somos capaces de
+	saber inmediatamente en qué capa entera se encuentra nuestra solución.
+\end{observation}
+
+Ahora bien, en el contexto del problema (\ref{formulation:multiple}), el parámetro $k \in \Z$ se
+encarga de maximizar la utilidad (\ref{formulation:multiple:objective}), así como de respetar el
+presupuesto (\ref{formulation:multiple:constraint:budget}) a través de $k \leq \eta$. Similarmente,
+el vector $t \in \Z^{n-1}$ se encarga de respetar las otras restricciones
+(\ref{formulation:multiple:constraints}).
+\begin{theorem}
+	El problema (\ref{formulation:multiple}) es equivalente al problema de maximización
+	\begin{subequations}
+		\label{formulation:lattice}
+		\begin{align}
+			\max_{k \in \Z, \vec{t} \in \Z^{n-1}}
+				& k, \\
+			\text{s.a.} \quad
+				& k \leq \eta, \label{lattice:c-layer} \\
+				& AM\vec{t} = kA\vec{\omega} - \vec{b}, \label{lattice:constraints} \\
+				& M\vec{t} \geq -k\vec{\omega}.
+		\end{align}
+	\end{subequations}
+\end{theorem}
+\begin{proof}
+	Por el Teorema \ref{th:lattice}, sabemos que la transformación lineal
+	\begin{align*}
+		(k, \vec{t}) &\mapsto \vec{x} \coloneq k\vec{\omega} + M\vec{t}
+	\end{align*}
+	es un isomorfismo entre las redes $\Z + \Z^{n - 1}$ y $\Z^n$. Así, tenemos
+	\begin{align*}
+		A\vec{x} = \vec{b} &\iff AM\vec{t} = \vec{b} - kA\vec{\omega}, \\
+		\vec{x} \geq \vec{0} &\iff M\vec{t} \geq -k\vec{\omega},
+	\end{align*}
+	y por lo tanto basta mostrar que si un vector es factible para un problema, entonces satisface
+	la correspondiente restricción presupuestaria del otro problema. Para ello, es de utilidad
+	recordar que $\eta$ parametriza la primera capa entera que satisface el presupuesto.
+
+	Sea $\vec{x} \in \Z^n$ un vector factible de (\ref{formulation:multiple}) Como $\vec{x}$ es
+	entero, entonces se debe cumplir $\vec{q}^T\vec{x} \leq \eta$. Ahora bien, existe $(k, \vec{t})
+	\in \Z^n$ que satisface $\vec{x} = k\vec{\omega} + M\vec{t}$. Por el Lema \ref{lemma:iso1} y el
+	Corolario \ref{lemma:iso2} encontramos que
+	\begin{equation*}
+		k = \vec{q}^T\vec{x} \leq \eta,
+	\end{equation*}
+	y entonces $(k, \vec{t})$ es factible. Como $\vec{x}$ fue arbitrario, se sigue que la solución
+	del problema (\ref{formulation:multiple}) es una cota inferior del problema
+	(\ref{formulation:lattice}). La demostración de que la solución de (\ref{formulation:lattice})
+	es una cota inferior de (\ref{formulation:multiple}) es análoga.
+
+	Finalmente, supongamos que $(k, \vec{t}) \in \Z^n$ es solución de (\ref{formulation:lattice}).
+	Si existe $\hat{\vec{x}}$ factible para (\ref{formulation:multiple}) con utilidad
+	$\vec{q}^T\hat{\vec{x}} = \hat{k}$ estrictamente mayor, entonces consideramos $(\hat{k},
+	\hat{\vec{t}})$ tal que $\hat{\vec{x}} = \hat{k}\vec{\omega} + M\hat{\vec{t}}$. Este vector
+	también es factible con utilidad $k < \hat{k} \leq \eta$, y entonces $(k, \vec{t})$ no era la
+	solución de (\ref{formulation:lattice}). Obtenemos una contradicción.
+\end{proof}
+
+\begin{observation}
+	El vector objetivo todavía es ortogonal a la restricción presupuestaria. No obstante, es más
+	fácil de manejar en caso de usar cortes como en Ramificación y Acotamiento. Si $k^*$ no es
+	entero en la solución al problema relajado, la única manera de ramificar es con el nuevo corte
+	$k \leq \lfloor k^* \rfloor$, pues el otro corte $k \geq \lceil k^* \rceil$ generará un
+	subproblema infactible. Evidentemente, en la sección de análisis de resultados haremos
+	comparaciones de tiempo en los tiempos de terminación entre esta formulación y la original.
+\end{observation}
+
+La formulación del problema equivalente en el Teorema anterior resulta ser más interesante. Podemos
+desacoplar esta nueva formulación de manera que obtengamos un problema de maximización y otro de
+factibilidad. Supongamos, sin pérdida de generalidad, que las entradas de $A$ y $\vec{b}$ son
+enteras. Como los renglones de $A$ son linealmente independientes, de \cite{alex} sabemos que tiene
+una única factorización de Hermite. Es decir, existe una matriz $U \in \Z^{n \times n}$ unimodular
+que satisface $AU = [H, \vec{0}]$, donde $H \in \Z^{m \times m}$ es triangular inferior y no
+singular.
+
+Consideremos el subproblema de maximización
+\begin{subequations}
+	\label{subformulation:lattice}
+	\begin{align}
+		\max_{k \in \Z}
+			& ~ k, \\
+		\text{s.a.} \quad
+		k &\leq \eta, \\
+			A\tilde{\vec{y}} &= kA\vec{\omega} - \vec{b},
+	\end{align}
+\end{subequations}
+donde 
+\begin{equation*}
+	\tilde{\vec{y}} \coloneq U \begin{pmatrix} \tilde{\vec{y}}_m \\ \tilde{\vec{y}}_{n-m} \end{pmatrix}
+	= U_m\tilde{\vec{y}}_m + U_{n-m}\tilde{\vec{y}}_{n-m} \in \Z^n,
+\end{equation*}
+con $\tilde{\vec{y}}_m \in \Z^m$ y $\tilde{\vec{y}}_{n-m} \in \Z^{n-m}$. Así también, $U_m$ y
+$U_{n-m}$ denotan las primeras $m$ columnas y últimas $n - m$ columnas de $U$, respectivamente.
+Observemos que para toda $k \in \Z$ se cumple
+\begin{equation}
+	AU \begin{pmatrix} \inv{H}\left(kA\vec{\omega} - \vec{b}\right) \\ \tilde{\vec{y}}_{n-m} \end{pmatrix}
+	=
+	[H, \vec{0}] \begin{pmatrix} \inv{H}\left(kA\vec{\omega} - \vec{b}\right) \\ \tilde{\vec{y}}_{n-m} \end{pmatrix}
+	= kA\vec{\omega} - \vec{b},
+\end{equation}
+lo cual sugiere definir $\tilde{\vec{y}}_m \coloneq \inv{H}(\vec{b} - kA\vec{w})$. No obstante,
+también debemos asegurarnos que este vector sea entero. Observemos que $\tilde{\vec{y}}_{n-m}$ queda
+libre, así que en realidad este subproblema tiene dimensión $m + 1$. Definimos el conjunto de
+factibilidad
+\begin{equation}
+	\label{eq:feas-set}
+	F \coloneq \lbrace k \in \Z \vcentcolon \inv{H}\left(kA\vec{\omega} - \vec{b}\right) \in \Z^m \rbrace
+	\cap \lbrace k \in \Z \vcentcolon k \leq \eta \rbrace.
+\end{equation}
+\begin{observation}
+	Para que $F$ sea no vacío, debe existir $k \in \Z$ tal que $\det(H) \mid (k\vec{a}_j^T
+	\vec{\omega} - \vec{b}_j)$ para todo $j \in \lbrace 1, \ldots, m \rbrace$, donde $\vec{a}_j$
+	denota el $j$-ésimo renglón de $A$. Es decir, una condición suficiente y necesaria para la no
+	vacuidad de $F$ es
+	\begin{equation*}
+		\det(H) \mid \gcd{k\vec{a}_1^T\vec{\omega} - b_1, \ldots, k\vec{a}_m^T\vec{\omega} - b_m}.
+	\end{equation*}
+	Ahora bien, $H$ es triangular inferior e invertible, por lo que $\det(H) \neq 0$ es el producto
+	de los elementos $h_1, \ldots, h_m$ en su diagonal. Entonces $h_j \mid \det(H)$ para todo $j \in
+	\lbrace 1, \ldots m \rbrace$ y una condición necesaria para la no vacuidad de $F$ es
+	\begin{equation*}
+		\lcm{h_1, \ldots, h_m} \mid \gcd{k\vec{a}_1^T\vec{\omega} - b_1, \ldots, k\vec{a}_m^T\vec{\omega} - b_m}.
+	\end{equation*}
+\end{observation}
+
+Si $F$ es vacío, deducimos que este subproblema es infactible y por lo tanto
+(\ref{formulation:lattice}) también lo es. Supongamos, pues, que $F \neq \emptyset$. No es difícil
+observar que $F$ tiene un elemento maximal $k^*$ y que este elemento es la solución al subproblema
+(\ref{subformulation:lattice}). Luego, dada esta solución $k^* \in \Z$, buscamos resolver el
+subproblema de factibilidad
+\begin{subequations}
+	\label{subformulation:feasibility}
+	\begin{align}
+		M\vec{t} &= \tilde{\vec{y}}, \\
+		M\vec{t} &\geq -k^*\vec{\omega}.
+	\end{align}
+\end{subequations}
+Observemos que tenemos un sistema de $n$ ecuaciones lineales con $2n - m - 1$ incógnitas, por lo que
+tendremos que lidiar con $n - m - 1$ parámetros libres:
+\begin{align}
+	\label{eq:feasibility-eqs}
+	M\vec{t} = \tilde{\vec{y}} = U_m\tilde{\vec{y}}_m + U_{n-m}\tilde{\vec{y}}_{n-m}
+   \iff [M, -U_{n-m}] \begin{pmatrix} \vec{t} \\ \tilde{\vec{y}}_{n-m} \end{pmatrix} = U_m\tilde{\vec{y}}_m.
+\end{align}
+Si consideramos ahora la forma normal de Smith de esta matriz por bloques, obtenemos dos matrices
+unimodulares $S \in \Z^{n \times n}$ y $T \in \Z^{(2n - m - 1) \times (2n - m -1)}$ que satisfacen
+\begin{equation*}
+	S[M, -U_{n-m}]T = D \in \Z^{n \times (2n - m - 1)},
+\end{equation*}
+donde $D$ es una matriz diagonal cuyas $n$ primeras entradas son distintas de cero y las restantes
+$n - m - 1$ son cero. Si multiplicamos $S$ por la izquierda en ambos lados de la ecuación
+(\ref{eq:feasibility-eqs}), tenemos
+\begin{equation*}
+	D\inv{T}\begin{pmatrix} \vec{t} \\ \tilde{\vec{y}}_{n-m} \end{pmatrix}
+	= SU_m\tilde{\vec{y}}_{m}.
+\end{equation*}
+Si $d_i$ no divide a $(SU_m\tilde{\vec{y}}_{m})_i$ para alguna $i \in \lbrace 1, \ldots, n \rbrace$,
+encontramos que la primera ecuación del subproblema (\ref{subformulation:feasibility}) no tiene
+solución en los enteros, lo que implica que la elección de $k^*$ fue la incorrecta para asegurar
+soluciones enteras a este subproblema. De ser este el caso, redefinimos $F \leftarrow F \setminus
+\lbrace k^* \rbrace$. Si $F$ ahora es vacío, entonces (\ref{formulation:lattice}) es
+infactible, de caso contrario escogemos el nuevo elemento de maximal de $F$ y repetimos el proceso.
+
+Supongamos, pues que $d_i \mid (SU_m\tilde{\vec{y}}_{m})_i$ para todo $i \in \lbrace 1, \ldots,
+n\rbrace$, por lo que obtenemos $n$ soluciones enteras $\vec{r} \in \Z^n$ y $n - m - 1$ variables
+libres $\vec{s} \in \Z^{n-m-1}$:
+\begin{equation*}
+	\inv{T}\begin{pmatrix} \vec{t} \\ \tilde{\vec{y}}_{n-m} \end{pmatrix}
+	=
+	\begin{pmatrix} \vec{r} \\ \vec{s} \end{pmatrix}.
+\end{equation*}
+Por lo tanto, nuestro vector $\vec{t}$ es una función lineal de $\vec{s}$, es decir, $\vec{t} =
+\vec{t}(\vec{s})$. Hasta este punto el proceso no ha sido complicado, pues nos hemos encargado de
+resolver sistemas de ecuaciones lineales diofantinas. En términos del problema original
+(\ref{formulation:multiple}), hemos encontrado los vectores $\vec{x}(\vec{s}) \coloneq
+k^*\vec{\omega} + M\vec{t}(\vec{s})$ que maximizan la utilidad y que satisfacen todas las
+restricciones excepto, posiblemente, las de no negatividad.
+
+La dificultad entra en juego cuando queremos determinar el vector de variables libres $\vec{s} \in
+\Z^{n-m-1}$ que hagan que $\vec{t}(\vec{s})$ satisfaga la desigualdad en el subproblema
+(\ref{subformulation:feasibility}). Debilitando más esta condición, nos gustaría determinar si el
+conjunto
+\begin{equation*}
+	\lbrace \vec{s} \in \Z^{n-m-1} \vcentcolon M\vec{t}(\vec{s}) \geq -k^*\vec{\omega} \rbrace
+\end{equation*}
+es vacío o no. En esta versión debilitada no nos interesa saber qué elementos contiene o tan
+siquiera cuántos elementos contiene. Es sabido que los programas enteros tales como
+(\ref{formulation:multiple}) o (\ref{formulation:lattice}) son problemas difíciles de resolver, en
+el sentido de que no es conocido si se pueden resolver en tiempo polinomial. A lo largo de este
+capítulo, no obstante, hemos resuelto todos los problemas en tiempo polinomial\footnote{En
+	\cite{alex} se muestra que calcular el máximo común divisor, resolver ecuaciones lineales
+	diofantinas, y calcular las factorizaciones tanto de Hermite como de Smith son operaciones
+	acotadas por tiempo polinomial.}.
+La única deducción posible, entonces, es que el problema de determinar las variables $\vec{s}$, o
+bien de determinar cuántas hay, o bien de determinar su existencia, son todos problemas difíciles de
+resolver.
+
+A pesar de lo anterior, hay dos casos donde la dificultad se reduce drásticamente. El caso menos
+interesante es cuando $m = n - 1$, de manera que no hay parámetros libres. Esto se debe a que el
+politopo factible resultante es un semirrayo o un segmento de línea. Al momento de escoger la
+$k^*$-ésima capa entera, estamos agregando la ecuación $k^* = k$, con lo que obtenemos un sistema
+lineal entero de $n$ ecuaciones con $n$ incógnitas, y entonces la solución es única. Basta entonces
+verificar que este único vector $\vec{t}$ satisface la desigualdad en el subproblema
+(\ref{subformulation:feasibility}). El caso un poco más interesante se obtiene cuando $m = n - 2$.
+De esta manera obtenemos un solo parámetro, con lo que podemos determinar rápidamente la existencia
+o inexistencia de un intervalo de factibilidad.
+
+\begin{example}
+	\label{ex:two-var}
+	Consideremos el problema con $n = 2$ variables y $m = 1$ restricciones
+	\begin{align*}
+		\max
+			~& x - y, \\
+		\text{s.a.} \quad
+			& x - y \leq 12, \\
+			& 3x + 5y = 25, \\
+			& x, y \geq 0.
+	\end{align*}
+	En este caso tenemos $A = (3, 5), \vec{b} = 25$, y también $\vec{q} = (1, -1)^T$, al igual que
+	$\eta = 12$. De (\ref{eq:vec-omega}) y (\ref{eq:mat-T}) obtenemos
+	\begin{equation*}
+		\vec{\omega} = \begin{pmatrix} 1 \\ 0 \end{pmatrix},
+		M = \begin{pmatrix} -1 \\ -1 \end{pmatrix}.
+	\end{equation*}
+	De la forma normal de Hermite de $A$ tenemos
+	\begin{equation*}
+		H = 1, U = \begin{pmatrix} 2 & -5 \\ -1 & 3 \end{pmatrix},
+	\end{equation*}
+	y de la forma normal de Smith de $[M, -U_m]$,
+	\begin{equation*}
+		S = \begin{pmatrix} -1 & 0 \\ 1 & -1 \end{pmatrix},
+		D = \begin{pmatrix} 1 & 0 \\ 0 & 8 \end{pmatrix},
+		T = \begin{pmatrix} 1 & 5 \\ 0 & 1 \end{pmatrix}. 
+	\end{equation*}
+
+	Como $H = 1$, se sigue que $\inv{H} (\vec{b} - kA\vec{\omega}) = 25 - 3k$ es entero para todo $k
+	\in \Z$. Así, el conjunto factible $F$ (c.f. \ref{eq:feas-set}) está dado por
+	\begin{equation*}
+		F = \Z \cap \lbrace k \in \Z \vcentcolon k \leq 12 \rbrace
+		= \lbrace k \in \Z \vcentcolon k \leq \eta = 12 \rbrace.
+	\end{equation*}
+	Entonces escogemos $k^* = 12$ por ser el elemento maximal de $F$. Así, encontramos
+	\begin{equation*}
+		SU_m\tilde{\vec{y}}_m = SU_m \left(\inv{H} (\vec{b} - k^*A\vec{\omega})\right)
+		= \begin{pmatrix} 22 \\ 33 \end{pmatrix}
+	\end{equation*}
+	Observemos que la segunda entrada de $SU_m\tilde{\vec{y}}_m$ no es divisible por $D_{22} = 8$.
+	Así, el subproblema (\ref{subformulation:feasibility}) no es factible para la elección de $k^*$
+	previa. Escogemos el segundo elemento de $F$ más grande, con lo que tenemos $k^* \leftarrow 11$.
+	En este caso obtenemos $SU_m\tilde{\vec{y}}_m = (-16, -24)^T$, por lo que sí hay soluciones
+	enteras. Luego, se debe satisfacer,
+	\begin{equation*}
+		\inv{T} \begin{pmatrix} \vec{t} \\ \tilde{\vec{y}}_{n-m} \end{pmatrix} =
+		\begin{pmatrix} 16 \\ 24 \end{pmatrix},
+	\end{equation*}
+	de donde se sigue que $(\vec{t}, \tilde{\vec{y}}_{n-m}) = (1, 3)$. Verificamos factibilidad:
+	\begin{equation*}
+		M\vec{t} + k^*\vec{\omega}
+		= 1 \begin{pmatrix} -1 \\ -1 \end{pmatrix} + 11 \begin{pmatrix} 1 \\ 0 \end{pmatrix}
+		= \begin{pmatrix} 10 \\ -1 \end{pmatrix} \not \geq \vec{0}.
+	\end{equation*}
+	Ahora la elección de $k^*$ dio un punto entero pero con una entrada negativa. Seguimos este
+	procedimiento hasta llegar a $k^* \leftarrow 3$. En este caso obtenemos $(\vec{t},
+	\tilde{\vec{y}}_{n-m}) = (-2, -6)^T$, de donde
+	\begin{equation*}
+		M\vec{t} + k^*\vec{\omega}
+		= -2 \begin{pmatrix} -1 \\ -1 \end{pmatrix} + 3 \begin{pmatrix} 1 \\ 0 \end{pmatrix}
+		= \begin{pmatrix} 5 \\ 2 \end{pmatrix} \geq \vec{0}.
+	\end{equation*}
+	Concluimos diciendo que $(k^*, \vec{t}) \coloneq (3, -2)$ es el óptimo del programa
+	(\ref{formulation:lattice}) y entonces $(x, y) = (5, 2)$ es el óptimo de
+	(\ref{formulation:multiple}).
+\end{example}
+\begin{example}
+	Ahora consideremos el problema con $n = 3$ variables y $m = 1$ restricciones
+	\begin{align*}
+		\max
+			~& x - y + 2z, \\
+		\text{s.a.} \quad
+			& x - y  + 2z \leq 10 \\
+			& 3x + 4y - z = 15 \\
+			& x, y, z \geq 0.
+	\end{align*}
+	En este caso tenemos $A = (3, 4, -1), \vec{b} = 15$, y también $\vec{q} = (1, -1, 2)^T$, al igual que
+	$\eta = 10$. De (\ref{eq:vec-omega}) y (\ref{eq:mat-T}) obtenemos
+	\begin{equation*}
+		\vec{\omega} = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix},
+		M = \begin{pmatrix} 1 & 0 \\ -1 & 2 \\ -1 & 1 \end{pmatrix}.
+	\end{equation*}
+	De la forma normal de Hermite de $A$ tenemos
+	\begin{equation*}
+		H = 1, U = \begin{pmatrix} 0 & 0 & 1 \\ 0 & 1 & 0 \\ -1 & 4 & 3 \end{pmatrix},
+	\end{equation*}
+	y de la forma normal de Smith de $[M, -U_m]$,
+	\begin{equation*}
+		S = \begin{pmatrix}
+			1 & 0 & 0 \\
+			-1 & -1 & 0 \\
+			3 & 4 & -1
+		\end{pmatrix},
+		D = \begin{pmatrix}
+			1 & 0 & 0 & 0 \\
+			0 & 1 & 0 & 0 \\
+			0 & 0 & 7 & 0
+		\end{pmatrix},
+		T = \begin{pmatrix}
+			1 & 0 & 0 & 1 \\
+			0 & 0 & 1 & 0 \\
+			0 & 1 & 2 & -1 \\
+			0 & 0 & 0 & 1
+		\end{pmatrix}.
+	\end{equation*}
+	Nuevamente, observemos que $H = 1$ y por lo tanto $F = \lbrace k \in \Z \vcentcolon k \leq 10
+	\rbrace$. Seguimos exactamente el mismo procedimiento que en el Ejemplo \ref{ex:two-var} hasta
+	llegar a $k^* \leftarrow 5$. Encontramos que se satisface
+	\begin{equation*}
+		\inv{T} \begin{pmatrix} \vec{t} \\ \tilde{\vec{y}}_{n-m} \end{pmatrix}
+		=
+		\begin{pmatrix} 0 \\ 0 \\ 0 \\ s \end{pmatrix}
+		\implies
+		\begin{pmatrix} \vec{t} \\ \tilde{\vec{y}}_{n-m} \end{pmatrix}
+		=
+		s \begin{pmatrix} 1 \\ 0 \\ -1 \\ 1 \end{pmatrix},
+	\end{equation*}
+	donde $s \in \Z$ es la única variable libre. En este caso podemos determinar rápidamente un
+	intervalo de existencia: tenemos $M\vec{t} \geq -k^*\vec{\omega}$ si y solo si
+	\begin{equation*}
+		s\begin{pmatrix} 1 \\ 0 \\ -1 \end{pmatrix} \geq
+		\begin{pmatrix} -5 \\ 0 \\ 0 \end{pmatrix},
+	\end{equation*}
+	de donde se sigue inmediatamente que $s \in \lbrace -5, -4, \ldots, 0 \rbrace$. Sustituyendo en
+	$\vec{t}$ y transformando a $\vec{x}$, encontramos que
+	\begin{equation*}
+		\left\lbrace
+			\begin{pmatrix} 0 \\ 5 \\ 5 \end{pmatrix},
+			\begin{pmatrix} 1 \\ 4 \\ 4 \end{pmatrix},
+			\begin{pmatrix} 2 \\ 3 \\ 3 \end{pmatrix},
+			\begin{pmatrix} 3 \\ 2 \\ 2 \end{pmatrix},
+			\begin{pmatrix} 4 \\ 1 \\ 1 \end{pmatrix},
+			\begin{pmatrix} 5 \\ 0 \\ 0 \end{pmatrix}
+		\right\rbrace
+	\end{equation*}
+	son las seis soluciones del problema. Todas alcanzan un nivel de utilidad $k^* = 5$.
+\end{example}
+
+Si el programa (\ref{formulation:multiple}) es factible, entonces el programa
+(\ref{formulation:lattice}) también lo es. A partir de nuestro procedimiento, eventualmente
+encontraremos un par $(k^*, \vec{t}^*)$ que resuelva tanto el subproblema de maximización
+(\ref{subformulation:lattice}) como el de factibilidad (\ref{subformulation:feasibility}).
+
+Ahora bien, son dos las maneras en las que nuestro problema sea infactible. En primer lugar, puede
+que nuestro conjunto de factibilidad $F$ sea vacío y por lo tanto el sistema de ecuaciones lineales
+(\ref{formulation:multiple:constraints}) es inconsistente. O bien, puede ser que $F$ sea no vacío y,
+a causa del Corolario (\ref{cor:f-unbounded}) tiene un número infinito de elementos, pero que la
+desigualdad en el subproblema de factibilidad nunca se satisfaga. La primera situación no supone
+ningún problema, pero la segunda hará que cualquier algoritmo basado en este modo de proceder nunca
+termine.
+
+\begin{corollary}
+	\label{cor:f-unbounded}
+	Si el conjunto de factibilidad $F$ no es vacío, entonces tiene cardinalidad infinita.
+\end{corollary}
+\begin{proof}
+	Escojamos $k \in F$, entonces
+	\begin{equation*}
+		\det(H) \mid \gcd{k\vec{a}_1^T\vec{\omega} - b_1, \ldots, k\vec{a}_m^T\vec{\omega} - b_m},
+	\end{equation*}
+	de donde se verifica que 
+	\begin{equation*}
+		\det(H) \mid \left(\gcd{k\vec{a}_1^T\vec{\omega} - b_1, \ldots, k\vec{a}_m^T\vec{\omega} -
+		b_m} - n \cdot \det(H) \right)
+	\end{equation*}
+	para todo $n \in \Z$. Pero esto implica que
+	\begin{equation*}
+		\lbrace k - n \cdot \det(H) \vcentcolon n \in \Z \rbrace \cap \lbrace k \in \Z \vcentcolon k \leq \eta
+		\rbrace
+		\subseteq
+		F.
+	\end{equation*}
+	El conjunto del lado izquierdo tiene un número infinito de elementos, y entonces $F$ también.
+\end{proof}
