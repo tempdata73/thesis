@@ -26,61 +26,156 @@ cualquier capa entera. Consecuentemente, si determinamos que no hay ningún punt
 $\eta$-ésima capa entera, descendemos a la $(\eta -1)$-ésima capa entera y realizamos el mismo
 análisis.
 
-Además, observemos que en realidad es suficiente con descender hasta la 0-ésima capa entera, pues
-los puntos enteros sobre capas menores tienen utilidades negativas. De acuerdo al Teorema
-\ref{theory:th:feasibility}, estos no pueden ser factibles. Concluimos entonces que basta con
-analizar las capas enteras con parámetros $k \in \lbrace \eta, \eta - 1, \ldots, 0 \rbrace$ y
-terminamos una vez que encontremos un punto no negativo.
+\begin{lemma}
+	Sea
+	\begin{equation*}
+		\label{eq:last-index}
+		i^* \coloneq \argmax \left\lbrace \frac{u}{\vec{q}_1}, \ldots, \frac{u}{\vec{q}_n} \right\rbrace,
+	\end{equation*}
+	y definamos
+	\begin{equation*}
+		\tau \coloneq \left\lfloor \left\lfloor \frac{u}{\vec{q}_{i^*}} \right\rfloor
+			\frac{\vec{q}_{i^*}}{m} \right\rfloor.
+	\end{equation*}
+	Entonces la solución del problema (\ref{theory:formulation}) se encuentra en una capa entera
+	parametrizada por $k \in \lbrace \eta, \eta - 1, \ldots, \tau \rbrace$.
+\end{lemma}
+\begin{proof}
+	Consideremos el vector
+	\begin{equation*}
+		\vec{v} \coloneq \left\lfloor \frac{u}{\vec{q}_{i^*}} \right\rfloor \vec{e}_{i^*},
+	\end{equation*}
+	y observemos que $\vec{v} \geq \vec{0}$, pues $\vec{q} > \vec{0}$ y supusimos que el problema
+	(\ref{theory:formulation}) es factible, por lo que $u \geq 0$. Así también, tenemos
+	\begin{equation*}
+		\vec{q}^T\vec{v} = \left\lfloor \frac{u}{\vec{q}_{i^*}} \right\rfloor \vec{q}_{i^*}
+		\leq \frac{u}{\vec{q}_{i^*}}\vec{q}_{i^*} = u,
+	\end{equation*}
+	y entonces $\vec{v}$ es factible. De aquí se sigue que este vector provee una cota inferior para
+	el problema (\ref{theory:formulation}). Así pues, todo vector $\vec{x}$ candidato a ser el
+	óptimo del problema satisface
+	\begin{equation*}
+		\vec{q}^T\vec{x} = \frac{\vec{p}^T\vec{x}}{m} \geq \left\lfloor \frac{u}{\vec{q}_{i^*}}
+		\right\rfloor \frac{\vec{q}_{i^*}}{m}.
+	\end{equation*}
+	Nos interesa calcular el número entero $\tau$ más pequeño tal que todo punto sobre la capa
+	entera $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ con $k \in \lbrace \tau, \tau + 1, \ldots \rbrace$
+	satisfaga esta desigualdad. Del Lema \ref{phase-1:lemma:layer}, toda $k$ debe satisfacer
+	\begin{equation*}
+		k\norm{\vec{q}}^{-2} = \frac{\vec{q}^T\vec{x}}{\norm{\vec{q}}^2} \geq
+		\left\lfloor \frac{u}{\vec{q}_{i^*}} \right\rfloor \frac{\vec{q}_{i^*}}{m}
+		\frac{1}{\norm{\vec{q}}^2},
+	\end{equation*}
+	y por lo tanto
+	\begin{equation*}
+		\tau =
+		\left\lfloor \left\lfloor \frac{u}{\vec{q}_{i^*}} \right\rfloor \frac{\vec{q}_{i^*}}{m}
+			\right\rfloor.
+	\end{equation*}
+	Finalmente, recordemos que $\eta$ es la primera capa en satisfacer la restricción presupuestaria.
+	Por lo tanto, el óptimo del problema (\ref{theory:formulation}) se encuentra en una capa
+	parametrizada por $k \in \lbrace \eta, \eta - 1, \ldots, \tau \rbrace$.
+\end{proof}
 
-Así pues, sea $k \in \lbrace \eta, \eta - 1, \ldots, 0 \rbrace$. Al igual que en el caso anterior,
-deseamos resolver la ecuación lineal diofantina
+\begin{observation}
+	Siempre se cumple que $\tau \leq \eta$. En efecto,
+	\begin{equation*}
+		\left\lfloor \frac{u}{\vec{q}_{i^*}} \right\rfloor \vec{q}_{i^*}
+		\leq \frac{u}{\vec{q}_{i^*}} \vec{q}_{i^*} = u,
+	\end{equation*}
+	como $m > 0$, tenemos
+	\begin{equation*}
+		\left\lfloor \frac{u}{\vec{q}_{i^*}} \right\rfloor \frac{\vec{q}_{i^*}}{m}
+		\leq \frac{u}{m}.
+	\end{equation*}
+	Aplicando la función piso a ambos lados de la desigualdad encontramos que $\tau \leq \eta$.
+\end{observation}
+
+Sea $k \in \lbrace \eta, \eta - 1, \ldots, \tau \rbrace$. Sabemos de la sección de Fundamentos en el
+primer capítulo que deseamos resolver la ecuación lineal diofantina
 \begin{equation*}
-	\vec{q}^T\vec{x} = q_1x_1 + q_2x_2 + \cdots + q_nx_n = k.
+	\vec{q}^T\vec{x} = \vec{q}_1\vec{x}_1 + \vec{q}_2\vec{x}_2 + \cdots + \vec{q}_n\vec{x}_n = k.
 \end{equation*}
-Implementamos la misma estrategia para plantear una formulación dinámica,
+Implementamos la misma estrategia para plantear una formulación recursiva,
 \begin{equation*}
-	\frac{q_1}{g_1}x_1 + g_2\omega_2 = \omega_1.
+	\frac{q_1}{g_1}\vec{x}_1 + g_2\omega_2 = \omega_1.
 \end{equation*}
 No obstante, en este caso podemos interpretar $\omega_2$ de tal manera que obtengamos más
 información. Así como $\omega_1 \coloneq k$  es el presupuesto disponible en un inicio, $\omega_2$
-es el presupuesto disponible después de utilizar parte de él para adquirir $x_1 \geq 0$ unidades.
+es el presupuesto disponible después de utilizar parte de él para adquirir $\vec{x}_1 \geq 0$ unidades.
 Por lo tanto, es posible agregar la restricción $\omega_2 \geq 0$. Similarmente, en el $i$-ésimo
-paso de la formulación dinámica, somos capaces de agregar la restricción de que el presupuesto
-restante $\omega_{i + 1}$ sea no negativo. Combinando esto con la no negatividad de $x_i$, obtenemos
+paso de la formulación recursiva, somos capaces de agregar la restricción de que el presupuesto
+restante $\omega_{i + 1}$ sea no negativo. Combinando esto con la no negatividad de $\vec{x}_i$, obtenemos
 de (\ref{eq:recurrence}),
 \begin{equation}
 	\label{phase-1:finite:eq:param-bounds}
 	\left\lceil -\frac{\omega_ix_i'}{g_{i+1}} \right\rceil
 	\leq
-	t_i
+	\vec{t}_i
 	\leq
-	\left\lfloor \frac{\omega_i\omega_{i+1}'}{q_i} \prod_{j=1}^{i}g_j \right\rceil.
+	\left\lfloor \frac{\omega_i\omega_{i+1}'}{\vec{q}_i} \prod_{j=1}^{i}g_j \right\rceil.
 \end{equation}
-para todo $i \in \lbrace 1, \ldots, n - 2\rbrace$. Después, como $0 < q_{n - 1}, q_n$, se sigue de
+para todo $i \in \lbrace 1, \ldots, n - 2\rbrace$. Después, como $0 < \vec{q}_{n - 1}, \vec{q}_n$, se sigue de
 (\ref{eq:last-solution}),
 \begin{equation}
 	\label{phase-1:finite:eq:param-bounds-last}
-	\left\lceil -\frac{\omega_{n-1}x_{n-1}'}{q_n} \cdot \prod_{j=1}^{n-2}g_j \right\rceil
+	\left\lceil -\frac{\omega_{n-1}x_{n-1}'}{\vec{q}_n} \cdot \prod_{j=1}^{n-2}g_j \right\rceil
 	\leq
-	t_{n - 1}
+	\vec{t}_{n - 1}
 	\leq
-	\left\lfloor \frac{\omega_{n-1}x_{n}'}{q_{n-1}} \cdot \prod_{j=1}^{n-2}g_j \right\rfloor.
+	\left\lfloor \frac{\omega_{n-1}x_{n}'}{\vec{q}_{n-1}} \cdot \prod_{j=1}^{n-2}g_j \right\rfloor.
 \end{equation}
 
-De igual manera que el caso infinito, hacemos \textit{backtracking} en caso de encontrarnos con que
-$t_i \in \Z$ no puede satisfacer (\ref{phase-1:finite:eq:param-bounds}) si $i \in \lbrace 1, \ldots,
-n - 2\rbrace$, o si $t_{n - 2} \in \Z$ no puede satisfacer
-(\ref{phase-1:finite:eq:param-bounds-last}). En este caso, puede ser que en cualquier nivel $t_i$ no
-se satisfaga la desigualdad y por lo tanto que necesitemos cambiar uno de $t_1, \ldots, t_{i -
-1}$. Ciertamente, la elección más simple es realizar el cambio $t_{i - 1} \leftarrow t_{i - 1} \pm
-1$ siempre y cuando continúe satisfaciendo sus cotas correspondientes.
+Consecuentemente, el número de elecciones que podemos hacer para $\vec{t} \in \Z^{n-1}$ es finito.
+Observemos que una elección de $\vec{t}_i$ modifica $\omega_{i+1}$ y por lo tanto también afecta el
+intervalo de factibilidad de $\vec{t}_{i+1}$. Siguiendo con este razonamiento, encontramos que una
+elección de $\vec{t}_i$ afecta los intervalos de factibilidad de $\vec{t}_{i+1}, \ldots,
+\vec{t}_{n-1}$.
 
-El número de elecciones $t_1, \ldots, t_{n - 1} \in \Z$ es finito para la $k$-ésima capa entera.
-Decidimos, finalmente, descender a la $(k - 1)$-capa entera y repetir el proceso si en ninguna de esas
-elecciones se satisfacen ambas (\ref{phase-1:finite:eq:param-bounds}) y
-(\ref{phase-1:finite:eq:param-bounds-last}). Evidentemente, $\vec{0} \in \Z^n$ es factible y se
-encuentra en la 0-ésima capa, por lo que este proceso está asegurado en terminar si es que el
-problema es factible, lo cual supusimos desde un inicio.
+Es decir, a pesar de que el óptimo se encuentre sobre la capa entera $k$ que estamos analizando, la
+elección de los primeros parámetros que realicemos puede afectar el tiempo de terminación de nuestro
+algoritmo. Hay dos extremos en las posibles estrategias que podemos adoptar para realizar estas
+elecciones. Para visualizarlo, tenemos que nuestro presupuesto actual $\omega_{i}$ determina el
+siguiente presupuesto a partir de
+\begin{equation*}
+	\begin{cases}
+		\vec{x}_i = \omega_ix_i' + g_{i+1}\vec{t}_i, \\
+		\omega_{i+1} = \omega_i\omega_{i+1}' - \frac{\vec{q}_i}{\prod_{j=1}^{i}g_j}\vec{t}_i,
+	\end{cases}
+\end{equation*}
+donde la primera ecuación indica cuántos elementos de $\vec{x}_i$ decidimos adquirir a partir del
+presupuesto actual $\omega_i$.
+
+El primer extremo está en buscar agotar todo nuestro presupuesto disponible en las primeras
+elecciones de $\vec{x}_1, \vec{x}_2, \ldots, \vec{x}_i$. Es decir, adquirimos la mayor cantidad que
+podamos de los primeros productos. Bajo esta perspectiva, es razonable imponer un orden en $\vec{q}$
+de manera que
+\begin{equation*}
+	\vec{q}_1 \geq \vec{q}_2 \geq \cdots \geq \vec{q}_n,
+\end{equation*}
+de manera que adquirimos primero los artículos más caros. En este caso diremos que $\vec{q}$ está en
+orden descendente. Si adoptamos esta estrategia es porque suponemos que el óptimo se concentra en
+una vecindad de los primeros $i$ artículos. Es decir, si tenemos la creencia de que $\vec{q}_{i +
+1}, \ldots, \vec{x}_n$ pueden ser aproximadamente cero.
+
+% TODO: es mejor argumentar esto en la sección de análisis de resultados.
+% De ser este el caso, entonces es razonable suponer que los tiempos de terminación de esta búsqueda
+% son similares a los de Ramificación y Acotamiento. 
+
+El segundo extremo es esencialmente lo opuesto. Esto no quiere decir que ahora ordenamos $\vec{q}$
+de manera ascendente y escogemos las primera $\vec{t}_i$ lo más pequeñas posible\footnote{Si
+	hiciéramos esto es porque creemos que $\vec{x}_1, \ldots, \vec{x}_i$ son aproximadamente cero,
+	pero entonces podemos permutar estas entradas de manera que se encuentren hasta el final y
+emplear la primera estrategia.}. Consiste en escoger $\vec{t}_i$ de manera que se encuentre en el
+punto medio de sus cotas inferiores y superiores. Es decir, creemos que el óptimo se encuentra en
+una vecindad del centro de masa de la $k$-ésima capa entera.
+
+Observemos que, independientemente del caso, si una capa entera no contiene puntos factibles, entonces
+ambas estrategias agotan hacen todas las elecciones posibles de $\vec{t}_1, \ldots, \vec{t}_{n-1}$.
+Por lo tanto, los tiempos de terminación de ambas estrategias son iguales para capas enteras que no
+contienen puntos enteros no negativos. La segunda estrategia, no obstante, es candidata ideal para
+realizar una búsqueda binaria. Discutimos más sobre esto último en la sección de análisis de
+resultados.
 
 Con respecto a la complejidad algorítmica de este procedimiento podemos decir lo siguiente.
 Supongamos que modificamos el algoritmo para que encuentre todas las soluciones. Definamos
@@ -92,54 +187,47 @@ Supongamos que modificamos el algoritmo para que encuentre todas las soluciones.
 	\rbrace,
 \end{equation}
 y sea $T(n)$ el tiempo requerido para encontrar todos los puntos en $P_k$ o determinar que este
-conjunto es vacío\footnote{Estamos suponiendo implícitamente que el tiempo no depende del lado
-	derecho $k$, por lo que depende exclusivamente de la dimensión del politopo. Es la creencia del
-	autor que en realidad el tiempo es linealmente decreciente en $k$ puesto que la probabilidad de
-	que haya puntos enteros en $P_k$ es mayor a medida que $k$ aumenta. Si bien los resultados
-	numéricos apuntan a que esta hipótesis es cierta, el autor prefirió decir que el tiempo es
-constante a falta de un mejor argumento teórico.}. Es razonable suponer que $T(n)$ es exponencial en
-$n$. En efecto, cada par $(x_i, \omega_{i + 1})$ genera un intervalo de factibilidad $[t_i^{\min},
-t_i^{\max}]$. Este intervalo ciertamente depende de las elecciones previas de $t_1, \ldots, t_{i -
-1}$. Para encontrar todos los puntos en $P_k$, el algoritmo recorre todas las posibilidades:
+conjunto es vacío. Es razonable suponer que $T(n)$ es exponencial en $n$. En efecto, cada par $(x_i,
+\omega_{i + 1})$ genera un intervalo de factibilidad $[t_i^{\min}, t_i^{\max}]$. Este intervalo
+ciertamente depende de las elecciones previas de $t_1, \ldots, t_{i - 1}$. Para encontrar todos los
+puntos en $P_k$, el algoritmo recorre todas las posibilidades:
 \begin{equation}
 	\label{phase-1:complexity:bounds}
-	\prod_{i=1}^{\tau_1} \min_{t_1, \ldots, t_{i-1}} \lbrace t_i^{\max} - t_i^{\min} \rbrace
+	\prod_{i=1}^{\kappa_1} \min_{t_1, \ldots, t_{i-1}} \lbrace t_i^{\max} - t_i^{\min} \rbrace
 	\leq T(n) \leq
-	\prod_{i=1}^{\tau_2} \max_{t_1, \ldots, t_{i-1}} \lbrace t_i^{\max} - t_i^{\min} \rbrace,
+	\prod_{i=1}^{\kappa_2} \max_{t_1, \ldots, t_{i-1}} \lbrace t_i^{\max} - t_i^{\min} \rbrace,
 \end{equation}
-donde $1 \leq \tau_1 \leq n$ es el entero más grande que asegura que  $\min_{t_1, \ldots, t_{i -
-1}}\lbrace t_i^{\max} - t_i^{\min} \rbrace$ sea positivo para todo $i \in \lbrace 1, \ldots, \tau_1
-\rbrace$. Definimos $\tau_2$ de manera análoga. Se cumple que $\tau_1 \leq \tau_2$. Sean
+donde $1 \leq \kappa_1 \leq n$ es el entero más grande que asegura que  $\min_{t_1, \ldots, t_{i -
+1}}\lbrace t_i^{\max} - t_i^{\min} \rbrace$ sea positivo para todo $i \in \lbrace 1, \ldots, \kappa_1
+\rbrace$. Definimos $\kappa_2$ de manera análoga. Se cumple que $\kappa_1 \leq \kappa_2$. Sean
 $\ell_{\min}, \ell_{\max}$ las longitudes del intervalo de factibilidad más pequeño y del más grande
 en todos los niveles, respectivamente. Es decir, definimos
 \begin{align}
-	\ell_{\min} &\coloneq \min_{1 \leq i \leq \tau_1} \left\lbrace \min_{t_1, \ldots, t_{i - 1}} \lbrace
+	\ell_{\min} &\coloneq \min_{1 \leq i \leq \kappa_1} \left\lbrace \min_{t_1, \ldots, t_{i - 1}} \lbrace
 	t_i^{\max} - t_i^{\min} \rbrace \right\rbrace,
 	\\
-	\ell_{\max} &\coloneq \max_{1 \leq i \leq \tau_2} \left\lbrace \max_{t_1, \ldots, t_{i - 1}} \lbrace
+	\ell_{\max} &\coloneq \max_{1 \leq i \leq \kappa_2} \left\lbrace \max_{t_1, \ldots, t_{i - 1}} \lbrace
 	t_i^{\max} - t_i^{\max} \rbrace \right\rbrace.
 \end{align}
 Si $P_k$ es vacío, se sigue que no existe ningún intervalo factible en el nivel $n$, lo que implica
-que $\tau_2 < n$. En caso contrario, el algoritmo recorre hasta el último nivel, por lo que $\tau_1
-= \tau_2 = n$. De (\ref{phase-1:complexity:bounds}), obtenemos
+que $\kappa_2 < n$. En caso contrario, el algoritmo recorre hasta el último nivel, por lo que $\kappa_1
+= \kappa_2 = n$. De (\ref{phase-1:complexity:bounds}), obtenemos
 \begin{equation}
 	\ell_{\min}^{n} \leq T(n) \leq \ell_{\max}^{n}.
 \end{equation}
-En el peor de los casos, nuestro algoritmo recorre todas las capas enteras. Se sigue que
-\begin{equation}
+En el peor de los casos, nuestro algoritmo recorre todas las capas enteras parametrizadas por
+$\lbrace \eta, \eta - 1, \ldots, \tau\rbrace$. Se sigue que
+\begin{align}
 	\label{phase-1:time}
 	\text{Tiempo de ejecución}
-	= \mathcal{O} \left(\sum_{k=1}^{\eta} T(n) \right)
-	= \mathcal{O}(\eta \cdot T(n))
-	= \mathcal{O}(\eta \cdot c^{n}),
-\end{equation}
+	= \mathcal{O}((\eta - \tau) \cdot T(n))
+	= \mathcal{O}(c^{n}),
+\end{align}
 para alguna $c > 1$.
 
 Ahora bien, este razonamiento aplica a la modificación del algoritmo en donde decidimos buscar todas
 las soluciones posibles. En realidad solo nos interesa encontrar un punto óptimo, por lo que podemos
 concluir que una cota superior para la complejidad de nuestro algoritmo es (\ref{phase-1:time}).
-Concluimos esta sección diciendo haremos uso del mismo razonamiento para determinar la complejidad
-algorítmica de nuestro método en la segunda fase de su construcción. Finalmente, observemos también
-que, para problemas del tipo (\ref{theory:formulation}), la solución siempre se encuentra
-razonablemente cerca de la frontera presupuestaria $\vec{p}^T\vec{x} = u$, así que a excepción de
-casos degenerados, nunca recorre nuestro algoritmo todas las capas enteras.
+Asímismo, en la práctica encontramos que la diferencia $\eta - \tau$ es crucial para determinar
+cuántas capas enteras recorre nuestro algoritmo en el peor de los casos. Por lo tanto, un estudio
+sobre la distribución de esta diferencia resulta ser interesante.
