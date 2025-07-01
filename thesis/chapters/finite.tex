@@ -28,15 +28,16 @@ análisis.
 
 \begin{lemma}
 	Sea
-	\begin{equation*}
+	\begin{equation}
 		\label{eq:last-index}
-		i^* \coloneq \argmax \left\lbrace \frac{u}{\vec{q}_1}, \ldots, \frac{u}{\vec{q}_n} \right\rbrace,
-	\end{equation*}
+		i^* \coloneq \argmax \left\lbrace \frac{1}{\vec{q}_1}, \ldots, \frac{1}{\vec{q}_n} \right\rbrace,
+	\end{equation}
 	y definamos
-	\begin{equation*}
+	\begin{equation}
+		\label{eq:tau}
 		\tau \coloneq \left\lfloor \left\lfloor \frac{u}{\vec{q}_{i^*}} \right\rfloor
 			\frac{\vec{q}_{i^*}}{m} \right\rfloor.
-	\end{equation*}
+	\end{equation}
 	Entonces la solución del problema (\ref{theory:formulation}) se encuentra en una capa entera
 	parametrizada por $k \in \lbrace \eta, \eta - 1, \ldots, \tau \rbrace$.
 \end{lemma}
@@ -90,7 +91,6 @@ análisis.
 	\end{equation*}
 	Aplicando la función piso a ambos lados de la desigualdad encontramos que $\tau \leq \eta$.
 \end{observation}
-
 Sea $k \in \lbrace \eta, \eta - 1, \ldots, \tau \rbrace$. Sabemos de la sección de Fundamentos en el
 primer capítulo que deseamos resolver la ecuación lineal diofantina
 \begin{equation*}
@@ -231,3 +231,70 @@ concluir que una cota superior para la complejidad de nuestro algoritmo es (\ref
 Asímismo, en la práctica encontramos que la diferencia $\eta - \tau$ es crucial para determinar
 cuántas capas enteras recorre nuestro algoritmo en el peor de los casos. Por lo tanto, un estudio
 sobre la distribución de esta diferencia resulta ser interesante.
+\begin{lemma}
+	\label{lemma:layer-dist}
+	Sean $m, q$ enteros distintos de cero. Entonces la función $\Delta \colon \R \to \R$ dada por
+	\begin{align*}
+		\Delta(x) &\coloneq \left\lfloor \frac{x}{m} \right\rfloor - \left\lfloor \left\lfloor
+		\frac{x}{q} \right\rfloor \frac{q}{m} \right\rfloor,
+	\end{align*}
+	es periódica con periodo $\lcm{q, m}$.
+\end{lemma}
+\begin{proof}
+	Tenemos
+	\begin{align*}
+		\Delta(x + \lcm{q, m})
+		&= \left\lfloor \frac{x}{m} + \frac{\lcm{q, m}}{m} \right\rfloor
+		- \left\lfloor \left\lfloor \frac{x}{q} + \frac{\lcm{q,m}}{q} \right\rfloor \frac{q}{m}
+			\right\rfloor,
+	\end{align*}
+	pero $q, m \mid \lcm{q, m}$, por lo que $\lcm{q,m}/m$ y $\lcm{q,m}/q$ son enteros. Por las
+	propiedades de la función piso obtenemos los que queremos demostrar:
+	\begin{align*}
+		\Delta(x + \lcm{q,m})
+		&=
+		\left\lfloor \frac{x}{m} \right\rfloor + \frac{\lcm{q,m}}{m}
+		- \left\lfloor \left\lfloor \frac{x}{q} \right\rfloor\frac{q}{m} + 
+			\frac{\lcm{q,m}}{q}\cdot\frac{q}{m} \right\rfloor \\
+		&= 
+		\left\lfloor \frac{x}{m} \right\rfloor + \frac{\lcm{q,m}}{m}
+		- \left\lfloor \left\lfloor \frac{x}{q} \right\rfloor\frac{q}{m}\right\rfloor
+		- \frac{\lcm{q,m}}{m} \\
+		&= 
+		\left\lfloor \frac{x}{m} \right\rfloor
+		- \left\lfloor \left\lfloor \frac{x}{q} \right\rfloor\frac{q}{m}\right\rfloor \\
+		&= \Delta(x).
+	\end{align*}
+\end{proof}
+\begin{definition}
+	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q} \in \Z^n$ su múltiplo
+	coprimo. Consideremos los parámetros $\eta$ y $\tau$ (c.f. \ref{phase-1:lemma:eta},
+	\ref{eq:tau}) como funciones del presupuesto $u$. Entonces decimos que la función $\Delta^*
+	\colon \R \to \R$ dada por
+	\begin{equation}
+		\label{eq:dist-layers}
+		\Delta^*(u) \coloneq \eta(u) - \tau(u)
+	\end{equation}
+	denota el número de capas enteras a revisar dado el presupuesto $u$.
+\end{definition}
+
+Si queremos aplicar el Lema \ref{lemma:layer-dist}, debemos reducir nuestra atención a vectores
+$\vec{p} \in \Z^n$ distintos de cero. Esto se debe a que debemos asegurar que el múltiplo $m \neq 0$
+sea entero\footnote{Es la creencia del autor que este resultado se puede generalizar para múltiplos
+$m$ racionales, mas esto no agrega demasiado valor en lo que sigue de la tesis.}. Independientemente
+del comportamiento periódico de $\Delta*$, observemos que depende en gran medida del múltiplo $m$.
+Esto último implica que el número de capas enteras a revisar depende del número de cifras decimales
+usadas para especificar $\vec{p}$.
+
+\begin{example}
+	Si tenemos $\vec{p} \coloneq (9.6, 7.2, 5.6)^T$, entonces $m = 0.8$ y por lo tanto el número de
+	capas a revisar dado $u \coloneq 119$ es $\Delta^*(u) = 14$. En cambio, si tenemos $\vec{p} \coloneq
+	(9.60, 7.28, 5.68)^T$, obtenemos $m = 0.08$, por lo que el número de capas a revisar dado $u$ es
+	$\Delta^*(u) = 1499$. Es decir, si usamos una cifra decimal más, entonces $\Delta^*(u)$ se
+	multiplica por 100, aproximadamente.
+\end{example}
+
+% TODO: agregar imágenes que muestren el número de capas enteras dado el presupuesto. Un buen
+% parámetro es m = 8, q = 12. Igual mostrar con varios decimales.
+
+\section{Análisis de resultados}
