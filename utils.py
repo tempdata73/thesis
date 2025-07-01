@@ -50,6 +50,7 @@ def repeat(num_iter=30):
         @wraps(func)
         def wrapper(*args, **kwargs):
             times = [0 for _ in range(num_iter)]
+            print(f"[INFO]: running {func.__name__} {num_iter} times")
 
             for i in range(num_iter):
                 start = perf_counter_ns()
@@ -60,7 +61,7 @@ def repeat(num_iter=30):
 
             mu_ns = stats.fmean(times)
             std_ns = stats.stdev(times, xbar=mu_ns)
-            print(f"[INFO]: took {mu_ns * 1e-6:.4f} ± {std_ns * 1e-6:.4f} ms to solve")
+            print(f"[INFO]: took {mu_ns * 1e-6:1.4f} ±  {std_ns * 1e-6:0.4f} ms")
             return res, (mu_ns, std_ns)
 
         return wrapper
