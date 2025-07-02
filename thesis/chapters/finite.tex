@@ -351,13 +351,13 @@ esta capa entera con radio $r \in \R_{>0}$ y centro $\vec{x} \in H_{\vec{q}, k\n
 		\vec{x} \coloneq k\vec{\omega} + M\lfloor \vec{t} \rceil \in \Z^{n-1},
 	\end{equation*}
 	de donde se sigue que
-	\begin{align*}
-		\norm{\vec{y} - \vec{x}}_2^{2}
-		&= \norm{M\vec{\delta}}_{2}^{2} \\
-		&\leq \sum_{i=1}^{n-1}|\vec{\delta}_i|^2 \norm{M\vec{e}_i}_2^{2} \\
-		&\leq \frac{1}{4}\sum_{i=1}^{n-1} \norm{M\vec{e}_i}_2^{2} \\
-		&= \frac{1}{4}\norm{M}_F^2,
-	\end{align*}
+	\begin{align}
+		\norm{\vec{y} - \vec{x}}_2^{2} 
+		&= \norm{M\vec{\delta}}_{2}^{2} \nonumber \\
+		&\leq \sum_{i=1}^{n-1}|\vec{\delta}_i|^2 \norm{M\vec{e}_i}_2^{2} \nonumber \\
+		&\leq \frac{1}{4}\sum_{i=1}^{n-1} \norm{M\vec{e}_i}_2^{2} \label{eq:alt-M-bound} \\
+		&= \frac{1}{4}\norm{M}_F^2, \nonumber
+	\end{align}
 	donde $\norm{M}_F$ denota la norma Frobenius de $M$. Por lo tanto, si definimos
 	\begin{equation}
 		\label{eq:radius}
@@ -406,10 +406,11 @@ encontramos la máxima distancia que tiene con cualquier otro punto sobre este s
 
 \begin{definition}
 	Sea $\sigma$ un símplice y consideremos su baricentro $\hat{\vec{\sigma}}$. Definamos
-	\begin{equation*}
+	\begin{equation}
+		\label{eq:def:r-sigma}
 		r_\sigma \coloneq \max \lbrace r \in \R_{>0} \colon B_r^{(\eta)}(\hat{\vec{\sigma}})
 		\subseteq \sigma \rbrace.
-	\end{equation*}
+	\end{equation}
 	Entonces decimos que $\mathcal{C}^{(\eta)} \coloneq
 	B_{r_\sigma}^{(\eta)}(\hat{\vec{\sigma}})$ es la circunferencia inscrita en $\sigma$. A
 	$r_\sigma$ le llamamos el radio de tal circunferencia.
@@ -421,28 +422,153 @@ encontramos la máxima distancia que tiene con cualquier otro punto sobre este s
 \end{definition}
 \begin{observation}
 	Si $\sigma$ es generado por $n$ vectores, entonces tiene $\binom{n}{n-1} = n$ facetas, y cada
-	una es generada por $n - 1$ vectores. Observemos también que $F_1 \cup \cdots \cup F_n$
+	una es generada por $n - 1$ vectores. También se cumple que $F_1 \cup \cdots \cup F_n$
 	constituye la frontera de $\sigma$.
 \end{observation}
+
+Por construcción, el vector $\vec{u}_j$ es ortogonal a los vectores $\lbrace \vec{u}_i \rbrace_{i
+\neq j}$, se sigue que su proyección sobre la capa entera $H_{\vec{q}, \eta\norm{\vec{q}}^{-2}}$ es
+el vector normal de la faceta $F_j$. Además, esta proyección apunta hacia el interior del símplice
+$\sigma$. Ahora bien, como $\vec{q}$ es el vector normal a $H_{\vec{q}, \eta\norm{\vec{q}}}$,
+encontramos que la proyección de $\vec{u}_j$ sobre esta capa entera es
+\begin{equation}
+	\label{eq:normal-vector}
+	\vec{\mu}_j \coloneq
+	\vec{u}_j - \frac{\vec{q}^T\vec{u}_j}{\vec{q}^T\vec{q}}\vec{q}
+	=
+	\vec{u}_j - \frac{\eta}{\norm{\vec{q}}^2}\vec{q}.
+\end{equation}
+Denotemos por $\hat{\vec{\mu}}_j$ el vector $\vec{\mu}_j$ normalizado. Encontramos entonces que cada
+faceta $F_j$ está contenida en el hiperplano afino
+\begin{equation*}
+	\lbrace \vec{x} \in \R^{n-1} \colon \hat{\vec{\mu}}_j^T\vec{x} = b_j \rbrace,
+\end{equation*}
+donde $b_j \coloneq \hat{\vec{\mu}}_j^T\vec{x}$ para algún $\vec{x} \in F_j$. Luego, como cada
+vector normal $\hat{\vec{\mu}}_j$ apunta hacia el interior del símplice $\sigma$, se sigue que
+podemos escribirlo como
+\begin{equation*}
+	\sigma = \bigcap_{j=1}^{n} \lbrace \vec{x} \in \R^{n-1} \colon \hat{\vec{\mu}}^T_j\vec{x} \geq b_j \rbrace.
+\end{equation*}
+Esta caracterización de $\sigma$ nos permite demostrar el siguiente Lema.
 \begin{lemma}
+	\label{lemma:sigma-radius}
 	El radio $r_\sigma$ de la circunferencia inscrita en $\sigma$ está dado por
 	\begin{equation*}
-		r_\sigma = \min_{i} \lbrace d(\hat{\vec{\sigma}}, F_i) \rbrace,
+		r_\sigma = \min_{j} \lbrace d(\hat{\vec{\sigma}}, F_j) \rbrace,
 	\end{equation*}
-	donde $d(\hat{\vec{\sigma}}, F_i)$ denota la mínima distancia entre el baricentro
-	$\hat{\vec{\sigma}}$ y la $i$-ésima faceta $F_i$ del símplice $\sigma$.
+	donde $d(\hat{\vec{\sigma}}, F_j)$ denota la mínima distancia entre el baricentro
+	$\hat{\vec{\sigma}}$ y la $j$-ésima faceta $F_j$ del símplice $\sigma$.
 \end{lemma}
 \begin{proof}
-	% TODO: proof
+	Observemos que $\vec{u}_i$ con $i \neq j$ es un vector sobre el símplice $\sigma$. Luego, la
+	distancia entre el baricentro y la $j$-ésima faceta es
+	\begin{equation*}
+		d(\hat{\vec{\sigma}}, F_j) = |\hat{\vec{\mu}}_j^T(\hat{\vec{\sigma}} - \vec{u}_i)|
+		= \hat{\vec{\mu}}_j^T(\hat{\vec{\sigma}} - \vec{u}_i),
+	\end{equation*}
+	pues $\hat{\vec{\sigma}}$ es un elemento de $\sigma$ y $\hat{\vec{\mu}}_j$ apunta hacia adentro
+	del símplice.
+
+	Mostramos primero que si $r \leq \min_{j} \lbrace d(\hat{\vec{\sigma}}, F_j) \rbrace$, entonces
+	$B_r^{(\eta)}(\hat{\vec{\sigma}}) \subseteq \sigma$. Así pues, sea $\vec{x} \in
+	B_r^{(\eta)}(\hat{\vec{\sigma}})$. Observemos que
+	\begin{align*}
+		\hat{\vec{\mu}}_j^T - b_j
+		&=
+		\hat{\vec{\mu}}_j^T(\vec{x} - \hat{\vec{\sigma}}) + \hat{\vec{\mu}}_j\hat{\vec{\sigma}} -
+		b_j \\
+		&= \hat{\vec{\mu}}_j^T(\vec{x} - \hat{\vec{\sigma}}) + d(\hat{\vec{\sigma}}, F_j).
+	\end{align*}
+	Por Cauchy-Schwartz tenemos
+	\begin{equation*}
+		\hat{\vec{\mu}}^T(\vec{x} - \hat{\vec{\sigma}})
+		\geq -\norm{\hat{\vec{\mu}}}\norm{\vec{x} - \hat{\vec{\sigma}}}
+		= -\norm{\vec{x} - \hat{\vec{\sigma}}}
+		\geq -r,
+	\end{equation*}
+	y por lo tanto,
+	\begin{equation*}
+		\hat{\vec{\mu}}_j^T\vec{x} - b_j \geq -r + d(\hat{\vec{\sigma}}, F_j) \geq 0,
+	\end{equation*}
+	pues $r \leq d(\hat{\vec{\sigma}}, F_j)$ para todo $j \in \lbrace 1, \ldots, n \rbrace$. Así,
+	encontramos que, para tdoo $\vec{x} \in B_r^{(\eta)}(\hat{\vec{\sigma}})$,
+	\begin{equation*}
+		\vec{x} \in
+		\bigcap_{j=1}^{n} \lbrace \vec{x} \in \R^{n-1} \colon \hat{\vec{\mu}}^T_j\vec{x} \geq b_j \rbrace
+		= \sigma,
+	\end{equation*}
+	y por lo tanto $B_r^{(\eta)}(\hat{\vec{\sigma}}) \subseteq \sigma$. A causa de
+	(\ref{eq:def:r-sigma}) encontramos que $r_\sigma \geq \min_{j} \lbrace d(\hat{\vec{\sigma}},
+	F_j) \rbrace$.
+
+	Ahora bien, supongamos que $r > d(\hat{\vec{\sigma}}, F_j)$ para algún $j \in \lbrace 1, \ldots,
+	n \rbrace$. Consideremos el punto $\vec{x} \in F_j$ que satisface $d(\hat{\vec{\sigma}}, F_j) =
+	d(\hat{\vec{\sigma}}, \vec{x})$. Tal punto existe porque $F_j$ es cerrado. Luego,
+	$\norm{\vec{\sigma} - \vec{x}} < r$. Entonces existe $\varepsilon > 0$ tal que
+	\begin{equation*}
+		\norm{\hat{\vec{\sigma}} - (\vec{x} - \varepsilon\hat{\vec{\mu}}_j)} \leq r,
+	\end{equation*}
+	lo que implica que $\vec{x} - \varepsilon\hat{\vec{\mu}}_j \in
+	B_r^{(\eta)}(\hat{\vec{\sigma}})$. Sin embargo, tenemos
+	\begin{equation*}
+		\hat{\vec{\mu}}_j^T(\vec{x} - \varepsilon\hat{\vec{\mu}}_j)
+		= b_j - \varepsilon\norm{\hat{\vec{\mu}}}^2 < b_j,
+	\end{equation*}
+	y entonces $\vec{x} - \varepsilon\hat{\vec{\mu}} \not\in \sigma$. De aquí se sigue que $r_\sigma
+	\leq d(\hat{\vec{\sigma}}, F_j)$ para todo $j \in \lbrace 1, \ldots, n \rbrace$ y, por lo tanto,
+	$r_\sigma \leq \min_{j} \lbrace d(\hat{\vec{\sigma}}, F_j) \rbrace$.
+
+	Concluimos, entonces, con
+	\begin{equation*}
+		r_\sigma = \min_{j} \lbrace d(\hat{\vec{\sigma}}, F_j) \rbrace,
+	\end{equation*}
+	que es lo que queríamos demostrar.
 \end{proof}
 
-Recordemos que la distancia entre un punto $\vec{x}$ y un hiperplano afino $F_i$ está dada por
+Buscamos expresar el radio $r_\sigma$ en función de $\eta$, por lo que debemos realizar un par de
+cálculos. Retomemos de la demostración del Lema anterior que la distancia entre el baricentro y la
+$j$-ésima faceta está dada por
 \begin{equation*}
-	d(\vec{x}, F_i) = |\vec{\mu}_i^T\vec{x} - b_i|,
+	d(\hat{\vec{\sigma}}, F_j) = \frac{{\vec{\mu}}_j^T(\vec{u}_i -
+	\hat{\vec{\sigma}}_i)}{\norm{\vec{\mu}_j}}.
 \end{equation*}
-donde $\vec{\mu}_i$ es el vector unitario normal a $F_i$ que apunta hacia el origen, y $b_i =
-\vec{\mu}_i^T\vec{p}_i$, donde $\vec{p}_i$ es un punto sobre $F_i$. De esta manera podemos calcular
-el radio de la circunferencia inscrita en $\sigma$.
+Realizando los cálculos, encontramos que
+\begin{align*}
+	\vec{\mu}_j^T(\hat{\vec{\sigma}} - \vec{u}_i)
+	% &=
+	% \left( \frac{\eta}{\vec{q}_j}\vec{e}_j - \frac{\eta}{\norm{\vec{q}}^2}\vec{q} \right)^T
+	% \left( \frac{\eta}{n\vec{q}_1}, \ldots, \frac{\eta}{n\vec{q}_i} - \frac{\eta}{\vec{q}_i}, \ldots,
+	% 		\frac{\eta}{n\vec{q}_n} \right) \\
+	% &=
+	% \eta^2
+	% \left( \frac{1}{\vec{q}_j}\vec{e}_j - \frac{1}{\norm{\vec{q}}^2}\vec{q} \right)^T
+	% \left( \frac{1}{n\vec{q}_1}, \ldots, \frac{1}{n\vec{q}_i} - \frac{1}{\vec{q}_i}, \ldots,
+	% 		\frac{1}{n\vec{q}_n} \right) \\
+	% &=
+	% \eta^2
+	% \left(\frac{1}{\vec{q}_j}\frac{1}{n\vec{q}_j} -
+	% 	\frac{1}{\norm{\vec{q}}^2} \cdot
+	% 	\left(\frac{1}{n} + \cdots + \frac{1}{n} - 1\right)
+	% 	\right) \\
+	&= \frac{\eta^2}{n\vec{q}_j^2},
+\end{align*}
+y también
+\begin{equation*}
+	\norm{\vec{\mu}_j} = \eta \sqrt{\frac{1}{\vec{q}_j^2} - \frac{1}{\norm{\vec{q}}^2}}.
+\end{equation*}
+Sustituyendo valores, obtenemos
+\begin{equation*}
+	d(\hat{\vec{\sigma}}, F_j) = \frac{\eta}{n} \cdot
+	\frac{1}{\vec{q}_j^2\sqrt{\vec{q}_j^{-2} - \norm{\vec{q}}^{-2}}}
+	= \frac{\eta}{n} \cdot \frac{1}{Q_j},
+\end{equation*}
+donde definimos $Q_j$ pertinentemente. Finalmente, del Lema \ref{lemma:sigma-radius} encontramos que
+el radio de la circunferencia inscrita en el símplice $\sigma$ está dado por
+\begin{equation}
+	\label{eq:sigma-radius}
+	r_\sigma = \min_{i} \lbrace d(\hat{\vec{\sigma}}, F_i) = \frac{\eta}{n} \cdot \frac{1}{\max_{i}
+	\lbrace Q_i \rbrace}
+\end{equation}
 
 \begin{theorem}
 	Existe un punto entero sobre el símplice $\sigma$ para $\eta$ suficientemente grande.
@@ -453,15 +579,63 @@ el radio de la circunferencia inscrita en $\sigma$.
 	$\mathcal{C}^{(\eta)}$ está inscrita en $\sigma$, basta mostrar que existe $\eta$
 	suficientemente grande tal que $r \leq r_\sigma$, pues esto implicaría
 	\begin{equation*}
-		\vec{x} \in B_r^{(\eta)}(\hat{\vec{\sigma}}) \subseteq \mathcal{C}^{(\eta)}{(\hat{\vec{\sigma}})}
-		\subseteq \sigma.
+		\vec{x} \in B_r^{(\eta)}(\hat{\vec{\sigma}}) \subseteq \mathcal{C}^{(\eta)} \subseteq \sigma.
 	\end{equation*}
+	De (\ref{eq:sigma-radius}) obtenemos que $r \leq r_\sigma$ si y solo si
+	\begin{equation}
+		\label{eq:eta-limit}
+		\eta \geq \frac{n}{2}\norm{M}_F\max_{i} \lbrace Q_i \rbrace,
+	\end{equation}
+	que es lo que queríamos demostrar.
 \end{proof}
-
+De manera inmediata obtenemos los siguientes Corolarios.
 \begin{corollary}
-	Para $\eta$ suficientemente grande, la ecuación lineal diofantina $\vec{q}^T\vec{x} = \eta$
-	tiene soluciones no negativas.
+	La ecuación lineal diofantina $\vec{q}^T\vec{x} = \eta$ tiene soluciones no negativas para
+	$\eta$ suficientemente grande.
 \end{corollary}
+\begin{corollary}
+	El problema (\ref{theory:formulation}) se puede resolver a partir de una ecuación lineal
+	diofantina para $u$ suficientemente grande.
+\end{corollary}
+
+Vale la pena hacer un par de observaciones. En primer lugar, de (\ref{eq:eta-limit}) parece que
+podemos concluir que hay una dependencia lineal entre la dimensión $n$ y $\eta$. No obstante, la
+norma $\norm{M}_F$ también depende de la dimensión. Para ser más explícitos con respecto a esta
+dependencia, podemos rescatar de (\ref{eq:alt-M-bound}) la siguiente cota:
+\begin{equation*}
+	\frac{1}{4}\sum_{i=1}^{n-1}\norm{M\vec{e}_i}_2^2
+	\leq
+	\frac{n-1}{4}\max_{1 \leq i \leq n} \lbrace \norm{M\vec{e}_i}_2^2 \rbrace,
+\end{equation*}
+de donde obtendríamos
+\begin{equation*}
+	\eta \geq \frac{n\sqrt{n-1}}{2} \max_{i} \lbrace \norm{M\vec{e}_i}_2 \rbrace \cdot \max_{i} \lbrace
+	Q_i \rbrace.
+\end{equation*}
+Esta cota, no obstante, es menos ajustada que la propuesta inicialmente.
+
+En segundo lugar, el resultado que obtuvimos es más fuerte de lo que aparenta. Hemos encontrado una
+cota inferior de manera que podamos asegurar la existencia de soluciones enteras en una vecindad del
+baricentro $\hat{\vec{\sigma}}$. Este punto no es especial, en realidad podemos realizar el mismo
+procedimiento enfocándonos en otros puntos del símplice $\sigma$ para asegurar soluciones en sus
+respectivas vecindades. Entonces, dependiendo del punto, podemos obtener mejores o peores cotas para
+$\eta$. El punto más interesante es aquel que provee la cota inferior más pequeña\footnote{
+	El autor tiene razones para sospechar que este punto se encuentra en la intersección de todos
+	los vectores normales a cada faceta $F_j$.
+}.
+
+En tercer lugar, la cota (\ref{eq:eta-limit}) provee, hasta donde llega el conocimiento del autor,
+nuevas cotas superiores para los números de Frobenius. De manera resumida, dada una colección de
+enteros $a_1, \ldots, a_n$ coprimos, el número de Frobenius es el entero $F$ más grande tal que $F$
+no pueda ser expresado como una combinación lineal entera no negativa de $a_1, \ldots, a_n$. Un
+estudio sobre cómo se compara esta colección de cotas con respecto a la literatura existente, si
+bien interesante, queda fuera del propósito de esta tesis.
+
+En cuarto lugar, cabe mencionar que eventualmente es suficiente con revisar la primera capa entera.
+No hemos demostrado, empero, que el número de capas enteras a revisar eventualmente decrece en
+cuanto $u$ aumenta. Observaremos en el análisis de resultados que hay un patrón periódico y
+decreciente en cuanto al número de capas enteras revisadas. Demostrar que este comportamiento se
+cumple es mucho más difícil y queda fuera del propósito de esta tesis.
 
 % \begin{lemma}
 % 	\label{lemma:bary-dist}
