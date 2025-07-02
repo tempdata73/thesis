@@ -296,5 +296,268 @@ usadas para especificar $\vec{p}$.
 
 % TODO: agregar imágenes que muestren el número de capas enteras dado el presupuesto. Un buen
 % parámetro es m = 8, q = 12. Igual mostrar con varios decimales.
+Observaremos en el análisis de resultados que el número de capas enteras que nuestro algoritmo
+revisa en realidad disminuye a medida que aumenta el presupuesto $u$. Demostraremos a continuación
+que para $u$ suficientemente grande, la solución al problema (\ref{theory:formulation}) se encuentra
+en la $\eta$-ésima capa entera. Este resultado es análogo al caso infinito del Teorema
+(\ref{theory:th:feasibility}). No obstante, necesitamos primero de un par de Definiciones y Lemas
+preliminares.
+
+% TODO: especificar hacia dónde se dirige lo que estamos haciendo
+
+Sea $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ una capa entera. Entonces definimos la bola cerrada sobre
+esta capa entera con radio $r \in \R_{>0}$ y centro $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ como
+\begin{equation}
+	\label{eq:k-ball}
+	B_r^{(k)}(\vec{x}) \coloneq \lbrace \vec{y} \in \R^n \colon \norm{\vec{y} - \vec{x}} \leq r
+	\rbrace \cap H_{\vec{q}, k \norm{\vec{q}}^{-2}}.
+\end{equation}
+% TODO: mostrar una imagen con una bola.
+\begin{lemma}
+	\label{lemma:ball-cover}
+	Existe $r \in \R_{>0}$ tal que la familia de bolas
+	\begin{equation*}
+		\left\lbrace B_r^{(k)}(\vec{x}) \colon \vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap
+			\Z^n \right\rbrace
+	\end{equation*}
+	es una cubierta de $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$.
+\end{lemma}
+\begin{proof}
+	Recordemos del Teorema (\ref{th:lattice}) que $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}
+	\cap \Z^n$ si y solo si $\vec{x} = k\vec{\omega} + M\vec{t}$ para algún $\vec{t} \in \Z^{n-1}$.
+	Así, tenemos
+	\begin{equation*}
+		\left\lbrace B_r^{(k)}(\vec{x}) \colon \vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap
+			\Z^n \right\rbrace
+			=
+		\left\lbrace B_r^{(k)}(k\vec{\omega} + M\vec{t}) \colon \vec{t} \in \Z^{n-1} \right\rbrace.
+	\end{equation*}
+	Por un lado, sabemos que $B_r^{(k)}(k\vec{\omega} + M\vec{t}) \subseteq H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ para
+	todo punto entero $\vec{t} \in \Z^{n-1}$. Luego, para cualquier $r \in \R_{>0}$ tenemos
+	\begin{equation}
+		\label{eq:ball-cover:1}
+		\bigcup_{\vec{t} \in \Z^{n-1}}B_r^{(k)}(k\vec{\omega} + M\vec{t}) \subseteq
+		H_{\vec{q}, k\norm{\vec{q}}^{-2}}.
+	\end{equation}
+	Ahora bien, sea $\vec{y}$ un punto sobre la $k$-ésima capa entera. Como los renglones de $M$ son
+	linealmente independientes, existe $\vec{t} \in \R^{n-1}$ tal que
+	\begin{equation*}
+		\vec{y} = k\vec{\omega} + M\vec{t}.
+	\end{equation*}
+	Sea $\lfloor \vec{t} \rceil \in \Z^{n-1}$ el vector resultante de redondear cada entrada de
+	$\vec{t}$ al entero más cercano. Luego, $\vec{t} = \lfloor \vec{t} \rfloor + \vec{\delta}$,
+	donde $\vec{\delta} \in \R^{n-1}$ satisface $\norm{\vec{\delta}}_{\infty} \leq 0.5$. Definamos
+	\begin{equation*}
+		\vec{x} \coloneq k\vec{\omega} + M\lfloor \vec{t} \rceil \in \Z^{n-1},
+	\end{equation*}
+	de donde se sigue que
+	\begin{align*}
+		\norm{\vec{y} - \vec{x}}_2^{2}
+		&= \norm{M\vec{\delta}}_{2}^{2} \\
+		&\leq \sum_{i=1}^{n-1}|\vec{\delta}_i|^2 \norm{M\vec{e}_i}_2^{2} \\
+		&\leq \frac{1}{4}\sum_{i=1}^{n-1} \norm{M\vec{e}_i}_2^{2} \\
+		&= \frac{1}{4}\norm{M}_F^2,
+	\end{align*}
+	donde $\norm{M}_F$ denota la norma Frobenius de $M$. Por lo tanto, si definimos
+	\begin{equation}
+		\label{eq:radius}
+		r \coloneq \frac{1}{2}\norm{M}_F,
+	\end{equation}
+	entonces para todo $\vec{y} \in \R^n$ sobre la $k$-ésima capa entera, existe $\vec{x} \in \Z^n$
+	sobre esa misma capa entera tal que $\vec{y} \in B_r^{(k)}(\vec{x})$. Por lo tanto,
+	\begin{equation}
+		\label{eq:ball-cover:2}
+		H_{\vec{q}, k\norm{\vec{q}}^{-2}} \subseteq
+		\bigcup_{\vec{t} \in \Z^{n-1}}B_r^{(k)}(k\vec{\omega} + M\vec{t}).
+	\end{equation}
+	Juntando esto con (\ref{eq:ball-cover:1}) obtenemos lo que queríamos demostrar.
+\end{proof}
+
+Ahora bien, denotemos por $\vec{u}_i$ las intersecciones que tiene la capa entera $H_{\vec{q},
+\eta\norm{\vec{q}}^{-2}}$ con cada uno de los ejes. Es decir,
+\begin{equation*}
+	\vec{u}_i \coloneq \frac{\eta}{\vec{q}_i}\vec{e}_i,
+\end{equation*}
+y consideremos el símplice $\sigma$ generado por estos vectores:
+\begin{equation*}
+	\sigma \coloneq \left\lbrace \theta_1\vec{u}_1 + \cdots \theta_n\vec{u}_n \colon
+		\sum_{i=1}^{n}\theta_i = 1, \theta_i \geq 0 \right\rbrace.
+\end{equation*}
+No es difícil ver que todo punto $\vec{x} \in \R^n_{\geq \vec{0}}$ sobre la $\eta$-ésima capa entera
+también es un elemento de este símplice $\sigma$ y viceversa.
+
+Ahora bien, nos interesa determinar la existencia de un punto entero sobre $\sigma$. De esta manera,
+tendríamos un punto entero no negativo que satisface la ecuación lineal diofantina
+$\vec{q}^T\vec{x} = \eta$. Para lograr esto, definimos el baricentro del $\sigma$ y
+encontramos la máxima distancia que tiene con cualquier otro punto sobre este símplice.
+
+\begin{definition}
+	Dado un símplice $\sigma$ generado por $\vec{u}_1, \ldots, \vec{u}_n$, definimos su baricentro
+	$\hat{\vec{\sigma}}$ como
+	\begin{equation*}
+		\hat{\vec{\sigma}} \coloneq \frac{1}{n} \sum_{i=1}^{n}\vec{u}_i.
+	\end{equation*}
+\end{definition}
+\begin{observation}
+	El baricentro $\hat{\vec{\sigma}}$ es un elemento de $\sigma$. Esto se debe a que $\hat{\vec{\sigma}}$ es la
+	combinación convexa de $\vec{u}_1, \ldots, \vec{u}_n$, donde $\theta_1 = \cdots = \theta_n =
+	\frac{1}{n}$.
+\end{observation}
+
+\begin{definition}
+	Sea $\sigma$ un símplice y consideremos su baricentro $\hat{\vec{\sigma}}$. Definamos
+	\begin{equation*}
+		r_\sigma \coloneq \max \lbrace r \in \R_{>0} \colon B_r^{(\eta)}(\hat{\vec{\sigma}})
+		\subseteq \sigma \rbrace.
+	\end{equation*}
+	Entonces decimos que $\mathcal{C}^{(\eta)} \coloneq
+	B_{r_\sigma}^{(\eta)}(\hat{\vec{\sigma}})$ es la circunferencia inscrita en $\sigma$. A
+	$r_\sigma$ le llamamos el radio de tal circunferencia.
+\end{definition}
+
+\begin{definition}
+	Sea $\sigma$ un símplice. Decimos que $F_j$ es una faceta de $\sigma$ si es el símplice generado
+	por los vectores $\lbrace \vec{u}_i \rbrace_{i \neq j}$.
+\end{definition}
+\begin{observation}
+	Si $\sigma$ es generado por $n$ vectores, entonces tiene $\binom{n}{n-1} = n$ facetas, y cada
+	una es generada por $n - 1$ vectores. Observemos también que $F_1 \cup \cdots \cup F_n$
+	constituye la frontera de $\sigma$.
+\end{observation}
+\begin{lemma}
+	El radio $r_\sigma$ de la circunferencia inscrita en $\sigma$ está dado por
+	\begin{equation*}
+		r_\sigma = \min_{i} \lbrace d(\hat{\vec{\sigma}}, F_i) \rbrace,
+	\end{equation*}
+	donde $d(\hat{\vec{\sigma}}, F_i)$ denota la mínima distancia entre el baricentro
+	$\hat{\vec{\sigma}}$ y la $i$-ésima faceta $F_i$ del símplice $\sigma$.
+\end{lemma}
+\begin{proof}
+	% TODO: proof
+\end{proof}
+
+Recordemos que la distancia entre un punto $\vec{x}$ y un hiperplano afino $F_i$ está dada por
+\begin{equation*}
+	d(\vec{x}, F_i) = |\vec{\mu}_i^T\vec{x} - b_i|,
+\end{equation*}
+donde $\vec{\mu}_i$ es el vector unitario normal a $F_i$ que apunta hacia el origen, y $b_i =
+\vec{\mu}_i^T\vec{p}_i$, donde $\vec{p}_i$ es un punto sobre $F_i$. De esta manera podemos calcular
+el radio de la circunferencia inscrita en $\sigma$.
+
+\begin{theorem}
+	Existe un punto entero sobre el símplice $\sigma$ para $\eta$ suficientemente grande.
+\end{theorem}
+\begin{proof}
+	Consideremos $r$ definida en (\ref{eq:radius}). Por el Lema \ref{lemma:ball-cover} sabemos que
+	existe un punto entero $\vec{x}$ en $B_r^{(\eta)}(\hat{\vec{\sigma}})$. Como la circunferencia
+	$\mathcal{C}^{(\eta)}$ está inscrita en $\sigma$, basta mostrar que existe $\eta$
+	suficientemente grande tal que $r \leq r_\sigma$, pues esto implicaría
+	\begin{equation*}
+		\vec{x} \in B_r^{(\eta)}(\hat{\vec{\sigma}}) \subseteq \mathcal{C}^{(\eta)}{(\hat{\vec{\sigma}})}
+		\subseteq \sigma.
+	\end{equation*}
+\end{proof}
+
+\begin{corollary}
+	Para $\eta$ suficientemente grande, la ecuación lineal diofantina $\vec{q}^T\vec{x} = \eta$
+	tiene soluciones no negativas.
+\end{corollary}
+
+% \begin{lemma}
+% 	\label{lemma:bary-dist}
+% 	Sea $\sigma$ un símplice generado por $\vec{u}_1, \ldots, \vec{u}_n$ y consideremos su
+% 	baricentro $\hat{\vec{\sigma}}$. Entonces
+% 	\begin{equation*}
+% 		\norm{\hat{\vec{\sigma}} - \vec{x}} \leq \max_{i} \lbrace \norm{\hat{\vec{\sigma}} - \vec{u}_i} \rbrace,
+% 	\end{equation*}
+% 	para todo $\vec{x} \in \sigma$.
+% \end{lemma}
+% \begin{proof}
+% 	Como $\vec{x}$ es un elemento del símplice $\sigma$, es una combinación convexa de $\vec{u}_1,
+% 	\ldots, \vec{u}_n$. Luego,
+% 	\begin{equation*}
+% 		\vec{x} = \theta_1\vec{u}_1 + \cdots + \theta_n\vec{u}_n,
+% 	\end{equation*}
+% 	observemos también que
+% 	\begin{equation*}
+% 		\hat{\vec{\sigma}} = \theta_1\hat{\vec{\sigma}} + \cdots + \theta_n\hat{\vec{\sigma}},
+% 	\end{equation*}
+% 	pues $\theta_1 + \cdots + \theta_n = 1$. Luego,
+% 	\begin{align*}
+% 		\norm{\hat{\vec{\sigma}} - \vec{x}}_2
+% 		&= \norm{\sum_{i=1}^{n}\theta_i\left(\hat{\vec{\sigma}} - \vec{u}_i\right)}_2 \\
+% 		&\leq \sum_{i=1}^{n}\theta_i\norm{\hat{\vec{\sigma}} - \vec{u}_i}_2 \\
+% 		&\leq \max_{i}\lbrace \norm{\hat{\vec{\sigma}} - \vec{u}_i}_2 \rbrace  \sum_{i=1}^{n}\theta_i \\
+% 		&= \max_{i}\lbrace \norm{\hat{\vec{\sigma}} - \vec{u}_i}_2 \rbrace,
+% 	\end{align*}
+% 	que es lo que queríamos demostrar.
+% \end{proof}
+% 
+% \begin{theorem}
+% 	Para todo $\eta$ suficientemente grande, la ecuación lineal diofantina $\vec{q}^T\vec{x} = \eta$
+% 	tiene soluciones enteras no negativas.
+% \end{theorem}
+% \begin{proof}
+% 	Hacemos la demostración por contradicción. Supongamos que no hay ningún punto entero sobre
+% 	$\sigma$. Por el Lema \ref{lemma:bary-dist} sabemos que
+% 	\begin{equation*}
+% 		\norm{\hat{\vec{\sigma}} - \vec{x}}_2 > \max_{i}\lbrace \norm{\hat{\vec{\sigma}} -
+% 	\vec{u}_i} \rbrace,
+% 	\end{equation*}
+% 	para todo punto entero $\vec{x}$ sobre la $\eta$-ésima capa entera $H_{\vec{q},
+% 	\eta\norm{\vec{q}}^{-2}}$. Observemos que
+% 	\begin{equation*}
+% 	\end{equation*}
+% \end{proof}
+
+% \begin{definition}
+%  Definimos el diámetro $\rho(\sigma)$ de un símplice $\sigma$ como la distancia más grande entre
+%  cualesquiera par de puntos sobre $\sigma$. Es decir,
+%  \begin{equation*}
+%  	\rho(\sigma) \coloneq \max_{\vec{x}, \vec{y} \in \sigma} \lbrace \norm{\vec{y} -
+%  	\vec{x}}_2\rbrace.
+%  \end{equation*}
+% \end{definition}
+% \begin{observation}
+%  El diámetro $\rho(\sigma)$ está bien definido porque la norma $\norm{\cdot}_2^2$ es una función
+%  continua y $\sigma$ es un conjunto compacto, por lo que sí existe el máximo. 
+% \end{observation}
+% \begin{lemma}
+%  El diámetro $\rho(\sigma)$ es igual a la arista de mayor longitud de $\sigma$. Es decir,
+%  \begin{equation*}
+%  	\rho(\sigma) = \max_{i \neq j} \lbrace \norm{\vec{u}_i - \vec{u}_j}_2 \rbrace.
+%  \end{equation*}
+% \end{lemma}
+% \begin{proof}
+%  Sean $\vec{x}, \vec{y} \in \sigma$, de manera que $\vec{y}$ es una combinación convexa de
+%  $\vec{u}_i$: 
+%  \begin{equation*}
+%  	\vec{y} = \theta_1\vec{u}_1 + \cdots + \theta_n\vec{u}_n.
+%  \end{equation*}
+%  Como $\theta_1 + \cdots + \theta_n = 1$, también se cumple que
+%  \begin{equation*}
+%  	\vec{x} = \theta_1\vec{x} + \cdots + \theta_n\vec{x}.
+%  \end{equation*}
+%  Luego,
+%  \begin{align*}
+%  	\norm{\vec{x} - \vec{y}}_2
+%  	&= \norm{\sum_{i=1}^{n}\theta_i\left(\vec{x} - \vec{u}_i\right)}_2 \\
+%  	&\leq \sum_{i=1}^{n}\theta_i\norm{\vec{x} - \vec{u}_i}_2 \\
+%  	&\leq \max_{i}\lbrace \norm{\vec{x} - \vec{u}_i}_2 \rbrace  \sum_{i=1}^{n}\theta_i \\
+%  	&= \max_{i}\lbrace \norm{\vec{x} - \vec{u}_i}_2 \rbrace.
+%  \end{align*}
+%  Aplicando el mismo razonamiento para $\vec{x}$, obtenemos
+%  \begin{equation*}
+%  	\norm{\vec{x} - \vec{u}_i}_2 \leq \max_{j \neq i}\lbrace \norm{\vec{u}_j - \vec{u}_i}_2
+%  	\rbrace.
+%  \end{equation*}
+%  Combinando lo anterior, para todo $\vec{x}, \vec{y}$ se sigue que
+%  \begin{equation*}
+%  	\norm{\vec{x} - \vec{y}}_2 \leq \max_{i}\lbrace \norm{\vec{x} - \vec{u}_i}_2
+%  	\rbrace \leq \max_{i}\max_{j \neq i} \lbrace \norm{\vec{u}_j - \vec{u}_i}_2 \rbrace
+%  	= \max_{i \neq j} \lbrace \norm{\vec{u}_i - \vec{u}_j} \rbrace.
+%  \end{equation*}
+%  Por lo tanto, el diámetro de $\sigma$ es igual a la longitud de la arista más grande.
+% \end{proof}
 
 \section{Análisis de resultados}
