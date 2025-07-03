@@ -19,12 +19,22 @@ también puede ser considerado como un Problema de la Suma de Conjuntos no Acota
 de resultados comparamos los tiempos de terminación de nuestro algoritmo con los de Ramificación y
 Acotamiento, \texttt{MTU2} (\cite{martello}), y una formulación alternativa de programación dinámica.
 
+\section{Análisis de capas enteras}
+\noindent
 De acuerdo al Teorema \ref{theory:th:feasibility}, el número de puntos factibles sobre la
-$\eta$-ésima capa entera es finito y, por lo tanto, puede ser cero. No obstante, al igual que en la
+$k$-ésima capa entera es finito y, por lo tanto, puede ser cero. No obstante, al igual que en la
 sección anterior, somos capaces de caracterizar todos los puntos enteros que se encuentran en
 cualquier capa entera. Consecuentemente, si determinamos que no hay ningún punto factible en la
-$\eta$-ésima capa entera, descendemos a la $(\eta -1)$-ésima capa entera y realizamos el mismo
+$k$-ésima capa entera, descendemos a la $(k -1)$-ésima capa entera y realizamos el mismo
 análisis.
+
+En la primera parte de esta sección determinamos una cota superior para el número de capas enteras
+que visitamos y analizamos el comportamiento a medida que el presupuesto $u$ aumenta. En la segunda
+parte de esta sección mostramos que si el presupuesto $u$ es suficientemente grande, entonces la
+solución de (\ref{theory:formulation}) sí se encuentra sobre la $\eta$-ésima capa entera. Este
+resultado es análogo al caso infinito del Teorema \ref{theory:th:feasibility}. Finalmente, en la
+tercera parte de esta sección discutimos brevemente sobre la complejidad algorítmica de encontrar
+la solución.
 
 \begin{lemma}
 	Sea
@@ -73,13 +83,13 @@ análisis.
 		\left\lfloor \left\lfloor \frac{u}{\vec{q}_{i^*}} \right\rfloor \frac{\vec{q}_{i^*}}{m}
 			\right\rfloor.
 	\end{equation*}
-	Finalmente, recordemos que $\eta$ es la primera capa en satisfacer la restricción presupuestaria.
+	Finalmente, recordemos que $k$ es la primera capa en satisfacer la restricción presupuestaria.
 	Por lo tanto, el óptimo del problema (\ref{theory:formulation}) se encuentra en una capa
 	parametrizada por $k \in \lbrace \eta, \eta - 1, \ldots, \tau \rbrace$.
 \end{proof}
 
 \begin{observation}
-	Siempre se cumple que $\tau \leq \eta$. En efecto,
+	Siempre se cumple que $\tau \leq k$. En efecto,
 	\begin{equation*}
 		\left\lfloor \frac{u}{\vec{q}_{i^*}} \right\rfloor \vec{q}_{i^*}
 		\leq \frac{u}{\vec{q}_{i^*}} \vec{q}_{i^*} = u,
@@ -89,7 +99,7 @@ análisis.
 		\left\lfloor \frac{u}{\vec{q}_{i^*}} \right\rfloor \frac{\vec{q}_{i^*}}{m}
 		\leq \frac{u}{m}.
 	\end{equation*}
-	Aplicando la función piso a ambos lados de la desigualdad encontramos que $\tau \leq \eta$.
+	Aplicando la función piso a ambos lados de la desigualdad encontramos que $\tau \leq k$.
 \end{observation}
 Sea $k \in \lbrace \eta, \eta - 1, \ldots, \tau \rbrace$. Sabemos de la sección de Fundamentos en el
 primer capítulo que deseamos resolver la ecuación lineal diofantina
@@ -153,9 +163,9 @@ de manera que
 \begin{equation*}
 	\vec{q}_1 \geq \vec{q}_2 \geq \cdots \geq \vec{q}_n,
 \end{equation*}
-de manera que adquirimos primero los artículos más caros. En este caso diremos que $\vec{q}$ está en
+por lo que primero adquirimos los artículos más caros. En este caso diremos que $\vec{q}$ está en
 orden descendente. Si adoptamos esta estrategia es porque suponemos que el óptimo se concentra en
-una vecindad de los primeros $i$ artículos. Es decir, si tenemos la creencia de que $\vec{q}_{i +
+una vecindad de los primeros $i$ artículos. Es decir, si tenemos la creencia de que $\vec{x}_{i +
 1}, \ldots, \vec{x}_n$ pueden ser aproximadamente cero.
 
 % TODO: es mejor argumentar esto en la sección de análisis de resultados.
@@ -170,70 +180,16 @@ emplear la primera estrategia.}. Consiste en escoger $\vec{t}_i$ de manera que s
 punto medio de sus cotas inferiores y superiores. Es decir, creemos que el óptimo se encuentra en
 una vecindad del centro de masa de la $k$-ésima capa entera.
 
-Observemos que, independientemente del caso, si una capa entera no contiene puntos factibles, entonces
-ambas estrategias agotan hacen todas las elecciones posibles de $\vec{t}_1, \ldots, \vec{t}_{n-1}$.
-Por lo tanto, los tiempos de terminación de ambas estrategias son iguales para capas enteras que no
-contienen puntos enteros no negativos. La segunda estrategia, no obstante, es candidata ideal para
+Observemos que, independientemente del caso, si una capa entera no contiene puntos factibles,
+entonces ambas estrategias agotan todas las elecciones posibles de $\vec{t}_1, \ldots,
+\vec{t}_{n-1}$. Por lo tanto, los tiempos de terminación de ambas estrategias son iguales para capas
+enteras que no contienen puntos óptimos. La segunda estrategia, no obstante, es candidata ideal para
 realizar una búsqueda binaria. Discutimos más sobre esto último en la sección de análisis de
 resultados.
 
-Con respecto a la complejidad algorítmica de este procedimiento podemos decir lo siguiente.
-Supongamos que modificamos el algoritmo para que encuentre todas las soluciones. Definamos
-\begin{equation}
-	\label{phase-1:def:feasible-layer}
-	P_k \coloneq H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap \Z_{\geq \vec{0}}^n
-	=
-	\lbrace \vec{x} \in \Z^n \vcentcolon \vec{q}^T\vec{x} = k, \vec{x} \geq \vec{0}
-	\rbrace,
-\end{equation}
-y sea $T(n)$ el tiempo requerido para encontrar todos los puntos en $P_k$ o determinar que este
-conjunto es vacío. Es razonable suponer que $T(n)$ es exponencial en $n$. En efecto, cada par $(x_i,
-\omega_{i + 1})$ genera un intervalo de factibilidad $[t_i^{\min}, t_i^{\max}]$. Este intervalo
-ciertamente depende de las elecciones previas de $t_1, \ldots, t_{i - 1}$. Para encontrar todos los
-puntos en $P_k$, el algoritmo recorre todas las posibilidades:
-\begin{equation}
-	\label{phase-1:complexity:bounds}
-	\prod_{i=1}^{\kappa_1} \min_{t_1, \ldots, t_{i-1}} \lbrace t_i^{\max} - t_i^{\min} \rbrace
-	\leq T(n) \leq
-	\prod_{i=1}^{\kappa_2} \max_{t_1, \ldots, t_{i-1}} \lbrace t_i^{\max} - t_i^{\min} \rbrace,
-\end{equation}
-donde $1 \leq \kappa_1 \leq n$ es el entero más grande que asegura que  $\min_{t_1, \ldots, t_{i -
-1}}\lbrace t_i^{\max} - t_i^{\min} \rbrace$ sea positivo para todo $i \in \lbrace 1, \ldots, \kappa_1
-\rbrace$. Definimos $\kappa_2$ de manera análoga. Se cumple que $\kappa_1 \leq \kappa_2$. Sean
-$\ell_{\min}, \ell_{\max}$ las longitudes del intervalo de factibilidad más pequeño y del más grande
-en todos los niveles, respectivamente. Es decir, definimos
-\begin{align}
-	\ell_{\min} &\coloneq \min_{1 \leq i \leq \kappa_1} \left\lbrace \min_{t_1, \ldots, t_{i - 1}} \lbrace
-	t_i^{\max} - t_i^{\min} \rbrace \right\rbrace,
-	\\
-	\ell_{\max} &\coloneq \max_{1 \leq i \leq \kappa_2} \left\lbrace \max_{t_1, \ldots, t_{i - 1}} \lbrace
-	t_i^{\max} - t_i^{\max} \rbrace \right\rbrace.
-\end{align}
-Si $P_k$ es vacío, se sigue que no existe ningún intervalo factible en el nivel $n$, lo que implica
-que $\kappa_2 < n$. En caso contrario, el algoritmo recorre hasta el último nivel, por lo que $\kappa_1
-= \kappa_2 = n$. De (\ref{phase-1:complexity:bounds}), obtenemos
-\begin{equation}
-	\ell_{\min}^{n} \leq T(n) \leq \ell_{\max}^{n}.
-\end{equation}
-En el peor de los casos, nuestro algoritmo recorre todas las capas enteras parametrizadas por
-$\lbrace \eta, \eta - 1, \ldots, \tau\rbrace$. Se sigue que
-\begin{align}
-	\label{phase-1:time}
-	\text{Tiempo de ejecución}
-	= \mathcal{O}((\eta - \tau) \cdot T(n))
-	= \mathcal{O}(c^{n}),
-\end{align}
-para alguna $c > 1$.
-
-Ahora bien, este razonamiento aplica a la modificación del algoritmo en donde decidimos buscar todas
-las soluciones posibles. En realidad solo nos interesa encontrar un punto óptimo, por lo que podemos
-concluir que una cota superior para la complejidad de nuestro algoritmo es (\ref{phase-1:time}).
-Asímismo, en la práctica encontramos que la diferencia $\eta - \tau$ es crucial para determinar
-cuántas capas enteras recorre nuestro algoritmo en el peor de los casos. Por lo tanto, un estudio
-sobre la distribución de esta diferencia resulta ser interesante.
 \begin{lemma}
 	\label{lemma:layer-dist}
-	Sean $m, q$ enteros distintos de cero. Entonces la función $\Delta \colon \R \to \R$ dada por
+	Sean $q$ y $m$ enteros distintos de cero. Entonces la función $\Delta \colon \R \to \R$ dada por
 	\begin{align*}
 		\Delta(x) &\coloneq \left\lfloor \frac{x}{m} \right\rfloor - \left\lfloor \left\lfloor
 		\frac{x}{q} \right\rfloor \frac{q}{m} \right\rfloor,
@@ -282,9 +238,9 @@ Si queremos aplicar el Lema \ref{lemma:layer-dist}, debemos reducir nuestra aten
 $\vec{p} \in \Z^n$ distintos de cero. Esto se debe a que debemos asegurar que el múltiplo $m \neq 0$
 sea entero\footnote{Es la creencia del autor que este resultado se puede generalizar para múltiplos
 $m$ racionales, mas esto no agrega demasiado valor en lo que sigue de la tesis.}. Independientemente
-del comportamiento periódico de $\Delta*$, observemos que depende en gran medida del múltiplo $m$.
-Esto último implica que el número de capas enteras a revisar depende del número de cifras decimales
-usadas para especificar $\vec{p}$.
+del comportamiento periódico de $\Delta^*$, observemos que esta función varía significativamente en
+ante cambios en $m$. Esto último implica que el número de capas enteras a revisar depende del número
+de cifras decimales usadas para especificar $\vec{p}$.
 
 \begin{example}
 	Si tenemos $\vec{p} \coloneq (9.6, 7.2, 5.6)^T$, entonces $m = 0.8$ y por lo tanto el número de
@@ -296,17 +252,21 @@ usadas para especificar $\vec{p}$.
 
 % TODO: agregar imágenes que muestren el número de capas enteras dado el presupuesto. Un buen
 % parámetro es m = 8, q = 12. Igual mostrar con varios decimales.
+
 Observaremos en el análisis de resultados que el número de capas enteras que nuestro algoritmo
 revisa en realidad disminuye a medida que aumenta el presupuesto $u$. Demostraremos a continuación
 que para $u$ suficientemente grande, la solución al problema (\ref{theory:formulation}) se encuentra
 en la $\eta$-ésima capa entera. Este resultado es análogo al caso infinito del Teorema
-(\ref{theory:th:feasibility}). No obstante, necesitamos primero de un par de Definiciones y Lemas
-preliminares.
+\ref{theory:th:feasibility}.
 
-% TODO: especificar hacia dónde se dirige lo que estamos haciendo
+No obstante, necesitamos primero de un par de Definiciones y Lemas preliminares. Para motivar lo que
+se encuentra a continuación mencionamos lo siguiente. Primero mostramos que existe un punto entero
+en una vecindad fija de cada punto sobre la $k$-ésima capa entera. Luego, a medida que aumenta el
+parámetro $k$, como la vecindad es fija, debe ser el caso que existe un punto entero no negativo en
+la vecindad de cualquier otro punto no negativo.
 
 Sea $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ una capa entera. Entonces definimos la bola cerrada sobre
-esta capa entera con radio $r \in \R_{>0}$ y centro $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ como
+esta capa entera con radio $r > 0$ y centro $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ como
 \begin{equation}
 	\label{eq:k-ball}
 	B_r^{(k)}(\vec{x}) \coloneq \lbrace \vec{y} \in \R^n \colon \norm{\vec{y} - \vec{x}} \leq r
@@ -315,7 +275,7 @@ esta capa entera con radio $r \in \R_{>0}$ y centro $\vec{x} \in H_{\vec{q}, k\n
 % TODO: mostrar una imagen con una bola.
 \begin{lemma}
 	\label{lemma:ball-cover}
-	Existe $r \in \R_{>0}$ tal que la familia de bolas
+	Existe $r > 0$ tal que la familia de bolas
 	\begin{equation*}
 		\left\lbrace B_r^{(k)}(\vec{x}) \colon \vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap
 			\Z^n \right\rbrace
@@ -333,13 +293,13 @@ esta capa entera con radio $r \in \R_{>0}$ y centro $\vec{x} \in H_{\vec{q}, k\n
 		\left\lbrace B_r^{(k)}(k\vec{\omega} + M\vec{t}) \colon \vec{t} \in \Z^{n-1} \right\rbrace.
 	\end{equation*}
 	Por un lado, sabemos que $B_r^{(k)}(k\vec{\omega} + M\vec{t}) \subseteq H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ para
-	todo punto entero $\vec{t} \in \Z^{n-1}$. Luego, para cualquier $r \in \R_{>0}$ tenemos
+	todo punto entero $\vec{t} \in \Z^{n-1}$. Luego, para cualquier $r > 0$ tenemos
 	\begin{equation}
 		\label{eq:ball-cover:1}
 		\bigcup_{\vec{t} \in \Z^{n-1}}B_r^{(k)}(k\vec{\omega} + M\vec{t}) \subseteq
 		H_{\vec{q}, k\norm{\vec{q}}^{-2}}.
 	\end{equation}
-	Ahora bien, sea $\vec{y}$ un punto sobre la $k$-ésima capa entera. Como los renglones de $M$ son
+	Ahora bien, sea $\vec{y}$ un punto sobre la $k$-ésima capa entera. Como las columnas de $M$ son
 	linealmente independientes, existe $\vec{t} \in \R^{n-1}$ tal que
 	\begin{equation*}
 		\vec{y} = k\vec{\omega} + M\vec{t}.
@@ -363,7 +323,7 @@ esta capa entera con radio $r \in \R_{>0}$ y centro $\vec{x} \in H_{\vec{q}, k\n
 		\label{eq:radius}
 		r \coloneq \frac{1}{2}\norm{M}_F,
 	\end{equation}
-	entonces para todo $\vec{y} \in \R^n$ sobre la $k$-ésima capa entera, existe $\vec{x} \in \Z^n$
+	entonces para todo $\vec{y} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$, existe $\vec{x} \in \Z^n$
 	sobre esa misma capa entera tal que $\vec{y} \in B_r^{(k)}(\vec{x})$. Por lo tanto,
 	\begin{equation}
 		\label{eq:ball-cover:2}
@@ -374,223 +334,223 @@ esta capa entera con radio $r \in \R_{>0}$ y centro $\vec{x} \in H_{\vec{q}, k\n
 \end{proof}
 
 Ahora bien, denotemos por $\vec{u}_i$ las intersecciones que tiene la capa entera $H_{\vec{q},
-\eta\norm{\vec{q}}^{-2}}$ con cada uno de los ejes. Es decir,
-\begin{equation*}
-	\vec{u}_i \coloneq \frac{\eta}{\vec{q}_i}\vec{e}_i,
-\end{equation*}
+k\norm{\vec{q}}^{-2}}$ con cada uno de los ejes. Es decir,
+\begin{equation}
+	\label{eq:generators}
+	\vec{u}_i \coloneq \frac{k}{\vec{q}_i}\vec{e}_i,
+\end{equation}
 y consideremos el símplice $\sigma$ generado por estos vectores:
 \begin{equation*}
 	\sigma \coloneq \left\lbrace \theta_1\vec{u}_1 + \cdots \theta_n\vec{u}_n \colon
 		\sum_{i=1}^{n}\theta_i = 1, \theta_i \geq 0 \right\rbrace.
 \end{equation*}
-No es difícil ver que todo punto $\vec{x} \in \R^n_{\geq \vec{0}}$ sobre la $\eta$-ésima capa entera
+No es difícil ver que todo punto $\vec{x} \in \R^n_{\geq \vec{0}}$ sobre la $k$-ésima capa entera
 también es un elemento de este símplice $\sigma$ y viceversa.
 
 Ahora bien, nos interesa determinar la existencia de un punto entero sobre $\sigma$. De esta manera,
 tendríamos un punto entero no negativo que satisface la ecuación lineal diofantina
-$\vec{q}^T\vec{x} = \eta$. Para lograr esto, definimos el baricentro del $\sigma$ y
-encontramos la máxima distancia que tiene con cualquier otro punto sobre este símplice.
+$\vec{q}^T\vec{x} = k$. Para lograr esto, definimos el baricentro del $\sigma$ y determinamos una
+vecindad de este baricentro de manera que esté contenida en el símplice.
 
 \begin{definition}
-	Dado un símplice $\sigma$ generado por $\vec{u}_1, \ldots, \vec{u}_n$, definimos su baricentro
-	$\hat{\vec{\sigma}}$ como
+	Dado un símplice $\sigma$ generado por $\vec{u}_1, \ldots, \vec{u}_n$, definimos su baricentro o
+	centro de masa $\est{\sigma}$ como
 	\begin{equation*}
-		\hat{\vec{\sigma}} \coloneq \frac{1}{n} \sum_{i=1}^{n}\vec{u}_i.
+		\est{\sigma} \coloneq \frac{1}{n} \sum_{i=1}^{n}\vec{u}_i.
 	\end{equation*}
 \end{definition}
 \begin{observation}
-	El baricentro $\hat{\vec{\sigma}}$ es un elemento de $\sigma$. Esto se debe a que $\hat{\vec{\sigma}}$ es la
+	El baricentro $\est{\sigma}$ es un elemento de $\sigma$. Esto se debe a que $\est{\sigma}$ es la
 	combinación convexa de $\vec{u}_1, \ldots, \vec{u}_n$, donde $\theta_1 = \cdots = \theta_n =
 	\frac{1}{n}$.
 \end{observation}
 
 \begin{definition}
-	Sea $\sigma$ un símplice y consideremos su baricentro $\hat{\vec{\sigma}}$. Definamos
+	Sea $\sigma$ un símplice y consideremos su baricentro $\est{\sigma}$. Definamos
 	\begin{equation}
 		\label{eq:def:r-sigma}
-		r_\sigma \coloneq \max \lbrace r \in \R_{>0} \colon B_r^{(\eta)}(\hat{\vec{\sigma}})
+		r_\sigma \coloneq \max \lbrace r > 0 \colon B_r^{(k)}(\est{\sigma})
 		\subseteq \sigma \rbrace.
 	\end{equation}
-	Entonces decimos que $\mathcal{C}^{(\eta)} \coloneq
-	B_{r_\sigma}^{(\eta)}(\hat{\vec{\sigma}})$ es la circunferencia inscrita en $\sigma$. A
+	Entonces decimos que $\mathcal{C}^{(k)} \coloneq
+	B_{r_\sigma}^{(k)}(\est{\sigma})$ es la circunferencia inscrita en $\sigma$. A
 	$r_\sigma$ le llamamos el radio de tal circunferencia.
 \end{definition}
 
 \begin{definition}
-	Sea $\sigma$ un símplice. Decimos que $F_j$ es una faceta de $\sigma$ si es el símplice generado
-	por los vectores $\lbrace \vec{u}_i \rbrace_{i \neq j}$.
+	Sea $\sigma$ un símplice. Al símplice $F_j$ generado por los vectores $\lbrace \vec{u}_i
+	\rbrace_{i \neq j}$ lo llamamos la $j$-ésima faceta de $\sigma$.
 \end{definition}
 \begin{observation}
 	Si $\sigma$ es generado por $n$ vectores, entonces tiene $\binom{n}{n-1} = n$ facetas, y cada
-	una es generada por $n - 1$ vectores. También se cumple que $F_1 \cup \cdots \cup F_n$
-	constituye la frontera de $\sigma$.
+	una es generada por $n - 1$ vectores. También se cumple que la frontera del símplice es $F_1
+	\cup \cdots \cup F_n$.
 \end{observation}
 
-Por construcción, el vector $\vec{u}_j$ es ortogonal a los vectores $\lbrace \vec{u}_i \rbrace_{i
-\neq j}$, se sigue que su proyección sobre la capa entera $H_{\vec{q}, \eta\norm{\vec{q}}^{-2}}$ es
-el vector normal de la faceta $F_j$. Además, esta proyección apunta hacia el interior del símplice
-$\sigma$. Ahora bien, como $\vec{q}$ es el vector normal a $H_{\vec{q}, \eta\norm{\vec{q}}}$,
-encontramos que la proyección de $\vec{u}_j$ sobre esta capa entera es
+De (\ref{eq:generators}) encontramos que el vector $\vec{u}_j$ es ortogonal a los vectores $\lbrace
+\vec{u}_i \rbrace_{i \neq j}$, se sigue que su proyección sobre la capa entera $H_{\vec{q},
+k\norm{\vec{q}}_2^{-2}}$ es el vector normal de la faceta $F_j$. Además, esta proyección apunta
+hacia el interior del símplice $\sigma$. Ahora bien, como $\vec{q}$ es el vector normal a
+$H_{\vec{q}, k\norm{\vec{q}}_2}$, encontramos que la proyección de $\vec{u}_j$ sobre esta capa
+entera es
 \begin{equation}
 	\label{eq:normal-vector}
 	\vec{\mu}_j \coloneq
 	\vec{u}_j - \frac{\vec{q}^T\vec{u}_j}{\vec{q}^T\vec{q}}\vec{q}
 	=
-	\vec{u}_j - \frac{\eta}{\norm{\vec{q}}^2}\vec{q}.
+	\vec{u}_j - \frac{k}{\norm{\vec{q}}_2^2}\vec{q}.
 \end{equation}
-Denotemos por $\hat{\vec{\mu}}_j$ el vector $\vec{\mu}_j$ normalizado. Encontramos entonces que cada
+Denotemos por $\est{\mu}_j$ el vector $\vec{\mu}_j$ normalizado. Encontramos entonces que cada
 faceta $F_j$ está contenida en el hiperplano afino
 \begin{equation*}
-	\lbrace \vec{x} \in \R^{n-1} \colon \hat{\vec{\mu}}_j^T\vec{x} = b_j \rbrace,
+	\lbrace \vec{x} \in \R^{n} \colon \est{\mu}_j^T\vec{x} = b_j \rbrace
+	\cap H_{\vec{q}, k\norm{\vec{q}}_2^{-2}},
 \end{equation*}
-donde $b_j \coloneq \hat{\vec{\mu}}_j^T\vec{x}$ para algún $\vec{x} \in F_j$. Luego, como cada
-vector normal $\hat{\vec{\mu}}_j$ apunta hacia el interior del símplice $\sigma$, se sigue que
+donde $b_j \coloneq \est{\mu}_j^T\vec{x}$ para algún $\vec{x} \in F_j$. Luego, como cada
+vector normal $\est{\mu}_j$ apunta hacia el interior del símplice $\sigma$, se sigue que
 podemos escribirlo como
 \begin{equation*}
-	\sigma = \bigcap_{j=1}^{n} \lbrace \vec{x} \in \R^{n-1} \colon \hat{\vec{\mu}}^T_j\vec{x} \geq b_j \rbrace.
+	\sigma = \bigcap_{j=1}^{n} \lbrace \vec{x} \in \R^{n} \colon \est{\mu}^T_j\vec{x} \geq b_j
+	\rbrace \cap H_{\vec{q}, k\norm{\vec{q}}_2^{-2}}.
 \end{equation*}
 Esta caracterización de $\sigma$ nos permite demostrar el siguiente Lema.
 \begin{lemma}
 	\label{lemma:sigma-radius}
 	El radio $r_\sigma$ de la circunferencia inscrita en $\sigma$ está dado por
 	\begin{equation*}
-		r_\sigma = \min_{j} \lbrace d(\hat{\vec{\sigma}}, F_j) \rbrace,
+		r_\sigma = \min_{1 \leq j \leq n} \lbrace d(\est{\sigma}, F_j) \rbrace,
 	\end{equation*}
-	donde $d(\hat{\vec{\sigma}}, F_j)$ denota la mínima distancia entre el baricentro
-	$\hat{\vec{\sigma}}$ y la $j$-ésima faceta $F_j$ del símplice $\sigma$.
+	donde $d(\est{\sigma}, F_j)$ denota la mínima distancia entre el baricentro
+	$\est{\sigma}$ y la $j$-ésima faceta $F_j$ del símplice $\sigma$.
 \end{lemma}
 \begin{proof}
 	Observemos que $\vec{u}_i$ con $i \neq j$ es un vector sobre el símplice $\sigma$. Luego, la
 	distancia entre el baricentro y la $j$-ésima faceta es
 	\begin{equation*}
-		d(\hat{\vec{\sigma}}, F_j) = |\hat{\vec{\mu}}_j^T(\hat{\vec{\sigma}} - \vec{u}_i)|
-		= \hat{\vec{\mu}}_j^T(\hat{\vec{\sigma}} - \vec{u}_i),
+		d(\est{\sigma}, F_j) = |\est{\mu}_j^T(\est{\sigma} - \vec{u}_i)|
+		= \est{\mu}_j^T(\est{\sigma} - \vec{u}_i),
 	\end{equation*}
-	pues $\hat{\vec{\sigma}}$ es un elemento de $\sigma$ y $\hat{\vec{\mu}}_j$ apunta hacia adentro
+	pues $\est{\sigma}$ es un elemento de $\sigma$ y $\est{\mu}_j$ apunta hacia adentro
 	del símplice.
 
-	Mostramos primero que si $r \leq \min_{j} \lbrace d(\hat{\vec{\sigma}}, F_j) \rbrace$, entonces
-	$B_r^{(\eta)}(\hat{\vec{\sigma}}) \subseteq \sigma$. Así pues, sea $\vec{x} \in
-	B_r^{(\eta)}(\hat{\vec{\sigma}})$. Observemos que
+	Mostramos primero que si $r \leq \min_{1 \leq j \leq n} \lbrace d(\est{\sigma}, F_j) \rbrace$, entonces
+	$B_r^{(k)}(\est{\sigma}) \subseteq \sigma$. Así pues, sea $\vec{x} \in
+	B_r^{(k)}(\est{\sigma})$. Observemos que
 	\begin{align*}
-		\hat{\vec{\mu}}_j^T - b_j
+		\est{\mu}_j^T\vec{x} - b_j
 		&=
-		\hat{\vec{\mu}}_j^T(\vec{x} - \hat{\vec{\sigma}}) + \hat{\vec{\mu}}_j\hat{\vec{\sigma}} -
+		\est{\mu}_j^T(\vec{x} - \est{\sigma}) + \est{\mu}_j^T\est{\sigma} -
 		b_j \\
-		&= \hat{\vec{\mu}}_j^T(\vec{x} - \hat{\vec{\sigma}}) + d(\hat{\vec{\sigma}}, F_j).
+		&= \est{\mu}_j^T(\vec{x} - \est{\sigma}) + d(\est{\sigma}, F_j).
 	\end{align*}
 	Por Cauchy-Schwartz tenemos
 	\begin{equation*}
-		\hat{\vec{\mu}}^T(\vec{x} - \hat{\vec{\sigma}})
-		\geq -\norm{\hat{\vec{\mu}}}\norm{\vec{x} - \hat{\vec{\sigma}}}
-		= -\norm{\vec{x} - \hat{\vec{\sigma}}}
-		\geq -r,
+		\est{\mu}_j^T(\vec{x} - \est{\sigma}) \geq -\norm{\est{\mu}_j}_2\norm{\vec{x} -
+		\est{\sigma}}_2 = -\norm{\vec{x} - \est{\sigma}}_2 \geq -r,
 	\end{equation*}
 	y por lo tanto,
 	\begin{equation*}
-		\hat{\vec{\mu}}_j^T\vec{x} - b_j \geq -r + d(\hat{\vec{\sigma}}, F_j) \geq 0,
+		\est{\mu}_j^T\vec{x} - b_j \geq -r + d(\est{\sigma}, F_j) \geq 0,
 	\end{equation*}
-	pues $r \leq d(\hat{\vec{\sigma}}, F_j)$ para todo $j \in \lbrace 1, \ldots, n \rbrace$. Así,
-	encontramos que, para tdoo $\vec{x} \in B_r^{(\eta)}(\hat{\vec{\sigma}})$,
+	pues $r \leq d(\est{\sigma}, F_j)$ para todo $j \in \lbrace 1, \ldots, n \rbrace$. Así,
+	encontramos que, para todo $\vec{x} \in B_r^{(k)}(\est{\sigma})$,
 	\begin{equation*}
 		\vec{x} \in
-		\bigcap_{j=1}^{n} \lbrace \vec{x} \in \R^{n-1} \colon \hat{\vec{\mu}}^T_j\vec{x} \geq b_j \rbrace
-		= \sigma,
+		\bigcap_{j=1}^{n} \lbrace \vec{x} \in \R^{n-1} \colon \est{\mu}^T_j\vec{x} \geq b_j \rbrace
+		\cap H_{\vec{q}, k\norm{\vec{q}}_2^{-2}} = \sigma,
 	\end{equation*}
-	y por lo tanto $B_r^{(\eta)}(\hat{\vec{\sigma}}) \subseteq \sigma$. A causa de
-	(\ref{eq:def:r-sigma}) encontramos que $r_\sigma \geq \min_{j} \lbrace d(\hat{\vec{\sigma}},
-	F_j) \rbrace$.
+	y por lo tanto $B_r^{(k)}(\est{\sigma}) \subseteq \sigma$. A causa de
+	(\ref{eq:def:r-sigma}) encontramos que $r_\sigma \geq \min_{1 \leq j \leq n} \lbrace
+	d(\est{\sigma}, F_j) \rbrace$.
 
-	Ahora bien, supongamos que $r > d(\hat{\vec{\sigma}}, F_j)$ para algún $j \in \lbrace 1, \ldots,
-	n \rbrace$. Consideremos el punto $\vec{x} \in F_j$ que satisface $d(\hat{\vec{\sigma}}, F_j) =
-	d(\hat{\vec{\sigma}}, \vec{x})$. Tal punto existe porque $F_j$ es cerrado. Luego,
-	$\norm{\vec{\sigma} - \vec{x}} < r$. Entonces existe $\varepsilon > 0$ tal que
+	Ahora bien, supongamos que $r > d(\est{\sigma}, F_j)$ para algún $j \in \lbrace 1, \ldots,
+	n \rbrace$. Consideremos el punto $\vec{x} \in F_j$ que satisface $d(\est{\sigma}, F_j) =
+	d(\est{\sigma}, \vec{x})$. Tal punto existe porque $F_j$ es cerrado. Luego,
+	$\norm{\vec{\sigma} - \vec{x}}_2 < r$. Entonces existe $\varepsilon > 0$ tal que
 	\begin{equation*}
-		\norm{\hat{\vec{\sigma}} - (\vec{x} - \varepsilon\hat{\vec{\mu}}_j)} \leq r,
+		\norm{\est{\sigma} - (\vec{x} - \varepsilon\est{\mu}_j)}_2 \leq r,
 	\end{equation*}
-	lo que implica que $\vec{x} - \varepsilon\hat{\vec{\mu}}_j \in
-	B_r^{(\eta)}(\hat{\vec{\sigma}})$. Sin embargo, tenemos
+	lo que implica que $\vec{x} - \varepsilon\est{\mu}_j \in
+	B_r^{(k)}(\est{\sigma})$. Sin embargo, tenemos
 	\begin{equation*}
-		\hat{\vec{\mu}}_j^T(\vec{x} - \varepsilon\hat{\vec{\mu}}_j)
-		= b_j - \varepsilon\norm{\hat{\vec{\mu}}}^2 < b_j,
+		\est{\mu}_j^T(\vec{x} - \varepsilon\est{\mu}_j) = b_j - \varepsilon\norm{\est{\mu}_j}_2^2 < b_j,
 	\end{equation*}
-	y entonces $\vec{x} - \varepsilon\hat{\vec{\mu}} \not\in \sigma$. De aquí se sigue que $r_\sigma
-	\leq d(\hat{\vec{\sigma}}, F_j)$ para todo $j \in \lbrace 1, \ldots, n \rbrace$ y, por lo tanto,
-	$r_\sigma \leq \min_{j} \lbrace d(\hat{\vec{\sigma}}, F_j) \rbrace$.
+	y entonces $\vec{x} - \varepsilon\est{\mu} \not\in \sigma$. De aquí se sigue que $r_\sigma
+	\leq d(\est{\sigma}, F_j)$ para todo $j \in \lbrace 1, \ldots, n \rbrace$ y, por lo tanto,
+	$r_\sigma \leq \min_{1 \leq j \leq n} \lbrace d(\est{\sigma}, F_j) \rbrace$.
 
 	Concluimos, entonces, con
 	\begin{equation*}
-		r_\sigma = \min_{j} \lbrace d(\hat{\vec{\sigma}}, F_j) \rbrace,
+		r_\sigma = \min_{1 \leq j \leq n} \lbrace d(\est{\sigma}, F_j) \rbrace,
 	\end{equation*}
 	que es lo que queríamos demostrar.
 \end{proof}
 
-Buscamos expresar el radio $r_\sigma$ en función de $\eta$, por lo que debemos realizar un par de
+Buscamos expresar el radio $r_\sigma$ en función de $k$, por lo que debemos realizar un par de
 cálculos. Retomemos de la demostración del Lema anterior que la distancia entre el baricentro y la
 $j$-ésima faceta está dada por
 \begin{equation*}
-	d(\hat{\vec{\sigma}}, F_j) = \frac{{\vec{\mu}}_j^T(\vec{u}_i -
-	\hat{\vec{\sigma}}_i)}{\norm{\vec{\mu}_j}}.
+	d(\est{\sigma}, F_j) = \frac{{\vec{\mu}}_j^T(\est{\sigma} - \vec{\mu}_j)}{\norm{\vec{\mu}_j}_2}.
 \end{equation*}
 Realizando los cálculos, encontramos que
 \begin{align*}
-	\vec{\mu}_j^T(\hat{\vec{\sigma}} - \vec{u}_i)
+	\vec{\mu}_j^T(\est{\sigma} - \vec{u}_i)
 	% &=
-	% \left( \frac{\eta}{\vec{q}_j}\vec{e}_j - \frac{\eta}{\norm{\vec{q}}^2}\vec{q} \right)^T
-	% \left( \frac{\eta}{n\vec{q}_1}, \ldots, \frac{\eta}{n\vec{q}_i} - \frac{\eta}{\vec{q}_i}, \ldots,
-	% 		\frac{\eta}{n\vec{q}_n} \right) \\
+	% \left( \frac{k}{\vec{q}_j}\vec{e}_j - \frac{k}{\norm{\vec{q}}_2^2}\vec{q} \right)^T
+	% \left( \frac{k}{n\vec{q}_1}, \ldots, \frac{k}{n\vec{q}_i} - \frac{k}{\vec{q}_i}, \ldots,
+	% 		\frac{k}{n\vec{q}_n} \right) \\
 	% &=
-	% \eta^2
-	% \left( \frac{1}{\vec{q}_j}\vec{e}_j - \frac{1}{\norm{\vec{q}}^2}\vec{q} \right)^T
+	% k^2
+	% \left( \frac{1}{\vec{q}_j}\vec{e}_j - \frac{1}{\norm{\vec{q}}_2^2}\vec{q} \right)^T
 	% \left( \frac{1}{n\vec{q}_1}, \ldots, \frac{1}{n\vec{q}_i} - \frac{1}{\vec{q}_i}, \ldots,
 	% 		\frac{1}{n\vec{q}_n} \right) \\
 	% &=
-	% \eta^2
+	% k^2
 	% \left(\frac{1}{\vec{q}_j}\frac{1}{n\vec{q}_j} -
-	% 	\frac{1}{\norm{\vec{q}}^2} \cdot
+	% 	\frac{1}{\norm{\vec{q}}_2^2} \cdot
 	% 	\left(\frac{1}{n} + \cdots + \frac{1}{n} - 1\right)
 	% 	\right) \\
-	&= \frac{\eta^2}{n\vec{q}_j^2},
+	&= \frac{k^2}{n\vec{q}_j^2},
 \end{align*}
 y también
 \begin{equation*}
-	\norm{\vec{\mu}_j} = \eta \sqrt{\frac{1}{\vec{q}_j^2} - \frac{1}{\norm{\vec{q}}^2}}.
+	\norm{\vec{\mu}_j}_2 = k \sqrt{\frac{1}{\vec{q}_j^2} - \frac{1}{\norm{\vec{q}}_2^2}}.
 \end{equation*}
 Sustituyendo valores, obtenemos
 \begin{equation*}
-	d(\hat{\vec{\sigma}}, F_j) = \frac{\eta}{n} \cdot
-	\frac{1}{\vec{q}_j^2\sqrt{\vec{q}_j^{-2} - \norm{\vec{q}}^{-2}}}
-	= \frac{\eta}{n} \cdot \frac{1}{Q_j},
+	d(\est{\sigma}, F_j) = \frac{k}{n} \cdot
+	\frac{1}{\vec{q}_j^2\sqrt{\vec{q}_j^{-2} - \norm{\vec{q}}_2^{-2}}}
+	= \frac{k}{n} \cdot \frac{1}{Q_j},
 \end{equation*}
 donde definimos $Q_j$ pertinentemente. Finalmente, del Lema \ref{lemma:sigma-radius} encontramos que
 el radio de la circunferencia inscrita en el símplice $\sigma$ está dado por
 \begin{equation}
 	\label{eq:sigma-radius}
-	r_\sigma = \min_{i} \lbrace d(\hat{\vec{\sigma}}, F_i) = \frac{\eta}{n} \cdot \frac{1}{\max_{i}
-	\lbrace Q_i \rbrace}
+	r_\sigma = \min_{1 \leq j \leq n} \lbrace d(\est{\sigma}, F_j) = \frac{k}{n} \cdot
+	\frac{1}{\max_{1 \leq j \leq n} \lbrace Q_j \rbrace}
 \end{equation}
 
 \begin{theorem}
-	Existe un punto entero sobre el símplice $\sigma$ para $\eta$ suficientemente grande.
+	Existe un punto entero sobre el símplice $\sigma$ para $k$ suficientemente grande.
 \end{theorem}
 \begin{proof}
 	Consideremos $r$ definida en (\ref{eq:radius}). Por el Lema \ref{lemma:ball-cover} sabemos que
-	existe un punto entero $\vec{x}$ en $B_r^{(\eta)}(\hat{\vec{\sigma}})$. Como la circunferencia
-	$\mathcal{C}^{(\eta)}$ está inscrita en $\sigma$, basta mostrar que existe $\eta$
+	existe un punto entero $\vec{x}$ en $B_r^{(k)}(\est{\sigma})$. Como la circunferencia
+	$\mathcal{C}^{(k)}$ está inscrita en $\sigma$, basta mostrar que existe $k$
 	suficientemente grande tal que $r \leq r_\sigma$, pues esto implicaría
 	\begin{equation*}
-		\vec{x} \in B_r^{(\eta)}(\hat{\vec{\sigma}}) \subseteq \mathcal{C}^{(\eta)} \subseteq \sigma.
+		\vec{x} \in B_r^{(k)}(\est{\sigma}) \subseteq \mathcal{C}^{(k)} \subseteq \sigma.
 	\end{equation*}
 	De (\ref{eq:sigma-radius}) obtenemos que $r \leq r_\sigma$ si y solo si
 	\begin{equation}
 		\label{eq:eta-limit}
-		\eta \geq \frac{n}{2}\norm{M}_F\max_{i} \lbrace Q_i \rbrace,
+		k \geq \frac{n}{2}\norm{M}_F\max_{1 \leq j \leq n} \lbrace Q_j \rbrace,
 	\end{equation}
 	que es lo que queríamos demostrar.
 \end{proof}
 De manera inmediata obtenemos los siguientes Corolarios.
 \begin{corollary}
-	La ecuación lineal diofantina $\vec{q}^T\vec{x} = \eta$ tiene soluciones no negativas para
+	La ecuación lineal diofantina $\vec{q}^T\vec{x} = \eta$ tiene soluciones enteras no negativas para
 	$\eta$ suficientemente grande.
 \end{corollary}
 \begin{corollary}
@@ -599,27 +559,27 @@ De manera inmediata obtenemos los siguientes Corolarios.
 \end{corollary}
 
 Vale la pena hacer un par de observaciones. En primer lugar, de (\ref{eq:eta-limit}) parece que
-podemos concluir que hay una dependencia lineal entre la dimensión $n$ y $\eta$. No obstante, la
-norma $\norm{M}_F$ también depende de la dimensión. Para ser más explícitos con respecto a esta
-dependencia, podemos rescatar de (\ref{eq:alt-M-bound}) la siguiente cota:
+podemos concluir que hay una dependencia lineal entre la dimensión $n$ y el lado derecho $k$. No
+obstante, la norma $\norm{M}_F$ también depende de la dimensión. Para ser más explícitos con
+respecto a esta dependencia, podemos rescatar de (\ref{eq:alt-M-bound}) la siguiente cota:
 \begin{equation*}
 	\frac{1}{4}\sum_{i=1}^{n-1}\norm{M\vec{e}_i}_2^2
 	\leq
-	\frac{n-1}{4}\max_{1 \leq i \leq n} \lbrace \norm{M\vec{e}_i}_2^2 \rbrace,
+	\frac{n-1}{4}\max_{1 \leq j \leq n} \lbrace \norm{M\vec{e}_j}_2^2 \rbrace,
 \end{equation*}
 de donde obtendríamos
 \begin{equation*}
-	\eta \geq \frac{n\sqrt{n-1}}{2} \max_{i} \lbrace \norm{M\vec{e}_i}_2 \rbrace \cdot \max_{i} \lbrace
-	Q_i \rbrace.
+	k \geq \frac{n\sqrt{n-1}}{2} \max_{1 \leq j \leq n} \lbrace \norm{M\vec{e}_j}_2 \rbrace \cdot
+	\max_{1 \leq j \leq n} \lbrace Q_j \rbrace.
 \end{equation*}
 Esta cota, no obstante, es menos ajustada que la propuesta inicialmente.
 
 En segundo lugar, el resultado que obtuvimos es más fuerte de lo que aparenta. Hemos encontrado una
 cota inferior de manera que podamos asegurar la existencia de soluciones enteras en una vecindad del
-baricentro $\hat{\vec{\sigma}}$. Este punto no es especial, en realidad podemos realizar el mismo
+baricentro $\est{\sigma}$. Este punto no es especial, en realidad podemos realizar el mismo
 procedimiento enfocándonos en otros puntos del símplice $\sigma$ para asegurar soluciones en sus
 respectivas vecindades. Entonces, dependiendo del punto, podemos obtener mejores o peores cotas para
-$\eta$. El punto más interesante es aquel que provee la cota inferior más pequeña\footnote{
+$k$. El punto más interesante es aquel que provee la cota inferior más pequeña\footnote{
 	El autor tiene razones para sospechar que este punto se encuentra en la intersección de todos
 	los vectores normales a cada faceta $F_j$.
 }.
@@ -637,101 +597,70 @@ cuanto $u$ aumenta. Observaremos en el análisis de resultados que hay un patró
 decreciente en cuanto al número de capas enteras revisadas. Demostrar que este comportamiento se
 cumple es mucho más difícil y queda fuera del propósito de esta tesis.
 
-% \begin{lemma}
-% 	\label{lemma:bary-dist}
-% 	Sea $\sigma$ un símplice generado por $\vec{u}_1, \ldots, \vec{u}_n$ y consideremos su
-% 	baricentro $\hat{\vec{\sigma}}$. Entonces
-% 	\begin{equation*}
-% 		\norm{\hat{\vec{\sigma}} - \vec{x}} \leq \max_{i} \lbrace \norm{\hat{\vec{\sigma}} - \vec{u}_i} \rbrace,
-% 	\end{equation*}
-% 	para todo $\vec{x} \in \sigma$.
-% \end{lemma}
-% \begin{proof}
-% 	Como $\vec{x}$ es un elemento del símplice $\sigma$, es una combinación convexa de $\vec{u}_1,
-% 	\ldots, \vec{u}_n$. Luego,
-% 	\begin{equation*}
-% 		\vec{x} = \theta_1\vec{u}_1 + \cdots + \theta_n\vec{u}_n,
-% 	\end{equation*}
-% 	observemos también que
-% 	\begin{equation*}
-% 		\hat{\vec{\sigma}} = \theta_1\hat{\vec{\sigma}} + \cdots + \theta_n\hat{\vec{\sigma}},
-% 	\end{equation*}
-% 	pues $\theta_1 + \cdots + \theta_n = 1$. Luego,
-% 	\begin{align*}
-% 		\norm{\hat{\vec{\sigma}} - \vec{x}}_2
-% 		&= \norm{\sum_{i=1}^{n}\theta_i\left(\hat{\vec{\sigma}} - \vec{u}_i\right)}_2 \\
-% 		&\leq \sum_{i=1}^{n}\theta_i\norm{\hat{\vec{\sigma}} - \vec{u}_i}_2 \\
-% 		&\leq \max_{i}\lbrace \norm{\hat{\vec{\sigma}} - \vec{u}_i}_2 \rbrace  \sum_{i=1}^{n}\theta_i \\
-% 		&= \max_{i}\lbrace \norm{\hat{\vec{\sigma}} - \vec{u}_i}_2 \rbrace,
-% 	\end{align*}
-% 	que es lo que queríamos demostrar.
-% \end{proof}
-% 
-% \begin{theorem}
-% 	Para todo $\eta$ suficientemente grande, la ecuación lineal diofantina $\vec{q}^T\vec{x} = \eta$
-% 	tiene soluciones enteras no negativas.
-% \end{theorem}
-% \begin{proof}
-% 	Hacemos la demostración por contradicción. Supongamos que no hay ningún punto entero sobre
-% 	$\sigma$. Por el Lema \ref{lemma:bary-dist} sabemos que
-% 	\begin{equation*}
-% 		\norm{\hat{\vec{\sigma}} - \vec{x}}_2 > \max_{i}\lbrace \norm{\hat{\vec{\sigma}} -
-% 	\vec{u}_i} \rbrace,
-% 	\end{equation*}
-% 	para todo punto entero $\vec{x}$ sobre la $\eta$-ésima capa entera $H_{\vec{q},
-% 	\eta\norm{\vec{q}}^{-2}}$. Observemos que
-% 	\begin{equation*}
-% 	\end{equation*}
-% \end{proof}
+\subsection{Complejidad algorítmica}
+\noindent
+Con respecto a la complejidad algorítmica de analizar capas enteras podemos decir lo siguiente.
+Supongamos que deseamos encontrar todas las soluciones de (\ref{theory:formulation}). Definamos
+\begin{equation}
+	\label{phase-1:def:feasible-layer}
+	P_k \coloneq H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap \Z_{\geq \vec{0}}^n
+	=
+	\lbrace \vec{x} \in \Z^n \vcentcolon \vec{q}^T\vec{x} = k, \vec{x} \geq \vec{0}
+	\rbrace,
+\end{equation}
+y sea $T(n)$ el tiempo requerido para encontrar todos los puntos en $P_k$ o determinar que este
+conjunto es vacío. Es razonable suponer que $T(n)$ es exponencial en $n$. En efecto, cada par
+$(\vec{x}_i, \omega_{i + 1})$ genera un intervalo de factibilidad $[\vec{t}_i^{\min},
+\vec{t}_i^{\max}]$. Este intervalo ciertamente depende de las elecciones previas de $\vec{t}_1, \ldots,
+\vec{t}_{i - 1}$, aunque suprimimos esta dependencia en la notación para tener mayor claridad. Para
+encontrar todos los puntos en $P_k$, el algoritmo recorre todas las posibilidades:
+\begin{equation}
+	\label{phase-1:complexity:bounds}
+	\prod_{i=1}^{\kappa_1} \min_{\vec{t}_1, \ldots, \vec{t}_{i-1}} \lbrace \vec{t}_i^{\max} -
+	\vec{t}_i^{\min} \rbrace
+	\leq T(n) \leq
+	\prod_{i=1}^{\kappa_2} \max_{\vec{t}_1, \ldots, \vec{t}_{i-1}} \lbrace \vec{t}_i^{\max} -
+	\vec{t}_i^{\min} \rbrace,
+\end{equation}
+donde $1 \leq \kappa_1 \leq n$ es el entero más grande que asegura que  $\min_{\vec{t}_1, \ldots,
+\vec{t}_{i - 1}}\lbrace \vec{t}_i^{\max} - \vec{t}_i^{\min} \rbrace$ sea positivo para todo $i \in
+\lbrace 1, \ldots, \kappa_1 \rbrace$. Definimos $\kappa_2$ de manera análoga. Se cumple que
+$\kappa_1 \leq \kappa_2$. Sean $\ell_{\min}, \ell_{\max}$ las longitudes del intervalo de
+factibilidad más pequeño y del más grande en todos los niveles, respectivamente. Es decir, definimos
+\begin{align}
+	\ell_{\min} &\coloneq \min_{1 \leq i \leq \kappa_1} \left\lbrace \min_{\vec{t}_1, \ldots,
+	\vec{t}_{i - 1}} \lbrace \vec{t}_i^{\max} - \vec{t}_i^{\min} \rbrace \right\rbrace,
+	\\
+			\ell_{\max} &\coloneq \max_{1 \leq i \leq \kappa_2} \left\lbrace \max_{\vec{t}_1,
+			\ldots, \vec{t}_{i - 1}} \lbrace \vec{t}_i^{\max} - \vec{t}_i^{\max} \rbrace
+		\right\rbrace.
+\end{align}
+Si $P_k$ es vacío, se sigue que no existe ningún intervalo factible en el nivel $n$, lo que implica
+que $\kappa_2 < n$. En caso contrario, el algoritmo recorre hasta el último nivel, por lo que $\kappa_1
+= \kappa_2 = n$. De (\ref{phase-1:complexity:bounds}), obtenemos
+\begin{equation}
+	\ell_{\min}^{n} \leq T(n) \leq \ell_{\max}^{n}.
+\end{equation}
+En el peor de los casos, nuestro algoritmo recorre todas las capas enteras parametrizadas por
+$\lbrace k, k - 1, \ldots, \tau\rbrace$. Se sigue que
+\begin{align}
+	\label{phase-1:time}
+	\text{Tiempo de ejecución}
+	= \mathcal{O}((k - \tau) \cdot T(n))
+	= \mathcal{O}(c^{n}),
+\end{align}
+para alguna $c > 1$.
 
-% \begin{definition}
-%  Definimos el diámetro $\rho(\sigma)$ de un símplice $\sigma$ como la distancia más grande entre
-%  cualesquiera par de puntos sobre $\sigma$. Es decir,
-%  \begin{equation*}
-%  	\rho(\sigma) \coloneq \max_{\vec{x}, \vec{y} \in \sigma} \lbrace \norm{\vec{y} -
-%  	\vec{x}}_2\rbrace.
-%  \end{equation*}
-% \end{definition}
-% \begin{observation}
-%  El diámetro $\rho(\sigma)$ está bien definido porque la norma $\norm{\cdot}_2^2$ es una función
-%  continua y $\sigma$ es un conjunto compacto, por lo que sí existe el máximo. 
-% \end{observation}
-% \begin{lemma}
-%  El diámetro $\rho(\sigma)$ es igual a la arista de mayor longitud de $\sigma$. Es decir,
-%  \begin{equation*}
-%  	\rho(\sigma) = \max_{i \neq j} \lbrace \norm{\vec{u}_i - \vec{u}_j}_2 \rbrace.
-%  \end{equation*}
-% \end{lemma}
-% \begin{proof}
-%  Sean $\vec{x}, \vec{y} \in \sigma$, de manera que $\vec{y}$ es una combinación convexa de
-%  $\vec{u}_i$: 
-%  \begin{equation*}
-%  	\vec{y} = \theta_1\vec{u}_1 + \cdots + \theta_n\vec{u}_n.
-%  \end{equation*}
-%  Como $\theta_1 + \cdots + \theta_n = 1$, también se cumple que
-%  \begin{equation*}
-%  	\vec{x} = \theta_1\vec{x} + \cdots + \theta_n\vec{x}.
-%  \end{equation*}
-%  Luego,
-%  \begin{align*}
-%  	\norm{\vec{x} - \vec{y}}_2
-%  	&= \norm{\sum_{i=1}^{n}\theta_i\left(\vec{x} - \vec{u}_i\right)}_2 \\
-%  	&\leq \sum_{i=1}^{n}\theta_i\norm{\vec{x} - \vec{u}_i}_2 \\
-%  	&\leq \max_{i}\lbrace \norm{\vec{x} - \vec{u}_i}_2 \rbrace  \sum_{i=1}^{n}\theta_i \\
-%  	&= \max_{i}\lbrace \norm{\vec{x} - \vec{u}_i}_2 \rbrace.
-%  \end{align*}
-%  Aplicando el mismo razonamiento para $\vec{x}$, obtenemos
-%  \begin{equation*}
-%  	\norm{\vec{x} - \vec{u}_i}_2 \leq \max_{j \neq i}\lbrace \norm{\vec{u}_j - \vec{u}_i}_2
-%  	\rbrace.
-%  \end{equation*}
-%  Combinando lo anterior, para todo $\vec{x}, \vec{y}$ se sigue que
-%  \begin{equation*}
-%  	\norm{\vec{x} - \vec{y}}_2 \leq \max_{i}\lbrace \norm{\vec{x} - \vec{u}_i}_2
-%  	\rbrace \leq \max_{i}\max_{j \neq i} \lbrace \norm{\vec{u}_j - \vec{u}_i}_2 \rbrace
-%  	= \max_{i \neq j} \lbrace \norm{\vec{u}_i - \vec{u}_j} \rbrace.
-%  \end{equation*}
-%  Por lo tanto, el diámetro de $\sigma$ es igual a la longitud de la arista más grande.
-% \end{proof}
+Ahora bien, este razonamiento aplica a la modificación de nuestro objetivo en donde decidimos buscar
+todas las soluciones posibles. En realidad solo nos interesa encontrar un punto óptimo, por lo que
+podemos concluir que una cota superior para la complejidad de nuestro algoritmo es
+(\ref{phase-1:time}). Asímismo, en la práctica encontramos que la diferencia $k - \tau$ es crucial
+para determinar cuántas capas enteras recorre nuestro algoritmo en el peor de los casos.
+
+Hemos mostrado anteriormente que para $u$ suficientemente grande es suficiente con recorrer una
+capa. En caso de que $u$ no sea suficientemente grande, observaremos en el análisis de resultados
+cómo se distribuye el número de capas enteras que en realidad se visitan.
 
 \section{Análisis de resultados}
+
+\section{Aplicaciones}
