@@ -2,7 +2,7 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
-from utils import bezout_2d
+from utils import bezout_2d, repeat
 
 
 # TODO: experiments:
@@ -22,44 +22,83 @@ def layer_bounds(q, m, u):
 
 
 def solve_linear_eq(q, rhs):
-    if len(q) == 2:
-        x_prime, y_prime = bezout_2d(q[0], q[1])
-        lb = math.ceil(-rhs * x_prime / q[1])
-        ub = math.floor(rhs * y_prime / q[0])
+    n = len(q)
 
-        if ub < lb:
-            return None
-
-        x = rhs * x_prime + lb * q[1]
-        y = rhs * y_prime - lb * q[0]
-        return (x.item(), y.item())
-
+    # particular solutions
     g = math.gcd(*q[1:])
-    x_prime, omega_prime = bezout_2d(q[0], g)
+    x_b, w_b = bezout_2d(q[0], g)
 
     # bounds for feasible parameters
-    lb = math.ceil(-rhs * x_prime / g)
-    ub = math.floor(rhs * omega_prime / q[0])
+    lb = math.ceil(-rhs * x_b / g)
+    ub = math.floor(rhs * w_b / q[0])
 
-    for t in range(lb, ub + 1):
-        omega = rhs * omega_prime - t * q[0]
-        x = rhs * x_prime + t * g
-        rest = solve_linear_eq((q[1:] / g).astype(int), omega)
+    # general solutions
+    t = ub
+    sol = []
 
-        if rest is not None:
-            return (x, *rest)
+    # pass-through stack
+    idx = 0
+    stack = [[idx, t, lb, ub, rhs, g, x_b, w_b]]
+
+    while len(stack) > 0:
+        idx, t, lb, ub, rhs, g, x_b, w_b = stack[-1]
+        q_rest = q[idx:] // g
+        rhs_next = rhs * w_b - t * q_rest[0]
+
+        # current parameter is outside feasible bound. backtracking
+        if t > ub:
+            stack.pop()
+            if len(stack) == 0:
+                break
+            sol.pop()
+            stack[-1][1] += 1
+            continue
+
+        # on to the last solution
+        if idx == n - 1:
+            x_last, res = divmod(rhs, q[idx])
+            if res == 0:
+                return [*sol, x_last]
+            stack[-1][1] += 1
+            continue
+
+        g_next = math.gcd(*q_rest[1:])
+        x_b_next, w_b_next = bezout_2d(q_rest[0], g_next)
+
+        lb_next = math.ceil(-rhs_next * x_b_next / g_next)
+        ub_next = math.floor(rhs_next * w_b_next / q_rest[0])
+
+        # current parameter yielded a feasible interval
+        if lb_next <= ub_next:
+            sol.append(rhs * x_b + t * g)
+            stack.append([
+                idx + 1,
+                ub_next,
+                lb_next,
+                ub_next,
+                rhs_next,
+                g * g_next,
+                x_b_next,
+                w_b_next
+            ])
+
+        # no feasible interval given this parameter
+        else:
+            stack[-1][1] += 1
+
     return None
 
 
+@repeat(num_iter=30)
 def solve_dioph(q, eta):
     while eta >= 0:
         x = solve_linear_eq(q, eta)
-        eta -= 1
 
         if x is not None:
-            return np.asarray(x)
+            return eta, np.asarray(x)
 
-    print(f"problem is not feasible with rhs = {eta}")
+        eta -= 1
+
     return None
 
 
@@ -68,8 +107,8 @@ def experiment_1(q, m):
     number of layers visited vs feasibility zone
     """
 
-    num_samples = 2048
-    prop = np.sum(q) * np.logspace(start=-3, stop=-2, base=10, num=num_samples)
+    num_samples = 128
+    prop = np.sum(q) * np.logspace(start=-5, stop=-4, base=10, num=num_samples)
     visited = {
         "pctg": np.zeros(num_samples),
         "abs": np.zeros(num_samples),
@@ -78,7 +117,8 @@ def experiment_1(q, m):
 
     for i, u in enumerate(prop):
         tau, eta = layer_bounds(q, m, u)
-        x = solve_dioph(q, eta)
+        k, x = solve_dioph(q, eta)
+        np.testing.assert_allclose(np.dot(q, x), k)
         num_visited = eta - np.dot(q, x)
 
         visited["abs"][i] = num_visited
@@ -95,12 +135,18 @@ def experiment_1(q, m):
 
 
 if __name__ == "__main__":
+    # from knapsack import ukp_dp
+
     np.random.seed(42)
 
-    p = np.random.randint(1, 10_000, size=50)
+    p = np.sort(np.random.randint(1, 1000, size=100_000))
     m = math.gcd(*p)
     q = (p // m).astype(int)
     np.testing.assert_allclose(p, m * q)
     # np.testing.assert_array_less(np.zeros_like(q), q)
 
-    experiment_1(q, m)
+    u = math.floor(0.01 * sum(q))
+    # ukp_dp(p, u)
+    _, eta = layer_bounds(q, m, u)
+    solve_dioph(q, eta)
+    # experiment_1(q, m)
