@@ -38,20 +38,22 @@ def solve_linear_eq(q, rhs):
 
     # pass-through stack
     idx = 0
-    stack = [[idx, t, lb, ub, rhs, g, x_b, w_b]]
+    stack = [[idx, t, lb, ub, rhs, 1, g, x_b, w_b]]
 
     while len(stack) > 0:
-        idx, t, lb, ub, rhs, g, x_b, w_b = stack[-1]
-        q_rest = q[idx:] // g
-        rhs_next = rhs * w_b - t * q_rest[0]
+        idx, t, lb, ub, rhs, g_prev, g, x_b, w_b = stack[-1]
+        q_rest = np.hstack((q[idx] // g_prev, q[idx + 1:] // g))
+
+        x = rhs * x_b + t * g
+        rhs_next = rhs - q[idx] * x
 
         # current parameter is outside feasible bound. backtracking
-        if t > ub:
+        if t < lb:
             stack.pop()
             if len(stack) == 0:
                 break
             sol.pop()
-            stack[-1][1] += 1
+            stack[-1][1] -= 1
             continue
 
         # on to the last solution
@@ -59,7 +61,7 @@ def solve_linear_eq(q, rhs):
             x_last, res = divmod(rhs, q[idx])
             if res == 0:
                 return [*sol, x_last]
-            stack[-1][1] += 1
+            stack[-1][1] -= 1
             continue
 
         g_next = math.gcd(*q_rest[1:])
@@ -70,13 +72,14 @@ def solve_linear_eq(q, rhs):
 
         # current parameter yielded a feasible interval
         if lb_next <= ub_next:
-            sol.append(rhs * x_b + t * g)
+            sol.append(x)
             stack.append([
                 idx + 1,
                 ub_next,
                 lb_next,
                 ub_next,
                 rhs_next,
+                g,
                 g * g_next,
                 x_b_next,
                 w_b_next
@@ -84,7 +87,7 @@ def solve_linear_eq(q, rhs):
 
         # no feasible interval given this parameter
         else:
-            stack[-1][1] += 1
+            stack[-1][1] -= 1
 
     return None
 
@@ -145,8 +148,10 @@ if __name__ == "__main__":
     np.testing.assert_allclose(p, m * q)
     # np.testing.assert_array_less(np.zeros_like(q), q)
 
-    u = math.floor(0.01 * sum(q))
-    # ukp_dp(p, u)
-    _, eta = layer_bounds(q, m, u)
-    solve_dioph(q, eta)
-    # experiment_1(q, m)
+    # u = math.floor(0.01 * sum(q))
+    # # ukp_dp(p, u)
+    # _, eta = layer_bounds(q, m, u)
+    # solve_dioph(q, eta)
+    # # experiment_1(q, m)
+
+    print(solve_linear_eq(np.array([2, 3, 3, 4, 3]), 11))
