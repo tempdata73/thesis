@@ -2,6 +2,7 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
+import knapsack as kp
 from utils import bezout_2d, repeat
 
 
@@ -92,13 +93,13 @@ def solve_linear_eq(q, rhs):
     return None
 
 
-@repeat(num_iter=30)
+@repeat(num_iter=20)
 def solve_dioph(q, eta):
     while eta >= 0:
         x = solve_linear_eq(q, eta)
 
         if x is not None:
-            return eta, np.asarray(x)
+            return np.asarray(x)
 
         eta -= 1
 
@@ -137,21 +138,100 @@ def experiment_1(q, m):
     plt.show()
 
 
-if __name__ == "__main__":
-    # from knapsack import ukp_dp
-
+def experiment_2(size=100):
+    """
+    termination times as rhs increases
+    """
+    n = 128
     np.random.seed(42)
 
-    p = np.sort(np.random.randint(1, 1000, size=100_000))
+    stats = {
+        "capacity": [0] * n,
+        "bb_raw": {
+            "mu": [0] * n,
+            "sigma": [0] * n,
+            "obj": [0] * n,
+        },
+        "bb_full": {
+            "mu": [0] * n,
+            "sigma": [0] * n,
+            "obj": [0] * n,
+        },
+        "dp": {
+            "mu": [0] * n,
+            "sigma": [0] * n,
+            "obj": [0] * n,
+        },
+        "dioph": {
+            "mu": [0] * n,
+            "sigma": [0] * n,
+            "obj": [0] * n,
+        },
+    }
+
+    bb_raw_options = {
+        "presolve": True,
+        "cuts": False,
+        "options": None,
+    }
+
+    bb_full_options = {
+        "presolve": True,
+        "cuts": True,
+        "options": ["gomory on", "knapsack off", "probing off"],
+    }
+
+    p = np.sort(np.random.randint(10, 10 * size, size=size))
+    stats["price"] = p.copy()
     m = math.gcd(*p)
     q = (p // m).astype(int)
+
     np.testing.assert_allclose(p, m * q)
-    # np.testing.assert_array_less(np.zeros_like(q), q)
 
-    # u = math.floor(0.01 * sum(q))
-    # # ukp_dp(p, u)
-    # _, eta = layer_bounds(q, m, u)
-    # solve_dioph(q, eta)
-    # # experiment_1(q, m)
+    print(f"experiment_2 with dimension = {size}")
+    rhs = np.linspace(0.0, 1.0, 128) * q.sum()
+    for i, capacity in enumerate(rhs):
+        capacity = int(capacity)
+        print(f"on problem with capacity = {capacity} ({i + 1}/{n})")
+        stats["capacity"][i] = capacity
 
-    print(solve_linear_eq(np.array([2, 3, 3, 4, 3]), 11))
+        # diophantine method
+        _, eta = layer_bounds(q, m, capacity)
+        x_dioph, (mu, sigma) = solve_dioph(q, eta)
+        obj_dioph = np.dot(x_dioph, p)
+        stats["dioph"]["mu"][i] = mu
+        stats["dioph"]["sigma"][i] = sigma
+        stats["dioph"]["obj"][i] = obj_dioph
+
+        # dynamic method
+        x_dp, (mu, sigma) = kp.ukp_dp(p, capacity)
+        obj_dp = np.dot(x_dp, p)
+        stats["dp"]["mu"][i] = mu
+        stats["dp"]["sigma"][i] = sigma
+        stats["dp"]["obj"][i] = obj_dp
+
+        # bb method (cuts on)
+        x_bb_full, (mu, sigma) = kp.ukp_bb(p, capacity, **bb_full_options)
+        obj_bb_full = np.dot(x_bb_full, p)
+        stats["bb_full"]["mu"][i] = mu
+        stats["bb_full"]["sigma"][i] = sigma
+        stats["bb_full"]["obj"][i] = obj_bb_full
+
+        # bb method (cuts off)
+        x_bb_raw, (mu, sigma) = kp.ukp_bb(p, capacity, **bb_raw_options)
+        obj_bb_raw = np.dot(x_bb_raw, p)
+        stats["bb_raw"]["mu"][i] = mu
+        stats["bb_raw"]["sigma"][i] = sigma
+        stats["bb_raw"]["obj"][i] = obj_bb_raw
+
+        if not np.isclose(obj_dioph, obj_bb_full):
+            print("[ERROR]: different objective values")
+            print(f"[DEBUG]: {obj_dioph=}")
+            print(f"[DEBUG]: {obj_dp=}")
+            print(f"[DEBUG]: {obj_bb_full=}")
+            print(f"[DEBUG]: {obj_bb_raw=}")
+
+    np.save(f"times/poscase-dim-{n}", stats)
+
+if __name__ == "__main__":
+    experiment_2(size=1_000)

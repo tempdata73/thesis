@@ -1,4 +1,5 @@
 import math
+import psutil
 import statistics as stats
 
 from functools import wraps
@@ -45,23 +46,39 @@ def bezout(integers: list[int]) -> list[int]:
     return coeffs
 
 
-def repeat(num_iter=30):
+def repeat(num_iter=20, pid=None):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            times = [0 for _ in range(num_iter)]
             print(f"[INFO]: running {func.__name__} {num_iter} times")
 
+            times = [0 for _ in range(num_iter)]
+            mem = {
+                "vms": [0 for _ in range(num_iter)],
+                "rss": [0 for _ in range(num_iter)]
+            }
+            process = psutil.Process(pid)
+
             for i in range(num_iter):
+                before = process.memory_info()
                 start = perf_counter_ns()
+
                 res = func(*args, **kwargs)
+
                 times[i] = perf_counter_ns() - start
+                after = process.memory_info()
+                mem["rss"][i]= after.rss - before.rss
+                mem["vms"][i] = after.vms - before.vms
                 print(".", end="", flush=True)
             print()
 
             mu_ns = stats.fmean(times)
             std_ns = stats.stdev(times, xbar=mu_ns)
+
             print(f"[INFO]: took {mu_ns * 1e-6:1.4f} ±  {std_ns * 1e-6:0.4f} ms")
+            print(f"[INFO]: rss used: {stats.fmean(mem['rss']) * 2e-6:0.4f} mb")
+            print(f"[INFO]: vms used: {stats.fmean(mem['vms']) * 2e-6:0.4f} mb")
+
             return res, (mu_ns, std_ns)
 
         return wrapper
