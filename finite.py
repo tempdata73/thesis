@@ -9,9 +9,8 @@ from utils import bezout_2d, repeat
 # TODO: experiments:
 # 1. time comparisons between mtu2, dioph, bb and dynamic model
 #   1.1 as the dimension n increases
-#   1.2 as the rhs increases
-# 2. actual number of layers visited vs feasibility zone
-# 3. time vs number of decimal digits
+#   1.2 as the rhs increases ✔
+# 2. actual number of layers visited vs feasibility zone ✔
 # 4. comparison between search strategies (greedy vs centered)
 
 
@@ -22,12 +21,18 @@ def layer_bounds(q, m, u):
     return tau, eta
 
 
-def solve_linear_eq(q, rhs):
+def solve_linear(q, rhs):
     n = len(q)
 
+    # pre-compute gcds
+    gcd = [1]
+    for i in range(1, n - 1):
+        g = math.gcd(*q[i:] // gcd[i - 1])
+        gcd.append(g * gcd[i - 1])
+    gcd.append(q[-1])  # dummy value
+
     # particular solutions
-    g = math.gcd(*q[1:])
-    x_b, w_b = bezout_2d(q[0], g)
+    x_b, w_b = bezout_2d(q[0], gcd[1])
 
     # bounds for feasible parameters
     lb = math.ceil(-rhs * x_b / g)
@@ -39,11 +44,11 @@ def solve_linear_eq(q, rhs):
 
     # pass-through stack
     idx = 0
-    stack = [[idx, t, lb, ub, rhs, 1, g, x_b, w_b]]
+    stack = [[idx, t, lb, ub, rhs, x_b, w_b]]
 
     while len(stack) > 0:
-        idx, t, lb, ub, rhs, g_prev, g, x_b, w_b = stack[-1]
-        q_rest = np.hstack((q[idx] // g_prev, q[idx + 1:] // g))
+        idx, t, lb, ub, rhs, x_b, w_b = stack[-1]
+        q_first = q[idx] // gcd[idx]
 
         x = rhs * x_b + t * g
         rhs_next = rhs - q[idx] * x
@@ -65,11 +70,9 @@ def solve_linear_eq(q, rhs):
             stack[-1][1] -= 1
             continue
 
-        g_next = math.gcd(*q_rest[1:])
-        x_b_next, w_b_next = bezout_2d(q_rest[0], g_next)
-
-        lb_next = math.ceil(-rhs_next * x_b_next / g_next)
-        ub_next = math.floor(rhs_next * w_b_next / q_rest[0])
+        x_b_next, w_b_next = bezout_2d(q_first, gcd[idx + 1])
+        lb_next = math.ceil(-rhs_next * x_b_next / gcd[idx + 1])
+        ub_next = math.floor(rhs_next * w_b_next / q_first)
 
         # current parameter yielded a feasible interval
         if lb_next <= ub_next:
@@ -80,8 +83,6 @@ def solve_linear_eq(q, rhs):
                 lb_next,
                 ub_next,
                 rhs_next,
-                g,
-                g * g_next,
                 x_b_next,
                 w_b_next
             ])
@@ -96,8 +97,7 @@ def solve_linear_eq(q, rhs):
 @repeat(num_iter=20)
 def solve_dioph(q, eta):
     while eta >= 0:
-        x = solve_linear_eq(q, eta)
-
+        x  = solve_linear(q, eta)
         if x is not None:
             return np.asarray(x)
 
@@ -231,7 +231,7 @@ def experiment_2(size=100):
             print(f"[DEBUG]: {obj_bb_full=}")
             print(f"[DEBUG]: {obj_bb_raw=}")
 
-    np.save(f"times/poscase-dim-{n}", stats)
+    np.save(f"times/poscase-dim-{size}", stats)
 
 if __name__ == "__main__":
-    experiment_2(size=1_000)
+    experiment_2(size=100)
