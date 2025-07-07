@@ -8,10 +8,9 @@ from utils import bezout_2d, repeat
 
 # TODO: experiments:
 # 1. time comparisons between mtu2, dioph, bb and dynamic model
-#   1.1 as the dimension n increases
+#   1.1 as the dimension n increases ✔
 #   1.2 as the rhs increases ✔
 # 2. actual number of layers visited vs feasibility zone ✔
-# 4. comparison between search strategies (greedy vs centered)
 
 
 def layer_bounds(q, m, u):
@@ -49,8 +48,7 @@ def solve_linear(q, rhs):
     while len(stack) > 0:
         idx, t, lb, ub, rhs, x_b, w_b = stack[-1]
         q_first = q[idx] // gcd[idx]
-
-        x = rhs * x_b + t * g
+        x = rhs * x_b + t * gcd[idx]
         rhs_next = rhs - q[idx] * x
 
         # current parameter is outside feasible bound. backtracking
@@ -66,7 +64,8 @@ def solve_linear(q, rhs):
         if idx == n - 1:
             x_last, res = divmod(rhs, q[idx])
             if res == 0:
-                return [*sol, x_last]
+                sol.append(x_last)
+                return sol
             stack[-1][1] -= 1
             continue
 
@@ -181,7 +180,7 @@ def experiment_2(size=100):
         "options": ["gomory on", "knapsack off", "probing off"],
     }
 
-    p = np.sort(np.random.randint(10, 10 * size, size=size))
+    p = np.sort(np.random.randint(10, 1_000, size=size))
     stats["price"] = p.copy()
     m = math.gcd(*p)
     q = (p // m).astype(int)
@@ -189,7 +188,7 @@ def experiment_2(size=100):
     np.testing.assert_allclose(p, m * q)
 
     print(f"experiment_2 with dimension = {size}")
-    rhs = np.linspace(0.0, 1.0, 128) * q.sum()
+    rhs = np.linspace(0.0, 1.0, 128) * p.sum()
     for i, capacity in enumerate(rhs):
         capacity = int(capacity)
         print(f"on problem with capacity = {capacity} ({i + 1}/{n})")
@@ -233,5 +232,104 @@ def experiment_2(size=100):
 
     np.save(f"times/poscase-dim-{size}", stats)
 
+
+def experiment_3():
+    """
+    termination times as dimension increases
+    """
+    print("benchmark on experiment_3")
+    np.random.seed(42)
+
+    # same as martello & toth p. 103
+    dims = (
+        50, 100, 200, 500, 1_000, 2_000, 5_000, 10_000,
+        20_000, 30_000, 40_000, 50_000, 60_000, 70_000,
+        80_000, 90_000, 100_000, 150_000, 200_000, 250_000,
+    )
+
+    n = len(dims)
+    stats = {
+        "bb_raw": {
+            "mu": [0] * n,
+            "sigma": [0] * n,
+            "obj": [0] * n,
+        },
+        "bb_full": {
+            "mu": [0] * n,
+            "sigma": [0] * n,
+            "obj": [0] * n,
+        },
+        "dp": {
+            "mu": [0] * n,
+            "sigma": [0] * n,
+            "obj": [0] * n,
+        },
+        "dioph": {
+            "mu": [0] * n,
+            "sigma": [0] * n,
+            "obj": [0] * n,
+        },
+    }
+
+    bb_raw_options = {
+        "presolve": True,
+        "cuts": False,
+        "options": None,
+    }
+
+    bb_full_options = {
+        "presolve": True,
+        "cuts": True,
+        "options": ["gomory on", "knapsack off", "probing off"],
+    }
+
+    for i, size in enumerate(dims):
+        print(f"on dimension {size} ({i + 1}/{n})")
+        p = np.sort(np.random.randint(10, 1_000, size=size))
+        m = math.gcd(*p)
+        q = (p // m).astype(int)
+        np.testing.assert_allclose(p, m * q)
+
+        prop = 0.5 if n <= 100_000 else 0.1
+        capacity = int(prop * p.sum())
+
+        # diophantine method
+        _, eta = layer_bounds(q, m, capacity)
+        x_dioph, (mu, sigma) = solve_dioph(q, eta)
+        obj_dioph = np.dot(x_dioph, p)
+        stats["dioph"]["mu"][i] = mu
+        stats["dioph"]["sigma"][i] = sigma
+        stats["dioph"]["obj"][i] = obj_dioph
+
+        # dynamic method
+        x_dp, (mu, sigma) = kp.ukp_dp(p, capacity)
+        obj_dp = np.dot(x_dp, p)
+        stats["dp"]["mu"][i] = mu
+        stats["dp"]["sigma"][i] = sigma
+        stats["dp"]["obj"][i] = obj_dp
+
+        # bb method (cuts on)
+        x_bb_full, (mu, sigma) = kp.ukp_bb(p, capacity, **bb_full_options)
+        obj_bb_full = np.dot(x_bb_full, p)
+        stats["bb_full"]["mu"][i] = mu
+        stats["bb_full"]["sigma"][i] = sigma
+        stats["bb_full"]["obj"][i] = obj_bb_full
+
+        # bb method (cuts off)
+        x_bb_raw, (mu, sigma) = kp.ukp_bb(p, capacity, **bb_raw_options)
+        obj_bb_raw = np.dot(x_bb_raw, p)
+        stats["bb_raw"]["mu"][i] = mu
+        stats["bb_raw"]["sigma"][i] = sigma
+        stats["bb_raw"]["obj"][i] = obj_bb_raw
+
+        if not np.isclose(obj_dioph, obj_bb_full):
+            print("[ERROR]: different objective values")
+            print(f"[DEBUG]: {obj_dioph=}")
+            print(f"[DEBUG]: {obj_dp=}")
+            print(f"[DEBUG]: {obj_bb_full=}")
+            print(f"[DEBUG]: {obj_bb_raw=}")
+
+    np.save(f"times/mt-dim-{size}", stats)
+
 if __name__ == "__main__":
-    experiment_2(size=100)
+    experiment_3()
