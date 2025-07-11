@@ -243,6 +243,7 @@ ante cambios en $m$. Esto último implica que el número de capas enteras a revi
 de cifras decimales usadas para especificar $\vec{p}$.
 
 \begin{example}
+	\label{ex:decimals}
 	Si tenemos $\vec{p} \coloneq (9.6, 7.2, 5.6)^T$, entonces $m = 0.8$ y por lo tanto el número de
 	capas a revisar dado $u \coloneq 119$ es $\Delta^*(u) = 14$. En cambio, si tenemos $\vec{p} \coloneq
 	(9.60, 7.28, 5.68)^T$, obtenemos $m = 0.08$, por lo que el número de capas a revisar dado $u$ es
@@ -250,8 +251,24 @@ de cifras decimales usadas para especificar $\vec{p}$.
 	multiplica por 100, aproximadamente.
 \end{example}
 
-% TODO: agregar imágenes que muestren el número de capas enteras dado el presupuesto. Un buen
-% parámetro es m = 8, q = 12. Igual mostrar con varios decimales.
+\begin{figure}[htbp]
+  \centering
+
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/delta8m12q.pdf}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/delta008m960q.pdf}
+  \end{minipage}
+
+  \caption{Número de capas a revisar en función del presupuesto. \textit{Izquierda: }Para los
+	  parámetros $m = 8$ y $\vec{q}_{i^*} = 12$ encontramos que hay un máximo de una capa a revisar.
+	\textit{Derecha: } A medida que $m$ se vuelve fraccionario, las capas a revisar aumentan. En
+		este caso tenemos $m = 0.08$ y $\vec{q}_{i^*} = 960$.}
+\end{figure}
 
 Observaremos en el análisis de resultados que el número de capas enteras que nuestro algoritmo
 revisa en realidad disminuye a medida que aumenta el presupuesto $u$. Demostraremos a continuación

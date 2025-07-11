@@ -21,14 +21,14 @@ es
 	\end{align}
 \end{subequations}
 
-Por ello mismo, es razonable suponer que $\vec{p}_i \neq 0$ para cualquier $i \in \lbrace 1, \ldots,
+Por ello mismo, es razonable suponer que $p_i \neq 0$ para cualquier $i \in \lbrace 1, \ldots,
 n \rbrace$. En la sección de Fundamentos analizaremos a profundidad este problema, cuyo punto de
 culminación será el Teorema \ref{theory:th:feasibility}. Veremos que es recomendable separar en dos
 partes el análisis de este problema: el caso $p_i < 0$ para alguna $i \in \lbrace 1, \ldots, n
 \rbrace$; y el caso $\vec{p} \geq \vec{0}$. Los siguientes dos capítulos examinarán respectivamente
 estos casos. Por el momento, cabe destacar que el segundo caso será de mayor interés y tendrá mayor
 aplicabilidad en problemas reales, pues es una instancia particular del Problema de la Mochila. No
-obstante, el caso $\vec{p}_i < 0$ también será de utilidad para exhibir casos particulares en donde
+obstante, el caso $p_i < 0$ también será de utilidad para exhibir casos particulares en donde
 el algoritmo de Ramificación y Acotamiento obtiene un rendimiento deficiente.
 
 \section{Prerrequisitos}
@@ -63,9 +63,28 @@ $|b| \leq |a|$, lo cual implica que $|D(a)| \leq 2|a|$. En caso de que $a$ sea n
 
 Puesto que $a_i \neq 0$ para alguna $i$ en la definición anterior, encontramos que el conjunto
 $\bigcap_{i=1}^{n}D(a_i)$ es finito y, como también es no vacío, en efecto existe un elemento maximal.
-Es decir, el máximo común divisor $d$ siempre está bien definido.
+Es decir, el máximo común divisor $d$ siempre está bien definido. Cabe mencionar que el máximo común
+divisor siempre es estrictamente positivo, pues se cumple que $1 \in D(a)$ para todo entero $a$.
 
-% FIX: no me gusta la redacción
+Otra definición equivalente para el máximo común divisor normalmente es dada de manera inductiva.
+Decimos que $d$ es el máximo común divisor de dos enteros $a_1, a_2$, no ambos nulos, si se
+satisface
+\begin{enumerate}
+	\item $d \mid a_1$ y $d \mid a_2$, y también,
+	\item si $d' \mid a_1$ y $d' \mid a_2$, entonces $d' \mid d$.
+\end{enumerate}
+Luego, para un conjunto de enteros $a_1, a_2 \ldots a_n$, no todos nulos, definimos el máximo común
+divisor entre ellos a partir de
+\begin{equation*}
+	\gcd{a_1, a_2, \ldots, a_{n-1}, a_n} \coloneq \gcd{a_1, \gcd{a_2, \ldots, \gcd{a_{n-1}, a_n}}}.
+\end{equation*}
+Sin embargo, debemos ser cuidadosos con esta manera de definir las cosas, pues puede ser el caso,
+por ejemplo, que $a_{n-1} = a_n = 0$ y entonces $\gcd{a_{n-1}, a_n}$ no está bien definido. Una
+manera simple de arreglar esto último es agregar la condición de que $a_n$ sea no nulo. Es por esto
+último que el autor prefirió la Definición \ref{prerreq:def:gcd}. Independientemente de cómo
+definamos el máximo común divisor, la manera de calcularlo siempre es a través del Algoritmo de
+Euclides. A partir de este punto usaremos ambas definiciones de manera indistinta.
+
 \begin{observation}
 	No porque una colección de enteros sea coprima ($\gcd{a_1, \ldots, a_n} = 1$) se sigue que
 	estos enteros sean coprimos a pares ($\gcd{a_i, a_j} = 1$ para todo $i, j$). Por ejemplo,
@@ -74,7 +93,8 @@ Es decir, el máximo común divisor $d$ siempre está bien definido.
 
 \begin{definition}
 	Decimos que $c \in \Z$ es una combinación lineal entera de un conjunto de enteros $a_1, \ldots,
-	a_n$ si existen enteros $x_1, \ldots, x_n$ tales que $c = a_1x_1 + \cdots + a_nx_n$.
+	a_n$ si existen enteros $x_1, \ldots, x_n$ tales que $c = a_1x_1 + \cdots + a_nx_n$. Si $c$ es
+	positivo, también decimos que esto último es una combinación lineal positiva.
 \end{definition}
 
 El siguiente teorema, a pesar de su simpleza, es central para los resultados obtenidos en esta
@@ -86,12 +106,15 @@ tesis.
 	positiva de $a_1, \ldots, a_n$.
 \end{theorem}
 
-% TODO: agregar un ejemplo
+\begin{example}
+	Para $a_1 \coloneq 2$, $a_2 \coloneq 3$ y $a_3 \coloneq 5$ se cumple que $\gcd{a_1, a_2, a_3} =
+	1$ y además $-3a_1 - a_2 + 2a_3 = 1$.
+\end{example}
 
-\begin{corollary}
-	\label{prerreq:cor:gcd}
+\begin{lemma}
+	\label{prerreq:lemma:gcd}
 	Si $d = \gcd{a_1, \ldots, a_n}$, entonces $\gcd{\frac{a_1}{d}, \ldots, \frac{a_n}{d}} = 1$.
-\end{corollary}
+\end{lemma}
 
 Además del máximo común divisor, requeriremos al mínimo común múltiplo, empero en menor medida. Sea
 $a$ un entero y denotamos el conjunto de sus múltiplos como
@@ -121,7 +144,7 @@ diofantinas, así como la construcción de sus soluciones.
 
 \begin{theorem}[Existencia]
 	\label{prerreq:th:existence}
-	Sean $a, b \in \Z$, no ambos cero. La ecuación $ax + by = c$ tiene solución si y solo si
+	Sean $a, b \in \Z$, no ambos cero. La ecuación $ax + by = c$ tiene solución entera si y solo si
 	$\gcd{a, b} \mid c$.
 \end{theorem}
 
@@ -129,9 +152,12 @@ Para construir el conjunto de soluciones a una ecuación lineal diofantina, enco
 solución particular.
 \begin{definition}
 	\label{prerreq:def:bezout}
-	Sea $d \coloneq \gcd{a, b}$ y sean $x', y'$ enteros tales que $ax' + by' = d$ (c.f.
+	Sea $d \coloneq \gcd{a, b}$ y sean $x', y'$ enteros tales que $ax' + by' = d$ (c.f. Teorema
 	\ref{prerreq:th:bezout}). Decimos entonces que $x', y'$ son coeficientes de Bézout asociados a
-	$a, b$, respectivamente.
+	$a, b$, respectivamente\footnote{
+		Los coeficientes de Bézout se pueden calcular a través del Algoritmo Extendido de Euclides.
+		Véase \url{https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm}.
+	}.
 \end{definition}
 
 \begin{observation}
@@ -145,8 +171,9 @@ solución particular.
 \end{observation}
 
 Definamos $d \coloneq \gcd{a, b}$ y supongamos que la ecuación $ax + by = c$ tiene solución.
-Entonces $d \mid c$, por lo que existe $c' \in \Z$ tal que $c = c' \cdot d$. Sean $x', y'$ los
-coeficientes de Bézout asociados a $a, b$ respectivamente. Así,
+Por el Teorema \ref{prerreq:th:existence}, se sigue que $d \mid c$, y entonces existe $c' \in \Z$
+tal que $c = c' \cdot d$. Sean $x', y'$ los coeficientes de Bézout asociados a $a, b$
+respectivamente. Así,
 \begin{equation*}
 	a(c' \cdot x') + b(c' \cdot y') = c'(ax' + by') = c'd = c,
 \end{equation*}
@@ -166,7 +193,21 @@ por lo que $(c' \cdot x', c' \cdot y')$ es una solución particular de la ecuaci
 	donde $d \coloneq \gcd{a, b}$ y $t \in \Z$.
 \end{theorem}
 
-% TODO: agregar un ejemplo
+\begin{example}
+	Consideremos la ecuación lineal $2x + 3y = 5$. Los coeficientes de Bézout asociados a 2 y 3 son,
+	respectivamente, -1 y 1. Luego, una solución particular para la ecuación es $(x_0, y_0) = (-5, 5)$.
+	Por el Teorema anterior encontramos que todas las soluciones están dadas por
+	\begin{equation*}
+		\begin{cases}
+			x = -5 + 3t, \\
+			y = 5 - 2t,
+		\end{cases}
+	\end{equation*}
+	donde $t \in \Z$ es una variable libre. En efecto, sustituyendo obtenemos
+	\begin{equation*}
+		2(-5 + 3t) + 3(5 - 2t) = -10 + 15 + 6t - 6t = 5.
+	\end{equation*}
+\end{example}
 
 \subsection{Programación lineal}
 
@@ -187,15 +228,15 @@ el capítulo de Motivación, pero lo repetimos una vez más: en esta clase de pr
 ortogonal a la única restricción, y esto implica que el problema relajado tenga una infinidad de
 soluciones. Hemos observado que, en presencia de este fenómeno, el algoritmo de Ramificación y
 Acotamiento no divide la región factible de manera óptima. Por ello investigamos formas alternativas
-para atacar este problema antes de hacer la separación de casos $\vec{p}_i < 0$ o $\vec{p} \geq
-\vec{0}$.
+para atacar este problema antes de hacer la separación de casos $p_i \leq 0$ para alguna $i \in
+\lbrace 1, \ldots, n \rbrace$ o $\vec{p} > \vec{0}$.
 \begin{definition}
 	\label{theory:def:rational}
-	Decimos que un vector $\vec{v} \in \R^n \setminus \lbrace 0 \rbrace$ es esencialmente
-	entero si existe un vector $\vec{w} \in \Z^n$ y un escalar $k \in \R$ tal que $\vec{v} =
-	k\vec{w}$. Además, decimos que $\vec{w}$ es el múltiplo coprimo de $\vec{v}$ si sus entradas son
-	coprimas (c.f. Definición \ref{prerreq:def:gcd}) y si su primera entrada $\vec{v}_1$ es no
-	negativa.
+	Decimos que un vector $\vec{v} \in \R^n \setminus \lbrace \vec{0} \rbrace$ es esencialmente
+	entero si existe un vector $\vec{w} \in \Z^n$ y un escalar $m \in \R \setminus \lbrace 0
+	\rbrace$ tal que $\vec{v} = m\vec{w}$. Además, decimos que $\vec{w}$ es el múltiplo coprimo de
+	$\vec{v}$ si sus entradas son coprimas (c.f. Definición \ref{prerreq:def:gcd}) y si su primera
+	entrada no nula $v_i$ también es positiva.
 \end{definition}
 En otras palabras, decimos que $\vec{v}$ es esencialmente entero si es un múltiplo real de un vector
 entero.
@@ -206,20 +247,20 @@ entero.
 \end{example}
 \begin{observation}
 	Todo vector $\vec{v}$ cuyas entradas son racionales ($\vec{v} \in \Q^n$) es esencialmente
-	entero. En efecto, $\vec{v}_i = \frac{p_i}{q_i}$ para algunos enteros $p_i$ y $q_i$ con $q_i$
-	distinto de cero. Si definimos $q \coloneq \lcm{q_1, \ldots, q_n} \neq 0$ y $\vec{w} \coloneq
-	q\vec{v}$, se sigue que $\vec{v} = \frac{1}{q}\vec{w}$ y también $\vec{w} \in \Z^n$.
+	entero. En efecto, $v_i = \frac{p_i}{q_i}$ para algunos enteros $p_i$ y $q_i$ con $q_i$
+	distinto de cero. Si definimos $m \coloneq \lcm{q_1, \ldots, q_n} \neq 0$ y $\vec{w} \coloneq
+	m\vec{v}$, se sigue que $\vec{v} = \frac{1}{m}\vec{w}$ y también $\vec{w} \in \Z^n$.
 \end{observation}
 \begin{observation}
 	Todo vector $\vec{v}$ esencialmente entero tiene a lo más dos vectores coprimos asociados. Sean
-	$k \in \R$ y $\vec{w} \in \Z^n$ tales que $\vec{v} = k\vec{w}$. Entonces
+	$m \in \R$ y $\vec{w} \in \Z^n$ tales que $\vec{v} = m\vec{w}$. Entonces
 	\begin{equation*}
-		\pm \frac{1}{\gcd{\vec{w}_1, \ldots, \vec{w}_n}}\vec{w}
+		\pm \frac{1}{\gcd{w_1, \ldots, w_n}}\vec{w}
 	\end{equation*}
-	son dos vectores cuyas entradas son coprimas, de acuerdo al Corolario \ref{prerreq:cor:gcd}. Si
-	$\vec{w}_1 = 0$, estos representan el mismo vector, y si $\vec{w}_1 \neq 0$ entonces solo uno de
-	estos dos vectores es el múltiplo coprimo de $\vec{v}$. Independientemente del caso, el múltiplo
-	coprimo de todo vector esencialmente entero es único.
+	son dos vectores cuyas entradas son coprimas, de acuerdo al Lema \ref{prerreq:lemma:gcd}. Como
+	la primera entrada no nula $w_i$ también debe ser positiva, se sigue que solo uno de estos dos
+	vectores es el múltiplo coprimo de $\vec{v}$. Así, el múltiplo coprimo de un vector
+	esencialmente entero es único.
 \end{observation}
 
 Porque todo número representable en cualquier sistema de aritmética finita es necesariamente
@@ -316,37 +357,44 @@ A causa del Teorema \ref{phase-1:th:cover}, somos capaces de caracterizar todos 
 partir de $\vec{q}$. Aún más, obtenemos una enumeración de las capas enteras que cubren $\Z^n$, lo
 cual nos permite determinar si la $k$-ésima capa entera contiene puntos factibles para el problema.
 
-El nivel de utilidad para la $k$-ésima capa entera es $k$. En efecto, si $\vec{x} \in H_{\vec{q},
-k\norm{\vec{q}}^{-2}}$, tenemos
-\begin{equation*}
-	\vec{x} = \vec{q}^{\perp} + k\norm{\vec{q}}^{-2}\vec{q},
-\end{equation*}
-donde $\vec{q}^{\perp}$ es un vector ortogonal a $\vec{q}$. Por lo tanto,
-\begin{equation*}
-	\vec{q}^T\vec{x} = \vec{q}^T\vec{q}^{\perp} + k\norm{\vec{q}}^{-2}\vec{q}^T\vec{q}
-	= 0 + k \norm{\vec{q}}^{-2} \norm{\vec{q}}^{2} = k.
-\end{equation*}
+\begin{lemma}
+	\label{theory:lemma:utility}
+	Sea $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^2}$, entonces su nivel de utilidad
+	$\vec{q}^T\vec{x}$ es $k$.
+\end{lemma}
+\begin{proof}
+	Sea $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$, entonces tenemos
+	\begin{equation*}
+		\vec{x} = \vec{q}^{\perp} + k\norm{\vec{q}}^{-2}\vec{q},
+	\end{equation*}
+	donde $\vec{q}^{\perp}$ es un vector ortogonal a $\vec{q}$. Por lo tanto,
+	\begin{equation*}
+		\vec{q}^T\vec{x} = \vec{q}^T\vec{q}^{\perp} + k\norm{\vec{q}}^{-2}\vec{q}^T\vec{q}
+		= 0 + k \norm{\vec{q}}^{-2} \norm{\vec{q}}^{2} = k.
+	\end{equation*}
+\end{proof}
 
-Consideremos el vector esencialmente entero $\vec{p}$ y su múltiplo coprimo $\vec{q}$. Entonces
-existe un escalar $m \in \R \setminus \lbrace 0 \rbrace$ tal que $\vec{p} = m\vec{q}$. Si
-$\vec{p}^T\vec{x} \leq u$, se cumple que $\vec{q}^T\vec{x} \leq u/m$ si $m$ es positivo, y también
-tenemos $\vec{q}^T\vec{x} \geq u/m$ si $m$ es negativo.
+Consideremos el vector esencialmente entero $\vec{p}$ y su múltiplo coprimo $\vec{q}$, entonces
+existe un escalar $m \in \R \setminus \lbrace 0 \rbrace$ tal que $\vec{p} = m\vec{q}$. Si la
+restricción \eqref{theory:constraint:budget} se cumple, es decir $\vec{p}^T\vec{x} \leq u$, también
+se cumple que $\vec{q}^T\vec{x} \leq u/m$ si $m$ es positivo, o bien que $\vec{q}^T\vec{x} \geq u/m$
+si $m$ es negativo.
 
 La gran mayoría de resultados que obtendremos dependerán de un entero que denotamos como $\eta$, el
 cual depende de $m$ y por lo tanto del signo que este tenga. Para evitar ser repetitivos o dividir
 los resultados innecesariamente en casos, supondremos de ahora en adelante que $m$ es positivo. Esto
-equivale a decir que $\vec{p}_1 \geq 0$, pues se debe cumplir que $\vec{q}_1 \geq 0$. Basta
-mencionar que la gran mayoría de desigualdades se invierten en caso de que $m$ sea negativo, y
-también que usamos la función techo en vez de la función piso.
+equivale a decir que la primera entrada no nula $p_i$ es positiva, pues se debe cumplir que $q_i$
+sea positivo. Basta mencionar que la gran mayoría de desigualdades se invierten en caso de que $m$
+sea negativo, y también que usamos la función techo en vez de la función piso.
 
 Para respetar la restricción presupuestaria, podemos encontrar el entero $\eta$ más grande que
-satisfaga $\vec{q}^T\vec{x} \leq u$ para todo $\vec{x} \in H_{\vec{q}, \eta\norm{\vec{q}}^{-2}}$.
+satisfaga $\vec{q}^T\vec{x} \leq u/m$ para todo $\vec{x} \in H_{\vec{q}, \eta\norm{\vec{q}}^{-2}}$.
 Diremos que $\eta$ es el primer entero que satisface la restricción presupuestaria, o bien que
 $H_{\vec{q}, \eta\norm{\vec{q}}^{-2}}$ es la primera capa entera que satisface el presupuesto.
 \begin{lemma}
 	\label{phase-1:lemma:eta}
 	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q}$ su múltiplo coprimo, de
-	manera que $\vec{p} = m\vec{q}$ para algún escalar $m \in \R_{>0}$. Entonces la primera capa
+	manera que $\vec{p} = m\vec{q}$ para algún escalar $m > 0$. Entonces la primera capa
 	entera $H_{\vec{q}, \eta \norm{\vec{q}}^{-2}}$ que satisface el presupuesto está parametrizada
 	por $\eta \coloneq \lfloor u/m \rfloor$.
 \end{lemma}
@@ -362,86 +410,103 @@ $H_{\vec{q}, \eta\norm{\vec{q}}^{-2}}$ es la primera capa entera que satisface e
 \end{proof}
 
 Encontramos que las capas enteras que satisfacen el presupuesto son parametrizadas por $k \in
-\lbrace \eta, \eta - 1, \ldots \rbrace$. Debido a la observación anterior, se cumple inmediatamente
-que $\vec{q}^T\vec{x} = k$. Deducimos que si la $\eta$-ésima capa entera contiene puntos no
-negativos, entonces las soluciones se encuentran en esa capa. En caso contrario, descendemos a la
-$(\eta - 1)$-ésima capa entera y buscamos puntos enteros no negativos, etcétera.
+\lbrace \eta, \eta - 1, \ldots \rbrace$ y, debido al Lema \ref{theory:lemma:utility}, se cumple
+inmediatamente que $\vec{q}^T\vec{x} = k$. Deducimos que si la $\eta$-ésima capa entera contiene
+puntos no negativos, entonces las soluciones se encuentran en esa capa. En caso contrario,
+descendemos a la $(\eta - 1)$-ésima capa entera y buscamos puntos enteros no negativos, etcétera.
 
 \begin{theorem}
+	\label{theory:th:infeasibility}
+	Sea $\vec{p} \in \R^n \setminus \lbrace \vec{0} \rbrace $ un vector esencialmente entero y sea
+	$\vec{q}$ su múltiplo coprimo. Entonces el problema (\ref{theory:formulation}) es infactible si
+	y solo si $\vec{q} \geq \vec{0}$ y $u < 0$.
+\end{theorem}
+\begin{proof}
+	Supongamos que $\vec{q} \geq \vec{0}$ y $u < 0$. Si $\vec{x} \in \Z_{\geq \vec{0}}^n$
+	entonces $\vec{q}^T\vec{x} \geq 0 > u$ y por lo tanto $\vec{x}$ no es factible. Luego,
+	\begin{equation*}
+		\Z_{\geq \vec{0}}^{n} \cap \lbrace \vec{x} \vcentcolon \vec{q}^T\vec{x} 
+		\leq u \rbrace = \emptyset,
+	\end{equation*}
+	y el problema no es factible. Mostramos la otra implicación por contraposición. Si $u
+	\geq 0$ observamos que $\vec{0} \in \Z^n$ es factible. Se debe cumplir $u < 0$. Similarmente, si
+	$q_i < 0$ para algún $i \in \lbrace 1, \ldots, n \rbrace$, encontramos que $\lceil u/q_i
+	\rceil\vec{e}_i \in \Z^n$ es factible:
+	\begin{equation*}
+		\vec{q}^T\left\lceil \frac{u}{q_i} \right\rceil\vec{e}_i
+		= q_i \left\lceil \frac{u}{q_i} \right\rceil
+		\leq q_i \frac{u}{q_i} = u,
+	\end{equation*}
+	además, como $u < 0$, concluimos que $\lceil u/q_i \rceil\vec{e}_i$ es no negativo.
+\end{proof}
+
+Debido al Teorema anterior, somos capaces de determinar inmediatamente si el problema
+\eqref{theory:formulation} es infactible, por lo que supondremos de ahora en adelante que es
+factible. El siguiente Teorema muestra que nuestro análisis para resolver el problema anterior
+deberá dividirse en dos casos.
+\begin{theorem}
 	\label{theory:th:feasibility}
-	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q}$ su múltiplo coprimo.
-	Entonces se cumple lo siguiente con respecto al problema (\ref{theory:formulation}):
+	Sea $\vec{p} \in \R^n \setminus \lbrace \vec{0} \rbrace $ un vector esencialmente entero y sea
+	$\vec{q}$ su múltiplo coprimo. Supongamos que el problema (\ref{theory:formulation}) es factible
+	y tomemos $\eta$ del Lema \ref{phase-1:lemma:eta}. Entonces se satisface lo siguiente:
 	\begin{enumerate}
-		\item El problema es infactible si y solo si $\vec{q} \geq \vec{0}$ y $u < 0$.
-		\item Si $\vec{q}_i < 0$ para algún $i \in \lbrace 2, \ldots, n
-			\rbrace$, entonces la $\eta$-ésima capa entera contiene un número infinito de puntos
-			factibles.
-		\item Si el problema es factible y $\vec{q} > \vec{0}$, entonces la $k$-ésima capa entera
-			contiene un número finito de puntos factibles, donde $k \in \lbrace \eta, \eta - 1,
-			\ldots 0 \rbrace$.
+		\item Si $q_i \leq 0$ para algún $i \in \lbrace 1, \ldots, n \rbrace$, entonces la $\eta$-ésima
+			capa entera contiene un número infinito de puntos factibles.
+		\item Si $\vec{q} > \vec{0}$, enconces para todo $k \in \lbrace \eta, \eta - 1, \ldots, 0
+			\rbrace$, la $k$-ésima capa entera contiene un número finito de puntos factibles.
 	\end{enumerate}
 \end{theorem}
 \begin{proof} \hfill
 	\begin{enumerate}
-		\item Supongamos que $\vec{q} \geq 0$ y $u < 0$. Si $\vec{x} \in \Z_{\geq \vec{0}}^n$
-			entonces $\vec{q}^T\vec{x} \geq 0 > u$ y por lo tanto $\vec{x}$ no es factible. Luego,
-			\begin{equation*}
-				\Z_{\geq \vec{0}}^{n} \cap \lbrace \vec{x} \vcentcolon \vec{q}^T\vec{x} 
-				\leq u \rbrace = \emptyset,
-			\end{equation*}
-			y el problema no es factible. Mostramos la otra implicación por contraposición. Si $u
-			\geq 0$ observamos que $\vec{0}$ es factible. Se debe cumplir $u < 0$. Similarmente, si
-			$\vec{q}_i < 0$ para algún $i \in \lbrace 2, \ldots, n \rbrace$, encontramos que $\lceil
-			u/\vec{q}_i \rceil\vec{e}_i \in \Z^n$ es factible:
-			\begin{equation*}
-				\vec{q}^T\left\lceil \frac{u}{\vec{q}_i} \right\rceil\vec{e}_i
-				= \vec{q}_i \left\lceil \frac{u}{\vec{q}_i} \right\rceil
-				\leq \vec{q}_i \frac{u}{\vec{q}_i} = u,
-			\end{equation*}
-			además, como $u < 0$, concluimos que $\lceil u/\vec{q}_i \rceil\vec{e}_i$ es no negativo.
-		\item Como $\vec{q}$ es un vector cuyas entradas son coprimas, sabemos de una generalización
-			del Teorema \ref{prerreq:th:existence} que existe $\vec{x} \in \Z^n$ tal que
-			$\vec{q}^T\vec{x} = \eta$. Definamos los siguientes conjuntos de índices
+		\item
+			En la siguiente sección mostraremos que, como $\vec{q}$ es un vector cuyas entradas son
+			coprimas, entonces existe un punto entero $\vec{x}$ que satisface la ecuación lineal
+			diofantina $\vec{q}^T\vec{x} = \eta$. Por el momento, confiemos que esto es verdadero.
+			Como no tenemos asegurada la no negatividad de $\vec{x}$, construiremos un vector entero
+			$\vec{x}^+$ que sí satisface la restricción de no negatividad y también la restricción
+			presupuestaria $\vec{q}^T\vec{x}^+ = \eta$, de manera que $\vec{x}^+$ sí será factible.
+
+			Definamos los siguientes conjuntos de índices
 			\begin{equation*}
 				I^+ \coloneq \lbrace i \vcentcolon q_i > 0 \rbrace,
 				\quad I^\circ \coloneq \lbrace \ell \vcentcolon q_\ell = 0 \rbrace.
 				\quad I^- \coloneq \lbrace j \vcentcolon q_j < 0 \rbrace.
 			\end{equation*}
-			Podemos suponer sin pérdida de generalidad que $I^\circ$ es vacío. En efecto, si $x_\ell
-			< 0$ para algún $\ell \in I^\circ$, al redefinir $x_\ell \leftarrow 0$ se satisface
-			$\vec{q}^T\vec{x} = \eta$.
+			Podemos suponer sin pérdida de generalidad que $I^\circ$ es vacío. En efecto, si $x_k
+			< 0$ para algún $k \in I^\circ$, esa entrada no sería factible, pero fácilmente
+			podríamos definir $x_k^+ = 0$ para hacerla factible.
 
 			Entonces, ambos conjuntos $I^+$ e $I^-$ forman una partición de $\lbrace 1, \ldots,
 			n\rbrace$. Podemos escoger escalares positivos $c_1, \ldots, c_n$ que satisfagan
 			simultáneamente
 			\begin{align}
-				x_j + \sum_{i \in I^+}\vec{q}_ic_i &\geq 0, \quad \forall j \in I^-,
+				x_k + \sum_{i \in I^+}q_ic_i &\geq 0, \quad \forall k \in I^-,
 				\label{theory:pf:1} \\
-				x_i - \sum_{j \in I^-}\vec{q}_jc_i &\geq 0, \quad \forall i \in I^+.
+				x_k - \sum_{j \in I^-}q_jc_k &\geq 0, \quad \forall k \in I^+.
 				\label{theory:pf:2}
 			\end{align}
 			Definamos el vector $\vec{x}^+ \in \Z^n$ de manera que
 			\begin{equation*}
-				\vec{x}^+_k \coloneq \begin{cases}
-					x_k + \sum_{i \in I^+}\vec{q}_ic_i, \quad k \in I^-, \\
-					x_k - \sum_{j \in I^-}\vec{q}_jc_k, \quad k \in I^+.
+				x^+_k \coloneq \begin{cases}
+					x_k + \sum_{i \in I^+}q_ic_i, \quad k \in I^-, \\
+					x_k - \sum_{j \in I^-}q_jc_k, \quad k \in I^+.
 				\end{cases}
 			\end{equation*}
 			Se verifica que $\vec{x}^+$ es no negativo y, además,
 			\begin{align*}
 				\vec{q}^T\vec{x}^+
 				&= \vec{q}^T\vec{x}
-				+ \sum_{k \in I^-}\sum_{i \in I^+}\vec{q}_k\vec{q}_ic_i
-				- \sum_{k \in I^+}\sum_{j \in I^-}\vec{q}_k\vec{q}_jc_k \\
+				+ \sum_{k \in I^-}\sum_{i \in I^+}q_kq_ic_i
+				- \sum_{k \in I^+}\sum_{j \in I^-}q_kq_jc_k \\
 				&= \eta
-				+ \sum_{j \in I^-}\sum_{i \in I^+}\vec{q}_j\vec{q}_ic_i
-				- \sum_{i \in I^+}\sum_{j \in I^-}\vec{q}_i\vec{q}_jc_i \\
+				+ \sum_{j \in I^-}\sum_{i \in I^+}q_jq_ic_i
+				- \sum_{i \in I^+}\sum_{j \in I^-}q_iq_jc_i \\
 				&= \eta.
 			\end{align*}
-			Así pues, tenemos existencia. Para concluir que hay un número infinito de puntos, basta
-			observar que si la elección de coeficientes $c_1, \ldots, c_n$ satisface ambas
-			desigualdades (\ref{theory:pf:1}) y (\ref{theory:pf:2}), entonces cualquier múltiplo
-			positivo de estos coeficientes también las satisface.
+			Así pues, tenemos existencia de un punto factible. Para concluir que hay un número
+			infinito de puntos factibles, basta observar que si la elección de coeficientes $c_1,
+			\ldots, c_n$ satisface ambas desigualdades (\ref{theory:pf:1}) y (\ref{theory:pf:2}),
+			entonces cualquier múltiplo positivo de estos coeficientes también las satisface.
 		\item Se sigue que $u \geq 0$. Definamos
 			\begin{equation}
 				\label{theory:pf:p_k}
@@ -454,10 +519,9 @@ $(\eta - 1)$-ésima capa entera y buscamos puntos enteros no negativos, etcéter
 			ningún punto sobre capas enteras con parámetros negativos es factible.
 
 			Sea $k \in \lbrace \eta, \eta - 1, \ldots, 0 \rbrace$. La capa entera $H_{\vec{q},
-			k\norm{\vec{q}}^{-2}}$ interseca los ejes positivos en $\frac{k}{\vec{q}_i}\vec{e}_i$.
-			Definamos $\ell_i \coloneq \lceil k/\vec{q}_i \rceil$. No es difícil ver que
-			$H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ está contenido en el prisma cuyas aristas son $[0,
-			\ell_i]$ y, por lo tanto,
+			k\norm{\vec{q}}^{-2}}$ interseca los ejes positivos en $\frac{k}{q_i}\vec{e}_i$.
+			Definamos $\ell_i \coloneq \lceil k/q_i \rceil$. No es difícil ver que $P_k$ está
+			contenido en el prisma cuyas aristas son $[0, \ell_i]$ y, por lo tanto,
 			\begin{equation*}
 				P_k \subseteq \prod_{i = 1}^{n} [0, \ell_i] \cap \Z^n = \prod_{i = 1}^{n}
 				\left( [0, \ell_i] \cap \Z \right).
@@ -470,15 +534,25 @@ $(\eta - 1)$-ésima capa entera y buscamos puntos enteros no negativos, etcéter
 	\end{enumerate}
 \end{proof}
 
-Suponiendo que el problema (\ref{theory:formulation}) tiene solución, el Teorema
-\ref{theory:th:feasibility} nos sugiere dividir nuestro análisis en dos casos: uno donde $\vec{p}_i$
-es negativo y por lo tanto hay una infinidad de soluciones en la $\eta$-ésima capa entera; y uno
-donde $\vec{p} > \vec{0}$, lo que implica la finitud de puntos factibles. Ciertamente el segundo
-caso es el más interesante, pues de alguna manera conocemos automáticamente el óptimo de los
-problemas que recaen en el primer caso. Efectivamente esta es una de las razones por las que el
-autor decidió ordenar de tal manera los casos: porque en el primero sabemos exactamente dónde buscar
-la solución. Aún así, a pesar de encontrarnos con esta primera división, existen muchos elementos en
-común que comparten ambos casos.
+Así pues, suponiendo que el problema (\ref{theory:formulation}) tiene solución, el Teorema
+\ref{theory:th:feasibility} nos sugiere dividir nuestro análisis en dos casos: uno donde donde una
+entrada $p_i$ es no positiva y por lo tanto existe una infinidad de soluciones en la $\eta$-ésima
+capa entera; y uno donde $\vec{p}$ es estrictamente positivo, lo que implica la finitud de puntos
+factibles. Ciertamente el segundo caso es el más interesante, pues de alguna manera conocemos
+automáticamente el óptimo de los problemas que recaen en el primer caso. Efectivamente esta es una
+de las razones por las que el autor decidió ordenar de tal manera los casos: porque en el primero
+sabemos exactamente dónde buscar la solución. Aún así, a pesar de encontrarnos con esta primera
+división, existen muchos elementos en común que comparten ambos casos.
+
+Antes de atacar los casos anteriores, primero debemos mostrar que la ecuación lineal diofantina
+$\vec{q}^T\vec{x} = k$ tiene soluciones enteras para toda $k$ entera siempre que las entradas de
+$\vec{q}$ sean coprimas\footnote{
+	Recordemos que supusimos que esto era cierto para demostrar una parte del Teorema
+	\ref{theory:th:feasibility}. Además, la construcción de estas soluciones enteras proveerá
+	herramientas útiles para cuando decidamos agregar más restricciones.
+}. La siguiente sección se encarga de mostrar la existencia de tales
+soluciones enteras y, más tarde, nos enfocaremos en cómo obtener soluciones no negativas a partir de
+ellas.
 
 \subsection{Una ecuación lineal diofantina}
 \noindent
@@ -488,40 +562,40 @@ Así, los puntos $\vec{x} \in \Z^n$ que se encuentran sobre esa capa satisfacen 
 diofantina
 \begin{equation}
 	\label{eq:dioph}
-	\vec{q}^T\vec{x} = \vec{q}_1\vec{x}_1 + \vec{q}_2\vec{x}_2 + \cdots + \vec{q}_n\vec{x}_n = k.
+	\vec{q}^T\vec{x} = q_1x_1 + q_2x_2 + \cdots + q_nx_n = k.
 \end{equation}
-Como $\vec{q} \neq 0$, podemos suponer, por el momento, que $\vec{q}_n \neq 0$. En la sección de
+Como $\vec{q} \neq 0$, podemos suponer, por el momento, que $q_n \neq 0$. En la sección de
 Teoría de Números mostramos bajo qué condiciones existen soluciones a este tipo de ecuaciones y
 también cómo construirlas cuando solamente tenemos dos incógnitas. Partimos de la observación que
 podemos resolver recursivamente esta ecuación. Definamos, por conveniencia, $g_1 \coloneq
-\gcd{\vec{q}_1, \ldots, \vec{q}_n}$ y también $\omega_1 \coloneq k$. Como $\vec{q}$ es un vector
+\gcd{q_1, \ldots, q_n}$ y también $\omega_1 \coloneq k$. Como $\vec{q}$ es un vector
 coprimo, sabemos que $g_1 = 1$. Además, definamos
 \begin{equation*}
-	\omega_2 \coloneq \frac{\vec{q}_2}{g_2 \cdot g_1}\vec{x}_1 + \cdots + \frac{\vec{q}_n}{g_2 \cdot
-	g_1}\vec{x}_n,
+	\omega_2 \coloneq \frac{q_2}{g_2 \cdot g_1}x_1 + \cdots + \frac{q_n}{g_2 \cdot
+	g_1}x_n,
 \end{equation*}
-donde $g_2 \coloneq \gcd{\vec{q}_2/g_1, \ldots, \vec{q}_n/g_1}$. Como $\vec{q}_n \neq 0$, tenemos
+donde $g_2 \coloneq \gcd{q_2/g_1, \ldots, q_n/g_1}$. Como $q_n \neq 0$, tenemos
 que $g_2$ está bien definido. Así, la ecuación (\ref{eq:dioph})es equivalente a
 \begin{equation}
 	\label{eq:dioph:first-step}
-	\frac{q_1}{g_1}\vec{x}_1 + g_2\omega_2 = \omega_1.
+	\frac{q_1}{g_1}x_1 + g_2\omega_2 = \omega_1.
 \end{equation}
 Observemos que
 \begin{equation*}
-	\gcd{\frac{\vec{q}_1}{g_1}, g_2}
-	= \gcd{\frac{\vec{q}_1}{g_1}, \gcd{\frac{\vec{q}_2}{g_1}, \ldots, \frac{\vec{q}_n}{g_1}}}
-	= \gcd{\frac{\vec{q}_1}{g_1}, \frac{\vec{q}_2}{g_1}, \ldots, \frac{\vec{q}_n}{g_1}} = 1.
+	\gcd{\frac{q_1}{g_1}, g_2}
+	= \gcd{\frac{q_1}{g_1}, \gcd{\frac{q_2}{g_1}, \ldots, \frac{q_n}{g_1}}}
+	= \gcd{\frac{q_1}{g_1}, \frac{q_2}{g_1}, \ldots, \frac{q_n}{g_1}} = 1.
 \end{equation*}
-Por lo tanto, existen soluciones enteras para todo $\omega_1 \in \Z$. Como $\vec{q}_1/g_1$ y $g_2$
+Por lo tanto, existen soluciones enteras para todo $\omega_1 \in \Z$. Como $q_1/g_1$ y $g_2$
 son coprimos, encontramos que sus coeficientes de Bézout asociados (c.f. Definición
 \ref{prerreq:def:bezout}) $x_1', \omega_2'$ son soluciones particulares de la ecuación
 \begin{equation*}
-	\frac{q_1}{g_1}\vec{x}_1 + g_2\omega_2 = 1.
+	\frac{q_1}{g_1}x_1 + g_2\omega_2 = 1.
 \end{equation*}
 Deducimos que las soluciones de la ecuación (\ref{eq:dioph:first-step}) están dadas por
 \begin{equation*}
 	\begin{cases}
-		\vec{x}_1 = \omega_1x_1' + g_2t_1, \\
+		x_1 = \omega_1x_1' + g_2t_1, \\
 		\omega_2 = \omega_1\omega_2' - \frac{q_1}{g_1}t_1,
 	\end{cases}
 \end{equation*}
@@ -529,87 +603,87 @@ donde $t_1 \in \Z$ es una variable libre.
 
 \begin{observation}
 	Los coeficientes de Bézout $x_1'$ y $\omega_2'$ dependen exclusivamente de $\vec{q}$ y no del
-	punto $\vec{x}$. En efecto, $x_1'$ está asociado a $\vec{q}_1/g_1$ y $\omega_2'$ está asociado a
-	$g_2$. Pero ambos $g_1$ y $g_2$ son el máximo común divisor de $\vec{q}_1, \ldots \vec{q}_n$ y
-	$\vec{q}_1/g_1, \ldots, \vec{q}_n/g_1$, respectivamente. 
+	punto $\vec{x}$. En efecto, $x_1'$ está asociado a $q_1/g_1$ y $\omega_2'$ está asociado a
+	$g_2$. Pero ambos $g_1$ y $g_2$ son el máximo común divisor de $q_1, \ldots q_n$ y
+	$q_1/g_1, \ldots, q_n/g_1$, respectivamente. 
 \end{observation}
 
 Para el siguiente paso de la recursión fijamos $t_1$ y resolvemos la ecuación
 \begin{equation}
 	\label{eq:dioph:second-step}
-	\frac{\vec{q}_2}{g_2 \cdot g_1}\vec{x}_2 +
-	\frac{\vec{q}_3}{g_2 \cdot g_1}\vec{x}_3 +
+	\frac{q_2}{g_2 \cdot g_1}x_2 +
+	\frac{q_3}{g_2 \cdot g_1}x_3 +
 	\cdots +
-	\frac{\vec{q}_n}{g_2 \cdot g_1}\vec{x}_n
+	\frac{q_n}{g_2 \cdot g_1}x_n
 	= \omega_2.
 \end{equation}
-Como $g_2 = \gcd{\vec{q}_2/g_1, \ldots, \vec{q}_n/g_1}$, sabemos del Corolario \ref{prerreq:cor:gcd}
+Como $g_2 = \gcd{q_2/g_1, \ldots, q_n/g_1}$, sabemos del Lema \ref{prerreq:lemma:gcd}
 que
 \begin{equation*}
-	\gcd{\frac{\vec{q}_2}{g_2 \cdot g_1}, \ldots, \frac{\vec{q}_n}{g_2 \cdot g_1}} = 1.
+	\gcd{\frac{q_2}{g_2 \cdot g_1}, \ldots, \frac{q_n}{g_2 \cdot g_1}} = 1.
 \end{equation*}
 En el mismo espíritu que el primer paso de la recursión, definimos
 \begin{equation*}
-	\omega_3 \coloneq \frac{\vec{q}_3}{g_3 \cdot g_2 \cdot g_1}\vec{x}_3 + \cdots + \frac{\vec{q}_n}{g_3
-	\cdot g_2 \cdot g_1}\vec{x}_n,
+	\omega_3 \coloneq \frac{q_3}{g_3 \cdot g_2 \cdot g_1}x_3 + \cdots + \frac{q_n}{g_3
+	\cdot g_2 \cdot g_1}x_n,
 \end{equation*}
 donde
 \begin{equation*}
-	g_3 \coloneq  \gcd{\frac{\vec{q}_3}{g_2 \cdot g_1}, \ldots, \frac{\vec{q}_n}{g_2 \cdot g_1}}.
+	g_3 \coloneq  \gcd{\frac{q_3}{g_2 \cdot g_1}, \ldots, \frac{q_n}{g_2 \cdot g_1}}.
 \end{equation*}
 Por lo que la ecuación (\ref{eq:dioph:second-step}) es equivalente a
 \begin{equation}
 	\label{eq:dioph:second-step:short}
-	\frac{\vec{q}_2}{g_2 \cdot g_1}\vec{x}_2 + g_3\omega_3 = \omega_2.
+	\frac{q_2}{g_2 \cdot g_1}x_2 + g_3\omega_3 = \omega_2.
 \end{equation}
-Nuevamente, como $\vec{q}_n \neq 0$, $g_3$ está bien definido. Además, tenemos
+Nuevamente, como $q_n \neq 0$, $g_3$ está bien definido. Además, tenemos
 \begin{equation*}
-	\gcd{\frac{\vec{q}_2}{g_2 \cdot g_1}, g_3} = 1,
+	\gcd{\frac{q_2}{g_2 \cdot g_1}, g_3} = 1,
 \end{equation*}
 y entonces (\ref{eq:dioph:second-step:short}) tiene una infinidad de soluciones para todo $\omega_2 \in
 \Z$, las cuales están dadas por
 \begin{equation*}
 	\begin{cases}
-		\vec{x}_2 = \omega_2x_2' + g_3t_2, \\
+		x_2 = \omega_2x_2' + g_3t_2, \\
 		\omega_3 = \omega_2\omega_3' - \frac{q_2}{g_2 \cdot g_1}t_2,
 	\end{cases}
 \end{equation*}
 donde $t_2 \in \Z$ es una variable libre, y $x_2', \omega_3'$ son los coeficientes de Bézout
-asociados a $\frac{\vec{q}_2}{g_2 \cdot g_2}$ y $g_3$, respectivamente.
+asociados a $\frac{q_2}{g_2 \cdot g_2}$ y $g_3$, respectivamente.
 
 De manera general, para $i \in \lbrace 1, \ldots, n - 2 \rbrace$, el $i$-ésimo paso de la recursión
 provee las soluciones
 \begin{equation}
 	\label{eq:recurrence}
 	\begin{cases}
-		\vec{x}_i = \omega_ix_i' + g_{i + 1}t_i, \\
-		\omega_{i + 1} = \omega_i\omega_{i + 1}' - \frac{\vec{q}_i}{\prod_{j=1}^{i}g_j}t_i,
+		x_i = \omega_ix_i' + g_{i + 1}t_i, \\
+		\omega_{i + 1} = \omega_i\omega_{i + 1}' - \frac{q_i}{\prod_{j=1}^{i}g_j}t_i,
 	\end{cases}
 \end{equation}
 donde $t_i \in \Z$ es la $i$-ésima variable libre. Es valioso mencionar, otra vez, que los
 coeficientes de Bézout $x_i', \omega_{i+1}'$ dependen exclusivamente de $\vec{q}$ a través de sus
-entradas $\vec{q}_i$ y de los máximos común divisores entre ellas. Es decir, ni $x_i'$ ni $\omega_{i
-+ 1}'$ dependen de la elección $\vec{x} \in \Z^n$. Así también, $\vec{q}_n \neq 0$ y por lo tanto
+entradas $q_i$ y de los máximos común divisores entre ellas. Es decir, ni $x_i'$ ni $\omega_{i
++ 1}'$ dependen de la elección $\vec{x} \in \Z^n$. Así también, $q_n \neq 0$ y por lo tanto
 $g_{i + 1}$ está bien definido para todo $i \in \lbrace 1, \ldots, n - 2 \rbrace$.
 
 En el último paso obtenemos la ecuación lineal diofantina
 \begin{equation}
 	\label{eq:last-equation}
-	\frac{q_{n-1}}{\prod_{j=1}^{n-1}g_j}\vec{x}_{n-1} +
-	\frac{q_{n}}{\prod_{j=1}^{n-1}g_j}\vec{x}_n
+	\frac{q_{n-1}}{\prod_{j=1}^{n-1}g_j}x_{n-1} +
+	\frac{q_{n}}{\prod_{j=1}^{n-1}g_j}x_n
 	= \omega_{n-1}.
 \end{equation}
-Por construcción, los coeficientes de $\vec{x}_{n - 1}$ y $\vec{x}_n$ son coprimos. Las soluciones
+Por construcción, los coeficientes de $x_{n - 1}$ y $x_n$ son coprimos. Las soluciones
 están dadas por
 \begin{equation}
 	\label{eq:last-solution}
 	\begin{cases}
-		\vec{x}_{n-1} = \omega_{n-1}x_{n-1}' + \frac{\vec{q}_n}{\prod_{j=1}^{n-1}g_j}t_{n-1}, \\
-		\vec{x}_n = \omega_{n-1}x_n' - \frac{\vec{q}_{n-1}}{\prod_{j=1}^{n-1}g_j}t_{n-1},
+		x_{n-1} = \omega_{n-1}x_{n-1}' + \frac{q_n}{\prod_{j=1}^{n-1}g_j}t_{n-1}, \\
+		x_n = \omega_{n-1}x_n' - \frac{q_{n-1}}{\prod_{j=1}^{n-1}g_j}t_{n-1},
 	\end{cases}
 \end{equation}
 donde $x_{n-1}', x_n'$ son los coeficientes de Bézout asociados a
-$\frac{\vec{q}_n}{\prod_{j=1}^{n-1}g_j}$ y $\frac{\vec{q}_{n-1}}{\prod_{j=1}^{n-1}g_j}$,
+$\frac{q_n}{\prod_{j=1}^{n-1}g_j}$ y $\frac{q_{n-1}}{\prod_{j=1}^{n-1}g_j}$,
 respectivamente.
 
 Finalmente, por la restricción de no negatividad $\vec{x} \geq 0$ en el problema
@@ -621,8 +695,8 @@ satisfacer
 	t_i \geq \left\lceil -\frac{\omega_ix_i'}{g_{i + 1}} \right\rceil,
 \end{equation}
 para $i \in \lbrace 1, \ldots, n - 2\rbrace$. Para determinar intervalos de no negatividad de
-$\vec{x}_{n-1}$ y $\vec{x}_n$, observamos de (\ref{eq:last-solution}) que dependemos de los signos
-de $\vec{q}_{n-1}$ y de $\vec{q}_n$. Mucho tendremos que decir en los siguientes dos capítulos sobre
+$x_{n-1}$ y $x_n$, observamos de (\ref{eq:last-solution}) que dependemos de los signos
+de $q_{n-1}$ y de $q_n$. Mucho tendremos que decir en los siguientes dos capítulos sobre
 cómo acotar mejor $t_1, \ldots, t_{n-1}$ para asegurar la no negatividad de $\vec{x}$. Así pues,
 relegamos la discusión en los siguientes dos capítulos cuando analicemos separadamente el caso
 infinito y el caso finito.
@@ -637,7 +711,7 @@ que en el primer paso definimos $\omega_1 \coloneq k$. Combinando estos dos últ
 	\label{eq:omega-recurrence}
 	\begin{cases}
 		\omega_1 &= k, \\
-		\omega_{i + 1} &= \omega_i \cdot \omega_{i + 1}' - \frac{\vec{q}_i}{\prod_{\ell=1}^{i}g_\ell} \cdot t_i.
+		\omega_{i + 1} &= \omega_i \cdot \omega_{i + 1}' - \frac{q_i}{\prod_{\ell=1}^{i}g_\ell} \cdot t_i.
 	\end{cases}
 \end{equation}
 \begin{lemma}
@@ -646,7 +720,7 @@ que en el primer paso definimos $\omega_1 \coloneq k$. Combinando estos dos últ
 		\label{eq:omega-formula}
 		\omega_i =
 		k \cdot \prod_{j=2}^{i} \omega_j'
-		- \sum_{j=1}^{i - 1}\frac{\vec{q}_j}{\prod_{\ell=1}^{j}g_\ell}
+		- \sum_{j=1}^{i - 1}\frac{q_j}{\prod_{\ell=1}^{j}g_\ell}
 		\cdot \prod_{\ell=j+2}^{i}\omega_\ell' \cdot t_j.
 	\end{equation}
 	Donde, por conveniencia, le asignamos el valor de 0 a la suma vacía y el valor de 1 al producto
@@ -657,7 +731,7 @@ que en el primer paso definimos $\omega_1 \coloneq k$. Combinando estos dos últ
 	\begin{equation*}
 		\omega_1 =
 		k \cdot \prod_{j=2}^{1} \omega_j'
-		- \sum_{j=1}^{0}\frac{\vec{q}_j}{\prod_{\ell=1}^{j}g_\ell}
+		- \sum_{j=1}^{0}\frac{q_j}{\prod_{\ell=1}^{j}g_\ell}
 		\cdot \prod_{\ell=j+2}^{1}\omega_\ell' \cdot t_j
 		= k,
 	\end{equation*}
@@ -668,20 +742,20 @@ que en el primer paso definimos $\omega_1 \coloneq k$. Combinando estos dos últ
 		\omega_{i + 1}
 		&=
 		k \cdot \prod_{j=2}^{i + 1} \omega_j'
-		- \sum_{j=1}^{i}\frac{\vec{q}_j}{\prod_{\ell=1}^{j}g_\ell}
+		- \sum_{j=1}^{i}\frac{q_j}{\prod_{\ell=1}^{j}g_\ell}
 		\cdot \prod_{\ell=j+2}^{i + 1}\omega_\ell' \cdot t_j \\
 		&=
 		k \cdot \prod_{j=2}^{i} \omega_j' \cdot \omega_{i+1}'
-		- \sum_{j=1}^{i - 1}\frac{\vec{q}_j}{\prod_{\ell=1}^{j}g_\ell}
+		- \sum_{j=1}^{i - 1}\frac{q_j}{\prod_{\ell=1}^{j}g_\ell}
 		\cdot \prod_{\ell=j+2}^{i}\omega_\ell' \cdot t_j \cdot \omega_{i + 1}'
-		- \frac{\vec{q}_i}{\prod_{\ell = 1}^{i}g_\ell}
+		- \frac{q_i}{\prod_{\ell = 1}^{i}g_\ell}
 		\cdot \prod_{\ell = i + 2}^{i + 1}\omega_\ell' \cdot t_i \\
 		&= 
 		\left( k \cdot \prod_{j=2}^{i} \omega_j'
-		- \sum_{j=1}^{i - 1}\frac{\vec{q}_j}{\prod_{\ell=1}^{j}g_\ell}
+		- \sum_{j=1}^{i - 1}\frac{q_j}{\prod_{\ell=1}^{j}g_\ell}
 		\cdot \prod_{\ell=j+2}^{i}\omega_\ell' \cdot t_j \right) \omega_{i+1}'
-		- \frac{\vec{q}_i}{\prod_{\ell = 1}^{i}g_\ell} \cdot t_i  \\
-		&= \omega_i \cdot \omega_{i + 1}' - \frac{\vec{q}_i}{\prod_{\ell = 1}^{i}g_\ell} \cdot t_i.
+		- \frac{q_i}{\prod_{\ell = 1}^{i}g_\ell} \cdot t_i  \\
+		&= \omega_i \cdot \omega_{i + 1}' - \frac{q_i}{\prod_{\ell = 1}^{i}g_\ell} \cdot t_i.
 	\end{align*}
 	Por el principio de inducción se sigue que (\ref{eq:omega-formula}) satisface
 	(\ref{eq:omega-recurrence}) para todo $i \in \N$. Así, esta fórmula es la forma cerrada de la
@@ -691,24 +765,24 @@ que en el primer paso definimos $\omega_1 \coloneq k$. Combinando estos dos últ
 Por conveniencia, definimos los coeficientes $m_{ij} \in \mathbb{Z}$ con $i > j$ como
 \begin{equation}
 	\label{phase-2:eq:coeffs}
-	m_{ij} \coloneq \frac{\vec{q}_j}{\prod_{\ell = 1}^{j}g_\ell} \cdot \prod_{\ell = j +
+	m_{ij} \coloneq \frac{q_j}{\prod_{\ell = 1}^{j}g_\ell} \cdot \prod_{\ell = j +
 	2}^{i}\omega_\ell'.
 \end{equation}
 Así pues, juntando esto último con \ref{eq:recurrence}, obtenemos para $i \in \{1, \ldots, n -
 2\}$, 
 \begin{align}
-	\vec{x}_i &= \omega_i \cdot x_i' + g_{i + 1}\vec{t}_i \nonumber \\
+	x_i &= \omega_i \cdot x_i' + g_{i + 1}t_i \nonumber \\
 		&= k \cdot \prod_{j=2}^{i}\omega_j' \cdot x_i' - \sum_{j=1}^{i - 1}m_{ij}x_i'
-		\vec{t}_j + g_{i + 1}\vec{t}_i \label{eq:x:i}.
+		t_j + g_{i + 1}t_i \label{eq:x:i}.
 \end{align}
 Similarmente, sustituyendo en \ref{eq:last-solution},
 \begin{subequations}
 	\label{eq:x:last}
 	\begin{align}
-		\vec{x}_{n-1} &= k \cdot \prod_{j=2}^{n-1} \omega_j' \cdot x_{n-1}' - \sum_{j=1}^{n-2}
-		m_{n-1,j}x_{n-1}' \vec{t}_j + \frac{\vec{q}_n}{\prod_{j=1}^{n-2}g_j} \vec{t}_{n-1}, \\
-		\vec{x}_{n} &= k \cdot \prod_{j=2}^{n-1} \omega_j' \cdot x_{n}' - \sum_{j=1}^{n-2}
-		m_{n,j}x_{n}' \vec{t}_j - \frac{\vec{q}_{n - 1}}{\prod_{j=1}^{n-2}g_j} \vec{t}_{n-1}.
+		x_{n-1} &= k \cdot \prod_{j=2}^{n-1} \omega_j' \cdot x_{n-1}' - \sum_{j=1}^{n-2}
+		m_{n-1,j}x_{n-1}' t_j + \frac{q_n}{\prod_{j=1}^{n-2}g_j} t_{n-1}, \\
+		x_{n} &= k \cdot \prod_{j=2}^{n-1} \omega_j' \cdot x_{n}' - \sum_{j=1}^{n-2}
+		m_{n,j}x_{n}' t_j - \frac{q_{n - 1}}{\prod_{j=1}^{n-2}g_j} t_{n-1}.
 	\end{align}
 \end{subequations}
 
@@ -716,7 +790,7 @@ Con este trabajo anterior, ya podemos establecer una relación lineal entre $\ve
 $\vec{x} \in \Z^n$. Definimos $\vec{\omega} \in \Z^n$ como
 \begin{equation}
 	\label{eq:vec-omega}
-	\vec{\omega}_i \coloneq x_i' \cdot \prod_{j = 2}^{\min{\lbrace i, n - 1 \rbrace}}\omega_j'.
+	\omega_i \coloneq x_i' \cdot \prod_{j = 2}^{\min{\lbrace i, n - 1 \rbrace}}\omega_j'.
 \end{equation}
 También definimos la matriz $M \in \Z^{n \times (n - 1)}$ a través de
 \begin{equation}
@@ -724,8 +798,8 @@ También definimos la matriz $M \in \Z^{n \times (n - 1)}$ a través de
 	M_{ij} \coloneq \begin{cases}
 		-m_{ij}x_i', &\quad j < i, \\
 		g_{i + 1},  &\quad i = j < n - 1, \\
-		\frac{\vec{q}_n}{\prod_{k=1}^{n-1}g_k}, &\quad i = j = n - 1, \\
-		-\frac{\vec{q}_{n-1}}{\prod_{k=1}^{n-1}g_k}, &\quad i = n, j = n - 1, \\
+		\frac{q_n}{\prod_{k=1}^{n-1}g_k}, &\quad i = j = n - 1, \\
+		-\frac{q_{n-1}}{\prod_{k=1}^{n-1}g_k}, &\quad i = n, j = n - 1, \\
 		0, &\quad \text{e.o.c.}
 	\end{cases}
 \end{equation}
@@ -747,75 +821,75 @@ $\vec{\omega}$ y $M$ lo son también.
 \begin{proof}
 	Primero mostramos por inducción hacia atrás que se cumple
 	\begin{equation}
-		\label{eq:omega-induction} \sum_{j=i}^{n}\vec{q}_j\vec{\omega}_j =
+		\label{eq:omega-induction} \sum_{j=i}^{n}q_j\omega_j =
 		\prod_{j=2}^{i}\omega_j' \cdot \prod_{j=1}^{i}g_j,
 	\end{equation}
 	para todo $i \in \lbrace 1, \ldots, n - 1\rbrace$. Empezamos con el caso base $i = n - 1$:
 	\begin{equation}
 		\label{eq:omega-base-case}
-		\vec{q}_{n-1}\vec{\omega}_{n-1} + \vec{q}_n\vec{\omega}_n =
-		\prod_{j=2}^{n-1}\omega_j' \cdot \left(\vec{q}_{n-1}x_{n-1}' + \vec{q}_nx_n'\right).
+		q_{n-1}\omega_{n-1} + q_n\omega_n =
+		\prod_{j=2}^{n-1}\omega_j' \cdot \left(q_{n-1}x_{n-1}' + q_nx_n'\right).
 	\end{equation}
 	Recordemos que $x_{n-1}'$ y $x_n'$ son coeficientes de Bézout asociados a los coeficientes del
 	lado izquierdo de (\ref{eq:last-equation}), los cuales son coprimos. Entonces se cumple
 	\begin{equation*}
-		\frac{\vec{q}_{n-1}}{\prod_{j=1}^{n-1}g_j}x_{n-1}' +
-		\frac{\vec{q}_n}{\prod_{j=1}^{n-1}g_j}x_n' = 1,
+		\frac{q_{n-1}}{\prod_{j=1}^{n-1}g_j}x_{n-1}' +
+		\frac{q_n}{\prod_{j=1}^{n-1}g_j}x_n' = 1,
 	\end{equation*}
 	lo cual implica 
 	\begin{equation*}
-		\vec{q}_{n-1}x_{n-1}' + \vec{q}_nx_n' = \prod_{j=1}^{n-1}g_j.
+		q_{n-1}x_{n-1}' + q_nx_n' = \prod_{j=1}^{n-1}g_j.
 	\end{equation*}
 	Sustituyendo en (\ref{eq:omega-base-case}), obtenemos
 	\begin{equation*}
-		\vec{q}_{n-1}\vec{\omega}_{n-1} + \vec{q}_n\vec{\omega}_n  =
+		q_{n-1}\omega_{n-1} + q_n\omega_n  =
 		\prod_{j=2}^{n-1}\omega_j' \cdot \prod_{j=1}^{n-1}g_j.
 	\end{equation*}
 	Supongamos inductivamente que (\ref{eq:omega-induction}) se satisface para alguna $2 \leq i \leq
 	n - 1$. Entonces tenemos
 	\begin{align*}
-		\sum_{j=i-1}^{n}\vec{q}_j\vec{\omega}_j
-		&= \vec{q}_{i-1}\vec{\omega}_{i-1} + \sum_{j=i}^{n}\vec{q}_j\vec{\omega}_j \\
-		&= \prod_{j=2}^{i-1}\omega_j' \cdot \vec{q}_{i-1}x_{i-1}' + \prod_{j=2}^{i}\omega_j' \cdot
+		\sum_{j=i-1}^{n}q_j\omega_j
+		&= q_{i-1}\omega_{i-1} + \sum_{j=i}^{n}q_j\omega_j \\
+		&= \prod_{j=2}^{i-1}\omega_j' \cdot q_{i-1}x_{i-1}' + \prod_{j=2}^{i}\omega_j' \cdot
 		\prod_{j=1}^{i}g_j \\
-		&= \prod_{j=2}^{i-1}\omega_j' \cdot \left( \vec{q}_{i-1}x_{i-1}' + \omega_i'
+		&= \prod_{j=2}^{i-1}\omega_j' \cdot \left( q_{i-1}x_{i-1}' + \omega_i'
 			\prod_{j=1}^{i}g_j \right).
 	\end{align*}
 	Nuevamente, $x_{i-1}'$ y $\omega_i'$ son coeficientes de Bézout asociados, respectivamente, a
-	$\frac{\vec{q}_{i-1}}{\prod_{j=1}^{i-1}g_j}$ y $g_i$, los cuales son coprimos. De esta manera
+	$\frac{q_{i-1}}{\prod_{j=1}^{i-1}g_j}$ y $g_i$, los cuales son coprimos. De esta manera
 	satisfacen
 	\begin{equation*}
-		\frac{\vec{q}_{i-1}}{\prod_{j=1}^{i-1}g_j}x_{i-1}' +
+		\frac{q_{i-1}}{\prod_{j=1}^{i-1}g_j}x_{i-1}' +
 		g_i \omega_i' = 1,
 	\end{equation*}
 	por lo tanto,
 	\begin{equation*}
-		\vec{q}_{i-1}x_{i-1}' + \omega_i'\prod_{j=1}^{i}g_j' = \prod_{j=1}^{i-1}g_j.
+		q_{i-1}x_{i-1}' + \omega_i'\prod_{j=1}^{i}g_j' = \prod_{j=1}^{i-1}g_j.
 	\end{equation*}
 	Sustituyendo, obtenemos el resultado (\ref{eq:omega-induction}) para $i - 1$. Así, por inducción
 	hacía atrás, (\ref{eq:omega-induction}) se cumple para todo $i \in \lbrace 1, \ldots, n - 1
 	\rbrace$. Finalmente, para demostrar el Lema, observamos que
 	\begin{equation*}
-		\vec{q}^T\vec{\omega} = \sum_{j=1}^{n}\vec{q}_j\vec{\omega}_j = \prod_{j=2}^{1}\omega_j'
+		\vec{q}^T\vec{\omega} = \sum_{j=1}^{n}q_j\omega_j = \prod_{j=2}^{1}\omega_j'
 		\cdot \prod_{j=1}^{1}g_j = g_1 = 1.
 	\end{equation*}
 	El primer producto es uno por ser el producto vacío. Recordemos también que $g_1$ es el máximo
-	común divisor de $\vec{q}_1, \ldots, \vec{q}_n$, los cuales son coprimos, y entonces $g_1 = 1$.
+	común divisor de $q_1, \ldots, q_n$, los cuales son coprimos, y entonces $g_1 = 1$.
 \end{proof}
 \begin{lemma}
 	\label{lemma:iso2}
-	El vector $\vec{q}$ genera $\ker{M^T}$ si $\vec{q}_n \neq 0$.
+	El vector $\vec{q}$ genera $\ker{M^T}$ si $q_n \neq 0$.
 \end{lemma}
 \begin{proof}
 	La matriz $M$ es triangular inferior cuya diagonal principal es distinta de cero. En efecto,
 	para todo $i \in \lbrace 1, \ldots, n - 2\rbrace$, tenemos
 	\begin{equation*}
-		M_{ii} = g_{i + 1} = \gcd{\frac{\vec{q}_i}{\prod_{j=1}^{i}g_j}, \ldots,
-		\frac{\vec{q}_n}{\prod_{j=1}^{i}g_j}}.
+		M_{ii} = g_{i + 1} = \gcd{\frac{q_i}{\prod_{j=1}^{i}g_j}, \ldots,
+		\frac{q_n}{\prod_{j=1}^{i}g_j}}.
 	\end{equation*}
 	Pero el máximo común divisor entre cualesquiera enteros siempre es positivo. También tenemos
 	\begin{equation*}
-		M_{n-1, n-1} = \frac{\vec{q}_n}{\prod_{j=1}^{n-1}g_j} \neq 0.
+		M_{n-1, n-1} = \frac{q_n}{\prod_{j=1}^{n-1}g_j} \neq 0.
 	\end{equation*}
 	Se sigue que las columnas de $M$ son linealmente
 	independientes, y entonces su imagen tiene dimensión $n - 1$. Por lo tanto, $M^T$ tiene $n - 1$
@@ -873,7 +947,7 @@ caractericemos a partir de $\vec{q}$.
 
 \begin{theorem}
 	\label{th:lattice}
-	Supongamos que $\vec{q}_n \neq 0$. Entonces $\vec{\omega}$ y las columnas de $M$ forman una base
+	Supongamos que $q_n \neq 0$. Entonces $\vec{\omega}$ y las columnas de $M$ forman una base
 	de la red $\Z^n$.
 \end{theorem}
 \begin{proof}
@@ -896,14 +970,14 @@ caractericemos a partir de $\vec{q}$.
 	satisface la ecuación lineal diofantina $\vec{q}^T\vec{x} = k$ para alguna $k \in \Z$. Por
 	construcción, existe un vector $\vec{t} \in \Z^{n-1}$ tal que
 	\begin{equation*}
-		\vec{x} = k\vec{\omega} + M\vec{t} = k\vec{\omega} + \vec{t}_1\vec{m}_1 + \cdots +
-		\vec{t}_{n-1}\vec{m}_{n-1}.
+		\vec{x} = k\vec{\omega} + M\vec{t} = k\vec{\omega} + t_1\vec{m}_1 + \cdots +
+		t_{n-1}\vec{m}_{n-1}.
 	\end{equation*}
 	Como $\vec{x}$ fue arbitrario, se sigue que
 	\begin{equation*}
 		\Z^n = \lbrace
-		k\vec{\omega} + \vec{t}_1\vec{m}_1 + \cdots + \vec{t}_{n-1}\vec{m}_{n-1}
-		\vcentcolon k, \vec{t}_1, \ldots, \vec{t}_{n-1} \in \Z
+		k\vec{\omega} + t_1\vec{m}_1 + \cdots + t_{n-1}\vec{m}_{n-1}
+		\vcentcolon k, t_1, \ldots, t_{n-1} \in \Z
 		\rbrace.
 	\end{equation*}
 	De esta manera, se cumple que $\lbrace \vec{\omega}, \vec{m}_1, \ldots, \vec{m}_{n-1}\rbrace$ es
@@ -914,19 +988,19 @@ Geométricamente, a partir de $\vec{q}$ descomponemos la red $\Z^n$ como una sum
 subredes isomorfas a $\Z$ y $\Z^{n-1}$, cuyas bases están dadas por $\vec{\omega}$ y las columnas de
 $M$, respectivamente. El vector $\vec{\omega}$ es una solución particular de la ecuación no
 homogénea $\vec{q}^T\vec{\omega} = 1$, mientras que las columnas de $M$ forman una base del conjunto
-de soluciones de la ecuación homogénea $\vec{q}^T\vec{m} = 0$. Tenemos entonces que si $\vec{q}_n
+de soluciones de la ecuación homogénea $\vec{q}^T\vec{m} = 0$. Tenemos entonces que si $q_n
 \neq 0$, el vector $\vec{q}$ induce una descomposición de $\Z^n$. Ciertamente, esta idea de
 descomponer el espacio completo a partir de soluciones particulares y homogéneas no es novedosa.
 
-Hasta este punto hemos supuesto que $\vec{q}_n \neq 0$. Ciertamente si este no es el caso podemos
+Hasta este punto hemos supuesto que $q_n \neq 0$. Ciertamente si este no es el caso podemos
 permutar las entradas de $\vec{q}$ de manera que el vector permutado $\tilde{\vec{q}}$ cumpla el
 supuesto. Ahora bien, podemos preguntarnos cómo se relacionan las imágenes de las matrices $M$ y
-$\tilde{M}$ de estos dos vectores. No obstante, si $\vec{q}_n = 0$, puede ser el caso que la matriz
+$\tilde{M}$ de estos dos vectores. No obstante, si $q_n = 0$, puede ser el caso que la matriz
 $M$ no esté bien definida\footnote{
-	Por ejemplo, si $\vec{q}_n = \vec{q}_{n-1} = 0$, encontramos que
+	Por ejemplo, si $q_n = q_{n-1} = 0$, encontramos que
 	\begin{equation*}
-		g_{n-1} \coloneq \gcd{\frac{\vec{q}_{n-1}}{\prod_{j=1}^{n-2}g_j},
-		\frac{\vec{q}_n}{\prod_{j=1}^{n-2}g_j}} = \gcd{0, 0}.
+		g_{n-1} \coloneq \gcd{\frac{q_{n-1}}{\prod_{j=1}^{n-2}g_j},
+		\frac{q_n}{\prod_{j=1}^{n-2}g_j}} = \gcd{0, 0}.
 	\end{equation*}
 	Pero el máximo común divisor de dos números no está bien definido si ambos son cero. Esto
 	implica que la entrada $M_{n-2, n-2} \coloneq g_{n-1}$ no está bien definida.
@@ -934,7 +1008,7 @@ $M$ no esté bien definida\footnote{
 \begin{corollary}
 	\label{cor:iso3}
 	Sea $\vec{q}$ un vector coprimo y sea $\tilde{\vec{q}}$ el vector coprimo resultante de haber
-	permutado las entradas de $\vec{q}$. Supongamos además que $\vec{q}_n, \tilde{\vec{q}}_n \neq 0$.
+	permutado las entradas de $\vec{q}$. Supongamos además que $q_n, \tilde{\vec{q}}_n \neq 0$.
 	Entonces
 	\begin{equation*}
 		\ker{M^T} \cong \ker{\tilde{M}^T}.
@@ -1026,7 +1100,7 @@ $\sigma.\vec{e}_i = \vec{e}_{\sigma(i)}$ para tener una notación más clara.
 \end{example}
 
 De manera informal, podemos fortalecer el Corolario \ref{cor:iso3} con el siguiente argumento. Si
-$\vec{q}_i = 0$ para alguna $i \in \lbrace 1, \ldots, n \rbrace$, podemos proyectar $\vec{q}$ sobre
+$q_i = 0$ para alguna $i \in \lbrace 1, \ldots, n \rbrace$, podemos proyectar $\vec{q}$ sobre
 la subred $\Z^{n-1}$ de $\Z$. Repetimos este proceso hasta que todas las entradas de $\vec{q}$ sean
 distintas de cero. Y es sobre esta subred que podemos considerar cualquier permutación en las
 entradas del vector $\vec{q}$ proyectado.
@@ -1081,7 +1155,7 @@ encontrará en alguna capa entera con parámetro $k \in \lbrace \eta, \eta - 1, 
 todavía contamos con una restricción presupuestaria que se debe satisfacer.
 \begin{observation}
 	Recordemos del Teorema \ref{theory:th:feasibility} que, si tenemos solamente la restricción
-	presupuestaria, entonces la utilidad máxima es $\eta$ si $\vec{q}_i < 0$ para alguna $i \in
+	presupuestaria, entonces la utilidad máxima es $\eta$ si $q_i < 0$ para alguna $i \in
 	\lbrace 2, \ldots, n - 1\rbrace$. Al igual que en el caso finito, ahora no somos capaces de
 	saber inmediatamente en qué capa entera se encuentra nuestra solución.
 \end{observation}
@@ -1192,7 +1266,7 @@ factibilidad
 \end{equation}
 \begin{observation}
 	Para que $F$ sea no vacío, debe existir $k \in \Z$ tal que $\det(H) \mid (k\vec{a}_j^T
-	\vec{\omega} - \vec{b}_j)$ para todo $j \in \lbrace 1, \ldots, m \rbrace$, donde $\vec{a}^T_j$
+	\vec{\omega} - b_j)$ para todo $j \in \lbrace 1, \ldots, m \rbrace$, donde $\vec{a}^T_j$
 	denota el $j$-ésimo vector renglón de $A$. Es decir, una condición suficiente y necesaria para
 	la no vacuidad de $F$ es
 	\begin{equation*}
