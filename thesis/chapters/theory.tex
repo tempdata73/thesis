@@ -292,37 +292,37 @@ coprimo $\vec{w}$. Ahora bien, cualquier vector coprimo induce una familia de ca
 sorprendentemente, esa familia forma una cobertura de $\Z^n$, como lo indica el Teorema
 \ref{phase-1:th:cover}.
 
-\begin{figure}
-	\centering
-	\begin{tikzpicture}[scale=1.0, xscale=1, yscale=0.7]
-		\centering
-		\draw (0,0) -- (5,0) node[right] {\(x\)};
-		\draw (0,0) -- (0,7) node[above] {\(y\)};
-		% Add tick marks (optional)
-
-		\foreach \x in {1,2,3,4}
-			\draw (\x,0.1) -- (\x,-0.1) node[below] {\x};
-
-		\foreach \y in {1,2,3,4,5,6}
-			\draw (0.1,\y) -- (-0.1,\y) node[left] {\y};
-
-		\draw (0,0.1) -- (0, -0.1) node[below left] {0};
-		\draw (0.1,0) -- (-0.1, 0) node[below left] {};
-
-		\draw[very thin, gray!30] (0,0) grid (5,7);
-
-		\draw[thick, black, domain=0:3.5] plot (\x, {7 - 2*\x}) node[right] {};
-		\draw[thick, gray, domain=0:5.0] plot (\x, {9/sqrt(2) - sqrt(1.5)*\x}) node[right] {};
-
-		\filldraw[black] (3,1) circle (2pt) node[below right] {};
-		\filldraw[black] (2,3) circle (2pt) node[above right] {};
-		\filldraw[black] (1,5) circle (2pt) node[above left] {};
-	\end{tikzpicture}
-	\caption{Representación de una capa entera (en negro) junto a un hiperplano afino que no es capa
-	entera (en gris). La capa entera tiene como parámetros $\vec{v} = (2, 1)^T$ y $t = 1.4$,
-	mientras que los del hiperplano afino son $\vec{v} = (\sqrt{3}, \sqrt{2})^T$ y $t = 1.4$.}
-	\label{phase-1:fig:c-layer}
-\end{figure}
+% \begin{figure}
+% 	\centering
+% 	\begin{tikzpicture}[scale=1.0, xscale=1, yscale=0.7]
+% 		\centering
+% 		\draw (0,0) -- (5,0) node[right] {\(x\)};
+% 		\draw (0,0) -- (0,7) node[above] {\(y\)};
+% 		% Add tick marks (optional)
+% 
+% 		\foreach \x in {1,2,3,4}
+% 			\draw (\x,0.1) -- (\x,-0.1) node[below] {\x};
+% 
+% 		\foreach \y in {1,2,3,4,5,6}
+% 			\draw (0.1,\y) -- (-0.1,\y) node[left] {\y};
+% 
+% 		\draw (0,0.1) -- (0, -0.1) node[below left] {0};
+% 		\draw (0.1,0) -- (-0.1, 0) node[below left] {};
+% 
+% 		\draw[very thin, gray!30] (0,0) grid (5,7);
+% 
+% 		\draw[thick, black, domain=0:3.5] plot (\x, {7 - 2*\x}) node[right] {};
+% 		\draw[thick, gray, domain=0:5.0] plot (\x, {9/sqrt(2) - sqrt(1.5)*\x}) node[right] {};
+% 
+% 		\filldraw[black] (3,1) circle (2pt) node[below right] {};
+% 		\filldraw[black] (2,3) circle (2pt) node[above right] {};
+% 		\filldraw[black] (1,5) circle (2pt) node[above left] {};
+% 	\end{tikzpicture}
+% 	\caption{Representación de una capa entera (en negro) junto a un hiperplano afino que no es capa
+% 	entera (en gris). La capa entera tiene como parámetros $\vec{v} = (2, 1)^T$ y $t = 1.4$,
+% 	mientras que los del hiperplano afino son $\vec{v} = (\sqrt{3}, \sqrt{2})^T$ y $t = 1.4$.}
+% 	\label{phase-1:fig:c-layer}
+% \end{figure}
 
 \begin{lemma}
 	\label{phase-1:lemma:layer}
@@ -1056,7 +1056,8 @@ caractericemos a partir de $\vec{q}$.
 
 	Ahora bien, sea $\vec{x} \in \Z^n$, por el Teorema \ref{phase-1:th:cover}, sabemos que se
 	encuentra sobre una capa entera, y entonces satisface la ecuación lineal diofantina
-	$\vec{q}^T\vec{x} = k$ para alguna $k \in \Z$. Por construcción, existe un vector $\vec{t} \in
+	$\vec{q}^T\vec{x} = k$ para alguna $k \in \Z$. Por construcción al inicio de esta sección junto
+	con la exhaustividad del Teorema \ref{prerreq:th:construction}, existe un vector $\vec{t} \in
 	\Z^{n-1}$ tal que
 	\begin{equation*}
 		\vec{x} = k\vec{\omega} + M\vec{t} = k\vec{\omega} + t_1\vec{m}_1 + \cdots +
@@ -1073,13 +1074,23 @@ caractericemos a partir de $\vec{q}$.
 	una base de $\Z^n$.
 \end{proof}
 
+\begin{corollary}
+	Supongamos que $q_n \neq 0$ y consideremos $\vec{\omega} \in \Z^n$ (definido en
+	\eqref{eq:vec-omega}) y las columnas $\vec{m}_1, \ldots, \vec{m}_{n-1} \in \Z^n$ de la matriz $M
+	\in \Z^{n \times (n-1)}$ (definida en \eqref{eq:mat-T}), entonces la matriz
+	\begin{equation*}
+		[ \vec{\omega} \mid \vec{m}_1 \mid \cdots \mid \vec{m}_{n-1} ] \in \Z^{n \times n}
+	\end{equation*}
+	es unimodular.
+\end{corollary}
+
 Geométricamente, a partir de $\vec{q}$ descomponemos la red $\Z^n$ como una suma directa de dos
 subredes isomorfas a $\Z$ y $\Z^{n-1}$, cuyas bases están dadas por $\vec{\omega}$ y las columnas de
 $M$, respectivamente. El vector $\vec{\omega}$ es una solución particular de la ecuación no
 homogénea $\vec{q}^T\vec{\omega} = 1$, mientras que las columnas de $M$ forman una base del conjunto
-de soluciones de la ecuación homogénea $\vec{q}^T\vec{m} = 0$. Tenemos entonces que si $q_n
-\neq 0$, el vector $\vec{q}$ induce una descomposición de $\Z^n$. Ciertamente, esta idea de
-descomponer el espacio completo a partir de soluciones particulares y homogéneas no es novedosa.
+de soluciones de la ecuación homogénea $\vec{q}^T\vec{m} = 0$. Tenemos entonces que si $q_n \neq 0$,
+el vector $\vec{q}$ induce una descomposición de $\Z^n$. Ciertamente, esta idea de descomponer el
+espacio vectorial completo a partir de soluciones particulares y homogéneas no es novedosa.
 
 Hasta este punto hemos supuesto que $q_n \neq 0$. Ciertamente si este no es el caso podemos
 permutar las entradas de $\vec{q}$ de manera que el vector permutado $\tilde{\vec{q}}$ cumpla el
@@ -1097,7 +1108,7 @@ $M$ no esté bien definida\footnote{
 \begin{corollary}
 	\label{cor:iso3}
 	Sea $\vec{q}$ un vector coprimo y sea $\tilde{\vec{q}}$ el vector coprimo resultante de haber
-	permutado las entradas de $\vec{q}$. Supongamos además que $q_n, \tilde{\vec{q}}_n \neq 0$.
+	permutado las entradas de $\vec{q}$. Supongamos además que $q_n, \tilde{q}_n \neq 0$.
 	Entonces
 	\begin{equation*}
 		\ker{M^T} \cong \ker{\tilde{M}^T}.
@@ -1211,7 +1222,7 @@ En conclusión, somos completamente capaces de caracterizar los puntos enteros s
 capa entera. O lo que es lo mismo, podemos resolver ecuaciones lineales diofantinas con $n$
 incógnitas. Estas ecuaciones son inducidas por el vector coprimo $\vec{q}$. Hemos analizado también
 como es que $\vec{q}$ descompone el espacio $\Z^n$ a través del vector $\vec{\omega}$ y de la matriz
-$M$. Recordemos que $\vec{w}$ representa el conjunto de soluciones particulares a estas ecuaciones
+$M$. Recordemos que $\vec{\omega}$ representa el conjunto de soluciones particulares a estas ecuaciones
 lineales, mientras que las columnas de $M$ representan el conjunto de soluciones homogéneas. En la
 siguiente sección observamos cómo esta descomposición permite que desacoplemos un programa lineal
 entero en dos partes: una de maximización y otra de factibilidad.
