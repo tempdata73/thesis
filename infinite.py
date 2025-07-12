@@ -5,9 +5,6 @@ import pulp as lp
 from utils import bezout_2d, repeat
 
 
-NUM_ITER = 10
-
-
 def feasible_point(c_p, eta, flag):
     n = len(c_p)
     x = np.zeros(n)
@@ -52,7 +49,7 @@ def feasible_point(c_p, eta, flag):
     return x
 
 
-@repeat(num_iter=NUM_ITER)
+@repeat(num_iter=20)
 def solve_dioph(c_p, k, s):
     c_p = c_p.copy()
     eta = math.floor(s / k)
@@ -89,8 +86,8 @@ def solve_dioph(c_p, k, s):
     return x
 
 
-@repeat(num_iter=NUM_ITER)
-def solve_pulp(p, s, options=None):
+@repeat(num_iter=20)
+def solve_pulp(p, s, **kwargs):
     # create lp problem
     x = [lp.LpVariable(f"b_{i}", lowBound=0, cat=lp.LpInteger) for i in range(len(p))]
     prob = lp.LpProblem(sense=lp.LpMaximize)
@@ -98,8 +95,7 @@ def solve_pulp(p, s, options=None):
     prob += lp.lpDot(p, x) <= s, "constraint"
 
     # solve problem
-    cuts = options is None
-    prob.solve(lp.PULP_CBC_CMD(msg=False, cuts=cuts, options=options))
+    prob.solve(lp.PULP_CBC_CMD(msg=False, **kwargs))
 
     res = np.array([lp.value(var) for var in x])
     return res
@@ -107,89 +103,78 @@ def solve_pulp(p, s, options=None):
 
 if __name__ == "__main__":
     import json
-    import matplotlib.pyplot as plt
 
     NUM_DECIMALS = 2
     FILENAME = f"neg-4d-{NUM_DECIMALS}dig"
-    PULP_OPTIONS = [
-        "gomory on",
-        "knapsack off",
-        "probing off",
-    ]
+    bb_raw_options = {
+        "presolve": True,
+        "cuts": False,
+        "options": None,
+    }
 
-    p = np.array([9.93, 9.77, -9.53, -9.13])
+    bb_full_options = {
+        "presolve": True,
+        "cuts": True,
+        "options": ["gomory on", "knapsack off", "probing off"],
+    }
+
+    p = np.array([9.93, -9.77, 9.53, -9.13])
 
     # finding coprime multiple of projectively rational vector
-    p_1 = np.array([993, 977, -953, -913])
+    p_1 = np.array([993, -977, 953, -913])
     g = math.gcd(*p_1)
     c_p = p_1 // g
     multiplier = g / math.pow(10, NUM_DECIMALS)
     np.testing.assert_almost_equal(p, multiplier * c_p)
 
-    slack = np.logspace(2, 4, num=100, base=10.0, dtype=int)
+    n = 128
+    slack = np.logspace(2, 3, num=n, base=10.0, dtype=int)
     stats: dict[str, dict[str, list[float]]] = {
-        "pulp": {
-            "mean": [0.0] * len(slack),
-            "std": [0.0] * len(slack),
+        "bb_full": {
+            "mu": [0.0] * n,
+            "sigma": [0.0] * n,
+            "obj": [0.0] * n,
         },
-        "pulp-cuts": {
-            "mean": [0.0] * len(slack),
-            "std": [0.0] * len(slack),
+        "bb_raw": {
+            "mu": [0.0] * n,
+            "sigma": [0.0] * n,
+            "obj": [0.0] * n,
         },
         "dioph": {
-            "mean": [0.0] * len(slack),
-            "std": [0.0] * len(slack),
+            "mu": [0.0] * n,
+            "sigma": [0.0] * n,
+            "obj": [0.0] * n,
         },
     }
 
     for i, s in enumerate(slack):
-        print(f"[INFO]: on problem {i + 1} with slack {s}")
+        print(f"[INFO]: on slack {s} ({i + 1}/{n})")
 
-        # pure pulp method
-        print("[INFO]: solving with pulp")
-        pulp_sol, (mu, std) = solve_pulp(p, s)
-        stats["pulp"]["mean"][i] = mu
-        stats["pulp"]["std"][i] = std
+        # full options
+        x_bb_full, (mu, sigma) = solve_pulp(p, s, **bb_full_options)
+        obj_bb_full = np.dot(p, x_bb_full)
+        stats["bb_full"]["mu"][i] = mu
+        stats["bb_full"]["sigma"][i] = sigma
+        stats["bb_full"]["obj"][i] = obj_bb_full
 
-        # pulp method with gomory cuts
-        print("[INFO]: solving with pulp + cuts")
-        _, (mu, std) = solve_pulp(p, s, options=PULP_OPTIONS)
-        stats["pulp-cuts"]["mean"][i] = mu
-        stats["pulp-cuts"]["std"][i] = std
+        # pure implementation
+        x_bb_raw, (mu, sigma) = solve_pulp(p, s, **bb_raw_options)
+        obj_bb_raw = np.dot(p, x_bb_raw)
+        stats["bb_raw"]["mu"][i] = mu
+        stats["bb_raw"]["sigma"][i] = sigma
+        stats["bb_raw"]["obj"][i] = obj_bb_raw
 
         # diophantine method
-        print("[INFO]: solving with diophantine")
-        dioph_sol, (mu, std) = solve_dioph(c_p, multiplier, s)
-        stats["dioph"]["mean"][i] = mu
-        stats["dioph"]["std"][i] = std
-        assert np.all(dioph_sol >= 0.0), "non-negativity is violated"
+        x_dioph, (mu, sigma) = solve_dioph(c_p, multiplier, s)
+        obj_dioph = np.dot(p, x_dioph)
+        stats["dioph"]["mu"][i] = mu
+        stats["dioph"]["sigma"][i] = sigma
+        stats["dioph"]["obj"][i] = obj_dioph
 
-        # cannot guarantee both solutions to be equal
-        dioph_obj = np.dot(p, dioph_sol)
-        pulp_obj = np.dot(p, pulp_sol)
-
-        if not np.isclose(dioph_obj, pulp_obj):
+        if not np.isclose(obj_dioph, obj_bb_full):
             print(f"[ERROR]: objective values don't match for slack {s}")
-            print(f"[DEBUG]: {pulp_sol=} -> obj = {pulp_obj}")
-            print(f"[DEBUG]: {dioph_sol=} -> obj = {dioph_obj}")
-            print(f"[DEBUG]: dioph_obj > pulp_obj is {dioph_obj > pulp_obj}")
-        print()
+            print(f"[DEBUG]: {x_bb_full=} -> obj = {obj_bb_full}")
+            print(f"[DEBUG]: {x_dioph=} -> obj = {obj_dioph}")
 
-    # plot results
-    fig, ax = plt.subplots(figsize=(10, 5))
-    ax.loglog(slack, stats["pulp"]["mean"], "o--", c="firebrick", zorder=5, label="b&b")
-    ax.loglog(
-        slack, stats["pulp-cuts"]["mean"], "o--", c="indianred", zorder=5, label="gom"
-    )
-    ax.loglog(
-        slack, stats["dioph"]["mean"], "o--", c="navy", zorder=5, label="diophantine"
-    )
-    ax.grid()
-
-    ax.set_ylabel("time [ns]")
-    ax.set_xlabel("slack")
-    ax.legend()
-
-    plt.savefig(f"figs/{FILENAME}.pdf")
-    with open(f"times/{FILENAME}.json", "w") as outfile:
+    with open(f"times/inf/{FILENAME}.json", "w") as outfile:
         json.dump(stats, outfile)

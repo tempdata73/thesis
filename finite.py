@@ -76,15 +76,9 @@ def solve_linear(q, rhs):
         # current parameter yielded a feasible interval
         if lb_next <= ub_next:
             sol.append(x)
-            stack.append([
-                idx + 1,
-                ub_next,
-                lb_next,
-                ub_next,
-                rhs_next,
-                x_b_next,
-                w_b_next
-            ])
+            stack.append(
+                [idx + 1, ub_next, lb_next, ub_next, rhs_next, x_b_next, w_b_next]
+            )
 
         # no feasible interval given this parameter
         else:
@@ -96,7 +90,7 @@ def solve_linear(q, rhs):
 @repeat(num_iter=20)
 def solve_dioph(q, eta):
     while eta >= 0:
-        x  = solve_linear(q, eta)
+        x = solve_linear(q, eta)
         if x is not None:
             return np.asarray(x)
 
@@ -137,11 +131,12 @@ def experiment_1(q, m):
     plt.show()
 
 
-def experiment_2(size=100):
+def experiment_2():
     """
     termination times as rhs increases
     """
     n = 128
+    size = 1_000
     np.random.seed(42)
 
     stats = {
@@ -230,7 +225,7 @@ def experiment_2(size=100):
             print(f"[DEBUG]: {obj_bb_full=}")
             print(f"[DEBUG]: {obj_bb_raw=}")
 
-    np.save(f"times/poscase-dim-{size}", stats)
+    np.save(f"times/fin/poscase-dim-{size}", stats)
 
 
 def experiment_3():
@@ -242,9 +237,26 @@ def experiment_3():
 
     # same as martello & toth p. 103
     dims = (
-        50, 100, 200, 500, 1_000, 2_000, 5_000, 10_000,
-        20_000, 30_000, 40_000, 50_000, 60_000, 70_000,
-        80_000, 90_000, 100_000, 150_000, 200_000, 250_000,
+        50,
+        100,
+        200,
+        500,
+        1_000,
+        2_000,
+        5_000,
+        10_000,
+        20_000,
+        30_000,
+        40_000,
+        50_000,
+        60_000,
+        70_000,
+        80_000,
+        90_000,
+        100_000,
+        150_000,
+        200_000,
+        250_000,
     )
 
     n = len(dims)
@@ -329,7 +341,4 @@ def experiment_3():
             print(f"[DEBUG]: {obj_bb_full=}")
             print(f"[DEBUG]: {obj_bb_raw=}")
 
-    np.save(f"times/mt-dim-{size}", stats)
-
-if __name__ == "__main__":
-    experiment_3()
+    np.save(f"times/fin/mt-dim-{size}", stats)
