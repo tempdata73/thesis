@@ -211,6 +211,129 @@ por lo que $(c' \cdot x', c' \cdot y')$ es una solución particular de la ecuaci
 \end{example}
 
 \subsection{Programación lineal}
+\noindent
+% TODO: better intro
+En esta sección repasamos cuestiones fundamentales para resolver problemas de optimización lineales.
+Comenzamos estudiando el espacio definido por el conjunto de restricciones $A\vec{x} = \vec{b}$.
+\begin{definition}
+	Sea $A \in \R^{m \times n}$ una matriz con renglones linealmente independientes y $\vec{b} \in
+	\R^m$ un vector. Entonces al conjunto definido por
+	\begin{equation}
+		\label{prerreq:def:poly}
+		P \coloneq \lbrace \vec{x} \in \R^n \colon A\vec{x} \geq b \rbrace
+	\end{equation}
+	lo llamamos poliedro. Si, además, $P$ es acotado, entonces decimos que es un politopo.
+\end{definition}
+Todo poliedro $P$ definido de esta manera representa la intersección de $m$ semi-espacios afinos.
+Esto se debe a que
+\begin{equation*}
+	A\vec{x} \geq \vec{b} \iff \vec{a}_i^T\vec{x} \geq b_i,
+\end{equation*}
+para toda $1 \leq i \leq m$ y donde $\vec{a}_i$ representa el $i$-ésimo renglón de la matriz $A$.
+% TODO: insertar imagen representando un poliedro y un semiespacio afino
+
+% Es posible mostrar que todo poliedro es convexo. Es decir, para cualesquiera dos puntos $\vec{x},
+% \vec{y}$ de $P$, es cierto que el segmento de línea que los une también se encuentra en $P$. Si bien
+% no lo demostramos aquí, mencionamos que es la consecuencia de mostrar que un semi-espacio afino es
+% convexo y que la intersección de conjuntos convexos es convexo.
+
+\begin{definition}
+	Sea $P$ un poliedro. Decimos que el vector $\vec{x} \in P$ es un vértice de $P$ si existe
+	$\vec{c} \in \R^n$ de manera que $\vec{c}^T\vec{x} < \vec{c}^T\vec{y}$ para todo $\vec{y} \in P
+	\setminus \lbrace \vec{x} \rbrace$.
+\end{definition}
+En términos gráficos, decimos que $\vec{x}$ es un vértice si se satisfacen dos condiciones: en
+primer lugar, existe un hiperplano afino que pasa por $\vec{x}$ y cuyo semiespacio inducido contiene
+completamente al poliedro $P$; en segundo lugar, ningún otro punto de $P$ se encuentra sobre el
+hiperplano. Cabe remarcar que este hiperplano no es único.
+
+Sea $P \coloneq \lbrace \vec{x} \in \R^n \colon A\vec{x} \geq \vec{b}\rbrace$ un poliedro y $\vec{c}
+\in \R^n$ un vector. Todo problema de optimización de la forma
+\begin{equation}
+	\label{prim:lineal-opt}
+	\max ~ \lbrace \vec{c}^T\vec{x} \colon \vec{x} \in P \rbrace
+\end{equation}
+entra en una de las siguientes tres categorías:
+\begin{enumerate}
+	\item El valor óptimo no existe. Esto ocurre porque ningún vector $\vec{x} \in \R^n$ satisface
+		el sistema de desigualdades $A\vec{x} \geq \vec{b}$. Es decir, el poliedro $P$ es vacío.
+	\item El valor óptimo existe y es infinito. Esto ocurre porque el poliedro $P$ no es acotado y
+		somos capaces de encontrar una sucesión de vectores $\lbrace \vec{x}_k \rbrace_{k \in \N}$ que
+		satisface $\vec{c}^T\vec{x}_{k+1} > \vec{c}^T\vec{x}_k$ para todo $k \in \N$.
+	\item El valor óptimo existe y es finito. Este caso es la negación de los dos casos anteriores,
+		pero cabe recalcar que esto no significa que el poliedro $P$ es acotado.
+\end{enumerate}
+% TODO: agregar imagen mostrando los tres casos.
+
+Es posible mostrar que todo poliedro $P \coloneq \lbrace \vec{x} \in \R^n \colon A\vec{x} \geq
+\vec{b} \rbrace$ puede ser transformado a la forma estándar
+\begin{equation*}
+	\lbrace \left( \vec{x}^+, \vec{x}^-, \vec{s} \right) \in \R^{n + n + m} \colon A\vec{x}^+ -
+	A\vec{x}^- - \vec{s} = \vec{b}, \left(\vec{x}^+, \vec{x}^-, \vec{s}\right) \geq \vec{0}\rbrace,
+\end{equation*}
+de manera que todo problema de optimización de la forma \eqref{prim:lineal-opt} puede ser escrito
+sin pérdida de generalidad como
+\begin{subequations}
+	\label{prerreq:formulation}
+	\begin{align}
+		\max_{\vec{x} \in \R^n} \quad
+			& \vec{c}^T\vec{x}, \label{prerreq:formulation:objective} \\
+		\text{s.a.} \quad
+			& A\vec{x} = \vec{b}, \label{prerreq:formulation:constraints} \\
+			& \vec{x} \geq \vec{0} \nonumber,
+	\end{align}
+\end{subequations}
+donde ``s.a.'' es una abreviación de ``sujeto a''. De ahora en adelante, nuestro análisis se
+concentrará exclusivamente en problemas lineales de este tipo. Es decir, supondremos, sin pérdida de
+generalidad, que todo problema lineal se encuentra en esta forma estándar.
+
+\begin{theorem}
+	\label{prerreq:th:linear-sol}
+	Sea $P$ un poliedro que tiene al menos un vértice, consideremos el problema
+	\eqref{prerreq:formulation}, y supongamos que el valor óptimo $z^*$ existe y es finito. Entonces
+	el conjunto de soluciones óptimas contiene al menos un vértice de $P$.
+\end{theorem}
+
+% TODO: agregar referencias
+Este Teorema fundamental constituye el primer paso para la construcción de varios algoritmos que
+encuentran soluciones del problema \eqref{prerreq:formulation}. Ciertamente el más famoso de todos
+es el algoritmo simplex, el cual ``salta'' de vértice en vértice hasta llegar a uno con valor
+óptimo. Otros, más modernos y conocidos como métodos de puntos interiores, comienzan en el interior
+del poliedro P y son ``atraídos'' como imanes a uno de los vértices con valor óptimo. No es el
+objetivo de esta tesis exponer la maquinaria matemática detrás de estos algoritmos\footnote{
+	Sin embargo, la literatura para explicar estos métodos es harto abundante.
+}. Lo que se encuentra a continuación supone entonces que contamos con un algoritmo para resolver
+problemas del tipo \eqref{prerreq:formulation}.
+
+\begin{definition}
+	Sea $A \in \R^{m \times n}$ una matriz con renglones linealmente independientes y sea $\vec{b}
+	\in \R^m$ un vector. Al problema de optimización lineal \eqref{prerreq:formulation} lo llamamos
+	problema relajado del programa lineal entero
+	\begin{subequations}
+		\label{prerreq:formulation:ilp}
+		\begin{align}
+			\max_{\vec{x} \in \Z^n} \quad
+				& \vec{c}^T\vec{x}, \label{prerreq:formulation:objective:ilp} \\
+			\text{s.a.} \quad
+				& A\vec{x} = \vec{b}, \label{prerreq:formulation:constraints:ilp} \\
+				& \vec{x} \geq \vec{0} \nonumber.
+		\end{align}
+	\end{subequations}
+\end{definition}
+Resalta el hecho de que la formulación de un programa lineal entero es idéntico a su formulación
+relajada, solamente que estamos agregando la restricción de que nuestro vector solución $\vec{x}^*$
+sea además entero. Es decir, lo único que cambia es la región de factibilidad. De hecho, si
+definimos el poliedro
+\begin{equation*}
+	P \coloneq \lbrace \vec{x} \in \R^n \colon A\vec{x} = \vec{b}, \vec{x} \geq \vec{0} \rbrace,
+\end{equation*}
+entonces tenemos que $P \cap \Z^n$ corresponde a la región factible de
+\eqref{prerreq:formulation:ilp}, mientras que $P$ corresponde a la región factible de su problema
+relajado.
+
+A partir de lo anterior, deducimos inmediatamente que el óptimo $\optilp{z}$ de un programa entero es
+una cota inferior del óptimo $z^*$ de su problema relajado, pues ambos son problemas de maximización
+y es cierto que $P \cap \Z^n \subseteq P$. 
 
 \section{Fundamentos}
 \noindent
