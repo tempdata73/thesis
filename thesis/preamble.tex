@@ -15,6 +15,9 @@
 \usepackage{geometry}
 \geometry{margin=1in}
 
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
 % theorems
 \newtheorem{theorem}{Teorema}[chapter]
 \newtheorem{corollary}[theorem]{Corolario}
@@ -49,6 +52,9 @@
 % shortcuts
 \newcommand{\est}[1]{\hat{\vec{ #1 }}}
 \newcommand{\optilp}[1]{#1^*_{\text{PE}}}
+\newcommand{\braces}[1]{\lbrace #1 \rbrace}
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+\newcommand{\ceil}[1]{\lceil #1 \rceil}
 
 \renewcommand{\gcd}[1]{\mathop{\mathrm{mcd}{\left\lbrace #1 \right\rbrace}}}
 \newcommand{\lcm}[1]{\mathop{\mathrm{mcm}{\left\lbrace #1 \right\rbrace}}}
