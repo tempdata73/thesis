@@ -244,9 +244,58 @@ resolverlos.
 	Todo poliedro $P$ definido de esta manera representa la intersección de $m$ semi-espacios
 	afinos. Esto se debe a que $A\vec{x} \geq \vec{b}$ si y solo si $\vec{a}_i^T\vec{x} \geq b_i$
 	para toda $1 \leq i \leq m$ y donde $\vec{a}_i^T$ representa el $i$-ésimo renglón de la matriz
-	$A$.
+	$A$. En la Figura \ref{fig:hyp} se muestra visualmente esta relación entre hiperplanos afinos y
+	poliedros.
 \end{observation}
-% TODO: insertar imagen representando un poliedro y un semiespacio afino
+
+\begin{figure}[ht]
+	\centering
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\begin{tikzpicture}[scale=1.2]
+			% hyperplane
+			\draw[ultra thick, black] (-2,1) -- (2,-2) node[above right] {$\vec{a}^T\vec{x} = b$};
+			% labels
+			\node at (-1.2,-1.2) {${\vec{a}^T \vec{x} \leq b}$};
+			%shading
+			\fill[gray!15, domain=-2:2, variable=\x]
+				(-2,1) -- plot ({\x}, {-0.75*\x - 0.5}) -- (2,1) -- cycle;
+			\draw[->, thick] (1,-1.25) -- (1.5,-0.583) node[right] {$\vec{a}$};
+			\node at (0.8,0.5) {${\vec{a}^T \vec{x} \geq b}$};
+		\end{tikzpicture}
+	\end{minipage}
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\begin{tikzpicture}[scale=2, >=stealth]
+			% coordinates
+			\coordinate (A) at (0,0);
+			\coordinate (B) at (1.5,0);
+			\coordinate (C) at (1.8,1);
+			\coordinate (D) at (0.75,1.7);
+			\coordinate (E) at (-0.3,1);
+			% pentagon
+			\filldraw[fill=gray!15, thick]
+			(A) -- (B) -- (C) -- (D) -- (E) -- cycle;
+		  % normal vectors
+			% AB
+			\draw[->, black, thick] (0.75,0) -- (0.75,0.46) node[below right] {$\vec{a}_1$};
+			% BC
+			\draw[->, black, thick] (1.65,0.5) -- (1.34,0.59) node[above right] {$\vec{a}_2$};
+			% CD
+			\draw[->, black, thick] (1.275,1.35) -- (1.06,1.027) node[above left] {$\vec{a}_3$};
+			% DE
+			\draw[->, black, thick] (0.225,1.35) -- (0.44,1.027) node[below left] {$\vec{a}_4$};
+			% EA
+			\draw[->, black, thick] (-0.15,0.5) -- (0.157,0.592) node[below right] {$\vec{a}_5$};
+			% polyhedron label
+			\node at (0.75, 0.75) {$P$};
+		\end{tikzpicture}
+	\end{minipage}
+	\caption{\textit{Izquierda:} Un hiperplano afino $\braces{\vec{x} \colon \vec{a}^T\vec{x} = b}$
+	junto con los dos semi-espacios que induce. \textit{Derecha:} Todo poliedro $P$ es la intersección
+	de un conjunto finito de semi-espacios inducidos por un hiperplano afino.}
+	\label{fig:hyp}
+\end{figure}
 
 \begin{definition}
 	Sea $P$ un poliedro. Decimos que el vector $\vec{x} \in P$ es un vértice de $P$ si existe
@@ -361,28 +410,41 @@ autor considera que es mejor ilustrar estas políticas a partir de un ejemplo.
 	% TODO
 \end{example}
 
-% TODO: traducir
+% TODO: mover a un apéndice (?)
 \begin{algorithm}[ht]
-	\caption{LP-relaxation-based branch-and-bound \cite{fabs}} \label{p1c9:alg:BB}
-	\begin{algorithmic}[1]
-		\State {\bf initialise.} $\mathcal{L} \leftarrow \braces{S}$, $\underline{z} \leftarrow -\infty$, $\overline{x} \leftarrow -\infty$
-		\While {$\mathcal{L} \neq \emptyset$} \label{p1c9:alg:BB_loop}
-		    \State select problem $S_i$ from $\mathcal{L}$. $\mathcal{L} \leftarrow \mathcal{L}\setminus\braces{S_i}$. 
-		    \State solve LP relaxation of $S_i$ over $P_i$, obtaining $z_{LP}^i$ and $x_{LP}^i$. $\overline{z}^i \leftarrow z_{LP}^i$. 
-		    \If {$S_i = \emptyset$} return to step \ref{p1c9:alg:BB_loop}.
-		    \ElsIf {$\overline{z}^i \leq \underline{z}$} return to step \ref{p1c9:alg:BB_loop}.    
-		    \ElsIf {$x_{LP}^i \in \Z^n$} $\underline{z} \leftarrow \overline{z}^i$, $\overline{x} \leftarrow x_{LP}^i$; and return to step \ref{p1c9:alg:BB_loop}
-		    \EndIf
-		    \State select a fractional component $x_j$ and create subproblems $S_{i1}$ and $S_{i2}$ with formulations $P_{i1}$ and $P_{i2}$, respectively, such that 
-		    %
-		    \begin{equation*}
-		    		P_{i1} = P_i \cup \braces{x_j \leq \floor{\overline{x}_j}} \text{ and } P_{i2} = P_i \cup \braces{x_j \geq \ceil{\overline{x}_j}}.
-		    \end{equation*}
-		    %
-		    \State $\mathcal{L} \leftarrow \mathcal{L} \cup \braces{S_{i1}, S_{i2}}$.
-		\EndWhile
-		\State {\bf return} ($\overline{x}, \underline{z}$).
-	\end{algorithmic}
+	\label{algo:bb}
+	\LinesNumbered
+	\KwData{
+		Problema de maximización lineal $S_0$.
+		}
+	\KwResult{
+		Solución óptima entera $\vec{x}^*$ y valor óptimo $\optilp{z}$.
+	}
+	\Begin{
+		$\mathcal{L} \leftarrow \braces{S_0}$\;
+		$\vec{x}^* \leftarrow -\vec{\infty}$\;
+		$\optilp{z} \leftarrow -\infty$\;
+		\While{$\mathcal{L} \neq \emptyset$}{
+			elegir de $\mathcal{L}$ subproblema $S_i$\; \nllabel{p1c9:alg:BB_loop}
+			obtener de $S_i$ valor óptimo $z^*_i$ y solución óptima $\vec{x}^i$\;
+			$\mathcal{L} \leftarrow \mathcal{L} \setminus \braces{S_i}$\;
+			\If{$S_i = \emptyset$ o $z^*_i \leq \optilp{z}$}{
+				ir al paso \ref{p1c9:alg:BB_loop}\;
+			}
+			\If{$\vec{x}^i \in \Z^n$}{
+				$\vec{x}^* \leftarrow \vec{x}^i$\;
+				$\optilp{z} \leftarrow z^*_i$\;
+				ir al paso \ref{p1c9:alg:BB_loop}\;
+			}
+		    elegir $x^i_j \not \in \Z$ y generar subproblemas $S_{i1}$ y $S_{i2}$ con
+			regiones factibles
+		    		$P_{i1} \leftarrow P_i \cup \braces{x_j \leq \floor{x^i_j}}$ y
+					$P_{i2} \leftarrow P_i \cup \braces{x_j \geq \ceil{x^i_j}}$, respectivamente\;
+			$\mathcal{L} \leftarrow \mathcal{L} \cup \braces{S_{i1}, S_{i2}}$.
+		}
+		\Return{$(\vec{x}^*, \optilp{z})$}
+	}
+	\caption{Ramificación y Acotamiento (adaptado de \cite{fabs})} \label{p1c9:alg:BB}
 \end{algorithm}
 
 \section{Fundamentos}
