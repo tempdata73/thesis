@@ -218,10 +218,10 @@ La programación lineal se encarga de resolver problemas de optimización de la 
 	\max_{\vec{x}} ~\lbrace \vec{c}^T\vec{x} \colon \vec{x} \in P \rbrace,
 \end{equation}
 donde $P$ es un poliedro. En esta sección repasamos brevemente propiedades del poliedro $P$ al cual
-lo llamamos región factible. Así también, indicamos dónde se encuentra el óptimo del problema y
-hacemos mención rápida sobre cómo obtenerlo. Finalmente, nos enfocamos en problemas lineales enteros
+llamamos región factible. Así también, indicamos dónde se encuentra el óptimo del problema y
+hacemos mención rápida sobre cómo obtenerlo. Finalmente, nos enfocamos en programas lineales enteros
 y, más importantemente, describimos cómo funciona el algoritmo de Ramificación y Acotamiento para
-resolverlos.
+encontrar sus soluciones.
 
 \begin{definition}
 	Sea $\vec{a} \in \R^n$ un vector no nulo y sea $b \in \R$ un escalar. Llamamos hiperplano afino
@@ -303,22 +303,26 @@ resolverlos.
 	\setminus \lbrace \vec{x} \rbrace$.
 \end{definition}
 En términos gráficos, decimos que $\vec{x}$ es un vértice si se satisfacen dos condiciones: en
-primer lugar, existe un hiperplano afino que pasa por $\vec{x}$ y cuyo semiespacio inducido contiene
-completamente al poliedro $P$; en segundo lugar, ningún otro punto de $P$ se encuentra sobre este
-hiperplano.
+primer lugar, existe un hiperplano afino que pasa por $\vec{x}$ y uno de sus semi-espacios inducidos
+contiene completamente al poliedro $P$; en segundo lugar, ningún otro punto de $P$ se encuentra
+sobre este hiperplano.
 
+\begin{definition}
 Sea $P$ un poliedro y sea $\vec{c} \in \R^n$ un vector. Todo problema de optimización de la forma
 \eqref{prim:lineal-opt} entra en una de las siguientes tres categorías:
 \begin{enumerate}
 	\item El valor óptimo no existe. Esto ocurre porque ningún vector $\vec{x} \in \R^n$ satisface
 		el sistema de desigualdades $A\vec{x} \geq \vec{b}$. Es decir, la región factible es vacía.
 	\item El valor óptimo existe y es infinito. Esto ocurre porque el poliedro $P$ no es acotado y
-		somos capaces de encontrar una sucesión de vectores $\lbrace \vec{x}_k \rbrace_{k \in \N}$ que
-		satisface $\vec{c}^T\vec{x}_{k+1} > \vec{c}^T\vec{x}_k$ para todo $k \in \N$.
+		somos capaces de encontrar una sucesión de vectores $\lbrace \vec{x}_k \rbrace_{k \in \N}$
+		en el poliedro $P$ que satisface $\vec{c}^T\vec{x}_{k+1} > \vec{c}^T\vec{x}_k$ para todo $k \in \N$.
 	\item El valor óptimo existe y es finito. Este caso es la negación de los dos casos anteriores,
 		pero cabe recalcar que esto no significa que el poliedro $P$ es acotado.
 \end{enumerate}
-% TODO: agregar imagen mostrando los tres casos.
+En el primer caso decimos que \textbf{el problema es infactible}, mientras que en los últimos dos
+decimos que \textbf{el problema es factible}. También diremos comúnmente del segundo caso que
+\textbf{el problema es no acotado}.
+\end{definition}
 
 Es posible mostrar que todo poliedro $P \coloneq \lbrace \vec{x} \in \R^n \colon A\vec{x} \geq
 \vec{b} \rbrace$ puede ser transformado a la forma estándar
@@ -349,7 +353,6 @@ generalidad, que todo problema lineal se encuentra en esta forma estándar.
 	el conjunto de soluciones óptimas contiene al menos un vértice de $P$.
 \end{theorem}
 
-% TODO: agregar referencias
 Este Teorema fundamental constituye el primer paso para la construcción de varios algoritmos que
 encuentran soluciones del problema \eqref{prerreq:formulation}. Ciertamente el más famoso de todos
 es el algoritmo simplex, el cual ``salta'' de vértice en vértice hasta llegar a uno con valor
@@ -360,8 +363,9 @@ objetivo de esta tesis exponer la maquinaria matemática detrás de estos algori
 	\cite{nocedal}.
 }.
 
-Ahora comenzamos a describir programas lineales enteros, así que lo que se encuentra a continuación
-supone que contamos con un algoritmo para resolver problemas lineales.
+Ahora describimos brevemente los programas lineales enteros y pasamos a explicar el método de
+Ramificación y Acotamiento. Por ello, lo que se encuentra a continuación supone que contamos con un
+algoritmo para resolver problemas del tipo \eqref{prerreq:formulation}.
 \begin{definition}
 	Sea $A \in \R^{m \times n}$ una matriz con renglones linealmente independientes y sea $\vec{b}
 	\in \R^m$ un vector. Al problema de optimización lineal \eqref{prerreq:formulation} lo llamamos
@@ -403,49 +407,97 @@ crear un subproblema, y también añadimos la restricción $x_i \geq \lceil x_i^
 otro subproblema. Este procedimiento se realiza de manera recursiva.
 
 Observemos que, si decidimos recorrer todos los nodos del árbol binario, entonces tendremos que
-resolver $2^n$ subproblemas, donde $n$ es la dimensión del problema lineal. Por esta razón, el
-algoritmo cuenta con políticas para podar subárboles que nunca proveerán la solución óptima. El
-autor considera que es mejor ilustrar estas políticas a partir de un ejemplo.
-\begin{example}[\cite{fabs}]
-	% TODO
-\end{example}
+resolver al menos $2^n$ subproblemas, donde $n$ es la dimensión del problema lineal. Por esta razón,
+el algoritmo cuenta con políticas para deshacerse de subárboles que nunca proveerán la solución
+óptima. El autor considera que es mejor ilustrar estas políticas a partir de un ejemplo. El
+Algoritmo \ref{algo:bb} en el Apéndice \ref{app:bb} presenta una versión rudimentaria del método de
+Ramificación y Acotamiento.
 
-% TODO: mover a un apéndice (?)
-\begin{algorithm}[ht]
-	\label{algo:bb}
-	\LinesNumbered
-	\KwData{
-		Problema de maximización lineal $S_0$.
-		}
-	\KwResult{
-		Solución óptima entera $\vec{x}^*$ y valor óptimo $\optilp{z}$.
-	}
-	\Begin{
-		$\mathcal{L} \leftarrow \braces{S_0}$\;
-		$\vec{x}^* \leftarrow -\vec{\infty}$\;
-		$\optilp{z} \leftarrow -\infty$\;
-		\While{$\mathcal{L} \neq \emptyset$}{
-			elegir de $\mathcal{L}$ subproblema $S_i$\; \nllabel{p1c9:alg:BB_loop}
-			obtener de $S_i$ valor óptimo $z^*_i$ y solución óptima $\vec{x}^i$\;
-			$\mathcal{L} \leftarrow \mathcal{L} \setminus \braces{S_i}$\;
-			\If{$S_i = \emptyset$ o $z^*_i \leq \optilp{z}$}{
-				ir al paso \ref{p1c9:alg:BB_loop}\;
-			}
-			\If{$\vec{x}^i \in \Z^n$}{
-				$\vec{x}^* \leftarrow \vec{x}^i$\;
-				$\optilp{z} \leftarrow z^*_i$\;
-				ir al paso \ref{p1c9:alg:BB_loop}\;
-			}
-		    elegir $x^i_j \not \in \Z$ y generar subproblemas $S_{i1}$ y $S_{i2}$ con
-			regiones factibles
-		    		$P_{i1} \leftarrow P_i \cup \braces{x_j \leq \floor{x^i_j}}$ y
-					$P_{i2} \leftarrow P_i \cup \braces{x_j \geq \ceil{x^i_j}}$, respectivamente\;
-			$\mathcal{L} \leftarrow \mathcal{L} \cup \braces{S_{i1}, S_{i2}}$.
-		}
-		\Return{$(\vec{x}^*, \optilp{z})$}
-	}
-	\caption{Ramificación y Acotamiento (adaptado de \cite{fabs})} \label{p1c9:alg:BB}
-\end{algorithm}
+\begin{example}[\cite{fabs}]
+	\label{ex:ilp}
+	Consideremos el programa lineal entero
+	\begin{align*}
+		\max_{\vec{x} \in \Z^2} \quad
+			& 4x_1 - x_2, \\
+			\text{s.a.} \quad
+			& 7x_1 - 2x_2 \leq 14, \\
+			& x_2 \leq 3, \\
+			& x_1, x_2 \geq 0.
+	\end{align*}
+	La región factible de este problema se muestra en la Figura \ref{fig:feas}. La solución al problema
+	relajado, cuya región factible denotamos por $S_0$, está dada por $\vec{x}^0 \coloneq (20/7,
+	3)^T$. Como $x_1^0 = 20/7$ no es entero, generamos dos nuevos subproblemas con regiones
+	factibles
+	\begin{align*}
+		S_{00} &\coloneq S_0 \cup \braces{ x_1 \leq \floor{20/7} = 2}, \\
+		S_{01} &\coloneq S_0 \cup \braces{ x_1 \geq \ceil{20/7} = 3}.
+	\end{align*}
+	De la Figura \ref{fig:feas}, observamos que $S_{01}$ es vacío y por lo tanto de este problema no
+	podemos generar otros subproblemas. En este caso, decimos que \textbf{podamos $S_{01}$ por
+	infactibilidad}.
+
+	Ahora bien, la solución al problema $S_{00}$ está dada por $\vec{x}^1 \coloneq (2, 1/2)^T$.
+	Encontramos que $x_2^1$ = 1/2 no es entero y por lo tanto generamos dos nuevos subproblemas:
+	\begin{align*}
+		S_{000} &\coloneq S_{00} \cup \braces{ x_2 \leq \floor{1/2} = 0}, \\
+		S_{001} &\coloneq S_{00} \cup \braces{ x_2 \geq \ceil{1/2} = 1}.
+	\end{align*}
+	Observemos que la solución $\vec{x}^2$ de $S_{001}$ es $(2, 1)^T$, la cual es entera y tiene valor
+	objetivo $z_2^* \coloneq 7$. No generamos otros subproblemas a partir de este problema porque
+	sus regiones factibles estarán contenidas en $S_{001}$ y por lo tanto sus valores objetivos
+	serán menores o iguales al de $S_{001}$. Así pues, decimos que \textbf{podamos $S_{001}$ por
+	integralidad}.
+
+	La solución de $S_{000}$, en cambio, es $\vec{x}^3 \coloneq (3/2, 0)^T$ y tendríamos que ramificar
+	de nuevo en otros dos subproblemas. No obstante, observemos que el valor objetivo de este
+	subproblema es $z_3^* \coloneq 6$, el cual es menor que $z_2^* = 7$. Como la región factible de
+	cualquier subproblema generado a partir de este último problema estára contenido en $S_{000}$,
+	se sigue que su valor objetivo será menor o igual al de $S_{000}$ Decimos entonces que
+	\textbf{podamos $S_{000}$ por cota}.
+
+	Como hemos agotado todos los subproblemas que podríamos generar, entonces concluimos que la
+	solución óptima de este programa  lineal entero es $\vec{x}^2 = (2, 1)^T$ y tiene valor objetivo
+	$z_2^* = 7$.
+\end{example}
+\begin{figure}
+	\centering
+	\begin{tikzpicture}[scale=1.2]
+		\begin{axis}[
+			axis lines=left,
+			xmin=-0.5, xmax=3.5,
+			ymin=-0.5, ymax=3.5,
+			grid=both,
+			xlabel=$x_1$,
+			ylabel=$x_2$
+			]
+			\addplot+ [thick,color=black,fill=gray!15,mark=none] table {
+				0 0
+				1.5 0
+				2.2 0.7
+				2.85 3
+				0 3
+				0 3
+				0 0
+			};
+			\addplot+ [only marks,,mark=*,mark options={scale=1, color=black, fill=black}] table {
+				0 0
+				0 1
+				0 2
+				0 3
+				1 0
+				1 1
+				1 2
+				1 3
+				2 1
+				2 2
+				2 3
+			};
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Los puntos negros forman la región factible del programa lineal entero del Ejemplo
+	\ref{ex:ilp}, mientras que la región sombreada es la región factible de su problema relajado.}
+	\label{fig:feas}
+\end{figure}
 
 \section{Fundamentos}
 \noindent
@@ -1316,7 +1368,7 @@ caractericemos a partir de $\vec{q}$.
 	\begin{equation*}
 		[ \vec{\omega} \mid \vec{m}_1 \mid \cdots \mid \vec{m}_{n-1} ] \in \Z^{n \times n}
 	\end{equation*}
-	es unimodular.
+	es unimodular, es decir, su determinante es $\pm 1$.
 \end{corollary}
 
 Geométricamente, a partir de $\vec{q}$ descomponemos la red $\Z^n$ como una suma directa de dos

@@ -1,0 +1,40 @@
+\appendix
+
+\chapter{Algoritmo de Ramificación y Acotamiento}
+\label{app:bb}
+
+\begin{algorithm}[ht]
+	\LinesNumbered
+	\KwData{
+		Problema de maximización lineal $S_0$.
+		}
+	\KwResult{
+		Solución óptima entera $\vec{x}^*$ y valor óptimo $\optilp{z}$.
+	}
+	\Begin{
+		$\mathcal{L} \leftarrow \braces{S_0}$\;
+		$\vec{x}^* \leftarrow -\vec{\infty}$\;
+		$\optilp{z} \leftarrow -\infty$\;
+		\While{$\mathcal{L} \neq \emptyset$}{
+			elegir de $\mathcal{L}$ subproblema $S_i$\; \nllabel{p1c9:alg:BB_loop}
+			obtener de $S_i$ valor óptimo $z^*_i$ y solución óptima $\vec{x}^i$\;
+			$\mathcal{L} \leftarrow \mathcal{L} \setminus \braces{S_i}$\;
+			\If{$S_i = \emptyset$ o $z^*_i \leq \optilp{z}$}{
+				ir al paso \ref{p1c9:alg:BB_loop}\;
+			}
+			\If{$\vec{x}^i \in \Z^n$}{
+				$\vec{x}^* \leftarrow \vec{x}^i$\;
+				$\optilp{z} \leftarrow z^*_i$\;
+				ir al paso \ref{p1c9:alg:BB_loop}\;
+			}
+		    elegir $x^i_j \not \in \Z$ y generar subproblemas $S_{i0}$ y $S_{i1}$ con
+			regiones factibles
+			$S_{i} \cup \braces{x_j \leq \floor{x^i_j}}$ y
+			$S_{i} \cup \braces{x_j \geq \ceil{x^i_j}}$, respectivamente\;
+			$\mathcal{L} \leftarrow \mathcal{L} \cup \braces{S_{i1}, S_{i2}}$.
+		}
+		\Return{$(\vec{x}^*, \optilp{z})$}
+	}
+	\caption{Ramificación y Acotamiento (adaptado de \cite{fabs})} \label{p1c9:alg:BB}
+	\label{algo:bb}
+\end{algorithm}
