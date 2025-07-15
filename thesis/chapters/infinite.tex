@@ -3,22 +3,37 @@
 % TODO: resumen del capítulo
 
 \noindent
-Recordemos del Teorema \ref{theory:th:feasibility} que si $\vec{q}_i < 0$ para alguna $i \in \lbrace
-2, \ldots, n \rbrace$, entonces la $\eta$-ésima capa entera contiene un número infinito de puntos
-factibles. A partir de esto somos capaces de resolver el automáticamente el problema de decisión de
-determinar si un escalar $k^*$ es el valor óptimo del programa (\ref{theory:formulation}).
+Sea $\vec{p} \in \R^n \setminus \braces{\vec{0}}$ un vector esencialmente entero y recordemos de la
+Definición \ref{theory:def:rational} que tiene un único múltiplo coprimo $\vec{q} \in \Z^n$. Es
+decir, existe un único escalar $m \in \R$ que satisface tres cosas: $\vec{p} = m\vec{q}$, las
+entradas $q_1, \ldots, q_n$ son coprimas, y la primera entrada no nula $q_i$ es positiva. Al igual
+que en el capítulo anterior, supondremos que $m$ es positivo. Equivalentemente, supondremos que la
+primera entrada no nula $p_i$ es positiva\footnote{ El autor hace recordar que esta es una cuestión
+	puramente de comodidad y no hay pérdida de generalidad. Cuando $m$ es negativo, los resultados
+se mantienen pero es necesario voltear las desigualdades y cambiar las funciones piso por las
+funciones techo, lo cual añadiría un número innecesario de casos a analizar.}.
+
+Retomemos el entero $\eta \in \Z$ del Lema \ref{phase-1:lemma:eta} que parametriza la primera capa
+entera que satisface el presupuesto \eqref{theory:constraint:budget}. A causa del Teorema
+\ref{theory:th:feasibility} sabemos que si $q_i \leq 0$ para alguna $i \in \braces{1, \ldots, n}$,
+entonces la $\eta$-ésima capa entera contiene un número infinito de puntos factibles. A partir de
+esto último, somos capaces de resolver el automáticamente el problema de decisión de determinar si
+un escalar $u^* \in \R$ es el valor óptimo del programa (\ref{theory:formulation}).
 \begin{corollary}
-	Si $\vec{q}_i < 0$ para algún $i \in \lbrace 2, \ldots, n \rbrace$, entonces el valor óptimo del
-	programa (\ref{theory:formulation}) es $m\eta$. Además, si $m > 0$, entonces  $\eta$ es el
-	múltiplo de $m$ más grande que satisface $m\eta \leq u$.
+	Supongamos que $q_i \leq 0$ para algún $i \in \braces{1, \ldots, n}$. Entonces el valor óptimo
+	del programa lineal entero (\ref{theory:formulation}) es $m\eta$. Además, si $m$ es positivo,
+	tenemos que $\eta$ es el múltiplo de $m$ más grande que satisface $m\eta \leq u$, donde $u$ es
+	el lado derecho de la restricción presupuestaria \eqref{theory:constraint:budget}.
 \end{corollary}
 \begin{proof}
 	Por el Teorema \ref{theory:th:feasibility} sabemos que existen una infinidad de soluciones en la
 	$\eta$-ésima capa entera, así que sea $\vec{x}^*$ una de ellas. Entonces $\vec{q}^T\vec{x}^* =
-	\eta$, pero $\vec{p} = m\vec{q}$, por lo que obtenemos $\vec{p}^T\vec{x}^* = m\eta$.
+	\eta$, pero $\vec{p} = m\vec{q}$ por la Definición \ref{theory:def:rational}, por lo que
+	obtenemos $\vec{p}^T\vec{x}^* = m\vec{q}^T\vec{x}^* = m\eta$.
 
-	Ahora bien, recordemos que $\eta = \lfloor u/m \rfloor$ si $m > 0$ por el Lema
-	\ref{phase-1:lemma:eta}. Supongamos que $\xi \in \Z$ satisface $m\xi \leq u$ y también $\lfloor
+	Ahora bien, si $m$ es positivo, por el Lema \ref{phase-1:lemma:eta} tenemos que
+	$\eta = \lfloor u/m \rfloor$
+	. Supongamos que $\xi \in \Z$ satisface $m\xi \leq u$ y también $\lfloor
 	u/m \rfloor < \xi$. Luego,
 	\begin{equation*}
 		m\left\lfloor \frac{u}{m} \right\rfloor < m\xi \leq u
@@ -28,85 +43,92 @@ determinar si un escalar $k^*$ es el valor óptimo del programa (\ref{theory:for
 \end{proof}
 
 \begin{observation}
-	En el capítulo anterior mencionamos que siempre supondremos que $m > 0$, es decir, que la primera
-	entrada de nuestro vector esencialmente entero $\vec{p}_1$ es no negativo. Sin embargo, en caso de
-	que $m < 0$, es posible demostrar también que $\eta \coloneq \lceil u/m \rceil$ es ahora el múltiplo
-	más chico de $m$ que satisface $m\eta \geq u$. Este es uno de los muchos casos en los que las
-	desigualdades se invierten y la función piso se reemplaza por la función techo en caso de que $m$
-	sea negativo.
+	Para ilustrar la conveniencia de restringir $m$ a que sea positivo, consideremos el caso cuando
+	$m < 0$. De una manera similar a la del Lema \ref{phase-1:lemma:eta}, podemos demostrar que
+	$\eta \coloneq \lceil u/m \rceil$ parametriza también la primera capa entera que satisface el
+	presupuesto, pues ahora tenemos de la restricción \eqref{theory:constraint:budget} que
+	$\vec{p}^T\vec{x} \leq u$ si y solo si $\vec{q}^T\vec{x} \geq u/m$. Se sigue cumpliendo que el
+	valor óptimo del problema \eqref{theory:formulation} es $m\eta$. Sin embargo, $\eta$ ahora es el
+	múltiplo más chico de $m$ que satisface $m\eta \geq u$.
 \end{observation}
 
 Una vez resuelto el problema de decisión, podemos preguntarnos concretamente cómo obtener el punto
-óptimo. Del capítulo anterior sabemos que debemos resolver la ecuación lineal diofantina
-$\vec{q}^T\vec{x} = \eta$. Pero
+óptimo. Por el Teorema \ref{theory:th:feasibility} sabemos que debemos resolver la ecuación lineal
+diofantina $\vec{q}^T\vec{x} = \eta$. Del Teorema \ref{th:lattice} sabemos que existen $k \in \Z$ y
+$\vec{t} \in \Z^{n-1}$ tales que
 \begin{equation*}
-	\vec{q}^T\vec{x} = \eta\vec{q}^T\vec{\omega} + \vec{q}^TM\vec{t} = \eta,
+	\vec{x} = k\vec{\omega} + M\vec{t},
 \end{equation*}
-para toda $\vec{t} \in \Z^{n-1}$. Así que debemos encontrar condiciones suficientes en $\vec{t}$
-para asegurar la no negatividad de $\vec{x}$. Recordemos que $\vec{t}_i$ debe satisfacer
-(\ref{eq:param-lb}). En términos del vector $\vec{\omega}$, tenemos
-\begin{equation}
-	\label{eq:vect-param-lb}
-	\vec{t}_i \geq \left\lceil -\frac{\vec{\omega}_i}{g_{i+1}} \right\rceil,
-\end{equation}
-para todo $i \in \lbrace 2, \ldots, n - 2\rbrace$.
-
-Ahora bien, recuperamos de (\ref{eq:last-solution}) que las últimas dos soluciones de la ecuación
-$\vec{q}^T\vec{x}$ están dadas por
+donde $\vec{\omega}$ y $M$ están definidas por \eqref{eq:vec-omega} y \eqref{eq:mat-T},
+respectivamente. De los Lemas \ref{lemma:iso1} y \ref{lemma:iso2} sabemos que
+\begin{equation*}
+	\vec{q}^T\left(\eta\vec{\omega} + M\vec{t}\right) = \eta\vec{q}^T\vec{\omega} + \vec{q}^TM\vec{t} = \eta
+\end{equation*}
+para todo $\vec{t} \in \Z^{n-1}$. Así pues, debe ser el caso que $k = \eta$ y debemos encontrar
+condiciones suficientes en $\vec{t}$ para asegurar la no-negatividad de $\vec{x}$. En primer lugar,
+sabemos que para todo $i \in \braces{1, \ldots, n - 2}$, la entrada $t_i$ debe satisfacer
+\eqref{eq:param-lb}. En segundo lugar, recuperamos de (\ref{eq:last-solution}) que las últimas dos
+soluciones de la ecuación $\vec{q}^T\vec{x} = \eta$ están dadas por
 \begin{equation}
 	\begin{cases}
-		\vec{x}_{n-1} = \omega_{n-1}x_{n-1}' + \frac{\vec{q}_n}{\prod_{j=1}^{n-1}g_j}\vec{t}_{n-1}, \\
-		\vec{x}_n = \omega_{n-1}x_n' - \frac{\vec{q}_{n-1}}{\prod_{j=1}^{n-1}g_j}\vec{t}_{n-1},
+		x_{n-1} = \omega_{n-1}x_{n-1}' + \frac{q_n}{\prod_{j=1}^{n-1}g_j}t_{n-1}, \\
+		x_n = \omega_{n-1}x_n' - \frac{q_{n-1}}{\prod_{j=1}^{n-1}g_j}t_{n-1},
 	\end{cases}
 \end{equation}
-Para que se satisfagan las condiciones de no negatividad de $\vec{x}_{n-1}$ y de $\vec{x}_n$,
-encontramos que la variable libre $\vec{t}_{n-1} \in \Z$ debe cumplir ciertas desigualdades según los
-signos de $\vec{q}_{n-1}$ y de $\vec{q}_n$. Definamos, por conveniencia,
-\begin{subequations}
+donde los enteros $g_i$ están definidos por \eqref{dummy:next-g} con $g_1 = 1$, $\omega_{n-1}$ está
+definida a través de la relación de recurrencia \eqref{eq:omega-recurrence} con condición inicial
+$\omega_1 = \eta$ (o bien a partir del Lema \ref{eq:omega-formula} con $k = \eta$), y $x_{n-1}',
+x_n'$ son coeficientes de Bézout que satisfacen \eqref{eq:last-equation-bez}.
+
+Para que se satisfagan las condiciones de no negatividad de $x_{n-1}$ y de $x_n$, encontramos que
+$t_{n-1} \in \Z$ debe cumplir ciertas desigualdades según los signos de $q_{n-1}$ y de $q_n$.
+Definamos, por conveniencia,
+\begin{equation}
 	\label{eq:lr-bounds}
-	\begin{align}
-		b_1 &\coloneq -\frac{\omega_{n-1}x_{n-1}'}{\vec{q}_n} \cdot \prod_{j=1}^{n-1}g_j
-		= -\frac{\vec{\omega}_{n-1}}{\vec{q}_n} \cdot \prod_{j=1}^{n-1}g_j, \\
-		b_2 &\coloneq \frac{\omega_{n-1}x_{n}'}{\vec{q}_{n-1}} \cdot \prod_{j=1}^{n-1}g_j
-		= \frac{\vec{\omega}_{n}}{\vec{q}_n} \cdot \prod_{j=1}^{n-1}g_j,
-	\end{align}
-\end{subequations}
-Entonces se verifica que
+	b_1 \coloneq -\frac{\omega_{n-1}x_{n-1}'}{q_n} \cdot \prod_{j=1}^{n-1}g_j, \quad
+	b_2 \coloneq \frac{\omega_{n-1}x_{n}'}{q_{n-1}} \cdot \prod_{j=1}^{n-1}g_j.
+\end{equation}
+Entonces, para asegurar la no-negatividad de $x_{n - 1}$ y de $x_n$, debe ser el caso que
 \begin{equation}
 	\label{eq:feasible-param}
 	t_{n-1} \in 
 	\begin{cases}
-		\big[ \lceil b_1 \rceil, \lfloor b_2 \rfloor \big] &  0 < \vec{q}_{n-1}, \vec{q}_n, \\
-		\big[ \lceil b_2 \rceil, \lfloor b_1 \rfloor \big] &  \vec{q}_{n-1}, \vec{q}_n < 0, \\
-		\big[ \lceil \max\lbrace b_1 ,  b_2 \rbrace \rceil, \infty \big) &  \vec{q}_{n-1}
-		< 0 < \vec{q}_n, \\
-		\big( -\infty, \lfloor \min\lbrace b_1, b_2\rbrace \rfloor \big] &  \vec{q}_n < 0
-		< \vec{q}_{n-1}.
+		\big[ \lceil b_1 \rceil, \lfloor b_2 \rfloor \big] &  0 < q_{n-1}, q_n, \\[0.5em]
+		\big[ \lceil b_2 \rceil, \lfloor b_1 \rfloor \big] &  q_{n-1}, q_n < 0, \\[0.5em]
+		\big[ \lceil \max\lbrace b_1 ,  b_2 \rbrace \rceil, \infty \big) &  q_{n-1}
+		< 0 < q_n, \\[0.5em]
+		\big( -\infty, \lfloor \min\lbrace b_1, b_2\rbrace \rfloor \big] &  q_n < 0
+		< q_{n-1}.
 	\end{cases}
 \end{equation}
 
 \begin{lemma}
 	\label{lemma:t-existence}
-	Existe un vector $\vec{t} \in \Z^{n-1}$ que satisface ambos (\ref{eq:vect-param-lb}) y
-	(\ref{eq:feasible-param}).
+	Sea $\vec{p} \in \R$ un vector cuyas entradas son todas distintas de cero, y sea $\vec{q} \in
+	\Z^n$ su múltiplo coprimo. Entonces existe un vector $\vec{t} \in \Z^{n-1}$ que satisface ambos
+	\eqref{eq:param-lb} y \eqref{eq:feasible-param}.
 \end{lemma}
 \begin{proof}
-	Tenemos cuatro casos, pero observemos que los dos en donde $\vec{q}_{n - 1}$ y $\vec{q}_n$
-	tienen signo distinto no son difíciles: si $\vec{q}_{n - 1} <0 < \vec{q}_n$, entonces el vector
+	Tenemos cuatro casos, pero observemos que los dos en donde $q_{n - 1}$ y $q_n$
+	tienen signo distinto no son difíciles: si $q_{n - 1} <0 < q_n$, entonces el vector
 	$\vec{t} \in \Z^{n-1}$ dado por
 	\begin{equation*}
-		\vec{t}_i \coloneq \begin{cases}
-			\left\lceil -\frac{\vec{\omega}_i}{g_{i + 1}} \right\rceil, & i < n - 1, \\
+		t_i \coloneq \begin{cases}
+			\left\lceil -\frac{\omega_ix_i'}{g_{i + 1}} \right\rceil, & i < n - 1, \\[0.5em]
 			\lceil \max\lbrace b_1, b_2 \rbrace \rceil, & i = n - 1,
 		\end{cases}
 	\end{equation*}
-	satisface ambos (\ref{eq:vect-param-lb}) y (\ref{eq:feasible-param}). El caso $\vec{q}_n < 0 <
-	\vec{q}_{n - 1}$ es completamente similar.
+	satisface ambos (\ref{eq:param-lb}) y (\ref{eq:feasible-param}). El caso $q_n < 0 <
+	q_{n - 1}$ es completamente similar.
 
-	Ahora bien, supongamos que $0 < \vec{q}_{n - 1}, \vec{q}_n$. Podemos suponer sin pérdida de
-	generalidad que $\vec{q}_{n - 2} < 0$. En efecto, como $\vec{q}_i < 0$ para alguna $i \in
-	\lbrace 2, \ldots, n - 2\rbrace$, somos capaces permutar las entradas $i$ y $n - 2$ de $\vec{q}$ en
-	el problema (\ref{theory:formulation}). Observemos que
+	Consideremos el caso $q_{n - 1}, q_n < 0$. Como ninguna entrada de $\vec{p}$ es nula y el vector
+	$\vec{q}$ es su múltiplo coprimo, se sigue de la Definición \ref{theory:def:rational} que $q_1 >
+	0$. Podemos entonces permutar las entradas $q_1$ y $q_{n}$ para regresar al primer caso.
+
+	Finalmente, consideremos el caso $0 < q_{n - 1}, q_n$. Podemos suponer sin pérdida de
+	generalidad que $q_{n - 2} < 0$. En efecto, como $q_i < 0$ para alguna $i \in \braces{1, \ldots,
+	n - 2}$, somos capaces permutar las entradas $i$ y $n - 2$ de
+	$\vec{q}$. Observemos que
 	\begin{align*}
 		b_2 - 1 &\leq \lfloor b_2 \rfloor \leq b_2, \\
 		b_1 &\leq \lceil b_1 \rceil \leq b_1 + 1.
@@ -117,63 +139,59 @@ Entonces se verifica que
 	\end{equation*}
 	Así pues, para que el intervalo $[\lceil b_1 \rceil, \lfloor b_2 \rfloor]$ esté bien definido,
 	es suficiente con mostrar que existe un escalar $\omega_{n - 1}$ que satisfaga $b_2 - b_1 \geq
-	2$. Tenemos
+	2$. De \eqref{eq:lr-bounds} tenemos
 	\begin{equation}
 		\label{proof:b-sub}
 		b_2 - b_1 = \omega_{n - 1}\prod_{j = 1}^{n-1}g_j \cdot
-			\left(\frac{x_{n-1}'}{\vec{q}_n} + \frac{x_n'}{\vec{q}_{n - 1}}\right)
+			\left(\frac{x_{n-1}'}{q_n} + \frac{x_n'}{q_{n - 1}}\right)
 	\end{equation}
-	Como $x_{n - 1}'$ y $x_n'$ son coeficientes de Bézout asociados a los dos coeficientes en
-	(\ref{eq:last-equation}) que son coprimos, se cumple
+	Pero $x_{n-1}'$ y $x_n'$ satisfacen \eqref{eq:last-equation-bez}, y entonces
 	\begin{equation*}
-		\frac{\vec{q}_{n - 1}}{\prod_{j = 1}^{n-1}g_j}x_{n-1}' +
-		\frac{\vec{q}_{n}}{\prod_{j = 1}^{n-1}g_j}x_{n}' = 1,
-	\end{equation*}
-	lo que implica que
-	\begin{equation*}
-		\frac{x_{n-1}'}{\vec{q}_n} + \frac{x_n'}{\vec{q}_{n - 1}} = \frac{\prod_{j =
-		1}^{n-1}g_j}{\vec{q}_{n-1}\vec{q}_n}.
+		\frac{x_{n-1}'}{q_n} + \frac{x_n'}{q_{n - 1}} = \frac{1}{q_{n-1}q_n} \cdot \prod_{j =
+		1}^{n-1}g_j.
 	\end{equation*}
 	Sustituyendo en (\ref{proof:b-sub}),
+	\begin{equation*}
+		b_2 - b_1 = \frac{\omega_{n-1}}{q_{n-1}q_n} \cdot \prod_{j=1}^{n-1}g_j^2,
+	\end{equation*}
+	por lo que $b_2 - b_1 \geq 2$ si y solo si
 	\begin{equation}
 		\label{proof:omega-sub}
-		b_2 - b_1 = \omega_{n-1}\cdot \frac{\prod_{j=1}^{n-1}g_j^2}{\vec{q}_{n-1}\vec{q}_n} \geq 2
-		\iff \omega_{n-1} \geq 2\frac{\vec{q}_{n-1}\vec{q}_n}{\prod_{j=1}^{n-1}g_j^2}.
+		\omega_{n-1} \geq 2\frac{q_{n-1}q_n}{\prod_{j=1}^{n-1}g_j^2}.
 	\end{equation}
 	De (\ref{eq:recurrence}) sabemos que
 	\begin{equation*}
 		\omega_{n-1} = \omega_{n-2}\omega_{n-1}' -
-		\frac{\vec{q}_{n-2}}{\prod_{j=1}^{n-2}g_j}\vec{t}_{n-2}.
+		\frac{q_{n-2}}{\prod_{j=1}^{n-2}g_j}t_{n-2}.
 	\end{equation*}
-	Sustituyendo en (\ref{proof:omega-sub}), usando el hecho de que $\vec{q}_{n-2} < 0$ y despejando
+	Sustituyendo en (\ref{proof:omega-sub}), usando el hecho de que $q_{n-2} < 0$ y despejando
 	$t_{n-2}$, encontramos que $\lceil b_2 \rceil - \lfloor b_1 \rfloor \geq 0$ si
 	\begin{equation*}
-		\vec{t}_{n-2} \geq \frac{\omega_{n-2}\omega_{n-1}'}{\vec{q}_{n-2}}\prod_{j=1}^{n-2}g_j
-		- 2\frac{\vec{q}_{n-1}\vec{q}_n}{\vec{q}_{n-2}g_{n-1}^2}
+		t_{n-2} \geq \frac{\omega_{n-2}\omega_{n-1}'}{q_{n-2}}\cdot\prod_{j=1}^{n-2}g_j
+		- 2\frac{q_{n-1}q_n}{q_{n-2}g_{n-1}^2}\cdot
 		\prod_{j=1}^{n-2}g_j^{-1}
 	\end{equation*}
 	Llamemos $c$ al lado derecho de esta desigualdad. Así pues, definimos el vector
 	$\vec{t} \in \Z^{n-1}$ de manera que
 	\begin{equation*}
-		\vec{t}_i \coloneq \begin{cases}
-			\left\lceil -\frac{\vec{\omega}_i}{\vec{q}_i} \right\rceil, & i < n - 2, \\[1em]
-			\left\lceil \max\left\lbrace -\frac{\vec{\omega}_i}{\vec{q}_i}, c \right\rbrace
-			\right\rceil, & i = n -2, \\[0.8em]
+		t_i \coloneq \begin{cases}
+			\left\lceil -\frac{\omega_ix_i'}{q_i} \right\rceil, & i < n - 2, \\[0.5em]
+			\left\lceil \max\left\lbrace -\frac{\omega_ix_i'}{q_i}, c \right\rbrace
+			\right\rceil, & i = n -2, \\[0.5em]
 			\lceil b_1 \rceil, & i = n - 1.
 		\end{cases}
 	\end{equation*}
-	Se verifica que $\vec{t}$ satisface ambos (\ref{eq:vect-param-lb}) y (\ref{eq:feasible-param}).
-	Finalmente, el caso $\vec{q}_{n-1}, \vec{q}_n < 0$ es completamente similar.
+	Se verifica que $\vec{t}$ satisface ambos (\ref{eq:param-lb}) y (\ref{eq:feasible-param}).
 \end{proof}
 
 En síntesis, por el Lema \ref{lemma:t-existence} sabemos que existe un vector
-$\vec{t} \in \Z^{n-1}$ que satisface ambos (\ref{eq:vect-param-lb}) y (\ref{eq:feasible-param}).
+$\vec{t} \in \Z^{n-1}$ que satisface ambos (\ref{eq:param-lb}) y (\ref{eq:feasible-param}).
 Al definir $\vec{x}^* \coloneq \eta\vec{\omega} + M\vec{t}$, entonces $\vec{x}$ es una solución no
 negativa de $\vec{q}^T\vec{x} = \eta$. Por el Teorema \ref{theory:th:feasibility} se sigue que
 $\vec{x}^*$ es el óptimo de (\ref{theory:formulation}).
 
 En la práctica es mejor usar la relación de recurrencia (\ref{eq:recurrence}) y ``construir'' las
-entradas $\vec{x}_i$ al mismo tiempo que definimos $\vec{t}_i$ de manera que satisfaga
+entradas $x_i$ al mismo tiempo que definimos $t_i$ de manera que satisfaga
 (\ref{eq:param-lb}) y (\ref{eq:lr-bounds}). Si procedemos de esta forma no tenemos que encontrar primero
 $\vec{\omega}$ y $M$, determinar $\vec{t}$ y luego recuperar $\vec{x}$. A partir de esto obtenemos
 el siguiente resultado.
@@ -186,7 +204,7 @@ el siguiente resultado.
 \section{Análisis de resultados}
 \noindent
 Una consecuencia del Teorema \ref{infinite:th:complexity} es que la complejidad algoritmítica del
-problema (\ref{theory:formulation}) es lineal en la dimensión $n$ siempre y cuando $\vec{q}_i < 0$
+problema (\ref{theory:formulation}) es lineal en la dimensión $n$ siempre y cuando $q_i < 0$
 para alguna $i \in \lbrace 2, \ldots, n\rbrace$. En esta sección describimos un algoritmo cuyo
 tiempo de terminación es $\mathcal{O}(n)$. A través de los resultados obtenidos previamente, somos
 capaces de mostrar que nuestro algoritmo es correcto. Finalmente, implementamos nuestro algoritmo en

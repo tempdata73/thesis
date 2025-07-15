@@ -540,6 +540,7 @@ entero.
 	m\vec{v}$, se sigue que $\vec{v} = \frac{1}{m}\vec{w}$ y también $\vec{w} \in \Z^n$.
 \end{observation}
 \begin{observation}
+	\label{obs:coprime-unique}
 	Todo vector $\vec{v}$ esencialmente entero tiene a lo más dos vectores coprimos asociados. Sean
 	$m \in \R$ y $\vec{w} \in \Z^n$ tales que $\vec{v} = m\vec{w}$. Entonces
 	\begin{equation*}
@@ -1035,7 +1036,13 @@ Por construcción, los coeficientes de $x_{n - 1}$ y $x_n$ son coprimos. A causa
 \end{equation}
 donde $x_{n-1}', x_n'$ son los coeficientes de Bézout asociados a
 $\frac{q_n}{\prod_{j=1}^{n-1}g_j}$ y $\frac{q_{n-1}}{\prod_{j=1}^{n-1}g_j}$,
-respectivamente.
+respectivamente, por lo que satisfacen
+\begin{equation}
+	\label{eq:last-equation-bez}
+	\frac{q_{n-1}}{\prod_{j=1}^{n-1}g_j}x_{n-1}' +
+	\frac{q_{n}}{\prod_{j=1}^{n-1}g_j}x_n'
+	= 1.
+\end{equation}
 
 Hasta este punto, hemos demostrado que la ecuación lineal diofantina $\vec{q}^T\vec{x} = k$ tiene
 soluciones enteras para todo $k \in \Z$ siempre que las entradas de $\vec{q}$ sean coprimas. En
