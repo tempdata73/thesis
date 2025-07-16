@@ -87,6 +87,50 @@ def solve_dioph(c_p, k, s):
 
 
 @repeat(num_iter=20)
+def solve_dioph_2(q, k, s):
+    q = q.copy()
+    eta = math.floor(s / k)
+
+    switch = -1
+    if (q[-2] > 0) and (q[-1] < 0):
+        switch = -2
+    elif (q[-2] < 0) and (q[-1] < 0):
+        switch = 0
+    elif (q[-2] > 0) and (q[-1] > 0):
+        neg_indices = np.where(q < 0)[0]
+        switch  = neg_indices[0].item()
+
+    q[-1], q[switch] = q[switch], q[-1]
+    x = np.zeros_like(q)
+    omega = eta
+
+    for i in range(len(q) - 2):
+        g = math.gcd(*q[i+1:])
+        x_bezout, omega_bezout = bezout_2d(q[i], g)
+        t = math.ceil(-omega * x_bezout / g)
+
+        # update
+        x[i] = omega * x_bezout + g * t
+        omega = omega * omega_bezout - q[i] * t
+        q[i:] //= g
+
+    # last two solutions
+    x_prime, y_prime = bezout_2d(q[-2], q[-1])
+    b_1 = -omega * x_prime / q[-1]
+    b_2 = -omega * y_prime / q[-2]
+
+    t = math.ceil(max(b_1, b_2))
+    x[-2] = omega * x_prime + q[-1] * t
+    x[-1] = omega * y_prime - q[-2] * t
+
+    # switching
+    x[-1], x[switch] = x[switch], x[-1]
+
+    return x
+
+
+
+@repeat(num_iter=20)
 def solve_pulp(p, s, **kwargs):
     # create lp problem
     x = [lp.LpVariable(f"b_{i}", lowBound=0, cat=lp.LpInteger) for i in range(len(p))]
@@ -102,7 +146,6 @@ def solve_pulp(p, s, **kwargs):
 
 
 if __name__ == "__main__":
-    import json
 
     NUM_DECIMALS = 2
     FILENAME = f"neg-4d-{NUM_DECIMALS}dig"
@@ -165,7 +208,9 @@ if __name__ == "__main__":
         stats["bb_raw"]["obj"][i] = obj_bb_raw
 
         # diophantine method
-        x_dioph, (mu, sigma) = solve_dioph(c_p, multiplier, s)
+        x_dioph, (mu, sigma) = solve_dioph_2(c_p, multiplier, s)
+        assert np.all(x_dioph >= 0)
+        print(f"{x_dioph=}")
         obj_dioph = np.dot(p, x_dioph)
         stats["dioph"]["mu"][i] = mu
         stats["dioph"]["sigma"][i] = sigma
@@ -176,5 +221,5 @@ if __name__ == "__main__":
             print(f"[DEBUG]: {x_bb_full=} -> obj = {obj_bb_full}")
             print(f"[DEBUG]: {x_dioph=} -> obj = {obj_dioph}")
 
-    with open(f"times/inf/{FILENAME}.json", "w") as outfile:
-        json.dump(stats, outfile)
+    # with open(f"times/inf/{FILENAME}.json", "w") as outfile:
+    #     json.dump(stats, outfile)

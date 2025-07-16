@@ -38,3 +38,51 @@
 	\caption{Ramificación y Acotamiento (adaptado de \cite{fabs})} \label{p1c9:alg:BB}
 	\label{algo:bb}
 \end{algorithm}
+
+\chapter{Algoritmo extendido del caso infinito}
+\label{app:inf:ext}
+
+% TODO: implement algorithm
+\begin{algorithm}[ht]
+	\LinesNumbered
+	\SetKwProg{Fn}{Fn}{\string:}{}
+	\SetKwFunction{Bezout}{Bezout}
+	\SetKwFunction{NonNegativeIntSol}{NonNegativeIntSol}
+	\Fn{\NonNegativeIntSol{$\vec{q}$, $\eta$}}{
+		\KwData{\\
+			Vector coprimo $\vec{q}$ tal que $q_i \neq 0$ para todo $i \in \braces{1, \ldots, n}$ y
+			$q_{n-1} < 0 < q_n$.\\
+			Lado derecho $\eta$.
+			}
+		\KwResult{\\
+			Solución entera no negativa $\vec{x}$ a la ecuación lineal diofantina $\vec{q}^T\vec{x} =
+			\eta$.
+		}
+		\Begin{
+			$\vec{x} \leftarrow \vec{0}$\;
+			$\omega_1 \leftarrow \eta$\;
+			\For{$i \leftarrow 1$ \KwTo $n - 2$}{
+				$g_{i+1} \leftarrow \gcd{q_{i+1}, \ldots, q_n}$\;
+				$x_i', \omega_{i+1}' \leftarrow$ \Bezout{$q_i$, $g_{i+1}$}\;
+				$t_i \leftarrow \ceil{-\omega_i x_i' / g_{i+1}}$\;
+				$x_i \leftarrow \omega_i x_i' + g_{i+1}t_i$\;
+				$\omega_{i+1} \leftarrow \omega_i \omega_{i+1}' - q_i t_i$\;
+				\For{$j \leftarrow i$ \KwTo $n - 2$}{
+					$q_{j+1} \leftarrow q_{j+1}/g_{i+1}$\;
+				}
+			}
+
+			$x_{n-1}', x_n' \leftarrow$ \Bezout{$q_{n-1}$, $q_n$}\;
+			$b_1 \leftarrow -\omega_{n-1} x_{n-1}' / q_n$\;
+			$b_2 \leftarrow -\omega_{n-1} x_n' / q_{n-1}$\;
+			$t_{n-1} \leftarrow \ceil{\max\lbrace b_1, b_2\rbrace}$\;
+			$x_{n-1} \leftarrow \omega_{n-1}x_{n-1}' + q_nt_{n-1}$\;
+			$x_{n} \leftarrow \omega_{n-1}x_{n}' - q_{n-1}t_{n-1}$\;
+
+			\Return{$\vec{x}$}
+		}
+	}
+	\caption{Algoritmo para obtener soluciones enteras no negativas a la ecuación lineal diofantina
+	$\vec{q}^T\vec{x} = \eta$, dados ciertos supuestos sobre $\vec{q}$.}
+	\label{algo:inf:ext}
+\end{algorithm}

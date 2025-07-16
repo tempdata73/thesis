@@ -54,8 +54,8 @@ un escalar $u^* \in \R$ es el valor óptimo del programa (\ref{theory:formulatio
 
 Una vez resuelto el problema de decisión, podemos preguntarnos concretamente cómo obtener el punto
 óptimo. Por el Teorema \ref{theory:th:feasibility} sabemos que debemos resolver la ecuación lineal
-diofantina $\vec{q}^T\vec{x} = \eta$. Del Teorema \ref{th:lattice} sabemos que existen $k \in \Z$ y
-$\vec{t} \in \Z^{n-1}$ tales que
+diofantina $\vec{q}^T\vec{x} = \eta$. Del Teorema \ref{th:lattice} sabemos que si $q_n \neq 0$,
+entonces existen $k \in \Z$ y $\vec{t} \in \Z^{n-1}$ tales que
 \begin{equation*}
 	\vec{x} = k\vec{\omega} + M\vec{t},
 \end{equation*}
@@ -67,18 +67,38 @@ respectivamente. De los Lemas \ref{lemma:iso1} y \ref{lemma:iso2} sabemos que
 para todo $\vec{t} \in \Z^{n-1}$. Así pues, debe ser el caso que $k = \eta$ y debemos encontrar
 condiciones suficientes en $\vec{t}$ para asegurar la no-negatividad de $\vec{x}$. En primer lugar,
 sabemos que para todo $i \in \braces{1, \ldots, n - 2}$, la entrada $t_i$ debe satisfacer
-\eqref{eq:param-lb}. En segundo lugar, recuperamos de (\ref{eq:last-solution}) que las últimas dos
+\eqref{eq:param-lb}. En segundo lugar, recuperamos de \eqref{eq:last-solution} que las últimas dos
 soluciones de la ecuación $\vec{q}^T\vec{x} = \eta$ están dadas por
-\begin{equation}
+\begin{equation*}
 	\begin{cases}
 		x_{n-1} = \omega_{n-1}x_{n-1}' + \frac{q_n}{\prod_{j=1}^{n-1}g_j}t_{n-1}, \\
 		x_n = \omega_{n-1}x_n' - \frac{q_{n-1}}{\prod_{j=1}^{n-1}g_j}t_{n-1},
 	\end{cases}
-\end{equation}
+\end{equation*}
 donde los enteros $g_i$ están definidos por \eqref{dummy:next-g} con $g_1 = 1$, $\omega_{n-1}$ está
 definida a través de la relación de recurrencia \eqref{eq:omega-recurrence} con condición inicial
 $\omega_1 = \eta$ (o bien a partir del Lema \ref{eq:omega-formula} con $k = \eta$), y $x_{n-1}',
 x_n'$ son coeficientes de Bézout que satisfacen \eqref{eq:last-equation-bez}.
+
+En lo que se encuentra a continuación supondremos que ninguna entrada $q_i$ es nula. Esto no
+constituye problema alguno debido a un razonamiento similar al de la demostración del Teorema
+\ref{theory:th:feasibility}. Definimos
+\begin{equation*}
+	I^\circ \coloneq \braces{i \colon q_i = 0},
+\end{equation*}
+y también definimos el vector $\tilde{\vec{q}}$ cuyas entradas son las entradas no nulas de
+$\vec{q}$. A partir de lo que sigue vamos a determinar un vector entero no nulo $\tilde{\vec{x}}$
+que satisfaga $\tilde{\vec{q}}^T\tilde{\vec{x}} = \eta$. Luego, encontramos que el vector $\vec{x}$
+dado por
+\begin{equation*}
+	x_i \coloneq
+	\begin{cases}
+		\tilde{x}_i, & i \not \in I^\circ, \\
+		0, & i \in I^\circ,
+	\end{cases}
+\end{equation*}
+es entero, no negativo, y también satisface $\vec{q}^T\vec{x} = \eta$. Así pues, la suposición de
+que $q_i \neq 0$ para todo $i \in \braces{1, \ldots, n}$ toma lugar sin pérdida de generalidad.
 
 Para que se satisfagan las condiciones de no negatividad de $x_{n-1}$ y de $x_n$, encontramos que
 $t_{n-1} \in \Z$ debe cumplir ciertas desigualdades según los signos de $q_{n-1}$ y de $q_n$.
@@ -93,13 +113,25 @@ Entonces, para asegurar la no-negatividad de $x_{n - 1}$ y de $x_n$, debe ser el
 	\label{eq:feasible-param}
 	t_{n-1} \in 
 	\begin{cases}
-		\big[ \lceil b_1 \rceil, \lfloor b_2 \rfloor \big] &  0 < q_{n-1}, q_n, \\[0.5em]
-		\big[ \lceil b_2 \rceil, \lfloor b_1 \rfloor \big] &  q_{n-1}, q_n < 0, \\[0.5em]
-		\big[ \lceil \max\lbrace b_1 ,  b_2 \rbrace \rceil, \infty \big) &  q_{n-1}
-		< 0 < q_n, \\[0.5em]
-		\big( -\infty, \lfloor \min\lbrace b_1, b_2\rbrace \rfloor \big] &  q_n < 0
-		< q_{n-1}.
+		\big[ \lceil \max\lbrace b_1 ,  b_2 \rbrace \rceil, \infty \big), &  q_{n-1} < 0 < q_n, \\[0.5em]
+		\big( -\infty, \lfloor \min\lbrace b_1, b_2\rbrace \rfloor \big], &  q_n < 0 < q_{n-1}, \\[0.5em]
+		\big[ \lceil b_2 \rceil, \lfloor b_1 \rfloor \big], &  q_{n-1}, q_n < 0, \\[0.5em]
+		\big[ \lceil b_1 \rceil, \lfloor b_2 \rfloor \big], &  0 < q_{n-1}, q_n.
 	\end{cases}
+\end{equation}
+
+Podemos emplear la misma estrategia de permutar las entradas de $q_i$ de manera que colapsemos estos
+cuatro casos distintos en uno solo. Como estamos en el caso infinito del Teorema
+\ref{theory:th:feasibility}, naturalmente supondremos que $q_i < 0$ para alguna $i \in \braces{1,
+\ldots n}$. Así pues, podemos permutar esta $i$-ésima entrada de $\vec{q}$ con $q_{n-1}$, con lo que
+obtenemos $q_{n-1} < 0$. Luego, como $\vec{q}$ es el múltiplo coprimo de $\vec{p}$ y ninguna entrada
+de $\vec{q}$ es nula, se sigue de la Definición \ref{theory:def:rational} que $q_1 > 0$. Así pues,
+podemos permutar la primera y última entrada de $\vec{q}$, de donde se sigue que $q_n > 0$.
+Juntándolo todo, obtenemos $q_{n-1} < 0 < q_n$. De esta manera, para asegurar la no negatividad de
+$x_{n-1}$ y $x_n$, basta con que se satisfaga el primer caso:
+\begin{equation}
+	\label{eq:feasible-param:collapsed}
+	t_{n-1} \geq \ceil{\max\lbrace b_1, b_2 \rbrace}.
 \end{equation}
 
 \begin{lemma}
@@ -109,97 +141,184 @@ Entonces, para asegurar la no-negatividad de $x_{n - 1}$ y de $x_n$, debe ser el
 	\eqref{eq:param-lb} y \eqref{eq:feasible-param}.
 \end{lemma}
 \begin{proof}
-	Tenemos cuatro casos, pero observemos que los dos en donde $q_{n - 1}$ y $q_n$
-	tienen signo distinto no son difíciles: si $q_{n - 1} <0 < q_n$, entonces el vector
-	$\vec{t} \in \Z^{n-1}$ dado por
+	Por la discusión anterior, podemos suponer sin pérdida de generalidad que $q_{n-1} < 0 < q_n$,
+	así que basta mostrar la existencia de  $\vec{t} \in \Z^{n-1}$ que satisfaga \eqref{eq:param-lb} y
+	\eqref{eq:feasible-param:collapsed}. Si definimos
 	\begin{equation*}
 		t_i \coloneq \begin{cases}
-			\left\lceil -\frac{\omega_ix_i'}{g_{i + 1}} \right\rceil, & i < n - 1, \\[0.5em]
-			\lceil \max\lbrace b_1, b_2 \rbrace \rceil, & i = n - 1,
+			\ceil{-\frac{\omega_ix_i'}{g_{i + 1}}}, & i < n - 1, \\[0.5em]
+			\ceil{\max\lbrace b_1, b_2 \rbrace}, & i = n - 1,
 		\end{cases}
 	\end{equation*}
-	satisface ambos (\ref{eq:param-lb}) y (\ref{eq:feasible-param}). El caso $q_n < 0 <
-	q_{n - 1}$ es completamente similar.
-
-	Consideremos el caso $q_{n - 1}, q_n < 0$. Como ninguna entrada de $\vec{p}$ es nula y el vector
-	$\vec{q}$ es su múltiplo coprimo, se sigue de la Definición \ref{theory:def:rational} que $q_1 >
-	0$. Podemos entonces permutar las entradas $q_1$ y $q_{n}$ para regresar al primer caso.
-
-	Finalmente, consideremos el caso $0 < q_{n - 1}, q_n$. Podemos suponer sin pérdida de
-	generalidad que $q_{n - 2} < 0$. En efecto, como $q_i < 0$ para alguna $i \in \braces{1, \ldots,
-	n - 2}$, somos capaces permutar las entradas $i$ y $n - 2$ de
-	$\vec{q}$. Observemos que
-	\begin{align*}
-		b_2 - 1 &\leq \lfloor b_2 \rfloor \leq b_2, \\
-		b_1 &\leq \lceil b_1 \rceil \leq b_1 + 1.
-	\end{align*}
-	De donde obtenemos
-	\begin{equation*}
-		b_2 - b_1 - 2 \leq \lfloor b_2 \rfloor - \lceil b_1 \rceil \leq b_2 - b_1.
-	\end{equation*}
-	Así pues, para que el intervalo $[\lceil b_1 \rceil, \lfloor b_2 \rfloor]$ esté bien definido,
-	es suficiente con mostrar que existe un escalar $\omega_{n - 1}$ que satisfaga $b_2 - b_1 \geq
-	2$. De \eqref{eq:lr-bounds} tenemos
-	\begin{equation}
-		\label{proof:b-sub}
-		b_2 - b_1 = \omega_{n - 1}\prod_{j = 1}^{n-1}g_j \cdot
-			\left(\frac{x_{n-1}'}{q_n} + \frac{x_n'}{q_{n - 1}}\right)
-	\end{equation}
-	Pero $x_{n-1}'$ y $x_n'$ satisfacen \eqref{eq:last-equation-bez}, y entonces
-	\begin{equation*}
-		\frac{x_{n-1}'}{q_n} + \frac{x_n'}{q_{n - 1}} = \frac{1}{q_{n-1}q_n} \cdot \prod_{j =
-		1}^{n-1}g_j.
-	\end{equation*}
-	Sustituyendo en (\ref{proof:b-sub}),
-	\begin{equation*}
-		b_2 - b_1 = \frac{\omega_{n-1}}{q_{n-1}q_n} \cdot \prod_{j=1}^{n-1}g_j^2,
-	\end{equation*}
-	por lo que $b_2 - b_1 \geq 2$ si y solo si
-	\begin{equation}
-		\label{proof:omega-sub}
-		\omega_{n-1} \geq 2\frac{q_{n-1}q_n}{\prod_{j=1}^{n-1}g_j^2}.
-	\end{equation}
-	De (\ref{eq:recurrence}) sabemos que
-	\begin{equation*}
-		\omega_{n-1} = \omega_{n-2}\omega_{n-1}' -
-		\frac{q_{n-2}}{\prod_{j=1}^{n-2}g_j}t_{n-2}.
-	\end{equation*}
-	Sustituyendo en (\ref{proof:omega-sub}), usando el hecho de que $q_{n-2} < 0$ y despejando
-	$t_{n-2}$, encontramos que $\lceil b_2 \rceil - \lfloor b_1 \rfloor \geq 0$ si
-	\begin{equation*}
-		t_{n-2} \geq \frac{\omega_{n-2}\omega_{n-1}'}{q_{n-2}}\cdot\prod_{j=1}^{n-2}g_j
-		- 2\frac{q_{n-1}q_n}{q_{n-2}g_{n-1}^2}\cdot
-		\prod_{j=1}^{n-2}g_j^{-1}
-	\end{equation*}
-	Llamemos $c$ al lado derecho de esta desigualdad. Así pues, definimos el vector
-	$\vec{t} \in \Z^{n-1}$ de manera que
-	\begin{equation*}
-		t_i \coloneq \begin{cases}
-			\left\lceil -\frac{\omega_ix_i'}{q_i} \right\rceil, & i < n - 2, \\[0.5em]
-			\left\lceil \max\left\lbrace -\frac{\omega_ix_i'}{q_i}, c \right\rbrace
-			\right\rceil, & i = n -2, \\[0.5em]
-			\lceil b_1 \rceil, & i = n - 1.
-		\end{cases}
-	\end{equation*}
-	Se verifica que $\vec{t}$ satisface ambos (\ref{eq:param-lb}) y (\ref{eq:feasible-param}).
+	entonces se verifica automáticamente que estas condiciones se satisfacen.
 \end{proof}
+
+% \begin{lemma}
+% 	\label{lemma:t-existence}
+% 	Sea $\vec{p} \in \R$ un vector cuyas entradas son todas distintas de cero, y sea $\vec{q} \in
+% 	\Z^n$ su múltiplo coprimo. Entonces existe un vector $\vec{t} \in \Z^{n-1}$ que satisface ambos
+% 	\eqref{eq:param-lb} y \eqref{eq:feasible-param}.
+% \end{lemma}
+% \begin{proof}
+% 	Tenemos cuatro casos, pero observemos que los dos en donde $q_{n - 1}$ y $q_n$
+% 	tienen signo distinto no son difíciles: si $q_{n - 1} <0 < q_n$, entonces el vector
+% 	$\vec{t} \in \Z^{n-1}$ dado por
+% 	\begin{equation*}
+% 		t_i \coloneq \begin{cases}
+% 			\left\lceil -\frac{\omega_ix_i'}{g_{i + 1}} \right\rceil, & i < n - 1, \\[0.5em]
+% 			\lceil \max\lbrace b_1, b_2 \rbrace \rceil, & i = n - 1,
+% 		\end{cases}
+% 	\end{equation*}
+% 	satisface ambos (\ref{eq:param-lb}) y (\ref{eq:feasible-param}). El caso $q_n < 0 <
+% 	q_{n - 1}$ es completamente similar.
+% 
+% 	Consideremos el caso $q_{n - 1}, q_n < 0$. Como ninguna entrada de $\vec{p}$ es nula y el vector
+% 	$\vec{q}$ es su múltiplo coprimo, se sigue de la Definición \ref{theory:def:rational} que $q_1 >
+% 	0$. Podemos entonces permutar las entradas $q_1$ y $q_{n}$ para regresar al primer caso.
+% 
+% 	Finalmente, consideremos el caso $0 < q_{n - 1}, q_n$. Queremos encontrar condiciones
+% 	suficientes para asegurar que el intervalo $[\ceil{b_1}, \floor{b_2}]$ esté bien definido, es
+% 	decir, para asegurar que $\floor{b_2} - \ceil{b_1} \geq 0$. Podemos suponer sin pérdida de
+% 	generalidad que $q_{n - 2} < 0$. En efecto, como $q_i < 0$ para alguna $i \in \braces{1, \ldots,
+% 	n - 2}$, somos capaces permutar las entradas $i$ y $n - 2$ de $\vec{q}$. Observemos que
+% 	\begin{align*}
+% 		b_2 - 1 &\leq \lfloor b_2 \rfloor \leq b_2, \\
+% 		b_1 &\leq \lceil b_1 \rceil \leq b_1 + 1.
+% 	\end{align*}
+% 	De donde obtenemos
+% 	\begin{equation*}
+% 		b_2 - b_1 - 2 \leq \lfloor b_2 \rfloor - \lceil b_1 \rceil \leq b_2 - b_1.
+% 	\end{equation*}
+% 	Así pues, para que el intervalo $[\lceil b_1 \rceil, \lfloor b_2 \rfloor]$ esté bien definido,
+% 	es suficiente con mostrar que existe un escalar $\omega_{n - 1}$ que satisfaga $b_2 - b_1 \geq
+% 	2$. De \eqref{eq:lr-bounds} tenemos
+% 	\begin{equation}
+% 		\label{proof:b-sub}
+% 		b_2 - b_1 = \omega_{n - 1}\prod_{j = 1}^{n-1}g_j \cdot
+% 			\left(\frac{x_{n-1}'}{q_n} + \frac{x_n'}{q_{n - 1}}\right)
+% 	\end{equation}
+% 	Pero $x_{n-1}'$ y $x_n'$ satisfacen \eqref{eq:last-equation-bez}, y entonces
+% 	\begin{equation*}
+% 		\frac{x_{n-1}'}{q_n} + \frac{x_n'}{q_{n - 1}} = \frac{1}{q_{n-1}q_n} \cdot \prod_{j =
+% 		1}^{n-1}g_j.
+% 	\end{equation*}
+% 	Sustituyendo en (\ref{proof:b-sub}),
+% 	\begin{equation*}
+% 		b_2 - b_1 = \frac{\omega_{n-1}}{q_{n-1}q_n} \cdot \prod_{j=1}^{n-1}g_j^2,
+% 	\end{equation*}
+% 	por lo que $b_2 - b_1 \geq 2$ si y solo si
+% 	\begin{equation}
+% 		\label{proof:omega-sub}
+% 		\omega_{n-1} \geq 2\frac{q_{n-1}q_n}{\prod_{j=1}^{n-1}g_j^2}.
+% 	\end{equation}
+% 	De (\ref{eq:recurrence}) sabemos que
+% 	\begin{equation*}
+% 		\omega_{n-1} = \omega_{n-2}\omega_{n-1}' -
+% 		\frac{q_{n-2}}{\prod_{j=1}^{n-2}g_j}t_{n-2}.
+% 	\end{equation*}
+% 	Sustituyendo en (\ref{proof:omega-sub}), usando el hecho de que $q_{n-2} < 0$ y despejando
+% 	$t_{n-2}$, encontramos que $\floor{b_2} - \ceil{b_1} \geq 0$ si
+% 	\begin{equation*}
+% 		t_{n-2} \geq \frac{\omega_{n-2}\omega_{n-1}'}{q_{n-2}}\cdot\prod_{j=1}^{n-2}g_j
+% 		- 2\frac{q_{n-1}q_n}{q_{n-2}g_{n-1}^2}\cdot
+% 		\prod_{j=1}^{n-2}g_j^{-1}
+% 	\end{equation*}
+% 	Llamemos $c$ al lado derecho de esta desigualdad. Así pues, definimos el vector
+% 	$\vec{t} \in \Z^{n-1}$ de manera que
+% 	\begin{equation*}
+% 		t_i \coloneq \begin{cases}
+% 			\left\lceil -\frac{\omega_ix_i'}{q_i} \right\rceil, & i < n - 2, \\[0.5em]
+% 			\left\lceil \max\left\lbrace -\frac{\omega_ix_i'}{q_i}, c \right\rbrace
+% 			\right\rceil, & i = n -2, \\[0.5em]
+% 			\lceil b_1 \rceil, & i = n - 1.
+% 		\end{cases}
+% 	\end{equation*}
+% 	Se verifica que $\vec{t}$ satisface ambos (\ref{eq:param-lb}) y (\ref{eq:feasible-param}).
+% \end{proof}
 
 En síntesis, por el Lema \ref{lemma:t-existence} sabemos que existe un vector
 $\vec{t} \in \Z^{n-1}$ que satisface ambos (\ref{eq:param-lb}) y (\ref{eq:feasible-param}).
-Al definir $\vec{x}^* \coloneq \eta\vec{\omega} + M\vec{t}$, entonces $\vec{x}$ es una solución no
-negativa de $\vec{q}^T\vec{x} = \eta$. Por el Teorema \ref{theory:th:feasibility} se sigue que
-$\vec{x}^*$ es el óptimo de (\ref{theory:formulation}).
+Al definir $\vec{x}^* \coloneq \eta\vec{\omega} + M\vec{t}$, encontramos que $\vec{x}^*$ es entero y
+no negativo, y además por los Lemas \ref{lemma:iso1} y \ref{lemma:iso2} encontramos que
+\begin{equation*}
+	\vec{q}^T\vec{x}^* = \eta\vec{q}^T\vec{\omega} + \vec{q}^TM\vec{t} = \eta.
+\end{equation*}
+Por el Teorema \ref{theory:th:feasibility}, se sigue que $\vec{x}^*$ es la solución al problema
+\eqref{theory:formulation}.
 
 En la práctica es mejor usar la relación de recurrencia (\ref{eq:recurrence}) y ``construir'' las
-entradas $x_i$ al mismo tiempo que definimos $t_i$ de manera que satisfaga
-(\ref{eq:param-lb}) y (\ref{eq:lr-bounds}). Si procedemos de esta forma no tenemos que encontrar primero
-$\vec{\omega}$ y $M$, determinar $\vec{t}$ y luego recuperar $\vec{x}$. A partir de esto obtenemos
-el siguiente resultado.
+entradas $x_i$ al mismo tiempo que definimos $t_i$ de manera que satisfaga (\ref{eq:param-lb}) y
+(\ref{eq:feasible-param:collapsed}). Si procedemos de esta forma no tenemos que encontrar primero
+$\vec{\omega}$ y $M$, determinar $\vec{t}$ y luego recuperar $\vec{x}$. El Algoritmo \ref{algo:inf}
+muestra este procedimiento constructivo.
+
+\begin{algorithm}[ht]
+	\LinesNumbered
+	\SetKwProg{Fn}{Fn}{\string:}{}
+	\SetKwFunction{Bezout}{Bezout}
+	\SetKwFunction{NonNegativeIntSol}{NonNegativeIntSol}
+	\Fn{\NonNegativeIntSol{$\vec{q}$, $\eta$}}{
+		\KwData{\\
+			Vector coprimo $\vec{q}$ tal que $q_i \neq 0$ para todo $i \in \braces{1, \ldots, n}$ y
+			$q_{n-1} < 0 < q_n$.\\
+			Lado derecho $\eta$.
+			}
+		\KwResult{\\
+			Solución entera no negativa $\vec{x}$ a la ecuación lineal diofantina $\vec{q}^T\vec{x} =
+			\eta$.
+		}
+		\Begin{
+			$\vec{x} \leftarrow \vec{0}$\;
+			$\omega_1 \leftarrow \eta$\;
+			\For{$i \leftarrow 1$ \KwTo $n - 2$}{
+				$g_{i+1} \leftarrow \gcd{q_{i+1}, \ldots, q_n}$\;
+				$x_i', \omega_{i+1}' \leftarrow$ \Bezout{$q_i$, $g_{i+1}$}\;
+				$t_i \leftarrow \ceil{-\omega_i x_i' / g_{i+1}}$\;
+				$x_i \leftarrow \omega_i x_i' + g_{i+1}t_i$\;
+				$\omega_{i+1} \leftarrow \omega_i \omega_{i+1}' - q_i t_i$\;
+				\For{$j \leftarrow i$ \KwTo $n - 2$}{
+					$q_{j+1} \leftarrow q_{j+1}/g_{i+1}$\;
+				}
+			}
+
+			$x_{n-1}', x_n' \leftarrow$ \Bezout{$q_{n-1}$, $q_n$}\;
+			$b_1 \leftarrow -\omega_{n-1} x_{n-1}' / q_n$\;
+			$b_2 \leftarrow -\omega_{n-1} x_n' / q_{n-1}$\;
+			$t_{n-1} \leftarrow \ceil{\max\lbrace b_1, b_2\rbrace}$\;
+			$x_{n-1} \leftarrow \omega_{n-1}x_{n-1}' + q_nt_{n-1}$\;
+			$x_{n} \leftarrow \omega_{n-1}x_{n}' - q_{n-1}t_{n-1}$\;
+
+			\Return{$\vec{x}$}
+		}
+	}
+	\caption{Algoritmo para obtener soluciones enteras no negativas a la ecuación lineal diofantina
+	$\vec{q}^T\vec{x} = \eta$, dados ciertos supuestos sobre $\vec{q}$.}
+	\label{algo:inf}
+\end{algorithm}
+
+En el Algoritmo \ref{algo:inf} supusimos la existencia de una subrutina \texttt{Bezout} que, como su
+nombre lo indica, calcula los coeficientes de Bézout entre dos enteros. Es la creencia del autor
+que no es necesario escribir la subrutina en esta tesis, pero reitera, así como lo hizo en la Sección
+\ref{section:number-theory}, que estos coeficientes se pueden calcular por medio del Algoritmo
+Extendido de Euclides.
+
+El Algoritmo \ref{algo:inf:ext} del Apéndice \ref{app:inf:ext} extiende el Algoritmo \ref{algo:inf}
+para deshacerse del supuesto de que ninguna entrada $q_i$ es nula, y también del supuesto de que
+$q_{n-1} < 0 < q_n$. Basta con mencionar en este capítulo que usamos la misma lógica expuesta antes
+del Lema \ref{lemma:t-existence}.
+
 \begin{theorem}
+	El Algoritmo \ref{algo:inf} es correcto.
+\end{theorem}
+\begin{proof}
+	% TODO
+\end{proof}
+
+\begin{corollary}
 	\label{infinite:th:complexity}
 	El problema (\ref{theory:formulation}) se puede resolver a través de encontrar la solución de
 	una ecuación lineal diofantina en $n$ incógnitas.
-\end{theorem}
+\end{corollary}
 
 \section{Análisis de resultados}
 \noindent
