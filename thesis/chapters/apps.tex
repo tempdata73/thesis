@@ -46,43 +46,51 @@
 \begin{algorithm}[ht]
 	\LinesNumbered
 	\SetKwProg{Fn}{Fn}{\string:}{}
-	\SetKwFunction{Bezout}{Bezout}
+	\SetKwFunction{switch}{switch}
 	\SetKwFunction{NonNegativeIntSol}{NonNegativeIntSol}
-	\Fn{\NonNegativeIntSol{$\vec{q}$, $\eta$}}{
+	\SetKwFunction{FindNegEntry}{FindNegEntry}
+	\SetKwFunction{Length}{Length}
+	\SetKwFunction{Dioph}{Dioph}
+	\Fn{\Dioph{$\vec{q}$, $\eta$}}{
 		\KwData{\\
-			Vector coprimo $\vec{q}$ tal que $q_i \neq 0$ para todo $i \in \braces{1, \ldots, n}$ y
-			$q_{n-1} < 0 < q_n$.\\
+			Vector coprimo $\vec{q}$ tal que $q_i < 0$ para alguna $i \in \braces{1, \ldots, n}$. \\
 			Lado derecho $\eta$.
 			}
 		\KwResult{\\
 			Solución entera no negativa $\vec{x}$ a la ecuación lineal diofantina $\vec{q}^T\vec{x} =
 			\eta$.
 		}
-		\Begin{
-			$\vec{x} \leftarrow \vec{0}$\;
-			$\omega_1 \leftarrow \eta$\;
-			\For{$i \leftarrow 1$ \KwTo $n - 2$}{
-				$g_{i+1} \leftarrow \gcd{q_{i+1}, \ldots, q_n}$\;
-				$x_i', \omega_{i+1}' \leftarrow$ \Bezout{$q_i$, $g_{i+1}$}\;
-				$t_i \leftarrow \ceil{-\omega_i x_i' / g_{i+1}}$\;
-				$x_i \leftarrow \omega_i x_i' + g_{i+1}t_i$\;
-				$\omega_{i+1} \leftarrow \omega_i \omega_{i+1}' - q_i t_i$\;
-				\For{$j \leftarrow i$ \KwTo $n - 2$}{
-					$q_{j+1} \leftarrow q_{j+1}/g_{i+1}$\;
-				}
-			}
+		$\vec{x} \leftarrow \vec{0}$\;
+		$\vec{\sigma} \leftarrow \left(i \colon q_i \neq 0\right)$\;
+		$\vec{\tilde{q}} \leftarrow \left( q_i \colon q_i \neq 0 \right)$\;
 
-			$x_{n-1}', x_n' \leftarrow$ \Bezout{$q_{n-1}$, $q_n$}\;
-			$b_1 \leftarrow -\omega_{n-1} x_{n-1}' / q_n$\;
-			$b_2 \leftarrow -\omega_{n-1} x_n' / q_{n-1}$\;
-			$t_{n-1} \leftarrow \ceil{\max\lbrace b_1, b_2\rbrace}$\;
-			$x_{n-1} \leftarrow \omega_{n-1}x_{n-1}' + q_nt_{n-1}$\;
-			$x_{n} \leftarrow \omega_{n-1}x_{n}' - q_{n-1}t_{n-1}$\;
-
-			\Return{$\vec{x}$}
+		$m \leftarrow$ \Length{$\vec{\tilde{q}}$}\;
+		$j \leftarrow m$\;
+		\If{$\tilde{q}_m < 0$ y $\tilde{q}_{m-1} > 0$}{
+			$j \leftarrow m - 1$\;
 		}
+		\ElseIf{$\tilde{q}_m < 0$ y $\tilde{q}_{m-1} < 0$}{
+			$j \leftarrow 1$\;
+		}
+		\ElseIf{$\tilde{q}_m > 0$ y $\tilde{q}_{m-1} > 0$}{
+			$j \leftarrow$ \FindNegEntry{$\vec{\tilde{q}}$}\;
+		}
+		\switch{$\vec{\tilde{q}}$, $j$, $m$}\;
+		$\vec{\tilde{x}} \leftarrow$ \NonNegativeIntSol{$\vec{\tilde{q}}$, $\eta$}\;
+		\switch{$\vec{\tilde{x}}$, $j$, $m$}\;
+
+		\For{$i \leftarrow 1$ \KwTo $m$}{
+			$x_{\sigma_i} \leftarrow \tilde{x}_i$\;
+		}
+		\Return{$\vec{x}$}
 	}
 	\caption{Algoritmo para obtener soluciones enteras no negativas a la ecuación lineal diofantina
-	$\vec{q}^T\vec{x} = \eta$, dados ciertos supuestos sobre $\vec{q}$.}
+	$\vec{q}^T\vec{x} = \eta$ para el caso infinito.}
 	\label{algo:inf:ext}
 \end{algorithm}
+
+\begin{theorem}
+	El Algoritmo \ref{algo:inf:ext} es correcto.
+\end{theorem}
+\begin{proof}
+\end{proof}
