@@ -20,6 +20,7 @@ entonces la $\eta$-ésima capa entera contiene un número infinito de puntos fac
 esto último, somos capaces de resolver el automáticamente el problema de decisión de determinar si
 un escalar $u^* \in \R$ es el valor óptimo del programa (\ref{theory:formulation}).
 \begin{corollary}
+	\label{cor:inf:obj}
 	Supongamos que $q_i \leq 0$ para algún $i \in \braces{1, \ldots, n}$. Entonces el valor óptimo
 	del programa lineal entero (\ref{theory:formulation}) es $m\eta$. Además, si $m$ es positivo,
 	tenemos que $\eta$ es el múltiplo de $m$ más grande que satisface $m\eta \leq u$, donde $u$ es
@@ -271,17 +272,17 @@ muestra este procedimiento constructivo.
 			$\vec{x} \leftarrow \vec{0}$\;
 			$\omega_1 \leftarrow \eta$\;
 			\For{$i \leftarrow 1$ \KwTo $n - 2$}{
-				$g_{i+1} \leftarrow \gcd{q_{i+1}, \ldots, q_n}$\;
-				$x_i', \omega_{i+1}' \leftarrow$ \Bezout{$q_i$, $g_{i+1}$}\;
-				$t_i \leftarrow \ceil{-\omega_i x_i' / g_{i+1}}$\;
-				$x_i \leftarrow \omega_i x_i' + g_{i+1}t_i$\;
-				$\omega_{i+1} \leftarrow \omega_i \omega_{i+1}' - q_i t_i$\;
+				$g_{i+1} \leftarrow \gcd{q_{i+1}, \ldots, q_n}$\; \label{alg:def:inf:g}
+				$x_i', \omega_{i+1}' \leftarrow$ \Bezout{$q_i$, $g_{i+1}$}\; \label{alg:def:inf:bez}
+				$t_i \leftarrow \ceil{-\omega_i x_i' / g_{i+1}}$\; \label{alg:def:inf:t}
+				$x_i \leftarrow \omega_i x_i' + g_{i+1}t_i$\; \label{alg:def:inf:x}
+				$\omega_{i+1} \leftarrow \omega_i \omega_{i+1}' - q_i t_i$\; \label{alg:def:inf:w}
 				\For{$j \leftarrow i$ \KwTo $n - 2$}{
-					$q_{j+1} \leftarrow q_{j+1}/g_{i+1}$\;
+					$q_{j+1} \leftarrow q_{j+1}/g_{i+1}$\; \label{alg:def:inf:q}
 				}
 			}
 
-			$x_{n-1}', x_n' \leftarrow$ \Bezout{$q_{n-1}$, $q_n$}\;
+			$x_{n-1}', x_n' \leftarrow$ \Bezout{$q_{n-1}$, $q_n$}\; \label{alg:def:inf:lastw}
 			$b_1 \leftarrow -\omega_{n-1} x_{n-1}' / q_n$\;
 			$b_2 \leftarrow -\omega_{n-1} x_n' / q_{n-1}$\;
 			$t_{n-1} \leftarrow \ceil{\max\lbrace b_1, b_2\rbrace}$\;
@@ -302,22 +303,213 @@ que no es necesario escribir la subrutina en esta tesis, pero reitera, así como
 \ref{section:number-theory}, que estos coeficientes se pueden calcular por medio del Algoritmo
 Extendido de Euclides.
 
-El Algoritmo \ref{algo:inf:ext} del Apéndice \ref{app:inf:ext} extiende el Algoritmo \ref{algo:inf}
-para deshacerse del supuesto de que ninguna entrada $q_i$ es nula, y también del supuesto de que
-$q_{n-1} < 0 < q_n$. Basta con mencionar en este capítulo que usamos la misma lógica expuesta antes
-del Lema \ref{lemma:t-existence}.
-
-\begin{theorem}
+\begin{lemma}
+	\label{lemma:alg:inf:correct}
 	El Algoritmo \ref{algo:inf} es correcto.
-\end{theorem}
+\end{lemma}
 \begin{proof}
+	Basta observar que el algoritmo sigue la construcción recursiva de la Sección
+	\ref{subsec:dioph-eq}, donde escogemos las variables libres $t_i$ como lo indica la demostración
+	del Lema \ref{lemma:t-existence} para asegurar que $\vec{x}$ sea no negativo. El único punto de
+	aclaración lo hacemos con respecto a las redefiniciones en la línea \eqref{alg:def:inf:q}.
+
+	Sea $\vec{q}'$ una copia del vector $\vec{q}$ antes de realizar cualquier modificación. No es
+	difícil ver, por medio de inducción y recordando $g_1 \coloneq \gcd{q_1', \ldots, q_n'} = 1$,
+	que
+	\begin{equation*}
+		q_i = \frac{q_i'}{\prod_{j=1}^{\min\lbrace i, n - 1\rbrace}g_j},
+	\end{equation*}
+	para todo $i \in \braces{1, \ldots, n}$. Luego, las definiciones en las líneas
+	\eqref{alg:def:inf:g}, \eqref{alg:def:inf:bez} y \eqref{alg:def:inf:lastw} son consistentes con
+	la construcción recursiva de la Sección \ref{subsec:dioph-eq}. Juntando esto con el Lema
+	\ref{lemma:t-existence} encontramos que $\vec{x}$ es no negativo y satisface la ecuación lineal
+	diofantinca $\vec{q}^T\vec{x} = \eta$.
+
+	% Observemos que en este algoritmo
+	% seguimos la construcción recursiva de la Sección \ref{subsec:dioph-eq}. Mostramos esto
+	% inductivamente. Denotemos por $\vec{q}'$ al vector $\vec{q}$ antes de ser modificado por el
+	% algoritmo.
+
+	% % Sin embargo, parece que cambiamos la definición del máximo común divisor $g_{i+1}$ en la línea
+	% % \eqref{alg:def:inf:g} cuando la comparamos con \eqref{dummy:next-g}. Primero mostremos por
+	% % inducción que ambas definiciones son equivalentes.
+
+	% Cuando $i = 1$, tenemos $\vec{q} = \vec{q}'$. De la línea \eqref{alg:def:inf:g}, obtenemos $g_2
+	% = \gcd{q_2, q_3, \ldots, q_n}$, pero recordemos que habíamos definido por conveniencia $g_1
+	% \coloneq \gcd{q_1', \ldots, q_n'} = 1$. Así pues, tenemos
+	% \begin{equation*}
+	% 	g_2 = \gcd{q_2, \ldots, q_n} = \gcd{q_2'/g_1, \ldots, q_n'/g_1},
+	% \end{equation*}
+	% pero esto es igual a la definición en \eqref{dummy:next-g}. De la línea \eqref{alg:def:inf:bez}
+	% tenemos que $x_1'$ y $\omega_2'$ son los coeficientes de Bézout de $q_1 = q_1'$ y de $g_2$,
+	% respectivamente. De la línea \eqref{alg:def:inf:w} tenemos
+	% \begin{equation*}
+	% 	\omega_2 = \omega_1\omega_2' - q_1t_1 = \omega_1\omega_2' - \frac{q_1'}{g_1}t_1,
+	% \end{equation*}
+	% por lo que $x_1$ y $\omega_2$ están definidos como \eqref{dummy:eq:first-step} y por lo tanto
+	% satisfacen \eqref{eq:dioph:first-step}. Además, $t_1$ satisface \eqref{eq:param-lb}, de donde
+	% encontramos que $x_1 \geq 0$.
+
+	% De las redefiniciones en la línea \eqref{alg:def:inf:q} obtenemos, para todo $j \in \braces{2,
+	% \ldots, n - 1}$,
+	% \begin{equation*}
+	% 	q_j \leftarrow \frac{q_j}{g_2} = \frac{q_j'}{g_1 \cdot g_2}
+	% \end{equation*}
+
+	% Supongamos inductivamente que el algoritmo sigue la construcción recursiva de la Sección
+	% \ref{subsec:dioph-eq} para alguna $i$ tal que $i - 1 < n - 2$ y que $x_{i-1} \geq 0$. De la
+	% línea \eqref{alg:def:inf:q} tenemos entonces
+	% \begin{equation*}
+	% 	q_j \leftarrow \frac{q_j}{g_i} = \frac{q_j'}{g_i \cdot \prod_{j=1}^{i-1} g_j}
+	% 	= \frac{q_j'}{\prod_{j=1}^{i}g_j},
+	% \end{equation*}
+	% para toda $j \in \braces{i, \ldots, n - 1}$. De la línea \eqref{alg:def:inf:g} se sigue que
+	% \begin{equation*}
+	% 	g_{i+1} = \gcd{q_{i+1}, \ldots, q_n}
+	% 	=
+	% 	\gcd{
+	% 		\frac{q_{i+1}'}{\prod_{j=1}^{i}g_j},
+	% 		\ldots,
+	% 		\frac{q_{n}'}{\prod_{j=1}^{i}g_j}
+	% 	},
+	% \end{equation*}
+	% lo cual es equivalente a \eqref{dummy:next-g}. De la línea \eqref{alg:def:inf:bez} tenemos que
+	% $x_{i}', \omega_{i + 1}'$ son los coeficientes de Bézout de $q_i =
+	% \frac{q_i'}{\prod_{j=1}^ig_j}$ y de $g_{i+1}$, respectivamente. De la línea
+	% \eqref{alg:def:inf:w} también tenemos
+	% \begin{equation*}
+	% 	\omega_{i+1} = \omega_i\omega_{i+1}' - q_it_i = \omega_i\omega_{i+1} -
+	% 	\frac{q_i'}{\prod_{j=1}^{i}g_j}t_i,
+	% \end{equation*}
+	% por lo que $x_i$ y $\omega_{i+1}$ están definidos como \eqref{eq:recurrence} y por lo tanto
+	% satisfacen \eqref{dummy:eq:simplified}. Observamos en la línea \eqref{alg:def:inf:t} que $t_i$
+	% satisface \eqref{eq:param-lb} y por lo tanto $x_i \geq 0$. Así pues, el algoritmo sigue la
+	% construcción recursiva de la Sección \ref{subsec:dioph-eq} para todo $i \in \braces{1, \ldots, n
+	% - 2}$ y también $x_i$ es no negativo.
+	% Finalmente, 
 \end{proof}
 
-\begin{corollary}
+El Algoritmo \ref{algo:inf:ext} extiende el Algoritmo \ref{algo:inf}. Solamente construimos un
+vector $\vec{\tilde{q}}$ a partir del vector coprimo $\vec{q}$ de manera que se satisfagan las
+hipótesis del Algoritmo \ref{algo:inf}. Esta construcción sigue la misma lógica con la que
+justificamos los supuestos $q_i \neq 0$ y $q_{n-1} < 0 < q_n$ antes de presentar el Lema
+\ref{lemma:t-existence}.
+
+Al igual que en el algoritmo anterior, suponemos la existencia de las subrutinas \texttt{length} y
+\texttt{switch}, las cuales determinan la dimensión de un vector $\vec{q}$ y permutan sus entradas,
+respectivamente. Ambas subrutinas son estándar en la literatura y por lo tanto diremos que son
+correctos sin proveer alguna demostración. Así también, la subrutina \texttt{NonNegativeIntSol} es
+el Algoritmo \ref{algo:inf}, el cual es correcto a causa del Lema \ref{lemma:alg:inf:correct}.
+
+\begin{algorithm}[ht]
+	\LinesNumbered
+	\SetKwProg{Fn}{Fn}{\string:}{}
+	\SetKwFunction{switch}{switch}
+	\SetKwFunction{NonNegativeIntSol}{NonNegativeIntSol}
+	\SetKwFunction{FindNegEntry}{FindNegEntry}
+	\SetKwFunction{length}{length}
+	\SetKwFunction{Dioph}{Dioph}
+	\Fn{\Dioph{$\vec{q}$, $\eta$}}{
+		\KwData{\\
+			Vector coprimo $\vec{q}$ tal que $q_i < 0$ para alguna $i \in \braces{1, \ldots, n}$. \\
+			Lado derecho $\eta$.
+			}
+		\KwResult{\\
+			Solución entera no negativa $\vec{x}$ a la ecuación lineal diofantina $\vec{q}^T\vec{x} =
+			\eta$.
+		}
+		$\vec{x} \leftarrow \vec{0}$\;
+		$\vec{\sigma} \leftarrow \left(i \colon q_i \neq 0\right)$\;
+		$\vec{\tilde{q}} \leftarrow \left( q_i \colon q_i \neq 0 \right)$\;
+		\label{alg:def:inf:tilde-q}
+
+		$m \leftarrow$ \length{$\vec{\tilde{q}}$}\; \label{alg:subr:length}
+		\switch{$\vec{\tilde{q}}$, $1$, $m$}\; \label{alg:subr:switch1}
+
+		\For{$i \leftarrow 1$ \KwTo $m - 1$}{ \label{alg:inf:loop}
+			\If{$\tilde{q}_i < 0$}{
+				$j \leftarrow i$\;
+				break\;
+			}
+		}
+		\switch{$\vec{\tilde{q}}$, $j$, $m - 1$}\; \label{alg:subr:switch3}
+
+		$\vec{\tilde{x}} \leftarrow$ \NonNegativeIntSol{$\vec{\tilde{q}}$, $\eta$}\;
+		\switch{$\vec{\tilde{x}}$, $j$, $m - 1$}\; \label{alg:subr:switch2}
+		\switch{$\vec{\tilde{x}}$, $1$, $m$}\;
+
+		\For{$i \leftarrow 1$ \KwTo $m$}{ \label{alg:inf:loop2}
+			$x_{\sigma_i} \leftarrow \tilde{x}_i$\;
+		}
+		\Return{$\vec{x}$}
+	}
+	\caption{Algoritmo para obtener soluciones enteras no negativas a la ecuación lineal diofantina
+	$\vec{q}^T\vec{x} = \eta$ para el caso infinito.}
+	\label{algo:inf:ext}
+\end{algorithm}
+
+\begin{theorem}
+	\label{th:alg:inf}
+	El Algoritmo \ref{algo:inf:ext} es correcto.
+\end{theorem}
+\begin{proof}
+	Primero mostramos que el vector $\vec{\tilde{q}}$ satisface las hipótesis del Algoritmo
+	\ref{algo:inf}. Por definición, en la línea \eqref{alg:def:inf:tilde-q}, tenemos que ninguna
+	entrada de $\vec{\tilde{q}}$ es nula.
+
+	Recordemos de la Definición \ref{theory:def:rational} que, como $\vec{q}$ es el vector coprimo
+	de un vector esencialmente entero $\vec{p}$, su primera entrada no nula es positiva. Así, es
+	cierto que $\tilde{q}_1 > 0$. A partir de la permutación en la línea \eqref{alg:subr:switch1}
+	encontramos que $\tilde{q}_m > 0$.
+
+	Del ciclo en la línea \eqref{alg:inf:loop} recuperamos un índice $j$ tal que $\tilde{q}_j < 0$ y
+	lo permutamos con la $(m - 1)$-ésima entrada de $\vec{\tilde{q}}$ en la línea
+	\eqref{alg:subr:switch3}, de manera que obtenemos $\tilde{q}_{m-1} < 0$.
+
+	Con los tres puntos anteriores, encontramos que el vector $\vec{\tilde{q}}$ satisface las
+	hipótesis del Algoritmo \ref{algo:inf} y por lo tanto el vector $\vec{\tilde{x}}$ es no negativo
+	y satisface la ecuación lineal diofantina $\vec{\tilde{q}}^T\vec{\tilde{x}} = \eta$, debido al
+	Lema \ref{lemma:alg:inf:correct}.
+
+	Las siguientes dos líneas se encargan de invertir las permutaciones hechas previamente.
+	Finalmente, en el ciclo \eqref{alg:inf:loop2} insertamos en $\vec{x}$ las entradas $i$ de
+	$\vec{\tilde{x}}$ donde $q_{\sigma_i} \neq 0$. En otro caso tenemos $x_i = 0$. Así pues, el
+	vector $\vec{x}$ es no negativo y también tenemos
+	\begin{equation*}
+		\vec{q}^T\vec{x} = \sum_{i = 1}^{n}q_ix_i
+		= \sum_{i = 1}^{m}q_{\sigma_i}x_{\sigma_i}
+		= \sum_{i = 1}^{m}\tilde{q}_i\tilde{x}_i
+		= \eta,
+	\end{equation*}
+	por lo que concluimos que el Algoritmo \ref{algo:inf:ext} es correcto.
+\end{proof}
+
+\begin{theorem}
 	\label{infinite:th:complexity}
-	El problema (\ref{theory:formulation}) se puede resolver a través de encontrar la solución de
-	una ecuación lineal diofantina en $n$ incógnitas.
-\end{corollary}
+	Sea $\vec{p} \in \R^n$ un vector esencialmente entero tal que su múltiplo coprimo $\vec{q} \in
+	\Z^n$ tiene una entrada negativa. Entonces el problema \eqref{theory:formulation} se puede
+	resolver a través de encontrar la solución de una ecuación lineal diofantina en $n$ incógnitas.
+\end{theorem}
+\begin{proof}
+	Como $\vec{q}$ es el múltiplo coprimo de $\vec{p}$, existe un escalar $m \in \R$ tal que
+	$\vec{p} = m\vec{q}$. Supongamos, sin pérdida de generalidad, que $m$ es positivo. Recuperemos
+	$\eta$ del Lema \ref{phase-1:lemma:eta}. Por hipótesis, una entrada de $\vec{q}$ es negativa, y
+	entonces este vector satisface las condiciones del Algoritmo \ref{algo:inf:ext}. Por el Teorema
+	\ref{th:alg:inf} podemos encontrar, a partir de resolver solo una ecuación lineal diofantina, un
+	vector entero no negativo $\vec{x}$ que satisface $\vec{q}^T\vec{x} = \eta$. Observemos que
+	\begin{equation*}
+		\vec{p}^T\vec{x} = m\vec{q}^T\vec{x} = m\eta.
+	\end{equation*}
+	Por el Corolario \ref{cor:inf:obj} concluimos que $\vec{x}$ no solo es factible para el problema
+	\eqref{theory:formulation}, sino que también es un punto óptimo.
+\end{proof}
+
+A partir del Teorema anterior, podemos discutir informalmente sobre la complejidad algorítmica del
+problema \eqref{theory:formulation} en el caso especial que una entrada $q_i$ sea negativa. Sea
+$T(\vec{v})$ el número de pasos necesarios para calcular el máximo común divisor de las entradas de
+un vector entero $\vec{v}$. Como los coeficientes de Bézout entre dos enteros $a, b$ se determinan a
+partir del Algortimo Extendido de Euclides, sabemos que el número de pasos para calcularlos es un
+múltiplo entero de $T(a, b)$. 
 
 \section{Análisis de resultados}
 \noindent
