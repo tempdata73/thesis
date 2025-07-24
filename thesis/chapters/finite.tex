@@ -37,155 +37,170 @@ tercera parte de esta sección discutimos brevemente sobre la complejidad algor�
 la solución.
 
 \begin{lemma}
-	Sea
-	\begin{equation}
-		\label{eq:last-index}
-		i^* \coloneq \argmax \left\lbrace \frac{1}{\vec{q}_1}, \ldots, \frac{1}{\vec{q}_n} \right\rbrace,
-	\end{equation}
-	y definamos
+	\label{lemma:tau}
+	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q} \in \Z^n$ su múltiplo
+	coprimo, por lo que existe $m \in \R$ tal que $\vec{p} = m\vec{q}$. Supongamos que $m > 0$ y que
+	las entradas de $\vec{q}$ son todas positivas. Consideremos el problema
+	\eqref{theory:formulation} y supongamos que es factible. Definamos $q^* \coloneq \max\lbrace
+	q_1, \ldots, q_n \rbrace$, y también
 	\begin{equation}
 		\label{eq:tau}
-		\tau \coloneq \left\lfloor \left\lfloor \frac{u}{\vec{q}_{i^*}} \right\rfloor
-			\frac{\vec{q}_{i^*}}{m} \right\rfloor.
+		\tau \coloneq \left\lfloor \left\lfloor \frac{u}{q^*} \right\rfloor
+			\frac{q^*}{m} \right\rfloor.
 	\end{equation}
-	Entonces la solución del problema (\ref{theory:formulation}) se encuentra en una capa entera
-	parametrizada por $k \in \lbrace \eta, \eta - 1, \ldots, \tau \rbrace$.
+	Entonces la solución del problema \eqref{theory:formulation} se encuentra en una capa entera
+	parametrizada por $k \in \lbrace \eta, \eta - 1, \ldots, \tau \rbrace$, donde $\eta$ está
+	definida en el Lema \ref{phase-1:lemma:eta}.
 \end{lemma}
 \begin{proof}
-	Consideremos el vector
+	Definamos $i^* \coloneq \argmax\braces{q_1, \ldots, q_n}$ y consideremos el vector
 	\begin{equation*}
-		\vec{v} \coloneq \left\lfloor \frac{u}{\vec{q}_{i^*}} \right\rfloor \vec{e}_{i^*},
+		\vec{v} \coloneq \left\lfloor \frac{u}{q^*} \right\rfloor \vec{e}_{i^*}.
 	\end{equation*}
-	y observemos que $\vec{v} \geq \vec{0}$, pues $\vec{q} > \vec{0}$ y supusimos que el problema
-	(\ref{theory:formulation}) es factible, por lo que $u \geq 0$. Así también, tenemos
+	Por hipótesis tenemos $q^* > 0$ y, además, como el problema
+	\eqref{theory:formulation} es factible, se sigue del Teorema \ref{theory:th:feasibility} que $u
+	\geq 0$. De esto obtenemos que $\vec{v} \geq \vec{0}$. Así también,
 	\begin{equation*}
-		\vec{q}^T\vec{v} = \left\lfloor \frac{u}{\vec{q}_{i^*}} \right\rfloor \vec{q}_{i^*}
-		\leq \frac{u}{\vec{q}_{i^*}}\vec{q}_{i^*} = u,
+		\vec{q}^T\vec{v} = \left\lfloor \frac{u}{q^*} \right\rfloor q^*
+		\leq \frac{u}{q^*}q^* = u,
 	\end{equation*}
 	y entonces $\vec{v}$ es factible. De aquí se sigue que este vector provee una cota inferior para
 	el problema (\ref{theory:formulation}). Así pues, todo vector $\vec{x}$ candidato a ser el
 	óptimo del problema satisface
 	\begin{equation*}
-		\vec{q}^T\vec{x} = \frac{\vec{p}^T\vec{x}}{m} \geq \left\lfloor \frac{u}{\vec{q}_{i^*}}
-		\right\rfloor \frac{\vec{q}_{i^*}}{m}.
+		\vec{q}^T\vec{x} = \frac{\vec{p}^T\vec{x}}{m} \geq \left\lfloor \frac{u}{q^*}
+		\right\rfloor \frac{q^*}{m}.
 	\end{equation*}
-	Nos interesa calcular el número entero $\tau$ más pequeño tal que todo punto sobre la capa
+	Nos interesa determinar el entero $\tau$ más pequeño tal que todo punto sobre la capa
 	entera $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ con $k \in \lbrace \tau, \tau + 1, \ldots \rbrace$
 	satisfaga esta desigualdad. Del Lema \ref{phase-1:lemma:layer}, toda $k$ debe satisfacer
 	\begin{equation*}
 		k\norm{\vec{q}}^{-2} = \frac{\vec{q}^T\vec{x}}{\norm{\vec{q}}^2} \geq
-		\left\lfloor \frac{u}{\vec{q}_{i^*}} \right\rfloor \frac{\vec{q}_{i^*}}{m}
+		\left\lfloor \frac{u}{q^*} \right\rfloor \frac{q^*}{m}
 		\frac{1}{\norm{\vec{q}}^2},
 	\end{equation*}
-	y por lo tanto
+	equivalentemente,
+	\begin{equation*}
+		k \leq \floor{\frac{u}{q^*}}\frac{q^*}{m}.
+	\end{equation*}
+	Consecuentemente,
 	\begin{equation*}
 		\tau =
-		\left\lfloor \left\lfloor \frac{u}{\vec{q}_{i^*}} \right\rfloor \frac{\vec{q}_{i^*}}{m}
+		\left\lfloor \left\lfloor \frac{u}{q^*} \right\rfloor \frac{q^*}{m}
 			\right\rfloor.
 	\end{equation*}
-	Finalmente, recordemos que $k$ es la primera capa en satisfacer la restricción presupuestaria.
-	Por lo tanto, el óptimo del problema (\ref{theory:formulation}) se encuentra en una capa
-	parametrizada por $k \in \lbrace \eta, \eta - 1, \ldots, \tau \rbrace$.
+	Finalmente, recordemos del Lema \ref{phase-1:lemma:eta} que $\eta$ es la primera capa en
+	satisfacer la restricción presupuestaria. Por lo tanto, el óptimo del problema
+	(\ref{theory:formulation}) se encuentra en una capa parametrizada por $\tau \leq k \leq \eta$.
 \end{proof}
 
 \begin{observation}
-	Siempre se cumple que $\tau \leq k$. En efecto,
+	Siempre se cumple que $\tau \leq \eta$. En efecto,
 	\begin{equation*}
-		\left\lfloor \frac{u}{\vec{q}_{i^*}} \right\rfloor \vec{q}_{i^*}
-		\leq \frac{u}{\vec{q}_{i^*}} \vec{q}_{i^*} = u,
+		\left\lfloor \frac{u}{q^*} \right\rfloor q^*
+		\leq \frac{u}{q^*} q^* = u,
 	\end{equation*}
 	como $m > 0$, tenemos
 	\begin{equation*}
-		\left\lfloor \frac{u}{\vec{q}_{i^*}} \right\rfloor \frac{\vec{q}_{i^*}}{m}
+		\left\lfloor \frac{u}{q^*} \right\rfloor \frac{q^*}{m}
 		\leq \frac{u}{m}.
 	\end{equation*}
-	Aplicando la función piso a ambos lados de la desigualdad encontramos que $\tau \leq k$.
+	Aplicando la función piso a ambos lados de la desigualdad encontramos que $\tau \leq \eta$.
 \end{observation}
-Sea $k \in \lbrace \eta, \eta - 1, \ldots, \tau \rbrace$. Sabemos de la sección de Fundamentos en el
-primer capítulo que deseamos resolver la ecuación lineal diofantina
-\begin{equation*}
-	\vec{q}^T\vec{x} = \vec{q}_1\vec{x}_1 + \vec{q}_2\vec{x}_2 + \cdots + \vec{q}_n\vec{x}_n = k.
-\end{equation*}
-Implementamos la misma estrategia para plantear una formulación recursiva,
-\begin{equation*}
-	\frac{q_1}{g_1}\vec{x}_1 + g_2\omega_2 = \omega_1.
-\end{equation*}
-No obstante, en este caso podemos interpretar $\omega_2$ de tal manera que obtengamos más
+\begin{observation}
+	Nuevamente, la suposición de que el escalar $m$ sea positivo ocurre sin pérdida de generalidad.
+	Así como mencionamos en el capítulo anterior que si $m$ es negativo entonces existe un parámetro
+	$\eta'$ análogo a $\eta$, también existe $\tau' \geq \eta'$ tal que la solución del problema
+	\eqref{theory:formulation} se encuentra en una capa parametrizada por $\eta' \leq k \leq \tau'$.
+\end{observation}
+
+Sea $k \in \braces{\eta, \ldots, \tau}$. Sabemos de la Sección \ref{subsec:dioph-eq} que deseamos
+resolver la ecuación lineal diofantina \eqref{eq:dioph}, por lo que implementamos la misma
+estrategia para plantear una formulación recursiva. Además, debido al supuesto que $\vec{q}$ tiene
+entradas estrictamente positivas, interpretar $\omega_2$ de tal manera que obtengamos más
 información. Así como $\omega_1 \coloneq k$  es el presupuesto disponible en un inicio, $\omega_2$
-es el presupuesto disponible después de utilizar parte de él para adquirir $\vec{x}_1 \geq 0$ unidades.
+es el presupuesto disponible después de utilizar parte de él para adquirir $x_1 \geq 0$ unidades.
 Por lo tanto, es posible agregar la restricción $\omega_2 \geq 0$. Similarmente, en el $i$-ésimo
 paso de la formulación recursiva, somos capaces de agregar la restricción de que el presupuesto
-restante $\omega_{i + 1}$ sea no negativo. Combinando esto con la no negatividad de $\vec{x}_i$, obtenemos
-de (\ref{eq:recurrence}),
+restante $\omega_{i + 1}$ sea no negativo.
+
+Combinando el punto anterior con la no negatividad de $x_i$, obtenemos de (\ref{eq:recurrence}) los
+intervalos de factibilidad
 \begin{equation}
 	\label{phase-1:finite:eq:param-bounds}
 	\left\lceil -\frac{\omega_ix_i'}{g_{i+1}} \right\rceil
 	\leq
-	\vec{t}_i
+	t_i
 	\leq
-	\left\lfloor \frac{\omega_i\omega_{i+1}'}{\vec{q}_i} \prod_{j=1}^{i}g_j \right\rceil.
+	\left\lfloor \frac{\omega_i\omega_{i+1}'}{q_i} \prod_{j=1}^{i}g_j \right\rceil,
 \end{equation}
-para todo $i \in \lbrace 1, \ldots, n - 2\rbrace$. Después, como $0 < \vec{q}_{n - 1}, \vec{q}_n$, se sigue de
+para todo $i \in \lbrace 1, \ldots, n - 2\rbrace$. Y también, como $0 < q_{n - 1}, q_n$, se sigue de
 (\ref{eq:last-solution}),
 \begin{equation}
 	\label{phase-1:finite:eq:param-bounds-last}
-	\left\lceil -\frac{\omega_{n-1}x_{n-1}'}{\vec{q}_n} \cdot \prod_{j=1}^{n-2}g_j \right\rceil
+	\left\lceil -\frac{\omega_{n-1}x_{n-1}'}{q_n} \cdot \prod_{j=1}^{n-2}g_j \right\rceil
 	\leq
-	\vec{t}_{n - 1}
+	t_{n - 1}
 	\leq
-	\left\lfloor \frac{\omega_{n-1}x_{n}'}{\vec{q}_{n-1}} \cdot \prod_{j=1}^{n-2}g_j \right\rfloor.
+	\left\lfloor \frac{\omega_{n-1}x_{n}'}{q_{n-1}} \cdot \prod_{j=1}^{n-2}g_j \right\rfloor.
 \end{equation}
 
 Consecuentemente, el número de elecciones que podemos hacer para $\vec{t} \in \Z^{n-1}$ es finito.
-Observemos que una elección de $\vec{t}_i$ modifica $\omega_{i+1}$ y por lo tanto también afecta el
-intervalo de factibilidad de $\vec{t}_{i+1}$. Siguiendo con este razonamiento, encontramos que una
-elección de $\vec{t}_i$ afecta los intervalos de factibilidad de $\vec{t}_{i+1}, \ldots,
-\vec{t}_{n-1}$.
+El Algoritmo \ref{algo:fin:helper} explota estas cotas para encontrar una solución entera no
+negativa a la ecuación \eqref{eq:dioph} o para determinar que no existe tal solución.
 
-Es decir, a pesar de que el óptimo se encuentre sobre la capa entera $k$ que estamos analizando, la
-elección de los primeros parámetros que realicemos puede afectar el tiempo de terminación de nuestro
-algoritmo. Hay dos extremos en las posibles estrategias que podemos adoptar para realizar estas
-elecciones. Para visualizarlo, tenemos que nuestro presupuesto actual $\omega_{i}$ determina el
-siguiente presupuesto a partir de
-\begin{equation*}
-	\begin{cases}
-		\vec{x}_i = \omega_ix_i' + g_{i+1}\vec{t}_i, \\
-		\omega_{i+1} = \omega_i\omega_{i+1}' - \frac{\vec{q}_i}{\prod_{j=1}^{i}g_j}\vec{t}_i,
-	\end{cases}
-\end{equation*}
-donde la primera ecuación indica cuántos elementos de $\vec{x}_i$ decidimos adquirir a partir del
-presupuesto actual $\omega_i$.
+Observemos también que una elección de $t_i$ modifica $\omega_{i+1}$ y por lo tanto también afecta
+el intervalo de factibilidad de $t_{i+1}$. Siguiendo con este razonamiento, encontramos que una
+elección de $t_i$ afecta a su vez los intervalos de factibilidad de $t_{i+1}, \ldots, t_{n-1}$. En
+la Sección \ref{subsec:complex} discutiremos cómo es que esta ``cadena'' acota la complejidad
+algorítmica del Algoritmo \ref{algo:fin:dioph}. A continuación estudiamos brevemente el
+comportamiento periódico del número de capas enteras que el Algoritmo \ref{algo:fin:dioph} puede
+revisar.
 
-El primer extremo está en buscar agotar todo nuestro presupuesto disponible en las primeras
-elecciones de $\vec{x}_1, \vec{x}_2, \ldots, \vec{x}_i$. Es decir, adquirimos la mayor cantidad que
-podamos de los primeros productos. Bajo esta perspectiva, es razonable imponer un orden en $\vec{q}$
-de manera que
-\begin{equation*}
-	\vec{q}_1 \geq \vec{q}_2 \geq \cdots \geq \vec{q}_n,
-\end{equation*}
-por lo que primero adquirimos los artículos más caros. En este caso diremos que $\vec{q}$ está en
-orden descendente. Si adoptamos esta estrategia es porque suponemos que el óptimo se concentra en
-una vecindad de los primeros $i$ artículos. Es decir, si tenemos la creencia de que $\vec{x}_{i +
-1}, \ldots, \vec{x}_n$ pueden ser aproximadamente cero.
-
-% TODO: es mejor argumentar esto en la sección de análisis de resultados.
-% De ser este el caso, entonces es razonable suponer que los tiempos de terminación de esta búsqueda
-% son similares a los de Ramificación y Acotamiento. 
-
-El segundo extremo es esencialmente lo opuesto. Esto no quiere decir que ahora ordenamos $\vec{q}$
-de manera ascendente y escogemos las primera $\vec{t}_i$ lo más pequeñas posible\footnote{Si
-	hiciéramos esto es porque creemos que $\vec{x}_1, \ldots, \vec{x}_i$ son aproximadamente cero,
-	pero entonces podemos permutar estas entradas de manera que se encuentren hasta el final y
-emplear la primera estrategia.}. Consiste en escoger $\vec{t}_i$ de manera que se encuentre en el
-punto medio de sus cotas inferiores y superiores. Es decir, creemos que el óptimo se encuentra en
-una vecindad del centro de masa de la $k$-ésima capa entera.
-
-Observemos que, independientemente del caso, si una capa entera no contiene puntos factibles,
-entonces ambas estrategias agotan todas las elecciones posibles de $\vec{t}_1, \ldots,
-\vec{t}_{n-1}$. Por lo tanto, los tiempos de terminación de ambas estrategias son iguales para capas
-enteras que no contienen puntos óptimos. La segunda estrategia, no obstante, es candidata ideal para
-realizar una búsqueda binaria. Discutimos más sobre esto último en la sección de análisis de
-resultados.
+% Es decir, a pesar de que el óptimo se encuentre sobre la capa entera $k$ que estamos analizando, la
+% elección de los primeros parámetros que realicemos puede afectar el tiempo de terminación de nuestro
+% algoritmo. Hay dos extremos en las posibles estrategias que podemos adoptar para realizar estas
+% elecciones. Para visualizarlo, tenemos que nuestro presupuesto actual $\omega_{i}$ determina el
+% siguiente presupuesto a partir de
+% \begin{equation*}
+% 	\begin{cases}
+% 		x_i = \omega_ix_i' + g_{i+1}t_i, \\
+% 		\omega_{i+1} = \omega_i\omega_{i+1}' - \frac{q_i}{\prod_{j=1}^{i}g_j}t_i,
+% 	\end{cases}
+% \end{equation*}
+% donde la primera ecuación indica cuántos elementos de $x_i$ decidimos adquirir a partir del
+% presupuesto actual $\omega_i$.
+% 
+% El primer extremo está en buscar agotar todo nuestro presupuesto disponible en las primeras
+% elecciones de $x_1, x_2, \ldots, x_i$. Es decir, adquirimos la mayor cantidad que
+% podamos de los primeros productos. Bajo esta perspectiva, es razonable imponer un orden en $\vec{q}$
+% de manera que
+% \begin{equation*}
+% 	q_1 \geq q_2 \geq \cdots \geq q_n,
+% \end{equation*}
+% por lo que primero adquirimos los artículos más caros. En este caso diremos que $\vec{q}$ está en
+% orden descendente. Si adoptamos esta estrategia es porque suponemos que el óptimo se concentra en
+% una vecindad de los primeros $i$ artículos. Es decir, si tenemos la creencia de que $x_{i +
+% 1}, \ldots, x_n$ pueden ser aproximadamente cero.
+% 
+% % TODO: es mejor argumentar esto en la sección de análisis de resultados.
+% % De ser este el caso, entonces es razonable suponer que los tiempos de terminación de esta búsqueda
+% % son similares a los de Ramificación y Acotamiento. 
+% 
+% El segundo extremo es esencialmente lo opuesto. Esto no quiere decir que ahora ordenamos $\vec{q}$
+% de manera ascendente y escogemos las primera $t_i$ lo más pequeñas posible\footnote{Si
+% 	hiciéramos esto es porque creemos que $x_1, \ldots, x_i$ son aproximadamente cero,
+% 	pero entonces podemos permutar estas entradas de manera que se encuentren hasta el final y
+% emplear la primera estrategia.}. Consiste en escoger $t_i$ de manera que se encuentre en el
+% punto medio de sus cotas inferiores y superiores. Es decir, creemos que el óptimo se encuentra en
+% una vecindad del centro de masa de la $k$-ésima capa entera.
+% 
+% Observemos que, independientemente del caso, si una capa entera no contiene puntos factibles,
+% entonces ambas estrategias agotan todas las elecciones posibles de $t_1, \ldots,
+% t_{n-1}$. Por lo tanto, los tiempos de terminación de ambas estrategias son iguales para capas
+% enteras que no contienen puntos óptimos. La segunda estrategia, no obstante, es candidata ideal para
+% realizar una búsqueda binaria. Discutimos más sobre esto último en la sección de análisis de
+% resultados.
 
 \begin{lemma}
 	\label{lemma:layer-dist}
@@ -224,8 +239,8 @@ resultados.
 \end{proof}
 \begin{definition}
 	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q} \in \Z^n$ su múltiplo
-	coprimo. Consideremos los parámetros $\eta$ y $\tau$ (c.f. \ref{phase-1:lemma:eta},
-	\ref{eq:tau}) como funciones del presupuesto $u$. Entonces decimos que la función $\Delta^*
+	coprimo. Consideremos los parámetros $\eta$ y $\tau$ (c.f. Lemas \ref{phase-1:lemma:eta} y
+	\ref{lemma:tau}) como funciones del presupuesto $u$. Entonces decimos que la función $\Delta^*
 	\colon \R \to \R$ dada por
 	\begin{equation}
 		\label{eq:dist-layers}
@@ -235,12 +250,13 @@ resultados.
 \end{definition}
 
 Si queremos aplicar el Lema \ref{lemma:layer-dist}, debemos reducir nuestra atención a vectores
-$\vec{p} \in \Z^n$ distintos de cero. Esto se debe a que debemos asegurar que el múltiplo $m \neq 0$
-sea entero\footnote{Es la creencia del autor que este resultado se puede generalizar para múltiplos
-$m$ racionales, mas esto no agrega demasiado valor en lo que sigue de la tesis.}. Independientemente
-del comportamiento periódico de $\Delta^*$, observemos que esta función varía significativamente en
-ante cambios en $m$. Esto último implica que el número de capas enteras a revisar depende del número
-de cifras decimales usadas para especificar $\vec{p}$.
+$\vec{p}$ enteros. Esto se debe a que debemos asegurar que el múltiplo $m$ sea entero\footnote{
+	Es la creencia del autor que el Lema \ref{lemma:layer-dist} se puede generalizar para múltiplos
+	$m$ racionales, mas esto no agrega demasiado valor en lo que sigue de la tesis.
+}. Independientemente del comportamiento
+periódico de $\Delta^*$, observemos que esta función varía significativamente ante cambios en $m$
+(ver la Figura \ref{fig:m:ex} o el Ejemplo \ref{ex:decimals}). Esto último implica que el número de
+capas enteras a revisar depende del número de cifras decimales usadas para especificar $\vec{p}$.
 
 \begin{example}
 	\label{ex:decimals}
@@ -265,64 +281,75 @@ de cifras decimales usadas para especificar $\vec{p}$.
   \end{minipage}
 
   \caption{Número de capas a revisar en función del presupuesto. \textit{Izquierda: }Para los
-	  parámetros $m = 8$ y $\vec{q}_{i^*} = 12$ encontramos que hay un máximo de una capa a revisar.
+	  parámetros $m = 8$ y $q^* = 12$ encontramos que hay un máximo de una capa a revisar.
 	\textit{Derecha: } A medida que $m$ se vuelve fraccionario, las capas a revisar aumentan. En
-		este caso tenemos $m = 0.08$ y $\vec{q}_{i^*} = 960$.}
+		este caso tenemos $m = 0.08$ y $q^* = 960$.}
+  \label{fig:m:ex}
 \end{figure}
 
 Observaremos en el análisis de resultados que el número de capas enteras que nuestro algoritmo
 revisa en realidad disminuye a medida que aumenta el presupuesto $u$. Demostraremos a continuación
 que para $u$ suficientemente grande, la solución al problema (\ref{theory:formulation}) se encuentra
-en la $\eta$-ésima capa entera. Este resultado es análogo al caso infinito del Teorema
-\ref{theory:th:feasibility}.
+en la $\eta$-ésima capa entera. Este resultado será análogo al Teorema \ref{infinite:th:complexity}.
+No obstante, requerimos de un par de Definiciones y Lemas preliminares. Para motivar lo que
+se encuentra a continuación mencionamos lo siguiente.
 
-No obstante, necesitamos primero de un par de Definiciones y Lemas preliminares. Para motivar lo que
-se encuentra a continuación mencionamos lo siguiente. Primero mostramos que existe un punto entero
-en una vecindad fija de cada punto sobre la $k$-ésima capa entera. Luego, a medida que aumenta el
-parámetro $k$, como la vecindad es fija, debe ser el caso que existe un punto entero no negativo en
-la vecindad de cualquier otro punto no negativo.
+Primero mostramos que existe un punto entero en una vecindad fija de cada punto sobre cualquier capa
+entera. Luego, si el entero $k$ que parametriza la capa entera es suficientemente grande, debe ser
+el caso que existe una vecindad de un punto no negativo tal que esté completamente contenida en el
+cuadrante no negativo. Como necesariamente hay un punto entero en esa vencidad, habremos de
+encontrar un punto entero no negativo sobre esa $k$-ésima capa entera.
 
-Sea $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ una capa entera. Entonces definimos la bola cerrada sobre
-esta capa entera con radio $r > 0$ y centro $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ como
-\begin{equation}
-	\label{eq:k-ball}
-	B_r^{(k)}(\vec{x}) \coloneq \lbrace \vec{y} \in \R^n \colon \norm{\vec{y} - \vec{x}} \leq r
-	\rbrace \cap H_{\vec{q}, k \norm{\vec{q}}^{-2}}.
-\end{equation}
+\begin{definition}
+	\label{fin:def:ball}
+	Sea $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ una capa entera. Entonces definimos la bola cerrada sobre
+	esta capa entera con radio $r > 0$ y centro $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ como
+	\begin{equation}
+		\label{eq:k-ball}
+		B_r^{(k)}(\vec{x}) \coloneq \lbrace \vec{y} \in \R^n \colon \norm{\vec{y} - \vec{x}} \leq r
+		\rbrace \cap H_{\vec{q}, k \norm{\vec{q}}^{-2}}.
+	\end{equation}
+\end{definition}
 % TODO: mostrar una imagen con una bola.
 \begin{lemma}
 	\label{lemma:ball-cover}
-	Existe $r > 0$ tal que la familia de bolas
+	Sea $\vec{q} \in \Z^n$ tal que sus entradas son coprimas y supongamos que $q_n \neq 0$. Entonces
+	existe $r > 0$ tal que la familia de bolas
 	\begin{equation*}
 		\left\lbrace B_r^{(k)}(\vec{x}) \colon \vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap
 			\Z^n \right\rbrace
 	\end{equation*}
-	es una cubierta de $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$.
+	es una cubierta de la $k$-ésima capa entera $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$.
 \end{lemma}
 \begin{proof}
-	Recordemos del Teorema (\ref{th:lattice}) que $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}
-	\cap \Z^n$ si y solo si $\vec{x} = k\vec{\omega} + M\vec{t}$ para algún $\vec{t} \in \Z^{n-1}$.
-	Así, tenemos
+	Como $q_n \neq 0$, recordemos del Teorema \eqref{th:lattice} que
+	\begin{equation*}
+		\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap \Z^n \iff \vec{x} = k\vec{\omega} + M\vec{t}
+	\end{equation*}
+	para algún vector $\vec{t} \in \Z^{n-1}$, donde recuperamos $\vec{\omega}$ y $M$ de
+	\eqref{eq:vec-omega} y \eqref{eq:mat-T}, respectivamente. Así, tenemos
 	\begin{equation*}
 		\left\lbrace B_r^{(k)}(\vec{x}) \colon \vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap
 			\Z^n \right\rbrace
 			=
 		\left\lbrace B_r^{(k)}(k\vec{\omega} + M\vec{t}) \colon \vec{t} \in \Z^{n-1} \right\rbrace.
 	\end{equation*}
-	Por un lado, sabemos que $B_r^{(k)}(k\vec{\omega} + M\vec{t}) \subseteq H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ para
-	todo punto entero $\vec{t} \in \Z^{n-1}$. Luego, para cualquier $r > 0$ tenemos
+	A partir de esto último sabemos que $B_r^{(k)}(k\vec{\omega} + M\vec{t}) \subseteq H_{\vec{q},
+	k\norm{\vec{q}}^{-2}}$ para todo punto entero $\vec{t} \in \Z^{n-1}$. Luego, para cualquier $r >
+	0$ tenemos
 	\begin{equation}
 		\label{eq:ball-cover:1}
 		\bigcup_{\vec{t} \in \Z^{n-1}}B_r^{(k)}(k\vec{\omega} + M\vec{t}) \subseteq
 		H_{\vec{q}, k\norm{\vec{q}}^{-2}}.
 	\end{equation}
-	Ahora bien, sea $\vec{y}$ un punto sobre la $k$-ésima capa entera. Como las columnas de $M$ son
-	linealmente independientes, existe $\vec{t} \in \R^{n-1}$ tal que
+	Ahora bien, sea $\vec{y}$ un punto sobre la $k$-ésima capa entera. Por el Lema \ref{lemma:iso2}
+	sabemos que las columnas de $M$ son linealmente independientes, y entonces existe $\vec{t} \in
+	\R^{n-1}$ tal que
 	\begin{equation*}
 		\vec{y} = k\vec{\omega} + M\vec{t}.
 	\end{equation*}
 	Sea $\lfloor \vec{t} \rceil \in \Z^{n-1}$ el vector resultante de redondear cada entrada de
-	$\vec{t}$ al entero más cercano. Luego, $\vec{t} = \lfloor \vec{t} \rfloor + \vec{\delta}$,
+	$\vec{t}$ al entero más cercano. Luego, $\vec{t} = \lfloor \vec{t} \rceil + \vec{\delta}$,
 	donde $\vec{\delta} \in \R^{n-1}$ satisface $\norm{\vec{\delta}}_{\infty} \leq 0.5$. Definamos
 	\begin{equation*}
 		\vec{x} \coloneq k\vec{\omega} + M\lfloor \vec{t} \rceil \in \Z^{n-1},
@@ -340,8 +367,8 @@ esta capa entera con radio $r > 0$ y centro $\vec{x} \in H_{\vec{q}, k\norm{\vec
 		\label{eq:radius}
 		r \coloneq \frac{1}{2}\norm{M}_F,
 	\end{equation}
-	entonces para todo $\vec{y} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$, existe $\vec{x} \in \Z^n$
-	sobre esa misma capa entera tal que $\vec{y} \in B_r^{(k)}(\vec{x})$. Por lo tanto,
+	encontramos que $\vec{y} \in B_r^{(k)}(\vec{x})$. Luego, como $\vec{y} \in H_{\vec{q},
+	k\norm{\vec{q}}^2} \cap \Z^n$ fue genérico, se sigue que
 	\begin{equation}
 		\label{eq:ball-cover:2}
 		H_{\vec{q}, k\norm{\vec{q}}^{-2}} \subseteq
@@ -354,19 +381,19 @@ Ahora bien, denotemos por $\vec{u}_i$ las intersecciones que tiene la capa enter
 k\norm{\vec{q}}^{-2}}$ con cada uno de los ejes. Es decir,
 \begin{equation}
 	\label{eq:generators}
-	\vec{u}_i \coloneq \frac{k}{\vec{q}_i}\vec{e}_i,
+	\vec{u}_i \coloneq \frac{k}{q_i}\vec{e}_i,
 \end{equation}
 y consideremos el símplice $\sigma$ generado por estos vectores:
 \begin{equation*}
 	\sigma \coloneq \left\lbrace \theta_1\vec{u}_1 + \cdots \theta_n\vec{u}_n \colon
 		\sum_{i=1}^{n}\theta_i = 1, \theta_i \geq 0 \right\rbrace.
 \end{equation*}
-No es difícil ver que todo punto $\vec{x} \in \R^n_{\geq \vec{0}}$ sobre la $k$-ésima capa entera
+Se sigue inmediatamente que todo punto $\vec{x} \in \R^n$ no negativo sobre la $k$-ésima capa entera
 también es un elemento de este símplice $\sigma$ y viceversa.
 
 Ahora bien, nos interesa determinar la existencia de un punto entero sobre $\sigma$. De esta manera,
 tendríamos un punto entero no negativo que satisface la ecuación lineal diofantina
-$\vec{q}^T\vec{x} = k$. Para lograr esto, definimos el baricentro del $\sigma$ y determinamos una
+$\vec{q}^T\vec{x} = k$. Para lograr esto, definimos el baricentro de $\sigma$ y determinamos una
 vecindad de este baricentro de manera que esté contenida en el símplice.
 
 \begin{definition}
@@ -400,16 +427,15 @@ vecindad de este baricentro de manera que esté contenida en el símplice.
 \end{definition}
 \begin{observation}
 	Si $\sigma$ es generado por $n$ vectores, entonces tiene $\binom{n}{n-1} = n$ facetas, y cada
-	una es generada por $n - 1$ vectores. También se cumple que la frontera del símplice es $F_1
-	\cup \cdots \cup F_n$.
+	una es generada por $n - 1$ vectores. También se cumple que la frontera del símplice es la unión
+	de sus facetas.
 \end{observation}
 
 De (\ref{eq:generators}) encontramos que el vector $\vec{u}_j$ es ortogonal a los vectores $\lbrace
-\vec{u}_i \rbrace_{i \neq j}$, se sigue que su proyección sobre la capa entera $H_{\vec{q},
-k\norm{\vec{q}}_2^{-2}}$ es el vector normal de la faceta $F_j$. Además, esta proyección apunta
-hacia el interior del símplice $\sigma$. Ahora bien, como $\vec{q}$ es el vector normal a
-$H_{\vec{q}, k\norm{\vec{q}}_2}$, encontramos que la proyección de $\vec{u}_j$ sobre esta capa
-entera es
+\vec{u}_i \rbrace_{i \neq j}$, y por lo tanto su proyección sobre la capa entera $H_{\vec{q},
+k\norm{\vec{q}}_2^{-2}}$ constituye el vector normal de la $j$-ésima faceta. Además, esta proyección
+apunta hacia el interior del símplice $\sigma$. Como $\vec{q}$ es el vector normal a $H_{\vec{q},
+k\norm{\vec{q}}_2}$, encontramos que la proyección de $\vec{u}_j$ sobre esta capa entera es
 \begin{equation}
 	\label{eq:normal-vector}
 	\vec{\mu}_j \coloneq
@@ -424,8 +450,8 @@ faceta $F_j$ está contenida en el hiperplano afino
 	\cap H_{\vec{q}, k\norm{\vec{q}}_2^{-2}},
 \end{equation*}
 donde $b_j \coloneq \est{\mu}_j^T\vec{x}$ para algún $\vec{x} \in F_j$. Luego, como cada
-vector normal $\est{\mu}_j$ apunta hacia el interior del símplice $\sigma$, se sigue que
-podemos escribirlo como
+vector normal $\est{\mu}_j$ apunta hacia el interior del símplice $\sigma$, se sigue que este puede
+ser escrito como
 \begin{equation*}
 	\sigma = \bigcap_{j=1}^{n} \lbrace \vec{x} \in \R^{n} \colon \est{\mu}^T_j\vec{x} \geq b_j
 	\rbrace \cap H_{\vec{q}, k\norm{\vec{q}}_2^{-2}}.
@@ -460,7 +486,7 @@ Esta caracterización de $\sigma$ nos permite demostrar el siguiente Lema.
 		b_j \\
 		&= \est{\mu}_j^T(\vec{x} - \est{\sigma}) + d(\est{\sigma}, F_j).
 	\end{align*}
-	Por Cauchy-Schwartz tenemos
+	Por la desigualdad de Cauchy-Schwartz tenemos
 	\begin{equation*}
 		\est{\mu}_j^T(\vec{x} - \est{\sigma}) \geq -\norm{\est{\mu}_j}_2\norm{\vec{x} -
 		\est{\sigma}}_2 = -\norm{\vec{x} - \est{\sigma}}_2 \geq -r,
@@ -483,7 +509,7 @@ Esta caracterización de $\sigma$ nos permite demostrar el siguiente Lema.
 	Ahora bien, supongamos que $r > d(\est{\sigma}, F_j)$ para algún $j \in \lbrace 1, \ldots,
 	n \rbrace$. Consideremos el punto $\vec{x} \in F_j$ que satisface $d(\est{\sigma}, F_j) =
 	d(\est{\sigma}, \vec{x})$. Tal punto existe porque $F_j$ es cerrado. Luego,
-	$\norm{\vec{\sigma} - \vec{x}}_2 < r$. Entonces existe $\varepsilon > 0$ tal que
+	$\norm{\est{\sigma} - \vec{x}}_2 < r$. Entonces existe $\varepsilon > 0$ tal que
 	\begin{equation*}
 		\norm{\est{\sigma} - (\vec{x} - \varepsilon\est{\mu}_j)}_2 \leq r,
 	\end{equation*}
@@ -513,30 +539,30 @@ Realizando los cálculos, encontramos que
 \begin{align*}
 	\vec{\mu}_j^T(\est{\sigma} - \vec{u}_i)
 	% &=
-	% \left( \frac{k}{\vec{q}_j}\vec{e}_j - \frac{k}{\norm{\vec{q}}_2^2}\vec{q} \right)^T
-	% \left( \frac{k}{n\vec{q}_1}, \ldots, \frac{k}{n\vec{q}_i} - \frac{k}{\vec{q}_i}, \ldots,
-	% 		\frac{k}{n\vec{q}_n} \right) \\
+	% \left( \frac{k}{q_j}\vec{e}_j - \frac{k}{\norm{\vec{q}}_2^2}\vec{q} \right)^T
+	% \left( \frac{k}{nq_1}, \ldots, \frac{k}{nq_i} - \frac{k}{q_i}, \ldots,
+	% 		\frac{k}{nq_n} \right) \\
 	% &=
 	% k^2
-	% \left( \frac{1}{\vec{q}_j}\vec{e}_j - \frac{1}{\norm{\vec{q}}_2^2}\vec{q} \right)^T
-	% \left( \frac{1}{n\vec{q}_1}, \ldots, \frac{1}{n\vec{q}_i} - \frac{1}{\vec{q}_i}, \ldots,
-	% 		\frac{1}{n\vec{q}_n} \right) \\
+	% \left( \frac{1}{q_j}\vec{e}_j - \frac{1}{\norm{\vec{q}}_2^2}\vec{q} \right)^T
+	% \left( \frac{1}{nq_1}, \ldots, \frac{1}{nq_i} - \frac{1}{q_i}, \ldots,
+	% 		\frac{1}{nq_n} \right) \\
 	% &=
 	% k^2
-	% \left(\frac{1}{\vec{q}_j}\frac{1}{n\vec{q}_j} -
+	% \left(\frac{1}{q_j}\frac{1}{nq_j} -
 	% 	\frac{1}{\norm{\vec{q}}_2^2} \cdot
 	% 	\left(\frac{1}{n} + \cdots + \frac{1}{n} - 1\right)
 	% 	\right) \\
-	&= \frac{k^2}{n\vec{q}_j^2},
+	&= \frac{k^2}{nq_j^2},
 \end{align*}
 y también
 \begin{equation*}
-	\norm{\vec{\mu}_j}_2 = k \sqrt{\frac{1}{\vec{q}_j^2} - \frac{1}{\norm{\vec{q}}_2^2}}.
+	\norm{\vec{\mu}_j}_2 = k \sqrt{\frac{1}{q_j^2} - \frac{1}{\norm{\vec{q}}_2^2}}.
 \end{equation*}
 Sustituyendo valores, obtenemos
 \begin{equation*}
 	d(\est{\sigma}, F_j) = \frac{k}{n} \cdot
-	\frac{1}{\vec{q}_j^2\sqrt{\vec{q}_j^{-2} - \norm{\vec{q}}_2^{-2}}}
+	\frac{1}{q_j^2\sqrt{q_j^{-2} - \norm{\vec{q}}_2^{-2}}}
 	= \frac{k}{n} \cdot \frac{1}{Q_j},
 \end{equation*}
 donde definimos $Q_j$ pertinentemente. Finalmente, del Lema \ref{lemma:sigma-radius} encontramos que
@@ -615,7 +641,219 @@ decreciente en cuanto al número de capas enteras revisadas. Demostrar que este 
 cumple es mucho más difícil y queda fuera del propósito de esta tesis.
 
 \subsection{Complejidad algorítmica}
+\label{subsec:complex}
 \noindent
+
+\begin{theorem}
+	\label{th:fin:helper:correct}
+	El algoritmo \ref{algo:fin:helper} es correcto.
+\end{theorem}
+\begin{proof}
+	Hacemos la demostración por inducción en la dimensión $n$ del vector $\vec{q}$. Supongamos, para
+	el caso base, que $n = 2$. Luego, queremos encontrar soluciones enteras no negativas a la
+	ecuación
+	\begin{equation}
+		\label{lemma:correct:base-case}
+		q_1x_1 + q_2x_2 = k.
+	\end{equation}
+	Por hipótesis sabemos que $q_1$ y $q_2$ son coprimos. Luego, del Teorema
+	\ref{prerreq:th:construction}, las soluciones enteras a esta ecuación están dadas por
+	\begin{equation}
+		\label{lemma:correct:base-case:sol}
+		\begin{cases}
+			x_1 = kx_1' + q_2t, \\
+			x_2 = kx_2' - q_1t, \\
+		\end{cases}
+	\end{equation}
+	donde $t \in \Z$ es una variable libre, y $x_1', x_2'$ son los coeficientes de Bézout (c.f.
+	Definición \ref{prerreq:def:bezout}) de $x_1, x_2$. Por claridad, escribimos $x_1'$ y $x_2'$
+	como $x_{n-1}'$ y $x_{n}'$ en la línea \eqref{alg:fin:bez}. Luego, existen soluciones no negativas
+	si y solo si existe $t \in \Z$ que satisfaga
+	\begin{equation*}
+		\ceil{-\frac{kx_1'}{q_2}} \leq t \leq \floor{\frac{kx_2'}{q_1}}.
+	\end{equation*}
+	Los enteros $b_1$ y $b_2$ en las líneas \eqref{alg:fin:b1} y \eqref{alg:fin:b2} representan el
+	lado izquierdo y derecho de estas desigualdades, respectivamente. De esta manera, el algoritmo
+	devuelve \NIL~ si solo si este intervalo no está bien definido, es decir, si y solo si no existen
+	soluciones enteras no negativas. Supongamos, pues, que este intervalo sí está bien definido.
+	Entonces, podemos escoger que la variable libre $t$ sea $b_1$. Sustituyendo en
+	\eqref{lemma:correct:base-case:sol} obtenemos una solución entera no negativa a la ecuación
+	\eqref{lemma:correct:base-case} y entonces el algoritmo es correcto para $n = 2$.
+
+	Supongamos, inductivamente, que el algoritmo es correcto para alguna $n - 1 \geq 2$. Mostramos
+	ahora que el algoritmo también es correcto para $n$. Entonces deseamos encontrar soluciones
+	enteras no negativas a la ecuación \eqref{eq:dioph} Haciendo la misma sustitución que en
+	\eqref{eq:dioph:first-step}, recordando que $q_1, \ldots, q_n$ son coprimos, que definimos
+	$\omega_1 \coloneq k$, y renombrando las variables ($x$ en vez de $x_1$, $g$ en vez de $g_2$ y
+	$\omega$ en vez de $\omega_2$), obtenemos la ecuación
+	\begin{equation}
+		\label{lemma:correct:eq}
+		q_1x + g\omega = k.
+	\end{equation}
+	Observemos que, como $g_1 = 1$, el entero $g = \gcd{q_2/g_1, \ldots, q_n/g_1}$, es equivalente a
+	lo que se encuentra en la línea \eqref{alg:fin:g}. Por el Teorema \ref{prerreq:th:construction}
+	tenemos que las soluciones enteras están dadas por
+	\begin{equation}
+		\label{lemma:correct:sol}
+		\begin{cases}
+			x = kx' + gt, \\
+			\omega = k\omega' - q_1t,
+		\end{cases}
+	\end{equation}
+	donde $t \in \Z$ es una variable libre, y $x', \omega'$ son los coeficientes de Bézout de $x,
+	\omega$. Recordemos de \eqref{eq:dioph:first-step} que
+	\begin{equation}
+		\label{lemma:correct:eq-omega}
+		\omega = \frac{q_2}{g}x_2 + \ldots + \frac{q_n}{g}x_n.
+	\end{equation}
+	Como $\vec{q} > \vec{0}$ y exigimos que $x_2, \ldots, x_n$ sean no negativos, debe ser el
+	caso que $\omega$ también sea no negativo. Luego, despejando de \ref{lemma:correct:sol}, existen
+	soluciones no negativas a la ecuación \eqref{lemma:correct:eq} si y solo si existe $t \in \Z$
+	que satisfaga
+	\begin{equation*}
+		\ceil{-\frac{kx'}{g}} \leq t \leq \floor{\frac{k\omega'}{q_1}}.
+	\end{equation*}
+	Los enteros $b_1$ y $b_2$ en las líneas \eqref{alg:fin:b11} y \eqref{alg:fin:b21} representan el
+	lado izquierdo y derecho de estas desigualdades, respectivamente. Si no existe tal variable
+	libre $t$ es porque el intervalo $[b_1, b_2]$ no está bien definido y por lo tanto $b_2 < b_1$.
+	El algoritmo entonces salta a la línea \eqref{alg:fin:return} y devuelve \NIL.
+
+	Si el intervalo $[b_1, b_2]$ está bien definido, podemos asegurar la no negatividad de $x$ en
+	\eqref{lemma:correct:sol} para cualquier elección de $t$ en $[b_1, b_2$] y en
+	la línea \eqref{alg:fin:subeq} nos encargamos entonces encontrar soluciones enteras no negativas
+	de la ecuación \eqref{lemma:correct:eq-omega}. Se verifica automáticamente que los coeficientes
+	del lado derecho de esta ecuación son coprimos y constituyen justamente las entradas del vector
+	$\vec{q}^{\texttt{tail}}$ (c.f. línea \eqref{alg:fin:qt}). Como $g$ también es estrictamente
+	positivo (pues todo máximo común divisor es estrictamente positivo), se sigue que
+	$\vec{q}^{\texttt{tail}} > \vec{0}$.
+
+	Por hipótesis inductiva, tenemos o bien que $\vec{x}^{\texttt{tail}}$ es entero no negativo y
+	solución de \eqref{lemma:correct:eq-omega}, o bien es \NIL. En el primer caso y definiendo
+	$\vec{x}$ como el vector de la línea \eqref{alg:fin:vecx} encontramos que
+	\begin{equation*}
+		\vec{q}^T\vec{x} = q_1x + g\left(\vec{q}^{\texttt{tail}}\right)^T\vec{x}^{\texttt{tail}}
+		= q_1x + g\omega = k.
+	\end{equation*}
+	Pero $x \geq 0$ por construcción y $\vec{x}^{\texttt{tail}} \geq \vec{0}$ por este caso de la
+	hipótesis inductiva. Así, $\vec{x}$ también es no negativo.
+
+	Finalmente, en caso de que $\vec{x}^{\texttt{tail}}$ sea \NIL, iteramos sobre otra elección de
+	la variable libre $t$ y regresamos al caso pasado. En caso de que este vector sea \NIL~ para
+	todas las elecciones posibles de $t$ en el intervalo de factiblidad $[b_1, b_2]$, se sigue que
+	la ecuación \eqref{lemma:correct:eq-omega} no tiene solución entera no negativa y por lo tanto
+	tampoco la tiene la ecuación \eqref{eq:dioph}. Una vez agotadas estas elecciones finitas,
+	devolvemos \NIL~ en la línea \eqref{alg:fin:return}.
+
+	En conclusión, si el algoritmo es correcto para vectores $\vec{q}$ con dimensión $n - 1 \geq 2$,
+	entonces también es correcto para vectores $\vec{q}$ con dimensión $n$. Juntando esto con el
+	caso base, se sigue por inducción que el algoritmo es correcto para toda $n \geq 2$, que es lo
+	que queríamos demostrar.
+\end{proof}
+
+\begin{theorem}
+	\label{th:fin:dioph:correct}
+	El algoritmo \ref{algo:fin:dioph} es correcto.
+\end{theorem}
+\begin{proof}
+	A causa del Teorema \ref{th:fin:helper:correct} basta verificar que el algoritmo termina y no
+	devuelve \NIL\footnote{
+		La maximalidad del entero $k$ se sigue inmediatamente de la manera en la que iniciamos el
+		ciclo en la línea \eqref{alg:fin:loop}.
+	}. Pero $0 \leq \eta$ y $\vec{0}$ es la única solución entera no negativa de la
+	ecuación lineal diofantina $\vec{q}^T\vec{x} = 0$. De esta manera, si la ecuación
+	$\vec{q}^T\vec{x} = k$ no tiene solución para $0 < k \leq \eta$, entonces el algoritmo devuelve
+	$\vec{0}$.
+\end{proof}
+
+\begin{algorithm}[ht]
+	\LinesNumbered
+	\SetKwProg{Fn}{Fn}{\string:}{}
+	\SetKwFunction{Bezout}{Bezout}
+	\SetKwFunction{length}{length}
+	\SetKwFunction{NonNegativeIntSol}{NonNegativeIntSol}
+	\Fn{\NonNegativeIntSol{$\vec{q}$, $\eta$}}{
+		\KwData{\\
+			Vector coprimo $\vec{q} > \vec{0}$ tal que \length{$\vec{q}$} $\geq 2$. \\
+			Lado derecho $k \geq 0$.
+			}
+		\KwResult{\\
+			Solución entera no negativa $\vec{x}$ a la ecuación lineal diofantina $\vec{q}^T\vec{x} =
+			k$ o \NIL.
+		}
+		\Begin{
+			$n \leftarrow$ \length{$\vec{q}$}\;
+			\If{$n = 2$}{
+				$x_{n-1}', x_n' \leftarrow$ \Bezout{$q_1$, $q_2$}\; \label{alg:fin:bez}
+				$b_1 \leftarrow \ceil{-k x_{n-1}' / q_2}$\; \label{alg:fin:b1}
+				$b_2 \leftarrow \floor{k x_{n}' / q_1}$\; \label{alg:fin:b2}
+
+				\If{$b_2 < b_1$}{
+					\Return{NIL}\;
+				}
+
+				$x_{n-1} \leftarrow k x_{n-1}' + b_1q_2$\;
+				$x_{n} \leftarrow k x_{n}' - b_1q_1$\;
+				\Return{$(x_{n-1}, x_n)$}\;
+			}
+
+			$g \leftarrow \gcd{q_2, \ldots, q_n}$\; \label{alg:fin:g}
+			$x', \omega' \leftarrow$ \Bezout{$q_1$, $g$}\;
+			$b_1 \leftarrow \ceil{-k x' / g}$\; \label{alg:fin:b11}
+			$b_2 \leftarrow \floor{k \omega' / q_1}$\; \label{alg:fin:b21}
+
+			$\vec{q}^{\texttt{tail}} \leftarrow (q_{i + 1} / g \vcentcolon 1 \leq i \leq n - 1)$\;
+			\label{alg:fin:qt}
+			\For{$t \leftarrow b_1$ \KwTo $b_2$}{
+				$\omega \leftarrow k\omega' - tq_1$\;
+				$\vec{x}^{\texttt{tail}} \leftarrow$ \NonNegativeIntSol{$\vec{q}^{\texttt{tail}}$,
+				$\omega$}\; \label{alg:fin:subeq}
+
+				\If{$\vec{x}^{\texttt{tail}} \neq$ NIL}{
+					$r \leftarrow$ \length{$\vec{x}^{\texttt{tail}}$}\;
+					$x \leftarrow k x' + tg$\; \label{alg:fin:x}
+					\Return{$(x, x^{\texttt{tail}}_1, \ldots, x^{\texttt{tail}}_r$})\;
+					\label{alg:fin:vecx}
+				}
+			}
+
+			\Return{NIL} \label{alg:fin:return}
+		}
+	}
+	\caption{Algoritmo para obtener soluciones enteras no negativas a la ecuación lineal diofantina
+	$\vec{q}^T\vec{x} = k$, dados ciertos supuestos sobre $\vec{q}$.}
+	\label{algo:fin:helper}
+\end{algorithm}
+
+\begin{algorithm}[ht]
+	\LinesNumbered
+	\SetKwProg{Fn}{Fn}{\string:}{}
+	\SetKwFunction{Bezout}{Bezout}
+	\SetKwFunction{length}{length}
+	\SetKwFunction{NonNegativeIntSol}{NonNegativeIntSol}
+	\SetKwFunction{Dioph}{Dioph}
+	\Fn{\Dioph{$\vec{q}$, $\eta$}}{
+		\KwData{\\
+			Vector coprimo $\vec{q} > \vec{0}$ tal que \length{$\vec{q}$} $\geq 2$. \\
+			Lado derecho $\eta \geq 0$.
+			}
+		\KwResult{\\
+			Solución entera no negativa $\vec{x}$ a la ecuación lineal diofantina $\vec{q}^T\vec{x}
+			= k$ para algún $k \leq \eta$ con $k$ maximal.
+		}
+		\Begin{
+			\For{$k \leftarrow \eta$ \KwTo $0$}{ \label{alg:fin:loop}
+				$\vec{x} \leftarrow$ \NonNegativeIntSol{$\vec{q}$, $k$}\;
+				\If{$\vec{x} \neq$ NIL}{
+					\Return{$\vec{x}$}\;
+				}
+			}
+		}
+	}
+	\caption{Algoritmo para obtener soluciones enteras no negativas a la ecuación lineal diofantina
+	$\vec{q}^T\vec{x} = \eta$, dados ciertos supuestos sobre $\vec{q}$.}
+	\label{algo:fin:dioph}
+\end{algorithm}
+
 Con respecto a la complejidad algorítmica de analizar capas enteras podemos decir lo siguiente.
 Supongamos que deseamos encontrar todas las soluciones de (\ref{theory:formulation}). Definamos
 \begin{equation}
@@ -627,29 +865,29 @@ Supongamos que deseamos encontrar todas las soluciones de (\ref{theory:formulati
 \end{equation}
 y sea $T(n)$ el tiempo requerido para encontrar todos los puntos en $P_k$ o determinar que este
 conjunto es vacío. Es razonable suponer que $T(n)$ es exponencial en $n$. En efecto, cada par
-$(\vec{x}_i, \omega_{i + 1})$ genera un intervalo de factibilidad $[\vec{t}_i^{\min},
-\vec{t}_i^{\max}]$. Este intervalo ciertamente depende de las elecciones previas de $\vec{t}_1, \ldots,
-\vec{t}_{i - 1}$, aunque suprimimos esta dependencia en la notación para tener mayor claridad. Para
+$(x_i, \omega_{i + 1})$ genera un intervalo de factibilidad $[t_i^{\min},
+t_i^{\max}]$. Este intervalo ciertamente depende de las elecciones previas de $t_1, \ldots,
+t_{i - 1}$, aunque suprimimos esta dependencia en la notación para tener mayor claridad. Para
 encontrar todos los puntos en $P_k$, el algoritmo recorre todas las posibilidades:
 \begin{equation}
 	\label{phase-1:complexity:bounds}
-	\prod_{i=1}^{\kappa_1} \min_{\vec{t}_1, \ldots, \vec{t}_{i-1}} \lbrace \vec{t}_i^{\max} -
-	\vec{t}_i^{\min} \rbrace
+	\prod_{i=1}^{\kappa_1} \min_{t_1, \ldots, t_{i-1}} \lbrace t_i^{\max} -
+	t_i^{\min} \rbrace
 	\leq T(n) \leq
-	\prod_{i=1}^{\kappa_2} \max_{\vec{t}_1, \ldots, \vec{t}_{i-1}} \lbrace \vec{t}_i^{\max} -
-	\vec{t}_i^{\min} \rbrace,
+	\prod_{i=1}^{\kappa_2} \max_{t_1, \ldots, t_{i-1}} \lbrace t_i^{\max} -
+	t_i^{\min} \rbrace,
 \end{equation}
-donde $1 \leq \kappa_1 \leq n$ es el entero más grande que asegura que  $\min_{\vec{t}_1, \ldots,
-\vec{t}_{i - 1}}\lbrace \vec{t}_i^{\max} - \vec{t}_i^{\min} \rbrace$ sea positivo para todo $i \in
+donde $1 \leq \kappa_1 \leq n$ es el entero más grande que asegura que  $\min_{t_1, \ldots,
+t_{i - 1}}\lbrace t_i^{\max} - t_i^{\min} \rbrace$ sea positivo para todo $i \in
 \lbrace 1, \ldots, \kappa_1 \rbrace$. Definimos $\kappa_2$ de manera análoga. Se cumple que
 $\kappa_1 \leq \kappa_2$. Sean $\ell_{\min}, \ell_{\max}$ las longitudes del intervalo de
 factibilidad más pequeño y del más grande en todos los niveles, respectivamente. Es decir, definimos
 \begin{align}
-	\ell_{\min} &\coloneq \min_{1 \leq i \leq \kappa_1} \left\lbrace \min_{\vec{t}_1, \ldots,
-	\vec{t}_{i - 1}} \lbrace \vec{t}_i^{\max} - \vec{t}_i^{\min} \rbrace \right\rbrace,
+	\ell_{\min} &\coloneq \min_{1 \leq i \leq \kappa_1} \left\lbrace \min_{t_1, \ldots,
+	t_{i - 1}} \lbrace t_i^{\max} - t_i^{\min} \rbrace \right\rbrace,
 	\\
-			\ell_{\max} &\coloneq \max_{1 \leq i \leq \kappa_2} \left\lbrace \max_{\vec{t}_1,
-			\ldots, \vec{t}_{i - 1}} \lbrace \vec{t}_i^{\max} - \vec{t}_i^{\max} \rbrace
+			\ell_{\max} &\coloneq \max_{1 \leq i \leq \kappa_2} \left\lbrace \max_{t_1,
+			\ldots, t_{i - 1}} \lbrace t_i^{\max} - t_i^{\max} \rbrace
 		\right\rbrace.
 \end{align}
 Si $P_k$ es vacío, se sigue que no existe ningún intervalo factible en el nivel $n$, lo que implica
