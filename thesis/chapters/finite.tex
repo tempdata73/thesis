@@ -574,6 +574,7 @@ el radio de la circunferencia inscrita en el símplice $\sigma$ está dado por
 \end{equation}
 
 \begin{theorem}
+	\label{th:intsimplex}
 	Existe un punto entero sobre el símplice $\sigma$ para $k$ suficientemente grande.
 \end{theorem}
 \begin{proof}
@@ -591,35 +592,25 @@ el radio de la circunferencia inscrita en el símplice $\sigma$ está dado por
 	\end{equation}
 	que es lo que queríamos demostrar.
 \end{proof}
-De manera inmediata obtenemos los siguientes Corolarios.
-\begin{corollary}
-	La ecuación lineal diofantina $\vec{q}^T\vec{x} = \eta$ tiene soluciones enteras no negativas para
-	$\eta$ suficientemente grande.
-\end{corollary}
-\begin{corollary}
-	El problema (\ref{theory:formulation}) se puede resolver a partir de una ecuación lineal
-	diofantina para $u$ suficientemente grande.
-\end{corollary}
-
-Vale la pena hacer un par de observaciones. En primer lugar, de (\ref{eq:eta-limit}) parece que
-podemos concluir que hay una dependencia lineal entre la dimensión $n$ y el lado derecho $k$. No
-obstante, la norma $\norm{M}_F$ también depende de la dimensión. Para ser más explícitos con
-respecto a esta dependencia, podemos rescatar de (\ref{eq:alt-M-bound}) la siguiente cota:
+De \eqref{eq:eta-limit} parece que podemos concluir que hay una dependencia lineal entre la
+dimensión $n$ y el lado derecho $k$. No obstante, la norma $\norm{M}_F$ también depende
+implícitamente de $n$. Para ser más explícitos con respecto a esta dependencia, podemos rescatar de
+\eqref{eq:alt-M-bound} la siguiente cota:
 \begin{equation*}
 	\frac{1}{4}\sum_{i=1}^{n-1}\norm{M\vec{e}_i}_2^2
 	\leq
 	\frac{n-1}{4}\max_{1 \leq j \leq n} \lbrace \norm{M\vec{e}_j}_2^2 \rbrace,
 \end{equation*}
-de donde obtendríamos
+de donde reemplazaríamos la cota \eqref{eq:eta-limit} en el Teorema \ref{th:intsimplex},
 \begin{equation*}
 	k \geq \frac{n\sqrt{n-1}}{2} \max_{1 \leq j \leq n} \lbrace \norm{M\vec{e}_j}_2 \rbrace \cdot
 	\max_{1 \leq j \leq n} \lbrace Q_j \rbrace.
 \end{equation*}
-Esta cota, no obstante, es menos ajustada que la propuesta inicialmente.
+Esta cota, no obstante, es más grande que la propuesta inicialmente.
 
-En segundo lugar, el resultado que obtuvimos es más fuerte de lo que aparenta. Hemos encontrado una
-cota inferior de manera que podamos asegurar la existencia de soluciones enteras en una vecindad del
-baricentro $\est{\sigma}$. Este punto no es especial, en realidad podemos realizar el mismo
+Además, el resultado que obtuvimos es más fuerte de lo que aparenta. Hemos encontrado una
+cota inferior de manera que podamos asegurar la existencia de puntos enteros en una vecindad del
+baricentro $\est{\sigma}$. Este punto no es especial, pues en realidad podemos realizar el mismo
 procedimiento enfocándonos en otros puntos del símplice $\sigma$ para asegurar soluciones en sus
 respectivas vecindades. Entonces, dependiendo del punto, podemos obtener mejores o peores cotas para
 $k$. El punto más interesante es aquel que provee la cota inferior más pequeña\footnote{
@@ -627,22 +618,78 @@ $k$. El punto más interesante es aquel que provee la cota inferior más pequeñ
 	los vectores normales a cada faceta $F_j$.
 }.
 
-En tercer lugar, la cota (\ref{eq:eta-limit}) provee, hasta donde llega el conocimiento del autor,
-nuevas cotas superiores para los números de Frobenius. De manera resumida, dada una colección de
-enteros $a_1, \ldots, a_n$ coprimos, el número de Frobenius es el entero $F$ más grande tal que $F$
-no pueda ser expresado como una combinación lineal entera no negativa de $a_1, \ldots, a_n$. Un
-estudio sobre cómo se compara esta colección de cotas con respecto a la literatura existente, si
-bien interesante, queda fuera del propósito de esta tesis.
+De manera inmediata obtenemos también los siguientes Teoremas. Cabe mencionar que estos resultados
+solamente muestran la existencia de una solución entera $\vec{x}$ no negativa para la ecuación lineal
+diofantina $\vec{q}^T\vec{x} = k$. Será en la Sección \ref{subsec:complex} que discutiremos cómo
+encontrar esta solución.
+\begin{theorem}
+	\label{th:intnonneg1}
+	Sea $\vec{q} \in \Z^n$ tal que sus entradas son coprimas y supongamos que $\vec{q} > \vec{0}$.
+	Entonces la ecuación lineal diofantina $\vec{q}^T\vec{x} = k$ tiene soluciones enteras no
+	negativas para $k$ suficientemente grande.
+\end{theorem}
+\begin{proof}
+	Consideremos el símplice $\sigma$ generado por los vectores \eqref{eq:generators} y supongamos
+	que $k$ satisface la cota en \eqref{eq:eta-limit}. Por el Teorema \ref{th:intsimplex}, se sigue
+	que $\sigma$ contiene un punto entero $\vec{x}$ y, por lo tanto, $\vec{x}$ también es no
+	negativo. Pero $\sigma$ está contenida en la $k$-ésima capa entera, lo que implica que $\vec{x}
+	\in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ y entonces, por el Lema \ref{theory:lemma:utility},
+	$\vec{x}$ satisface la ecuación lineal diofantina $\vec{q}^T\vec{x} = k$.
+\end{proof}
+\begin{theorem}
+	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y supongamos que su múltiplo coprimo
+	$\vec{q}$ tiene entradas estrictamente positivas. Entonces el problema
+	\eqref{theory:formulation} se puede resolver a través de encontrar la solución de una sola
+	ecuación lineal en $n$ incógnitas para un presupuesto $u$ suficientemente grande.
+\end{theorem}
+\begin{proof}
+	Por la Definición \ref{theory:def:rational} sabemos que existe un escalar $m \in \R$ tal que
+	$\vec{p} = m\vec{q}$. Supongamos, sin pérdida de generalidad, que $m$ es positivo. Del Lema
+	\ref{phase-1:lemma:eta} tenemos que el entero $\eta$ parametriza la primera capa entera en
+	satisfacer el presupuesto y que $\eta = \floor{u/m}$. Por el Teorema \ref{th:intnonneg1} sabemos
+	que si $\eta$ es suficientemente grande, entonces la ecuación lineal diofantina
+	$\vec{q}^T\vec{x} = \eta$ tiene al menos una solución entera no negativa $\vec{x}$. Luego,
+	$\vec{x}$ es factible para el problema \eqref{theory:formulation}, pero por la maximalidad de
+	$\eta$ encontramos que $\vec{x}$ también es un punto óptimo. En conclusión, solo deviene
+	necesario resolver una ecuación lineal diofantina para determinar la solución del problema
+	\eqref{theory:formulation}.
+\end{proof}
 
-En cuarto lugar, cabe mencionar que eventualmente es suficiente con revisar la primera capa entera.
-No hemos demostrado, empero, que el número de capas enteras a revisar eventualmente decrece en
-cuanto $u$ aumenta. Observaremos en el análisis de resultados que hay un patrón periódico y
-decreciente en cuanto al número de capas enteras revisadas. Demostrar que este comportamiento se
-cumple es mucho más difícil y queda fuera del propósito de esta tesis.
+El Teorema \ref{th:intnonneg1} junto con la cota \eqref{eq:eta-limit} provee, hasta donde llega el
+conocimiento del autor, nuevas cotas superiores para los números de Frobenius\footnote{
+	Véase el Problema de la Moneda en \url{https://en.wikipedia.org/wiki/Coin_problem}.
+}. De manera resumida,
+dada una colección de enteros $a_1, \ldots, a_n$ coprimos, el número de Frobenius es el entero $F$
+más grande tal que $F$ no pueda ser expresado como una combinación lineal entera no negativa de
+$a_1, \ldots, a_n$. Un estudio sobre cómo se compara esta colección de cotas con respecto a la
+literatura existente, si bien interesante, queda fuera del propósito de esta tesis.
 
-\subsection{Complejidad algorítmica}
+En último lugar, mencionamos que eventualmente es suficiente con revisar la primera capa entera. No
+hemos demostrado, empero, que el número de capas enteras a revisar eventualmente decrece en cuanto
+$u$ aumenta. Observaremos en el análisis de resultados que hay un patrón periódico y decreciente en
+cuanto al número de capas enteras revisadas. Demostrar, en cambio, que este comportamiento siempre
+se cumple es mucho más difícil y queda fuera del propósito de esta tesis.
+
+\section{Construcción de soluciones}
 \label{subsec:complex}
+
 \noindent
+Sea $\vec{p} \in \R^n$ un vector esencialmente entero y supongamos que las entradas de su múltiplo
+coprimo $\vec{q}$ son todas estrictamente positivas. Supongamos, sin pérdida de generalidad, que el
+escalar $m$ que satisface $\vec{p} = m\vec{q}$ es también positivo. Bastante hemos discutido sobre
+cómo la solución del problema \eqref{theory:formulation} se traduce a la búsqueda de una solución
+entera no negativa de la ecuación lineal diofantina $\vec{q}^T\vec{x} = k$ para alguna $k \leq \eta$,
+donde $\eta$ es tomada del Lema \ref{phase-1:lemma:eta}.
+
+En la primera parte de esta sección presentamos los algoritmos \ref{algo:fin:helper} y
+\ref{algo:fin:dioph}, los cuales se encargan de obtener estas soluciones enteras no negativas que
+tanto buscamos y, consecuentemente, también se encargan de resolver el problema original
+\eqref{theory:formulation}.
+
+% En la segunda parte de esta sección discutimos de manera un tanto informal la complejidad
+% algorítmica del Algoritmo \ref{algo:fin:dioph}. Por lo tanto, también discutimos, así como lo
+% hicimos en el capítulo \ref{chap:inf}, sobre la complejidad del problema \eqref{theory:formulation}
+% en el caso especial de que $\vec{q} > \vec{0}$.
 
 \begin{theorem}
 	\label{th:fin:helper:correct}
@@ -650,14 +697,14 @@ cumple es mucho más difícil y queda fuera del propósito de esta tesis.
 \end{theorem}
 \begin{proof}
 	Hacemos la demostración por inducción en la dimensión $n$ del vector $\vec{q}$. Supongamos, para
-	el caso base, que $n = 2$. Luego, queremos encontrar soluciones enteras no negativas a la
+	el caso base, que $n = 2$. Luego, queremos encontrar soluciones enteras no negativas de la
 	ecuación
 	\begin{equation}
 		\label{lemma:correct:base-case}
 		q_1x_1 + q_2x_2 = k.
 	\end{equation}
 	Por hipótesis sabemos que $q_1$ y $q_2$ son coprimos. Luego, del Teorema
-	\ref{prerreq:th:construction}, las soluciones enteras a esta ecuación están dadas por
+	\ref{prerreq:th:construction}, las soluciones enteras de esta ecuación están dadas por
 	\begin{equation}
 		\label{lemma:correct:base-case:sol}
 		\begin{cases}
@@ -667,8 +714,8 @@ cumple es mucho más difícil y queda fuera del propósito de esta tesis.
 	\end{equation}
 	donde $t \in \Z$ es una variable libre, y $x_1', x_2'$ son los coeficientes de Bézout (c.f.
 	Definición \ref{prerreq:def:bezout}) de $x_1, x_2$. Por claridad, escribimos $x_1'$ y $x_2'$
-	como $x_{n-1}'$ y $x_{n}'$ en la línea \eqref{alg:fin:bez}. Luego, existen soluciones no negativas
-	si y solo si existe $t \in \Z$ que satisfaga
+	como $x_{n-1}'$ y $x_{n}'$ en la línea \eqref{alg:fin:bez}. Despejando de estas soluciones,
+	encontramos que existen soluciones no negativas si y solo si existe $t \in \Z$ que satisfaga
 	\begin{equation*}
 		\ceil{-\frac{kx_1'}{q_2}} \leq t \leq \floor{\frac{kx_2'}{q_1}}.
 	\end{equation*}
@@ -678,14 +725,15 @@ cumple es mucho más difícil y queda fuera del propósito de esta tesis.
 	soluciones enteras no negativas. Supongamos, pues, que este intervalo sí está bien definido.
 	Entonces, podemos escoger que la variable libre $t$ sea $b_1$. Sustituyendo en
 	\eqref{lemma:correct:base-case:sol} obtenemos una solución entera no negativa a la ecuación
-	\eqref{lemma:correct:base-case} y entonces el algoritmo es correcto para $n = 2$.
+	\eqref{lemma:correct:base-case} (líneas \eqref{alg:fin:xprev} y \eqref{alg:fin:xlast}) y entonces
+	el algoritmo es correcto para $n = 2$.
 
 	Supongamos, inductivamente, que el algoritmo es correcto para alguna $n - 1 \geq 2$. Mostramos
 	ahora que el algoritmo también es correcto para $n$. Entonces deseamos encontrar soluciones
-	enteras no negativas a la ecuación \eqref{eq:dioph} Haciendo la misma sustitución que en
-	\eqref{eq:dioph:first-step}, recordando que $q_1, \ldots, q_n$ son coprimos, que definimos
-	$\omega_1 \coloneq k$, y renombrando las variables ($x$ en vez de $x_1$, $g$ en vez de $g_2$ y
-	$\omega$ en vez de $\omega_2$), obtenemos la ecuación
+	enteras no negativas de la ecuación \eqref{eq:dioph} Haciendo la misma sustitución que en
+	\eqref{eq:dioph:first-step}, recordando que $q_1, \ldots, q_n$ son coprimos por hipótesis, que
+	definimos $\omega_1 \coloneq k$, y renombrando las variables ($x$ en vez de $x_1$, $g$ en vez de
+	$g_2$ y $\omega$ en vez de $\omega_2$), obtenemos la ecuación
 	\begin{equation}
 		\label{lemma:correct:eq}
 		q_1x + g\omega = k.
@@ -706,26 +754,26 @@ cumple es mucho más difícil y queda fuera del propósito de esta tesis.
 		\label{lemma:correct:eq-omega}
 		\omega = \frac{q_2}{g}x_2 + \ldots + \frac{q_n}{g}x_n.
 	\end{equation}
-	Como $\vec{q} > \vec{0}$ y exigimos que $x_2, \ldots, x_n$ sean no negativos, debe ser el
-	caso que $\omega$ también sea no negativo. Luego, despejando de \ref{lemma:correct:sol}, existen
-	soluciones no negativas a la ecuación \eqref{lemma:correct:eq} si y solo si existe $t \in \Z$
-	que satisfaga
+	Como $\vec{q} > \vec{0}$ por hipótesis, $g > 0$ porque el máximo común divisor siempre es
+	positivo, y exigimos que $x_2, \ldots, x_n$ sean no negativos, debe ser el caso que $\omega$
+	también sea no negativo. Luego, despejando de \ref{lemma:correct:sol}, existen soluciones no
+	negativas de la ecuación \eqref{lemma:correct:eq} si y solo si existe $t \in \Z$ que satisfaga
 	\begin{equation*}
 		\ceil{-\frac{kx'}{g}} \leq t \leq \floor{\frac{k\omega'}{q_1}}.
 	\end{equation*}
 	Los enteros $b_1$ y $b_2$ en las líneas \eqref{alg:fin:b11} y \eqref{alg:fin:b21} representan el
 	lado izquierdo y derecho de estas desigualdades, respectivamente. Si no existe tal variable
-	libre $t$ es porque el intervalo $[b_1, b_2]$ no está bien definido y por lo tanto $b_2 < b_1$.
-	El algoritmo entonces salta a la línea \eqref{alg:fin:return} y devuelve \NIL.
+	libre $t \in \Z$ es porque el intervalo $[b_1, b_2]$ no está bien definido y por lo tanto $b_2 <
+	b_1$. El algoritmo entonces salta a la línea \eqref{alg:fin:return} y devuelve \NIL.
 
 	Si el intervalo $[b_1, b_2]$ está bien definido, podemos asegurar la no negatividad de $x$ en
 	\eqref{lemma:correct:sol} para cualquier elección de $t$ en $[b_1, b_2$] y en
-	la línea \eqref{alg:fin:subeq} nos encargamos entonces encontrar soluciones enteras no negativas
+	la línea \eqref{alg:fin:subeq} nos encargamos entonces de encontrar soluciones enteras no negativas
 	de la ecuación \eqref{lemma:correct:eq-omega}. Se verifica automáticamente que los coeficientes
 	del lado derecho de esta ecuación son coprimos y constituyen justamente las entradas del vector
-	$\vec{q}^{\texttt{tail}}$ (c.f. línea \eqref{alg:fin:qt}). Como $g$ también es estrictamente
-	positivo (pues todo máximo común divisor es estrictamente positivo), se sigue que
-	$\vec{q}^{\texttt{tail}} > \vec{0}$.
+	$\vec{q}^{\texttt{tail}}$ (c.f. línea \eqref{alg:fin:qt}). Como $g > 0$ se sigue que
+	$\vec{q}^{\texttt{tail}} > \vec{0}$. Luego, $\vec{q}^{\texttt{tail}}$ satisface las hipótesis
+	del algoritmo.
 
 	Por hipótesis inductiva, tenemos o bien que $\vec{x}^{\texttt{tail}}$ es entero no negativo y
 	solución de \eqref{lemma:correct:eq-omega}, o bien es \NIL. En el primer caso y definiendo
@@ -739,10 +787,10 @@ cumple es mucho más difícil y queda fuera del propósito de esta tesis.
 
 	Finalmente, en caso de que $\vec{x}^{\texttt{tail}}$ sea \NIL, iteramos sobre otra elección de
 	la variable libre $t$ y regresamos al caso pasado. En caso de que este vector sea \NIL~ para
-	todas las elecciones posibles de $t$ en el intervalo de factiblidad $[b_1, b_2]$, se sigue que
-	la ecuación \eqref{lemma:correct:eq-omega} no tiene solución entera no negativa y por lo tanto
-	tampoco la tiene la ecuación \eqref{eq:dioph}. Una vez agotadas estas elecciones finitas,
-	devolvemos \NIL~ en la línea \eqref{alg:fin:return}.
+	todas las elecciones posibles de $t$ en el intervalo de factiblidad $[b_1, b_2]$, se sigue por
+	hipótesis inductiva que la ecuación \eqref{lemma:correct:eq-omega} no tiene solución entera no
+	negativa y por lo tanto tampoco la tiene la ecuación \eqref{eq:dioph}. Una vez agotadas estas
+	elecciones finitas, devolvemos \NIL~ en la línea \eqref{alg:fin:return}.
 
 	En conclusión, si el algoritmo es correcto para vectores $\vec{q}$ con dimensión $n - 1 \geq 2$,
 	entonces también es correcto para vectores $\vec{q}$ con dimensión $n$. Juntando esto con el
@@ -750,20 +798,55 @@ cumple es mucho más difícil y queda fuera del propósito de esta tesis.
 	que queríamos demostrar.
 \end{proof}
 
+Observemos que la elección del parámetro libre $t$ en el intervalo de factiblidad $I$ definido en la
+línea \eqref{alg:fin:feas} del Algoritmo \ref{algo:fin:helper} es similar a la elección del
+subproblema $S_i$ de optimización definido en la línea \eqref{p1c9:alg:BB_loop} del Algoritmo
+\ref{algo:bb}. La diferencia radica en que, como todos los puntos enteros sobre la $k$-ésima capa
+entera tienen el mismo nivel de utilidad $k$, no es necesario desarrollar políticas de poda así como
+lo hicimos en el Ejemplo \ref{ex:ilp} en la Sección \ref{sec:prerreq}. De cierta manera, la única
+política de poda posible es la de infactibilidad por no respetar la no negatividad de un punto
+entero. Discutiremos más sobre esto cuando introduzcamos múltiples restricciones al problema
+\eqref{theory:formulation}.
+
 \begin{theorem}
 	\label{th:fin:dioph:correct}
 	El algoritmo \ref{algo:fin:dioph} es correcto.
 \end{theorem}
 \begin{proof}
 	A causa del Teorema \ref{th:fin:helper:correct} basta verificar que el algoritmo termina y no
-	devuelve \NIL\footnote{
-		La maximalidad del entero $k$ se sigue inmediatamente de la manera en la que iniciamos el
-		ciclo en la línea \eqref{alg:fin:loop}.
-	}. Pero $0 \leq \eta$ y $\vec{0}$ es la única solución entera no negativa de la
-	ecuación lineal diofantina $\vec{q}^T\vec{x} = 0$. De esta manera, si la ecuación
-	$\vec{q}^T\vec{x} = k$ no tiene solución para $0 < k \leq \eta$, entonces el algoritmo devuelve
-	$\vec{0}$.
+	devuelve \NIL. Además, obtenemos la maximalidad de $k$ debido a la manera en la que iniciamos el
+	ciclo en la línea \eqref{alg:fin:loop}. Tenemos $0 \leq \eta$ por hipótesis y observemos que
+	$\vec{0}$ es la única solución entera no negativa de la ecuación lineal diofantina
+	$\vec{q}^T\vec{x} = 0$. De esta manera, si la ecuación $\vec{q}^T\vec{x} = k$ no tiene solución
+	para $0 < k \leq \eta$, entonces el algoritmo devuelve $\vec{0}$ debido al Teorema
+	\ref{th:fin:helper:correct}.
 \end{proof}
+
+Sabemos, en realidad, por el Lema \ref{lemma:tau} que el parámetro $k$ definido en la línea
+\eqref{alg:fin:loop} descenderá hasta 0 si y solo si el parámetro $\tau$ definido en \eqref{eq:tau}
+es nulo. No obstante, la demostración del Teorema \ref{th:fin:dioph:correct} deviene más simple
+cuando en el Algoritmo \ref{algo:fin:dioph} dejamos que $k$ se encuentre en $[0, \eta]$ en vez de
+$[\tau, \eta]$. Esta modificación, sin embargo, no afecta en lo más mínimo la correctud o la
+complejidad del algoritmo.
+
+Siguiendo la misma directriz, vale la pena mencionar lo siguiente con respecto al Algoritmo
+\ref{algo:fin:helper}. Varios lenguajes de programación, tales como Python, cuentan con un límite en
+las llamadas de recursión que el usuario puede realizar\footnote{
+	En la computadora del autor, por ejemplo, el valor predeterminado de este límite es 3000, y por
+	lo tanto, solamente podría el autor resolver problemas con dimensión $n \leq 3000$.
+}. Si bien este límite puede modificarse, aumenta la posibilidad de que nos encontremos con un
+\textit{stack overflow}. Así también, observemos que este algoritmo no minimiza el número de
+llamadas para calcular el máximo común divisor en la línea \eqref{alg:fin:g}, por ejemplo.
+
+A pesar de los puntos anteriores, el autor decidió escribir el Algoritmo \ref{algo:fin:helper} de
+esa manera debido a que esto simplificaba de manera significativa la demostración del Teorema
+\ref{th:fin:helper:correct}. Las buenas noticias son que cualquier algoritmo recursivo tiene una
+implementación equivalente usando ciclos (TODO: ref). En la siguiente sección de análisis de
+resultados usamos una de esas equivalencias\footnote{
+	Véase la subrutina \texttt{solve\_linear} en
+	\url{https://github.com/tempdata73/thesis/blob/main/finite.py} para comparar la implementación
+	equivalente con el Algoritmo \ref{algo:fin:helper}.
+} para realizar nuestros experimentos.
 
 \begin{algorithm}[ht]
 	\LinesNumbered
@@ -771,7 +854,7 @@ cumple es mucho más difícil y queda fuera del propósito de esta tesis.
 	\SetKwFunction{Bezout}{Bezout}
 	\SetKwFunction{length}{length}
 	\SetKwFunction{NonNegativeIntSol}{NonNegativeIntSol}
-	\Fn{\NonNegativeIntSol{$\vec{q}$, $\eta$}}{
+	\Fn{\NonNegativeIntSol{$\vec{q}$, $k$}}{
 		\KwData{\\
 			Vector coprimo $\vec{q} > \vec{0}$ tal que \length{$\vec{q}$} $\geq 2$. \\
 			Lado derecho $k \geq 0$.
@@ -788,11 +871,11 @@ cumple es mucho más difícil y queda fuera del propósito de esta tesis.
 				$b_2 \leftarrow \floor{k x_{n}' / q_1}$\; \label{alg:fin:b2}
 
 				\If{$b_2 < b_1$}{
-					\Return{NIL}\;
+					\Return $\NIL$\;
 				}
 
-				$x_{n-1} \leftarrow k x_{n-1}' + b_1q_2$\;
-				$x_{n} \leftarrow k x_{n}' - b_1q_1$\;
+				$x_{n-1} \leftarrow k x_{n-1}' + b_1q_2$\; \label{alg:fin:xprev}
+				$x_{n} \leftarrow k x_{n}' - b_1q_1$\; \label{alg:fin:xlast}
 				\Return{$(x_{n-1}, x_n)$}\;
 			}
 
@@ -800,30 +883,33 @@ cumple es mucho más difícil y queda fuera del propósito de esta tesis.
 			$x', \omega' \leftarrow$ \Bezout{$q_1$, $g$}\;
 			$b_1 \leftarrow \ceil{-k x' / g}$\; \label{alg:fin:b11}
 			$b_2 \leftarrow \floor{k \omega' / q_1}$\; \label{alg:fin:b21}
+			$I \leftarrow [b_1, b_2]$\; \label{alg:fin:feas}
 
 			$\vec{q}^{\texttt{tail}} \leftarrow (q_{i + 1} / g \vcentcolon 1 \leq i \leq n - 1)$\;
 			\label{alg:fin:qt}
-			\For{$t \leftarrow b_1$ \KwTo $b_2$}{
+			\While{$I \neq \emptyset$}{
+				elegir $t \in I$\;
 				$\omega \leftarrow k\omega' - tq_1$\;
 				$\vec{x}^{\texttt{tail}} \leftarrow$ \NonNegativeIntSol{$\vec{q}^{\texttt{tail}}$,
 				$\omega$}\; \label{alg:fin:subeq}
 
-				\If{$\vec{x}^{\texttt{tail}} \neq$ NIL}{
+				\If{$\vec{x}^{\texttt{tail}} \neq$ \NIL}{
 					$r \leftarrow$ \length{$\vec{x}^{\texttt{tail}}$}\;
 					$x \leftarrow k x' + tg$\; \label{alg:fin:x}
 					\Return{$(x, x^{\texttt{tail}}_1, \ldots, x^{\texttt{tail}}_r$})\;
 					\label{alg:fin:vecx}
 				}
+
+				$I \leftarrow I \setminus \braces{t}$\;
 			}
 
-			\Return{NIL} \label{alg:fin:return}
+			\Return $\NIL$\; \label{alg:fin:return}
 		}
 	}
 	\caption{Algoritmo para obtener soluciones enteras no negativas a la ecuación lineal diofantina
 	$\vec{q}^T\vec{x} = k$, dados ciertos supuestos sobre $\vec{q}$.}
 	\label{algo:fin:helper}
 \end{algorithm}
-
 \begin{algorithm}[ht]
 	\LinesNumbered
 	\SetKwProg{Fn}{Fn}{\string:}{}
@@ -843,7 +929,7 @@ cumple es mucho más difícil y queda fuera del propósito de esta tesis.
 		\Begin{
 			\For{$k \leftarrow \eta$ \KwTo $0$}{ \label{alg:fin:loop}
 				$\vec{x} \leftarrow$ \NonNegativeIntSol{$\vec{q}$, $k$}\;
-				\If{$\vec{x} \neq$ NIL}{
+				\If{$\vec{x} \neq$ \NIL}{
 					\Return{$\vec{x}$}\;
 				}
 			}
@@ -853,68 +939,67 @@ cumple es mucho más difícil y queda fuera del propósito de esta tesis.
 	$\vec{q}^T\vec{x} = \eta$, dados ciertos supuestos sobre $\vec{q}$.}
 	\label{algo:fin:dioph}
 \end{algorithm}
-
-Con respecto a la complejidad algorítmica de analizar capas enteras podemos decir lo siguiente.
-Supongamos que deseamos encontrar todas las soluciones de (\ref{theory:formulation}). Definamos
-\begin{equation}
-	\label{phase-1:def:feasible-layer}
-	P_k \coloneq H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap \Z_{\geq \vec{0}}^n
-	=
-	\lbrace \vec{x} \in \Z^n \vcentcolon \vec{q}^T\vec{x} = k, \vec{x} \geq \vec{0}
-	\rbrace,
-\end{equation}
-y sea $T(n)$ el tiempo requerido para encontrar todos los puntos en $P_k$ o determinar que este
-conjunto es vacío. Es razonable suponer que $T(n)$ es exponencial en $n$. En efecto, cada par
-$(x_i, \omega_{i + 1})$ genera un intervalo de factibilidad $[t_i^{\min},
-t_i^{\max}]$. Este intervalo ciertamente depende de las elecciones previas de $t_1, \ldots,
-t_{i - 1}$, aunque suprimimos esta dependencia en la notación para tener mayor claridad. Para
-encontrar todos los puntos en $P_k$, el algoritmo recorre todas las posibilidades:
-\begin{equation}
-	\label{phase-1:complexity:bounds}
-	\prod_{i=1}^{\kappa_1} \min_{t_1, \ldots, t_{i-1}} \lbrace t_i^{\max} -
-	t_i^{\min} \rbrace
-	\leq T(n) \leq
-	\prod_{i=1}^{\kappa_2} \max_{t_1, \ldots, t_{i-1}} \lbrace t_i^{\max} -
-	t_i^{\min} \rbrace,
-\end{equation}
-donde $1 \leq \kappa_1 \leq n$ es el entero más grande que asegura que  $\min_{t_1, \ldots,
-t_{i - 1}}\lbrace t_i^{\max} - t_i^{\min} \rbrace$ sea positivo para todo $i \in
-\lbrace 1, \ldots, \kappa_1 \rbrace$. Definimos $\kappa_2$ de manera análoga. Se cumple que
-$\kappa_1 \leq \kappa_2$. Sean $\ell_{\min}, \ell_{\max}$ las longitudes del intervalo de
-factibilidad más pequeño y del más grande en todos los niveles, respectivamente. Es decir, definimos
-\begin{align}
-	\ell_{\min} &\coloneq \min_{1 \leq i \leq \kappa_1} \left\lbrace \min_{t_1, \ldots,
-	t_{i - 1}} \lbrace t_i^{\max} - t_i^{\min} \rbrace \right\rbrace,
-	\\
-			\ell_{\max} &\coloneq \max_{1 \leq i \leq \kappa_2} \left\lbrace \max_{t_1,
-			\ldots, t_{i - 1}} \lbrace t_i^{\max} - t_i^{\max} \rbrace
-		\right\rbrace.
-\end{align}
-Si $P_k$ es vacío, se sigue que no existe ningún intervalo factible en el nivel $n$, lo que implica
-que $\kappa_2 < n$. En caso contrario, el algoritmo recorre hasta el último nivel, por lo que $\kappa_1
-= \kappa_2 = n$. De (\ref{phase-1:complexity:bounds}), obtenemos
-\begin{equation}
-	\ell_{\min}^{n} \leq T(n) \leq \ell_{\max}^{n}.
-\end{equation}
-En el peor de los casos, nuestro algoritmo recorre todas las capas enteras parametrizadas por
-$\lbrace k, k - 1, \ldots, \tau\rbrace$. Se sigue que
-\begin{align}
-	\label{phase-1:time}
-	\text{Tiempo de ejecución}
-	= \mathcal{O}((k - \tau) \cdot T(n))
-	= \mathcal{O}(c^{n}),
-\end{align}
-para alguna $c > 1$.
-
-Ahora bien, este razonamiento aplica a la modificación de nuestro objetivo en donde decidimos buscar
-todas las soluciones posibles. En realidad solo nos interesa encontrar un punto óptimo, por lo que
-podemos concluir que una cota superior para la complejidad de nuestro algoritmo es
-(\ref{phase-1:time}). Asímismo, en la práctica encontramos que la diferencia $k - \tau$ es crucial
-para determinar cuántas capas enteras recorre nuestro algoritmo en el peor de los casos.
-
-Hemos mostrado anteriormente que para $u$ suficientemente grande es suficiente con recorrer una
-capa. En caso de que $u$ no sea suficientemente grande, observaremos en el análisis de resultados
-cómo se distribuye el número de capas enteras que en realidad se visitan.
+% Con respecto a la complejidad algorítmica de analizar capas enteras podemos decir lo siguiente.
+% Supongamos que deseamos encontrar todas las soluciones de (\ref{theory:formulation}). Definamos
+% \begin{equation}
+% 	\label{phase-1:def:feasible-layer}
+% 	P_k \coloneq H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap \Z_{\geq \vec{0}}^n
+% 	=
+% 	\lbrace \vec{x} \in \Z^n \vcentcolon \vec{q}^T\vec{x} = k, \vec{x} \geq \vec{0}
+% 	\rbrace,
+% \end{equation}
+% y sea $T(n)$ el tiempo requerido para encontrar todos los puntos en $P_k$ o determinar que este
+% conjunto es vacío. Es razonable suponer que $T(n)$ es exponencial en $n$. En efecto, cada par
+% $(x_i, \omega_{i + 1})$ genera un intervalo de factibilidad $[t_i^{\min},
+% t_i^{\max}]$. Este intervalo ciertamente depende de las elecciones previas de $t_1, \ldots,
+% t_{i - 1}$, aunque suprimimos esta dependencia en la notación para tener mayor claridad. Para
+% encontrar todos los puntos en $P_k$, el algoritmo recorre todas las posibilidades:
+% \begin{equation}
+% 	\label{phase-1:complexity:bounds}
+% 	\prod_{i=1}^{\kappa_1} \min_{t_1, \ldots, t_{i-1}} \lbrace t_i^{\max} -
+% 	t_i^{\min} \rbrace
+% 	\leq T(n) \leq
+% 	\prod_{i=1}^{\kappa_2} \max_{t_1, \ldots, t_{i-1}} \lbrace t_i^{\max} -
+% 	t_i^{\min} \rbrace,
+% \end{equation}
+% donde $1 \leq \kappa_1 \leq n$ es el entero más grande que asegura que  $\min_{t_1, \ldots,
+% t_{i - 1}}\lbrace t_i^{\max} - t_i^{\min} \rbrace$ sea positivo para todo $i \in
+% \lbrace 1, \ldots, \kappa_1 \rbrace$. Definimos $\kappa_2$ de manera análoga. Se cumple que
+% $\kappa_1 \leq \kappa_2$. Sean $\ell_{\min}, \ell_{\max}$ las longitudes del intervalo de
+% factibilidad más pequeño y del más grande en todos los niveles, respectivamente. Es decir, definimos
+% \begin{align}
+% 	\ell_{\min} &\coloneq \min_{1 \leq i \leq \kappa_1} \left\lbrace \min_{t_1, \ldots,
+% 	t_{i - 1}} \lbrace t_i^{\max} - t_i^{\min} \rbrace \right\rbrace,
+% 	\\
+% 			\ell_{\max} &\coloneq \max_{1 \leq i \leq \kappa_2} \left\lbrace \max_{t_1,
+% 			\ldots, t_{i - 1}} \lbrace t_i^{\max} - t_i^{\max} \rbrace
+% 		\right\rbrace.
+% \end{align}
+% Si $P_k$ es vacío, se sigue que no existe ningún intervalo factible en el nivel $n$, lo que implica
+% que $\kappa_2 < n$. En caso contrario, el algoritmo recorre hasta el último nivel, por lo que $\kappa_1
+% = \kappa_2 = n$. De (\ref{phase-1:complexity:bounds}), obtenemos
+% \begin{equation}
+% 	\ell_{\min}^{n} \leq T(n) \leq \ell_{\max}^{n}.
+% \end{equation}
+% En el peor de los casos, nuestro algoritmo recorre todas las capas enteras parametrizadas por
+% $\lbrace k, k - 1, \ldots, \tau\rbrace$. Se sigue que
+% \begin{align}
+% 	\label{phase-1:time}
+% 	\text{Tiempo de ejecución}
+% 	= \mathcal{O}((k - \tau) \cdot T(n))
+% 	= \mathcal{O}(c^{n}),
+% \end{align}
+% para alguna $c > 1$.
+% 
+% Ahora bien, este razonamiento aplica a la modificación de nuestro objetivo en donde decidimos buscar
+% todas las soluciones posibles. En realidad solo nos interesa encontrar un punto óptimo, por lo que
+% podemos concluir que una cota superior para la complejidad de nuestro algoritmo es
+% (\ref{phase-1:time}). Asímismo, en la práctica encontramos que la diferencia $k - \tau$ es crucial
+% para determinar cuántas capas enteras recorre nuestro algoritmo en el peor de los casos.
+% 
+% Hemos mostrado anteriormente que para $u$ suficientemente grande es suficiente con recorrer una
+% capa. En caso de que $u$ no sea suficientemente grande, observaremos en el análisis de resultados
+% cómo se distribuye el número de capas enteras que en realidad se visitan.
 
 \section{Análisis de resultados}
 
