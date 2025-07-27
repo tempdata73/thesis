@@ -834,19 +834,24 @@ Siguiendo la misma directriz, vale la pena mencionar lo siguiente con respecto a
 las llamadas de recursión que el usuario puede realizar\footnote{
 	En la computadora del autor, por ejemplo, el valor predeterminado de este límite es 3000, y por
 	lo tanto, solamente podría el autor resolver problemas con dimensión $n \leq 3000$.
-}. Si bien este límite puede modificarse, aumenta la posibilidad de que nos encontremos con un
-\textit{stack overflow}. Así también, observemos que este algoritmo no minimiza el número de
-llamadas para calcular el máximo común divisor en la línea \eqref{alg:fin:g}, por ejemplo.
+}. Si bien este límite puede modificarse, aumenta la posibilidad de encontranos con un
+desbordamiento de pila, pues este algoritmo no está expresado en forma de recursión
+terminal\footnote{
+	Véase \url{https://en.wikipedia.org/wiki/Tail_call}.
+}.
+
+Además, este algoritmo, por ejemplo, no minimiza el número de llamadas para calcular el máximo común
+divisor en la línea \eqref{alg:fin:g}. En efecto, supongamos que un intervalo de factibilidad $I$
+definido en la línea \eqref{alg:fin:feas} induce a que $\vec{x}^{\texttt{tail}}$ sea \NIL~ para todo
+$t \in I$. Entonces estaríamos haciendo $|I|$ llamadas a \texttt{NonNegativeIntSol} en la línea
+\eqref{alg:fin:subeq} con el mismo vector $\vec{q}^{\texttt{tail}}$ y, por lo tanto, estaríamos
+calculando $|I|$ veces la misma $g$ en la línea \eqref{alg:fin:g}. Lo mismo ocurre con el cálculo de
+los coeficientes de Bézout $x'$ y $\omega'$ en la línea \eqref{alg:fin:bez2}.
 
 A pesar de los puntos anteriores, el autor decidió escribir el Algoritmo \ref{algo:fin:helper} de
-esa manera debido a que esto simplificaba de manera significativa la demostración del Teorema
-\ref{th:fin:helper:correct}. Las buenas noticias son que cualquier algoritmo recursivo tiene una
-implementación equivalente usando ciclos (TODO: ref). En la siguiente sección de análisis de
-resultados usamos una de esas equivalencias\footnote{
-	Véase la subrutina \texttt{solve\_linear} en
-	\url{https://github.com/tempdata73/thesis/blob/main/finite.py} para comparar la implementación
-	equivalente con el Algoritmo \ref{algo:fin:helper}.
-} para realizar nuestros experimentos.
+esa manera debido a que se simplificaba de manera significativa la demostración del Teorema
+\ref{th:fin:helper:correct}. Sin embargo, el autor realizó una implementación equivalente más
+eficiente a través de ciclos para obtener los resultados de la siguiente sección.
 
 \begin{algorithm}[ht]
 	\LinesNumbered
@@ -880,10 +885,10 @@ resultados usamos una de esas equivalencias\footnote{
 			}
 
 			$g \leftarrow \gcd{q_2, \ldots, q_n}$\; \label{alg:fin:g}
-			$x', \omega' \leftarrow$ \Bezout{$q_1$, $g$}\;
+			$x', \omega' \leftarrow$ \Bezout{$q_1$, $g$}\; \label{alg:fin:bez2}
 			$b_1 \leftarrow \ceil{-k x' / g}$\; \label{alg:fin:b11}
 			$b_2 \leftarrow \floor{k \omega' / q_1}$\; \label{alg:fin:b21}
-			$I \leftarrow [b_1, b_2]$\; \label{alg:fin:feas}
+			$I \leftarrow \braces{b_1, b_1 + 1, \ldots, b_2}$\; \label{alg:fin:feas}
 
 			$\vec{q}^{\texttt{tail}} \leftarrow (q_{i + 1} / g \vcentcolon 1 \leq i \leq n - 1)$\;
 			\label{alg:fin:qt}
