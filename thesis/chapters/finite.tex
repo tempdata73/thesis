@@ -117,7 +117,7 @@ la solución.
 Sea $k \in \braces{\eta, \ldots, \tau}$. Sabemos de la Sección \ref{subsec:dioph-eq} que deseamos
 resolver la ecuación lineal diofantina \eqref{eq:dioph}, por lo que implementamos la misma
 estrategia para plantear una formulación recursiva. Además, debido al supuesto que $\vec{q}$ tiene
-entradas estrictamente positivas, interpretar $\omega_2$ de tal manera que obtengamos más
+entradas estrictamente positivas, podemos interpretar $\omega_2$ de tal manera que obtengamos más
 información. Así como $\omega_1 \coloneq k$  es el presupuesto disponible en un inicio, $\omega_2$
 es el presupuesto disponible después de utilizar parte de él para adquirir $x_1 \geq 0$ unidades.
 Por lo tanto, es posible agregar la restricción $\omega_2 \geq 0$. Similarmente, en el $i$-ésimo
@@ -246,7 +246,7 @@ revisar.
 		\label{eq:dist-layers}
 		\Delta^*(u) \coloneq \eta(u) - \tau(u)
 	\end{equation}
-	denota el número de capas enteras a revisar dado el presupuesto $u$.
+	denota el \textbf{número de capas enteras a revisar} dado el presupuesto $u$.
 \end{definition}
 
 Si queremos aplicar el Lema \ref{lemma:layer-dist}, debemos reducir nuestra atención a vectores
@@ -302,7 +302,8 @@ encontrar un punto entero no negativo sobre esa $k$-ésima capa entera.
 
 \begin{definition}
 	\label{fin:def:ball}
-	Sea $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ una capa entera. Entonces definimos la bola cerrada sobre
+	Sea $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ una capa entera. Entonces definimos la \textbf{bola
+	cerrada} sobre
 	esta capa entera con radio $r > 0$ y centro $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ como
 	\begin{equation}
 		\label{eq:k-ball}
@@ -324,35 +325,35 @@ encontrar un punto entero no negativo sobre esa $k$-ésima capa entera.
 \begin{proof}
 	Como $q_n \neq 0$, recordemos del Teorema \eqref{th:lattice} que
 	\begin{equation*}
-		\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap \Z^n \iff \vec{x} = k\vec{\omega} + M\vec{t}
+		\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap \Z^n \iff \vec{x} = k\vec{\nu} + M\vec{t}
 	\end{equation*}
-	para algún vector $\vec{t} \in \Z^{n-1}$, donde recuperamos $\vec{\omega}$ y $M$ de
+	para algún vector $\vec{t} \in \Z^{n-1}$, donde recuperamos $\vec{\nu}$ y $M$ de
 	\eqref{eq:vec-omega} y \eqref{eq:mat-T}, respectivamente. Así, tenemos
 	\begin{equation*}
 		\left\lbrace B_r^{(k)}(\vec{x}) \colon \vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap
 			\Z^n \right\rbrace
 			=
-		\left\lbrace B_r^{(k)}(k\vec{\omega} + M\vec{t}) \colon \vec{t} \in \Z^{n-1} \right\rbrace.
+		\left\lbrace B_r^{(k)}(k\vec{\nu} + M\vec{t}) \colon \vec{t} \in \Z^{n-1} \right\rbrace.
 	\end{equation*}
-	A partir de esto último sabemos que $B_r^{(k)}(k\vec{\omega} + M\vec{t}) \subseteq H_{\vec{q},
+	A partir de esto último sabemos que $B_r^{(k)}(k\vec{\nu} + M\vec{t}) \subseteq H_{\vec{q},
 	k\norm{\vec{q}}^{-2}}$ para todo punto entero $\vec{t} \in \Z^{n-1}$. Luego, para cualquier $r >
 	0$ tenemos
 	\begin{equation}
 		\label{eq:ball-cover:1}
-		\bigcup_{\vec{t} \in \Z^{n-1}}B_r^{(k)}(k\vec{\omega} + M\vec{t}) \subseteq
+		\bigcup_{\vec{t} \in \Z^{n-1}}B_r^{(k)}(k\vec{\nu} + M\vec{t}) \subseteq
 		H_{\vec{q}, k\norm{\vec{q}}^{-2}}.
 	\end{equation}
 	Ahora bien, sea $\vec{y}$ un punto sobre la $k$-ésima capa entera. Por el Lema \ref{lemma:iso2}
 	sabemos que las columnas de $M$ son linealmente independientes, y entonces existe $\vec{t} \in
 	\R^{n-1}$ tal que
 	\begin{equation*}
-		\vec{y} = k\vec{\omega} + M\vec{t}.
+		\vec{y} = k\vec{\nu} + M\vec{t}.
 	\end{equation*}
 	Sea $\lfloor \vec{t} \rceil \in \Z^{n-1}$ el vector resultante de redondear cada entrada de
 	$\vec{t}$ al entero más cercano. Luego, $\vec{t} = \lfloor \vec{t} \rceil + \vec{\delta}$,
 	donde $\vec{\delta} \in \R^{n-1}$ satisface $\norm{\vec{\delta}}_{\infty} \leq 0.5$. Definamos
 	\begin{equation*}
-		\vec{x} \coloneq k\vec{\omega} + M\lfloor \vec{t} \rceil \in \Z^{n-1},
+		\vec{x} \coloneq k\vec{\nu} + M\lfloor \vec{t} \rceil \in \Z^{n-1},
 	\end{equation*}
 	de donde se sigue que
 	\begin{align}
@@ -372,7 +373,7 @@ encontrar un punto entero no negativo sobre esa $k$-ésima capa entera.
 	\begin{equation}
 		\label{eq:ball-cover:2}
 		H_{\vec{q}, k\norm{\vec{q}}^{-2}} \subseteq
-		\bigcup_{\vec{t} \in \Z^{n-1}}B_r^{(k)}(k\vec{\omega} + M\vec{t}).
+		\bigcup_{\vec{t} \in \Z^{n-1}}B_r^{(k)}(k\vec{\nu} + M\vec{t}).
 	\end{equation}
 	Juntando esto con (\ref{eq:ball-cover:1}) obtenemos lo que queríamos demostrar.
 \end{proof}
@@ -397,8 +398,8 @@ $\vec{q}^T\vec{x} = k$. Para lograr esto, definimos el baricentro de $\sigma$ y 
 vecindad de este baricentro de manera que esté contenida en el símplice.
 
 \begin{definition}
-	Dado un símplice $\sigma$ generado por $\vec{u}_1, \ldots, \vec{u}_n$, definimos su baricentro o
-	centro de masa $\est{\sigma}$ como
+	Dado un símplice $\sigma$ generado por $\vec{u}_1, \ldots, \vec{u}_n$, definimos su
+	\textbf{baricentro} o \textbf{centro de masa} $\est{\sigma}$ como
 	\begin{equation*}
 		\est{\sigma} \coloneq \frac{1}{n} \sum_{i=1}^{n}\vec{u}_i.
 	\end{equation*}
@@ -417,13 +418,13 @@ vecindad de este baricentro de manera que esté contenida en el símplice.
 		\subseteq \sigma \rbrace.
 	\end{equation}
 	Entonces decimos que $\mathcal{C}^{(k)} \coloneq
-	B_{r_\sigma}^{(k)}(\est{\sigma})$ es la circunferencia inscrita en $\sigma$. A
+	B_{r_\sigma}^{(k)}(\est{\sigma})$ es la \textbf{circunferencia inscrita} en $\sigma$. A
 	$r_\sigma$ le llamamos el radio de tal circunferencia.
 \end{definition}
 
 \begin{definition}
 	Sea $\sigma$ un símplice. Al símplice $F_j$ generado por los vectores $\lbrace \vec{u}_i
-	\rbrace_{i \neq j}$ lo llamamos la $j$-ésima faceta de $\sigma$.
+	\rbrace_{i \neq j}$ lo llamamos la \textbf{$j$-ésima faceta} de $\sigma$.
 \end{definition}
 \begin{observation}
 	Si $\sigma$ es generado por $n$ vectores, entonces tiene $\binom{n}{n-1} = n$ facetas, y cada

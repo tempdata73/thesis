@@ -59,12 +59,12 @@ Una vez resuelto el problema de decisión, podemos preguntarnos concretamente c�
 diofantina $\vec{q}^T\vec{x} = \eta$. Del Teorema \ref{th:lattice} sabemos que si $q_n \neq 0$,
 entonces existen $k \in \Z$ y $\vec{t} \in \Z^{n-1}$ tales que
 \begin{equation*}
-	\vec{x} = k\vec{\omega} + M\vec{t},
+	\vec{x} = k\vec{\nu} + M\vec{t},
 \end{equation*}
-donde $\vec{\omega}$ y $M$ están definidas por \eqref{eq:vec-omega} y \eqref{eq:mat-T},
+donde $\vec{\nu}$ y $M$ están definidas por \eqref{eq:vec-omega} y \eqref{eq:mat-T},
 respectivamente. De los Lemas \ref{lemma:iso1} y \ref{lemma:iso2} sabemos que
 \begin{equation*}
-	\vec{q}^T\left(\eta\vec{\omega} + M\vec{t}\right) = \eta\vec{q}^T\vec{\omega} + \vec{q}^TM\vec{t} = \eta
+	\vec{q}^T\left(\eta\vec{\nu} + M\vec{t}\right) = \eta\vec{q}^T\vec{\nu} + \vec{q}^TM\vec{t} = \eta
 \end{equation*}
 para todo $\vec{t} \in \Z^{n-1}$. Así pues, debe ser el caso que $k = \eta$ y debemos encontrar
 condiciones suficientes en $\vec{t}$ para asegurar la no-negatividad de $\vec{x}$. En primer lugar,
@@ -88,9 +88,9 @@ constituye problema alguno debido a un razonamiento similar al de la demostraci�
 \begin{equation*}
 	I^\circ \coloneq \braces{i \colon q_i = 0},
 \end{equation*}
-y también definimos el vector $\tilde{\vec{q}}$ cuyas entradas son las entradas no nulas de
-$\vec{q}$. A partir de lo que sigue vamos a determinar un vector entero no nulo $\tilde{\vec{x}}$
-que satisfaga $\tilde{\vec{q}}^T\tilde{\vec{x}} = \eta$. Luego, encontramos que el vector $\vec{x}$
+y también definimos el vector $\tvec{q}$ cuyas entradas son las entradas no nulas de
+$\vec{q}$. A partir de lo que sigue vamos a determinar un vector entero no nulo $\tvec{x}$
+que satisfaga $\tvec{q}^T\tvec{x} = \eta$. Luego, encontramos que el vector $\vec{x}$
 dado por
 \begin{equation*}
 	x_i \coloneq
@@ -240,10 +240,10 @@ $x_{n-1}$ y $x_n$, basta con que se satisfaga el primer caso:
 
 En síntesis, por el Lema \ref{lemma:t-existence} sabemos que existe un vector
 $\vec{t} \in \Z^{n-1}$ que satisface ambos (\ref{eq:param-lb}) y (\ref{eq:feasible-param}).
-Al definir $\vec{x}^* \coloneq \eta\vec{\omega} + M\vec{t}$, encontramos que $\vec{x}^*$ es entero y
+Al definir $\vec{x}^* \coloneq \eta\vec{\nu} + M\vec{t}$, encontramos que $\vec{x}^*$ es entero y
 no negativo, y además por los Lemas \ref{lemma:iso1} y \ref{lemma:iso2} encontramos que
 \begin{equation*}
-	\vec{q}^T\vec{x}^* = \eta\vec{q}^T\vec{\omega} + \vec{q}^TM\vec{t} = \eta.
+	\vec{q}^T\vec{x}^* = \eta\vec{q}^T\vec{\nu} + \vec{q}^TM\vec{t} = \eta.
 \end{equation*}
 Por el Teorema \ref{theory:th:feasibility}, se sigue que $\vec{x}^*$ es la solución al problema
 \eqref{theory:formulation}.
@@ -251,7 +251,7 @@ Por el Teorema \ref{theory:th:feasibility}, se sigue que $\vec{x}^*$ es la soluc
 En la práctica es mejor usar la relación de recurrencia (\ref{eq:recurrence}) y ``construir'' las
 entradas $x_i$ al mismo tiempo que definimos $t_i$ de manera que satisfaga (\ref{eq:param-lb}) y
 (\ref{eq:feasible-param:collapsed}). Si procedemos de esta forma no tenemos que encontrar primero
-$\vec{\omega}$ y $M$, determinar $\vec{t}$ y luego recuperar $\vec{x}$. El Algoritmo \ref{algo:inf}
+$\vec{\nu}$ y $M$, determinar $\vec{t}$ y luego recuperar $\vec{x}$. El Algoritmo \ref{algo:inf}
 muestra este procedimiento constructivo.
 
 \begin{algorithm}[ht]
@@ -285,7 +285,7 @@ muestra este procedimiento constructivo.
 
 			$x_{n-1}', x_n' \leftarrow$ \Bezout{$q_{n-1}$, $q_n$}\; \label{alg:def:inf:lastw}
 			$b_1 \leftarrow -\omega_{n-1} x_{n-1}' / q_n$\;
-			$b_2 \leftarrow -\omega_{n-1} x_n' / q_{n-1}$\;
+			$b_2 \leftarrow \omega_{n-1} x_n' / q_{n-1}$\;
 			$t_{n-1} \leftarrow \ceil{\max\lbrace b_1, b_2\rbrace}$\;
 			$x_{n-1} \leftarrow \omega_{n-1}x_{n-1}' + q_nt_{n-1}$\;
 			$x_{n} \leftarrow \omega_{n-1}x_{n}' - q_{n-1}t_{n-1}$\;
@@ -391,7 +391,7 @@ Extendido de Euclides.
 \end{proof}
 
 El Algoritmo \ref{algo:inf:ext} extiende el Algoritmo \ref{algo:inf}. Solamente construimos un
-vector $\vec{\tilde{q}}$ a partir del vector coprimo $\vec{q}$ de manera que se satisfagan las
+vector $\tvec{q}$ a partir del vector coprimo $\vec{q}$ de manera que se satisfagan las
 hipótesis del Algoritmo \ref{algo:inf}. Esta construcción sigue la misma lógica con la que
 justificamos los supuestos $q_i \neq 0$ y $q_{n-1} < 0 < q_n$ antes de presentar el Lema
 \ref{lemma:t-existence}.
@@ -421,11 +421,11 @@ el Algoritmo \ref{algo:inf}, el cual es correcto a causa del Lema \ref{lemma:alg
 		}
 		$\vec{x} \leftarrow \vec{0}$\;
 		$\vec{\sigma} \leftarrow \left(i \colon q_i \neq 0\right)$\;
-		$\vec{\tilde{q}} \leftarrow \left( q_i \colon q_i \neq 0 \right)$\;
+		$\tvec{q} \leftarrow \left( q_i \colon q_i \neq 0 \right)$\;
 		\label{alg:def:inf:tilde-q}
 
-		$m \leftarrow$ \length{$\vec{\tilde{q}}$}\; \label{alg:subr:length}
-		\switch{$\vec{\tilde{q}}$, $1$, $m$}\; \label{alg:subr:switch1}
+		$m \leftarrow$ \length{$\tvec{q}$}\; \label{alg:subr:length}
+		\switch{$\tvec{q}$, $1$, $m$}\; \label{alg:subr:switch1}
 
 		\For{$i \leftarrow 1$ \KwTo $m - 1$}{ \label{alg:inf:loop}
 			\If{$\tilde{q}_i < 0$}{
@@ -433,11 +433,11 @@ el Algoritmo \ref{algo:inf}, el cual es correcto a causa del Lema \ref{lemma:alg
 				ir al paso \eqref{alg:subr:switch3}\;
 			}
 		}
-		\switch{$\vec{\tilde{q}}$, $j$, $m - 1$}\; \label{alg:subr:switch3}
+		\switch{$\tvec{q}$, $j$, $m - 1$}\; \label{alg:subr:switch3}
 
-		$\vec{\tilde{x}} \leftarrow$ \NonNegativeIntSol{$\vec{\tilde{q}}$, $\eta$}\;
-		\switch{$\vec{\tilde{x}}$, $j$, $m - 1$}\; \label{alg:subr:switch2}
-		\switch{$\vec{\tilde{x}}$, $1$, $m$}\;
+		$\tvec{x} \leftarrow$ \NonNegativeIntSol{$\tvec{q}$, $\eta$}\;
+		\switch{$\tvec{x}$, $j$, $m - 1$}\; \label{alg:subr:switch2}
+		\switch{$\tvec{x}$, $1$, $m$}\;
 
 		\For{$i \leftarrow 1$ \KwTo $m$}{ \label{alg:inf:loop2}
 			$x_{\sigma_i} \leftarrow \tilde{x}_i$\;
@@ -454,9 +454,9 @@ el Algoritmo \ref{algo:inf}, el cual es correcto a causa del Lema \ref{lemma:alg
 	El Algoritmo \ref{algo:inf:ext} es correcto.
 \end{theorem}
 \begin{proof}
-	Primero mostramos que el vector $\vec{\tilde{q}}$ satisface las hipótesis del Algoritmo
+	Primero mostramos que el vector $\tvec{q}$ satisface las hipótesis del Algoritmo
 	\ref{algo:inf}. Por definición, en la línea \eqref{alg:def:inf:tilde-q}, tenemos que ninguna
-	entrada de $\vec{\tilde{q}}$ es nula.
+	entrada de $\tvec{q}$ es nula.
 
 	Recordemos de la Definición \ref{theory:def:rational} que, como $\vec{q}$ es el vector coprimo
 	de un vector esencialmente entero $\vec{p}$, su primera entrada no nula es positiva. Así, es
@@ -464,17 +464,17 @@ el Algoritmo \ref{algo:inf}, el cual es correcto a causa del Lema \ref{lemma:alg
 	encontramos que $\tilde{q}_m > 0$.
 
 	Del ciclo en la línea \eqref{alg:inf:loop} recuperamos un índice $j$ tal que $\tilde{q}_j < 0$ y
-	lo permutamos con la $(m - 1)$-ésima entrada de $\vec{\tilde{q}}$ en la línea
+	lo permutamos con la $(m - 1)$-ésima entrada de $\tvec{q}$ en la línea
 	\eqref{alg:subr:switch3}, de manera que obtenemos $\tilde{q}_{m-1} < 0$.
 
-	Con los tres puntos anteriores, encontramos que el vector $\vec{\tilde{q}}$ satisface las
-	hipótesis del Algoritmo \ref{algo:inf} y por lo tanto el vector $\vec{\tilde{x}}$ es no negativo
-	y satisface la ecuación lineal diofantina $\vec{\tilde{q}}^T\vec{\tilde{x}} = \eta$, debido al
+	Con los tres puntos anteriores, encontramos que el vector $\tvec{q}$ satisface las
+	hipótesis del Algoritmo \ref{algo:inf} y por lo tanto el vector $\tvec{x}$ es no negativo
+	y satisface la ecuación lineal diofantina $\tvec{q}^T\tvec{x} = \eta$, debido al
 	Lema \ref{lemma:alg:inf:correct}.
 
 	Las siguientes dos líneas se encargan de invertir las permutaciones hechas previamente.
 	Finalmente, en el ciclo \eqref{alg:inf:loop2} insertamos en $\vec{x}$ las entradas $i$ de
-	$\vec{\tilde{x}}$ donde $q_{\sigma_i} \neq 0$. En otro caso tenemos $x_i = 0$. Así pues, el
+	$\tvec{x}$ donde $q_{\sigma_i} \neq 0$. En otro caso tenemos $x_i = 0$. Así pues, el
 	vector $\vec{x}$ es no negativo y también tenemos
 	\begin{equation*}
 		\vec{q}^T\vec{x} = \sum_{i = 1}^{n}q_ix_i
