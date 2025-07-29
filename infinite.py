@@ -1,16 +1,8 @@
 import math
 import numpy as np
 
-from typing import Final
-
-
 from src.utils import bezout_2d
 from src.decorators import repeat_with_timeout
-from src.common import stats_dioph_as_rhs_increases
-
-
-NUM_REPS: Final[int] = 20
-TIMEOUT: Final[int] = 5 * 60  # 5 minutes per instance
 
 
 def non_negative_int_sol(q, eta):
@@ -43,7 +35,7 @@ def non_negative_int_sol(q, eta):
     return x
 
 
-@repeat_with_timeout(NUM_REPS, TIMEOUT)
+@repeat_with_timeout()
 def dioph(q, eta):
     q = q.copy()
     x = np.zeros_like(q)
@@ -71,20 +63,31 @@ def dioph(q, eta):
 
 
 if __name__ == "__main__":
-    # TODO: check dioph implementation is correct
+    from src.common import experiment_rhs
 
-    NUM_DECIMALS = 2
+    rhs = np.logspace(3, 5, num=3, base=10.0, dtype=int)
 
-    # finding coprime multiple
-    p_int = np.array([993, -977, 953, -913])
-    g = math.gcd(*p_int)
-    q = p_int // g
-    m = g / math.pow(10, NUM_DECIMALS)
+    p_int = np.array(
+        [
+            [9932, -9774, 9538, -9132],  # 3 decimal digits
+            [99322, -97743, 95389, -91320],  # 4 decimal digits
+            # [993224, -977435, 953891, -913203],  # 5 decimal digits
+        ]
+    )
 
     # original projectively rational vector
-    p = p_int / math.pow(10, NUM_DECIMALS)
+    f = np.power(10.0, [-3, -4])
+    p = f[:, np.newaxis] * p_int
 
-    np.testing.assert_almost_equal(p, m * q)
+    # finding coprime multiples
+    num_experiments = len(p_int)
+    m = np.zeros(num_experiments)
+    q = np.zeros_like(p_int)
 
-    rhs = np.logspace(2, 7, num=128, base=10.0, dtype=int)
-    stats = stats_dioph_as_rhs_increases(dioph, q, m, rhs)
+    for i in range(num_experiments):
+        g = math.gcd(*p_int[i])
+        q[i] = p_int[i] // g
+        m[i] = float(g) * f[i]
+
+    np.testing.assert_almost_equal(p, m[:, np.newaxis] * q)
+    experiment_rhs(p, q, m, rhs, dioph, "times/inf/rhs")

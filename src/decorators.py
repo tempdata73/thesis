@@ -6,9 +6,7 @@ from time import perf_counter_ns
 from functools import wraps
 
 
-logging.basicConfig(
-    format="{asctime}:[{levelname}]:{message}", style="{", level=logging.INFO
-)
+from .constants import NUM_REPS, TIMEOUT
 
 
 def alarm_handler(signum, frame):
@@ -16,7 +14,7 @@ def alarm_handler(signum, frame):
     raise TimeoutError(msg)
 
 
-def repeat_with_timeout(num_reps, timeout):
+def repeat_with_timeout(num_reps=NUM_REPS, timeout=TIMEOUT):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
@@ -58,7 +56,7 @@ def repeat_with_timeout(num_reps, timeout):
     return decorator
 
 
-def repeat(num_reps):
+def repeat(num_reps=NUM_REPS):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):

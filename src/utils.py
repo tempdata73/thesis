@@ -1,8 +1,25 @@
+import os
 import math
+import logging
 
 # math module has not yet implemented a sign function
 # see https://bugs.python.org/msg59154
 sign = lambda x: int(math.copysign(1.0, x))  # noqa: E731
+
+
+def setup_logger(job_id, log_path):
+    os.makedirs(log_path, exist_ok=True)
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+
+    filename = os.path.join(log_path, f"id_{job_id}.log")
+    handler = logging.FileHandler(filename, mode="w")
+    formatter = logging.Formatter(
+        f"[job {job_id}] %(asctime)s - %(levelname)s - %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
 
 
 def bezout_2d(a: int, b: int) -> tuple[int, int]:

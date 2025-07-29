@@ -1,6 +1,7 @@
 # custom
 jl/*
 plots.local.py
+times/*
 
 # report sketch
 report/*
