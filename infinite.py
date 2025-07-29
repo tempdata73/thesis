@@ -1,225 +1,90 @@
 import math
 import numpy as np
-import pulp as lp
 
-from utils import bezout_2d, repeat
+from typing import Final
 
 
-def feasible_point(c_p, eta, flag):
-    n = len(c_p)
+from src.utils import bezout_2d
+from src.decorators import repeat_with_timeout
+from src.common import stats_dioph_as_rhs_increases
+
+
+NUM_REPS: Final[int] = 20
+TIMEOUT: Final[int] = 5 * 60  # 5 minutes per instance
+
+
+def non_negative_int_sol(q, eta):
+    n = len(q)
     x = np.zeros(n)
 
-    omega = eta
     for i in range(n - 2):
-        g = math.gcd(*c_p[1:])
-        x_bezout, omega_bezout = bezout_2d(c_p[i], g)
+        g = math.gcd(*q[i + 1 :])
+        x_b, w_b = bezout_2d(q[i], g)
 
-        # get feasible parameter
-        if (i == n - 3) and ((flag == 1) or (flag == 4)):
-            c_1 = omega * omega_bezout / c_p[i]
-            c_2 = 2.0 * c_p[-2] * c_p[-1] / (c_p[i] * g * g)
-            if flag == 1:
-                t = math.ceil(max(-omega * x_bezout / g, c_1 + c_2))
-            elif flag == 4:
-                t = math.ceil(max(-omega * x_bezout / g, c_1 - c_2))
-        else:
-            t = math.ceil(-omega * x_bezout / g)
+        # feasible parameter and nonnegative solution
+        t = math.ceil(-eta * x_b / g)
+        x[i] = eta * x_b + g * t
 
-        # update
-        x[i] = omega * x_bezout + g * t
-        omega = omega * omega_bezout - c_p[i] * t
-        c_p[i:] //= g
+        # update rhs and coprime vector
+        eta = eta * w_b - q[i] * t
+        q[i + 1 :] //= g
 
-    # last two solutions
-    x_prime, y_prime = bezout_2d(c_p[-2], c_p[-1])
-    b_1 = -omega * x_prime / c_p[-1]
-    b_2 = -omega * y_prime / c_p[-2]
-    match flag:
-        case 1:
-            t = math.floor(b_1)
-        case 2:
-            t = math.ceil(max(b_1, b_2))
-        case 3:
-            t = math.floor(min(b_1, b_2))
-        case 4:
-            t = math.ceil(b_1)
-    x[-2] = omega * x_prime + c_p[-1] * t
-    x[-1] = omega * y_prime - c_p[-2] * t
+    x_bp, x_bl = bezout_2d(q[-2], q[-1])
 
-    return x
-
-
-@repeat(num_iter=20)
-def solve_dioph(c_p, k, s):
-    c_p = c_p.copy()
-    eta = math.floor(s / k)
-
-    # strategy for finding feasible point is divided in four cases
-    # depending on the sign of last two entries of c_p
-    obj_second_to_last = c_p[-2]
-    obj_last = c_p[-1]
-    if (obj_second_to_last < 0.0) and (obj_last < 0.0):
-        flag = 1
-    elif (obj_second_to_last < 0.0) and (obj_last > 0.0):
-        flag = 2
-    elif (obj_second_to_last > 0.0) and (obj_last < 0.0):
-        flag = 3
-    elif (obj_second_to_last > 0.0) and (obj_last > 0.0):
-        flag = 4
-
-    # permuting entries of c in order to find feasible t_{n-2}
-    switch = None
-    if flag == 1:
-        c_p[-3], c_p[0] = c_p[0], c_p[-3]
-        switch = 0  # first entry of c_p is always positive
-    elif flag == 4:
-        neg_indices = np.where(c_p[:-2] < 0.0)[0]
-        assert len(neg_indices) > 0
-        switch = neg_indices[0].item()
-        c_p[-3], c_p[switch] = c_p[switch], c_p[-3]
-
-    x = feasible_point(c_p, eta, flag=flag)
-    # invert initial permutation
-    if (flag == 1) or (flag == 4):
-        x[switch], x[-3] = x[-3], x[switch]
-
-    return x
-
-
-@repeat(num_iter=20)
-def solve_dioph_2(q, k, s):
-    q = q.copy()
-    eta = math.floor(s / k)
-
-    switch = -1
-    if (q[-2] > 0) and (q[-1] < 0):
-        switch = -2
-    elif (q[-2] < 0) and (q[-1] < 0):
-        switch = 0
-    elif (q[-2] > 0) and (q[-1] > 0):
-        neg_indices = np.where(q < 0)[0]
-        switch  = neg_indices[0].item()
-
-    q[-1], q[switch] = q[switch], q[-1]
-    x = np.zeros_like(q)
-    omega = eta
-
-    for i in range(len(q) - 2):
-        g = math.gcd(*q[i+1:])
-        x_bezout, omega_bezout = bezout_2d(q[i], g)
-        t = math.ceil(-omega * x_bezout / g)
-
-        # update
-        x[i] = omega * x_bezout + g * t
-        omega = omega * omega_bezout - q[i] * t
-        q[i:] //= g
-
-    # last two solutions
-    x_prime, y_prime = bezout_2d(q[-2], q[-1])
-    b_1 = -omega * x_prime / q[-1]
-    b_2 = -omega * y_prime / q[-2]
-
+    # feasible parameter
+    b_1 = -eta * x_bp / q[-1]
+    b_2 = eta * x_bl / q[-2]
     t = math.ceil(max(b_1, b_2))
-    x[-2] = omega * x_prime + q[-1] * t
-    x[-1] = omega * y_prime - q[-2] * t
 
-    # switching
-    x[-1], x[switch] = x[switch], x[-1]
+    # last two nonnegative solutions
+    x[-2] = eta * x_bp + q[-1] * t
+    x[-1] = eta * x_bl - q[-2] * t
 
     return x
 
 
+@repeat_with_timeout(NUM_REPS, TIMEOUT)
+def dioph(q, eta):
+    q = q.copy()
+    x = np.zeros_like(q)
 
-@repeat(num_iter=20)
-def solve_pulp(p, s, **kwargs):
-    # create lp problem
-    x = [lp.LpVariable(f"b_{i}", lowBound=0, cat=lp.LpInteger) for i in range(len(p))]
-    prob = lp.LpProblem(sense=lp.LpMaximize)
-    prob += lp.lpDot(p, x), "objective"
-    prob += lp.lpDot(p, x) <= s, "constraint"
+    # q_hat only has nonzero entries
+    sigma = np.nonzero(q)
+    q_hat = q[sigma]
 
-    # solve problem
-    prob.solve(lp.PULP_CBC_CMD(msg=False, **kwargs))
+    # q_hat satisfies q_hat[-2] < 0 < q_hat[-1]
+    q_hat[0], q_hat[-1] = q_hat[-1], q_hat[0]
+    j = np.where(q_hat[:-1] < 0)[0][0]
+    q_hat[j], q_hat[-2] = q_hat[-2], q_hat[j]
 
-    res = np.array([lp.value(var) for var in x])
-    return res
+    # x_hat is nonnegative and satisfies dot(q_hat, x_hat) == eta
+    x_hat = non_negative_int_sol(q_hat, eta)
+
+    # undo permutations
+    x_hat[j], x_hat[-2] = x_hat[-2], x_hat[j]
+    x_hat[0], x_hat[-1] = x_hat[-1], x_hat[0]
+
+    # x is nonnegative and satisfies dot(q, x) == eta
+    x[sigma] = x_hat
+
+    return x
 
 
 if __name__ == "__main__":
+    # TODO: check dioph implementation is correct
 
     NUM_DECIMALS = 2
-    FILENAME = f"neg-4d-{NUM_DECIMALS}dig"
-    bb_raw_options = {
-        "presolve": True,
-        "cuts": False,
-        "options": None,
-    }
 
-    bb_full_options = {
-        "presolve": True,
-        "cuts": True,
-        "options": ["gomory on", "knapsack off", "probing off"],
-    }
+    # finding coprime multiple
+    p_int = np.array([993, -977, 953, -913])
+    g = math.gcd(*p_int)
+    q = p_int // g
+    m = g / math.pow(10, NUM_DECIMALS)
 
-    p = np.array([9.93, -9.77, 9.53, -9.13])
+    # original projectively rational vector
+    p = p_int / math.pow(10, NUM_DECIMALS)
 
-    # finding coprime multiple of projectively rational vector
-    p_1 = np.array([993, -977, 953, -913])
-    g = math.gcd(*p_1)
-    c_p = p_1 // g
-    multiplier = g / math.pow(10, NUM_DECIMALS)
-    np.testing.assert_almost_equal(p, multiplier * c_p)
+    np.testing.assert_almost_equal(p, m * q)
 
-    n = 128
-    slack = np.logspace(2, 3, num=n, base=10.0, dtype=int)
-    stats: dict[str, dict[str, list[float]]] = {
-        "bb_full": {
-            "mu": [0.0] * n,
-            "sigma": [0.0] * n,
-            "obj": [0.0] * n,
-        },
-        "bb_raw": {
-            "mu": [0.0] * n,
-            "sigma": [0.0] * n,
-            "obj": [0.0] * n,
-        },
-        "dioph": {
-            "mu": [0.0] * n,
-            "sigma": [0.0] * n,
-            "obj": [0.0] * n,
-        },
-    }
-
-    for i, s in enumerate(slack):
-        print(f"[INFO]: on slack {s} ({i + 1}/{n})")
-
-        # full options
-        x_bb_full, (mu, sigma) = solve_pulp(p, s, **bb_full_options)
-        obj_bb_full = np.dot(p, x_bb_full)
-        stats["bb_full"]["mu"][i] = mu
-        stats["bb_full"]["sigma"][i] = sigma
-        stats["bb_full"]["obj"][i] = obj_bb_full
-
-        # pure implementation
-        x_bb_raw, (mu, sigma) = solve_pulp(p, s, **bb_raw_options)
-        obj_bb_raw = np.dot(p, x_bb_raw)
-        stats["bb_raw"]["mu"][i] = mu
-        stats["bb_raw"]["sigma"][i] = sigma
-        stats["bb_raw"]["obj"][i] = obj_bb_raw
-
-        # diophantine method
-        x_dioph, (mu, sigma) = solve_dioph_2(c_p, multiplier, s)
-        assert np.all(x_dioph >= 0)
-        print(f"{x_dioph=}")
-        obj_dioph = np.dot(p, x_dioph)
-        stats["dioph"]["mu"][i] = mu
-        stats["dioph"]["sigma"][i] = sigma
-        stats["dioph"]["obj"][i] = obj_dioph
-
-        if not np.isclose(obj_dioph, obj_bb_full):
-            print(f"[ERROR]: objective values don't match for slack {s}")
-            print(f"[DEBUG]: {x_bb_full=} -> obj = {obj_bb_full}")
-            print(f"[DEBUG]: {x_dioph=} -> obj = {obj_dioph}")
-
-    # with open(f"times/inf/{FILENAME}.json", "w") as outfile:
-    #     json.dump(stats, outfile)
+    rhs = np.logspace(2, 7, num=128, base=10.0, dtype=int)
+    stats = stats_dioph_as_rhs_increases(dioph, q, m, rhs)
