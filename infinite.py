@@ -63,15 +63,20 @@ def dioph(q, eta):
 
 
 if __name__ == "__main__":
-    from src.common import experiment_rhs
+    from src.constants import bb_raw_options, bb_full_options
+    from src.common import (
+        stats_dioph_as_rhs_increases as dioph_rhs,
+        stats_bb_as_rhs_increases as bb_rhs,
+    )
+    from src.common import run_parallel
 
-    rhs = np.logspace(3, 5, num=3, base=10.0, dtype=int)
+    rhs = np.logspace(3, 7, num=128, base=10.0, dtype=int)
 
     p_int = np.array(
         [
             [9932, -9774, 9538, -9132],  # 3 decimal digits
             [99322, -97743, 95389, -91320],  # 4 decimal digits
-            # [993224, -977435, 953891, -913203],  # 5 decimal digits
+            [993224, -977435, 953891, -913203],  # 5 decimal digits
         ]
     )
 
@@ -89,5 +94,34 @@ if __name__ == "__main__":
         q[i] = p_int[i] // g
         m[i] = float(g) * f[i]
 
+    # sanity check
     np.testing.assert_almost_equal(p, m[:, np.newaxis] * q)
-    experiment_rhs(p, q, m, rhs, dioph, "times/inf/rhs")
+
+    n = p.shape[1]
+    create_path = lambda name, d: f"times/inf/{name}/{n}n-{d}d"  # noqa: E731
+    jobs = []
+    for i in range(num_experiments):
+        jobs.extend(
+            [
+                {
+                    "name": "dioph",
+                    "log_path": create_path("dioph", i + 3),
+                    "job": lambda *_: dioph_rhs(dioph, q[i].copy(), m[i], rhs.copy()),
+                },
+                {
+                    "name": "bb_raw",
+                    "log_path": create_path("bb_raw", i + 3),
+                    "job": lambda *_: bb_rhs(
+                        p[i].copy(), rhs.copy(), **bb_raw_options.copy()
+                    ),
+                },
+                {
+                    "name": "bb_full",
+                    "log_path": create_path("bb_full", i + 3),
+                    "job": lambda *_: bb_rhs(
+                        p[i].copy(), rhs.copy(), **bb_full_options.copy()
+                    ),
+                },
+            ]
+        )
+    run_parallel(jobs)

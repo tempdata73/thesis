@@ -26,16 +26,18 @@ def repeat_with_timeout(num_reps=NUM_REPS, timeout=TIMEOUT):
 
             # get samples. even if function timed out,
             # the observation will still be part of the sample
+            prev_res = None
             for i in range(num_reps):
                 signal.alarm(timeout)
                 start = perf_counter_ns()
 
                 try:
                     res = func(*args, **kwargs)
+                    prev_res = res
                 except TimeoutError as e:
                     logging.warn(f"alarm_handler: {e}")
                     timeout_counter += 1
-                    res = None
+                    res = prev_res
                     continue
                 finally:
                     signal.alarm(0)

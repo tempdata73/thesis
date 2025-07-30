@@ -1,23 +1,8 @@
 import math
 import numpy as np
-import matplotlib.pyplot as plt
 
-import knapsack as kp
-from utils import bezout_2d, repeat
-
-
-# TODO: experiments:
-# 1. time comparisons between mtu2, dioph, bb and dynamic model
-#   1.1 as the dimension n increases ✔
-#   1.2 as the rhs increases ✔
-# 2. actual number of layers visited vs feasibility zone ✔
-
-
-def layer_bounds(q, m, u):
-    q_star = np.max(q)
-    eta = math.floor(u / m)
-    tau = math.floor(math.floor(u / q_star) * q_star / m)
-    return tau, eta
+from src.utils import bezout_2d
+from src.decorators import repeat_with_timeout
 
 
 def solve_linear(q, rhs):
@@ -87,8 +72,8 @@ def solve_linear(q, rhs):
     return None
 
 
-@repeat(num_iter=20)
-def solve_dioph(q, eta):
+@repeat_with_timeout()
+def dioph(q, eta):
     while eta >= 0:
         x = solve_linear(q, eta)
         if x is not None:
@@ -99,246 +84,47 @@ def solve_dioph(q, eta):
     return None
 
 
-def experiment_1(q, m):
-    """
-    number of layers visited vs feasibility zone
-    """
-
-    num_samples = 128
-    prop = np.sum(q) * np.logspace(start=-5, stop=-4, base=10, num=num_samples)
-    visited = {
-        "pctg": np.zeros(num_samples),
-        "abs": np.zeros(num_samples),
-    }
-    to_visit = np.zeros(num_samples)
-
-    for i, u in enumerate(prop):
-        tau, eta = layer_bounds(q, m, u)
-        k, x = solve_dioph(q, eta)
-        np.testing.assert_allclose(np.dot(q, x), k)
-        num_visited = eta - np.dot(q, x)
-
-        visited["abs"][i] = num_visited
-        to_visit[i] = eta - tau
-        if eta != tau:
-            visited["pctg"][i] = num_visited / (eta - tau)
-
-    fig, ax = plt.subplots(ncols=2, figsize=(15, 5))
-    ax[0].plot(prop, visited["pctg"])
-    ax[1].plot(prop, visited["abs"], label="did")
-    ax[1].plot(prop, to_visit, label="must")
-    ax[1].legend()
-    plt.show()
-
-
-def experiment_2():
-    """
-    termination times as rhs increases
-    """
-    n = 128
-    size = 1_000
-    np.random.seed(42)
-
-    stats = {
-        "capacity": [0] * n,
-        "bb_raw": {
-            "mu": [0] * n,
-            "sigma": [0] * n,
-            "obj": [0] * n,
-        },
-        "bb_full": {
-            "mu": [0] * n,
-            "sigma": [0] * n,
-            "obj": [0] * n,
-        },
-        "dp": {
-            "mu": [0] * n,
-            "sigma": [0] * n,
-            "obj": [0] * n,
-        },
-        "dioph": {
-            "mu": [0] * n,
-            "sigma": [0] * n,
-            "obj": [0] * n,
-        },
-    }
-
-    bb_raw_options = {
-        "presolve": True,
-        "cuts": False,
-        "options": None,
-    }
-
-    bb_full_options = {
-        "presolve": True,
-        "cuts": True,
-        "options": ["gomory on", "knapsack off", "probing off"],
-    }
-
-    p = np.sort(np.random.randint(10, 1_000, size=size))
-    stats["price"] = p.copy()
-    m = math.gcd(*p)
-    q = (p // m).astype(int)
-
-    np.testing.assert_allclose(p, m * q)
-
-    print(f"experiment_2 with dimension = {size}")
-    rhs = np.linspace(0.0, 1.0, 128) * p.sum()
-    for i, capacity in enumerate(rhs):
-        capacity = int(capacity)
-        print(f"on problem with capacity = {capacity} ({i + 1}/{n})")
-        stats["capacity"][i] = capacity
-
-        # diophantine method
-        _, eta = layer_bounds(q, m, capacity)
-        x_dioph, (mu, sigma) = solve_dioph(q, eta)
-        obj_dioph = np.dot(x_dioph, p)
-        stats["dioph"]["mu"][i] = mu
-        stats["dioph"]["sigma"][i] = sigma
-        stats["dioph"]["obj"][i] = obj_dioph
-
-        # dynamic method
-        x_dp, (mu, sigma) = kp.ukp_dp(p, capacity)
-        obj_dp = np.dot(x_dp, p)
-        stats["dp"]["mu"][i] = mu
-        stats["dp"]["sigma"][i] = sigma
-        stats["dp"]["obj"][i] = obj_dp
-
-        # bb method (cuts on)
-        x_bb_full, (mu, sigma) = kp.ukp_bb(p, capacity, **bb_full_options)
-        obj_bb_full = np.dot(x_bb_full, p)
-        stats["bb_full"]["mu"][i] = mu
-        stats["bb_full"]["sigma"][i] = sigma
-        stats["bb_full"]["obj"][i] = obj_bb_full
-
-        # bb method (cuts off)
-        x_bb_raw, (mu, sigma) = kp.ukp_bb(p, capacity, **bb_raw_options)
-        obj_bb_raw = np.dot(x_bb_raw, p)
-        stats["bb_raw"]["mu"][i] = mu
-        stats["bb_raw"]["sigma"][i] = sigma
-        stats["bb_raw"]["obj"][i] = obj_bb_raw
-
-        if not np.isclose(obj_dioph, obj_bb_full):
-            print("[ERROR]: different objective values")
-            print(f"[DEBUG]: {obj_dioph=}")
-            print(f"[DEBUG]: {obj_dp=}")
-            print(f"[DEBUG]: {obj_bb_full=}")
-            print(f"[DEBUG]: {obj_bb_raw=}")
-
-    np.save(f"times/fin/poscase-dim-{size}", stats)
-
-
-def experiment_3():
-    """
-    termination times as dimension increases
-    """
-    print("benchmark on experiment_3")
-    np.random.seed(42)
-
-    # same as martello & toth p. 103
-    dims = (
-        50,
-        100,
-        200,
-        500,
-        1_000,
-        2_000,
-        5_000,
-        10_000,
-        20_000,
-        30_000,
-        40_000,
-        50_000,
-        60_000,
-        70_000,
-        80_000,
-        90_000,
-        100_000,
-        150_000,
-        200_000,
-        250_000,
+if __name__ == "__main__":
+    from src.constants import bb_raw_options, bb_full_options
+    from src.common import (
+        stats_dioph_as_rhs_increases as dioph_rhs,
+        stats_dp_as_rhs_increases as dp_rhs,
+        stats_bb_as_rhs_increases as bb_rhs,
     )
+    from src.common import run_parallel
 
-    n = len(dims)
-    stats = {
-        "bb_raw": {
-            "mu": [0] * n,
-            "sigma": [0] * n,
-            "obj": [0] * n,
+    np.random.seed(42)
+
+    p = np.random.randint(10, 10_000, size=1_000)
+    g = math.gcd(*p)
+    q = p // g
+    m = g
+    np.testing.assert_almost_equal(p, m * q)
+
+    n = len(p)
+    create_path = lambda name: f"times/fin/rhs/{name}/{n}n"  # noqa: E731
+
+    rhs = np.round(p.sum() * np.linspace(0.01, 1.0, num=128)).astype(int)
+    jobs = [
+        {
+            "name": "dioph",
+            "log_path": create_path("dioph"),
+            "job": lambda *_: dioph_rhs(dioph, q.copy(), m, rhs.copy()),
         },
-        "bb_full": {
-            "mu": [0] * n,
-            "sigma": [0] * n,
-            "obj": [0] * n,
+        {
+            "name": "dp",
+            "log_path": create_path("dp"),
+            "job": lambda *_: dp_rhs(p.copy(), rhs.copy()),
         },
-        "dp": {
-            "mu": [0] * n,
-            "sigma": [0] * n,
-            "obj": [0] * n,
+        {
+            "name": "bb_raw",
+            "log_path": create_path("bb_raw"),
+            "job": lambda *_: bb_rhs(p.copy(), rhs.copy(), **bb_raw_options.copy()),
         },
-        "dioph": {
-            "mu": [0] * n,
-            "sigma": [0] * n,
-            "obj": [0] * n,
+        {
+            "name": "bb_full",
+            "log_path": create_path("bb_full"),
+            "job": lambda *_: bb_rhs(p.copy(), rhs.copy(), **bb_full_options.copy()),
         },
-    }
-
-    bb_raw_options = {
-        "presolve": True,
-        "cuts": False,
-        "options": None,
-    }
-
-    bb_full_options = {
-        "presolve": True,
-        "cuts": True,
-        "options": ["gomory on", "knapsack off", "probing off"],
-    }
-
-    for i, size in enumerate(dims):
-        print(f"on dimension {size} ({i + 1}/{n})")
-        p = np.sort(np.random.randint(10, 1_000, size=size))
-        m = math.gcd(*p)
-        q = (p // m).astype(int)
-        np.testing.assert_allclose(p, m * q)
-
-        prop = 0.5 if n <= 100_000 else 0.1
-        capacity = int(prop * p.sum())
-
-        # diophantine method
-        _, eta = layer_bounds(q, m, capacity)
-        x_dioph, (mu, sigma) = solve_dioph(q, eta)
-        obj_dioph = np.dot(x_dioph, p)
-        stats["dioph"]["mu"][i] = mu
-        stats["dioph"]["sigma"][i] = sigma
-        stats["dioph"]["obj"][i] = obj_dioph
-
-        # dynamic method
-        x_dp, (mu, sigma) = kp.ukp_dp(p, capacity)
-        obj_dp = np.dot(x_dp, p)
-        stats["dp"]["mu"][i] = mu
-        stats["dp"]["sigma"][i] = sigma
-        stats["dp"]["obj"][i] = obj_dp
-
-        # bb method (cuts on)
-        x_bb_full, (mu, sigma) = kp.ukp_bb(p, capacity, **bb_full_options)
-        obj_bb_full = np.dot(x_bb_full, p)
-        stats["bb_full"]["mu"][i] = mu
-        stats["bb_full"]["sigma"][i] = sigma
-        stats["bb_full"]["obj"][i] = obj_bb_full
-
-        # bb method (cuts off)
-        x_bb_raw, (mu, sigma) = kp.ukp_bb(p, capacity, **bb_raw_options)
-        obj_bb_raw = np.dot(x_bb_raw, p)
-        stats["bb_raw"]["mu"][i] = mu
-        stats["bb_raw"]["sigma"][i] = sigma
-        stats["bb_raw"]["obj"][i] = obj_bb_raw
-
-        if not np.isclose(obj_dioph, obj_bb_full):
-            print("[ERROR]: different objective values")
-            print(f"[DEBUG]: {obj_dioph=}")
-            print(f"[DEBUG]: {obj_dp=}")
-            print(f"[DEBUG]: {obj_bb_full=}")
-            print(f"[DEBUG]: {obj_bb_raw=}")
-
-    np.save(f"times/fin/mt-dim-{size}", stats)
+    ]
+    run_parallel(jobs)

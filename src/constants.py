@@ -11,7 +11,7 @@ bb_raw_options = {
     "options": None,
     "threads": 1,
     "timeLimit": TIMEOUT,
-    "logPath": "logs/inf",
+    "logPath": "/tmp/logs",
 }
 
 bb_full_options = {
@@ -22,5 +22,5 @@ bb_full_options = {
     "options": ["gomory on", "knapsack off", "probing off"],
     "threads": 1,
     "timeLimit": TIMEOUT,
-    "logPath": "logs/inf",
+    "logPath": "/tmp/logs",
 }

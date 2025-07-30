@@ -1,10 +1,7 @@
-import pulp as pl
-import numpy as np
-
-from utils import repeat
+from .decorators import repeat_with_timeout
 
 
-@repeat(num_iter=20)
+@repeat_with_timeout()
 def ukp_dp(prices: list[int], capacity: int) -> list[int]:
     """
     dynamic programming model for the unbounded knapsack problem.
@@ -45,17 +42,3 @@ def ukp_dp(prices: list[int], capacity: int) -> list[int]:
         cap -= prices[i]
 
     return counts
-
-
-@repeat(num_iter=20)
-def ukp_bb(
-    prices: list[int], capacity: int, **kwargs
-):
-    n = len(prices)
-    prob = pl.LpProblem(sense=pl.LpMaximize)
-    x = [pl.LpVariable(name=f"x_{i}", lowBound=0, cat=pl.LpInteger) for i in range(n)]
-    prob += pl.lpDot(prices, x), "obj"
-    prob += pl.lpDot(prices, x) <= capacity, "c"
-    solver = pl.PULP_CBC_CMD(msg=False, **kwargs)
-    prob.solve(solver)
-    return np.fromiter((var.varValue for var in x), dtype=int)

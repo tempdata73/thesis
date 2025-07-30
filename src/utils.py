@@ -7,15 +7,15 @@ import logging
 sign = lambda x: int(math.copysign(1.0, x))  # noqa: E731
 
 
-def setup_logger(job_id, log_path):
+def setup_logger(log_path):
     os.makedirs(log_path, exist_ok=True)
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
 
-    filename = os.path.join(log_path, f"id_{job_id}.log")
+    filename = os.path.join(log_path, "logs")
     handler = logging.FileHandler(filename, mode="w")
     formatter = logging.Formatter(
-        f"[job {job_id}] %(asctime)s - %(levelname)s - %(message)s",
+        "%(asctime)s - %(levelname)s - %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
     )
     handler.setFormatter(formatter)
