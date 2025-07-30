@@ -1,4 +1,5 @@
 import os
+import math
 import re
 import logging
 import pulp as lp
@@ -45,8 +46,9 @@ def solve_pulp(p, rhs, num_reps, **kwargs):
 def stats_dioph_as_rhs_increases(solver, q, m, rhs):
     stats = StatsSchema(solver.__name__)
 
-    for u in rhs:
-        eta = np.floor(u / m)
+    for i, u in enumerate(rhs):
+        logging.info(f"on problem {i + 1} of {len(rhs)}")
+        eta = math.floor(u / m)
         x, (mu, sigma), timed_out = solver(q, eta)
 
         # in case all evaluations timed out
@@ -58,7 +60,8 @@ def stats_dioph_as_rhs_increases(solver, q, m, rhs):
         if np.any(x < 0):
             logging.error("non-negativity constraint violated")
         if np.dot(q, x) != eta:
-            logging.error("dioph equation is not satisfied")
+            obj = np.dot(q, x)
+            logging.error(f"dioph equation is not satisfied. {obj=} is not {eta=}")
 
         # update
         stats.update(mu, sigma, (m * eta).item(), u.item(), timed_out)
@@ -73,7 +76,9 @@ def stats_bb_as_rhs_increases(p, rhs, num_reps=NUM_REPS, **kwargs):
     os.makedirs(base_path, exist_ok=True)
     logging.info(f"created {base_path} to store temp solver log info")
 
-    for u in rhs:
+    for i, u in enumerate(rhs):
+        logging.info(f"on problem {i + 1} of {len(rhs)}")
+
         _, log_path = mkstemp(dir=base_path)
         kwargs["logPath"] = log_path
         x, (mu, sigma), timed_out = solve_pulp(p, u, num_reps, **kwargs)
@@ -89,7 +94,8 @@ def stats_bb_as_rhs_increases(p, rhs, num_reps=NUM_REPS, **kwargs):
 def stats_dp_as_rhs_increases(p, rhs):
     stats = StatsSchema("dp")
 
-    for u in rhs:
+    for i, u in enumerate(rhs):
+        logging.info(f"on problem {i + 1} of {len(rhs)}")
         x, (mu, sigma), timed_out = ukp_dp(p, u)
 
         # in case all evaluations timed out

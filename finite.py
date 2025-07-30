@@ -98,7 +98,7 @@ if __name__ == "__main__":
     p = np.random.randint(10, 10_000, size=1_000)
     g = math.gcd(*p)
     q = p // g
-    m = g
+    m = np.int64(g)
     np.testing.assert_almost_equal(p, m * q)
 
     n = len(p)

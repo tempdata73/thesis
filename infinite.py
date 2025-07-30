@@ -81,7 +81,7 @@ if __name__ == "__main__":
     )
 
     # original projectively rational vector
-    f = np.power(10.0, [-3, -4])
+    f = np.power(10.0, [-3, -4, -5])
     p = f[:, np.newaxis] * p_int
 
     # finding coprime multiples
