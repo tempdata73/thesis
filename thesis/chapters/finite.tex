@@ -715,18 +715,18 @@ tanto buscamos y, consecuentemente, también se encargan de resolver el problema
 	\end{equation}
 	donde $t \in \Z$ es una variable libre, y $x_1', x_2'$ son los coeficientes de Bézout (c.f.
 	Definición \ref{prerreq:def:bezout}) de $x_1, x_2$. Por claridad, escribimos $x_1'$ y $x_2'$
-	como $x_{n-1}'$ y $x_{n}'$ en la línea \eqref{alg:fin:bez}. Despejando de estas soluciones,
+	como $x_{n-1}'$ y $x_{n}'$ en la línea \ref{alg:fin:bez}. Despejando de estas soluciones,
 	encontramos que existen soluciones no negativas si y solo si existe $t \in \Z$ que satisfaga
 	\begin{equation*}
 		\ceil{-\frac{kx_1'}{q_2}} \leq t \leq \floor{\frac{kx_2'}{q_1}}.
 	\end{equation*}
-	Los enteros $b_1$ y $b_2$ en las líneas \eqref{alg:fin:b1} y \eqref{alg:fin:b2} representan el
+	Los enteros $b_1$ y $b_2$ en las líneas \ref{alg:fin:b1} y \eqref{alg:fin:b2} representan el
 	lado izquierdo y derecho de estas desigualdades, respectivamente. De esta manera, el algoritmo
 	devuelve \NIL~ si solo si este intervalo no está bien definido, es decir, si y solo si no existen
 	soluciones enteras no negativas. Supongamos, pues, que este intervalo sí está bien definido.
 	Entonces, podemos escoger que la variable libre $t$ sea $b_1$. Sustituyendo en
 	\eqref{lemma:correct:base-case:sol} obtenemos una solución entera no negativa a la ecuación
-	\eqref{lemma:correct:base-case} (líneas \eqref{alg:fin:xprev} y \eqref{alg:fin:xlast}) y entonces
+	\eqref{lemma:correct:base-case} (líneas \ref{alg:fin:xprev} y \eqref{alg:fin:xlast}) y entonces
 	el algoritmo es correcto para $n = 2$.
 
 	Supongamos, inductivamente, que el algoritmo es correcto para alguna $n - 1 \geq 2$. Mostramos
@@ -740,7 +740,7 @@ tanto buscamos y, consecuentemente, también se encargan de resolver el problema
 		q_1x + g\omega = k.
 	\end{equation}
 	Observemos que, como $g_1 = 1$, el entero $g = \gcd{q_2/g_1, \ldots, q_n/g_1}$, es equivalente a
-	lo que se encuentra en la línea \eqref{alg:fin:g}. Por el Teorema \ref{prerreq:th:construction}
+	lo que se encuentra en la línea \ref{alg:fin:g}. Por el Teorema \ref{prerreq:th:construction}
 	tenemos que las soluciones enteras están dadas por
 	\begin{equation}
 		\label{lemma:correct:sol}
@@ -765,20 +765,20 @@ tanto buscamos y, consecuentemente, también se encargan de resolver el problema
 	Los enteros $b_1$ y $b_2$ en las líneas \eqref{alg:fin:b11} y \eqref{alg:fin:b21} representan el
 	lado izquierdo y derecho de estas desigualdades, respectivamente. Si no existe tal variable
 	libre $t \in \Z$ es porque el intervalo $[b_1, b_2]$ no está bien definido y por lo tanto $b_2 <
-	b_1$. El algoritmo entonces salta a la línea \eqref{alg:fin:return} y devuelve \NIL.
+	b_1$. El algoritmo entonces salta a la línea \ref{alg:fin:return} y devuelve \NIL.
 
 	Si el intervalo $[b_1, b_2]$ está bien definido, podemos asegurar la no negatividad de $x$ en
 	\eqref{lemma:correct:sol} para cualquier elección de $t$ en $[b_1, b_2$] y en
-	la línea \eqref{alg:fin:subeq} nos encargamos entonces de encontrar soluciones enteras no negativas
+	la línea \ref{alg:fin:subeq} nos encargamos entonces de encontrar soluciones enteras no negativas
 	de la ecuación \eqref{lemma:correct:eq-omega}. Se verifica automáticamente que los coeficientes
 	del lado derecho de esta ecuación son coprimos y constituyen justamente las entradas del vector
-	$\vec{q}^{\texttt{tail}}$ (c.f. línea \eqref{alg:fin:qt}). Como $g > 0$ se sigue que
+	$\vec{q}^{\texttt{tail}}$ (c.f. línea \ref{alg:fin:qt}). Como $g > 0$ se sigue que
 	$\vec{q}^{\texttt{tail}} > \vec{0}$. Luego, $\vec{q}^{\texttt{tail}}$ satisface las hipótesis
 	del algoritmo.
 
 	Por hipótesis inductiva, tenemos o bien que $\vec{x}^{\texttt{tail}}$ es entero no negativo y
 	solución de \eqref{lemma:correct:eq-omega}, o bien es \NIL. En el primer caso y definiendo
-	$\vec{x}$ como el vector de la línea \eqref{alg:fin:vecx} encontramos que
+	$\vec{x}$ como el vector de la línea \ref{alg:fin:vecx} encontramos que
 	\begin{equation*}
 		\vec{q}^T\vec{x} = q_1x + g\left(\vec{q}^{\texttt{tail}}\right)^T\vec{x}^{\texttt{tail}}
 		= q_1x + g\omega = k.
@@ -791,7 +791,7 @@ tanto buscamos y, consecuentemente, también se encargan de resolver el problema
 	todas las elecciones posibles de $t$ en el intervalo de factiblidad $[b_1, b_2]$, se sigue por
 	hipótesis inductiva que la ecuación \eqref{lemma:correct:eq-omega} no tiene solución entera no
 	negativa y por lo tanto tampoco la tiene la ecuación \eqref{eq:dioph}. Una vez agotadas estas
-	elecciones finitas, devolvemos \NIL~ en la línea \eqref{alg:fin:return}.
+	elecciones finitas, devolvemos \NIL~ en la línea \ref{alg:fin:return}.
 
 	En conclusión, si el algoritmo es correcto para vectores $\vec{q}$ con dimensión $n - 1 \geq 2$,
 	entonces también es correcto para vectores $\vec{q}$ con dimensión $n$. Juntando esto con el
@@ -800,8 +800,8 @@ tanto buscamos y, consecuentemente, también se encargan de resolver el problema
 \end{proof}
 
 Observemos que la elección del parámetro libre $t$ en el intervalo de factiblidad $I$ definido en la
-línea \eqref{alg:fin:feas} del Algoritmo \ref{algo:fin:helper} es similar a la elección del
-subproblema $S_i$ de optimización definido en la línea \eqref{p1c9:alg:BB_loop} del Algoritmo
+línea \ref{alg:fin:feas} del Algoritmo \ref{algo:fin:helper} es similar a la elección del
+subproblema $S_i$ de optimización definido en la línea \ref{p1c9:alg:BB_loop} del Algoritmo
 \ref{algo:bb}. La diferencia radica en que, como todos los puntos enteros sobre la $k$-ésima capa
 entera tienen el mismo nivel de utilidad $k$, no es necesario desarrollar políticas de poda así como
 lo hicimos en el Ejemplo \ref{ex:ilp} en la Sección \ref{sec:prerreq}. De cierta manera, la única
@@ -816,7 +816,7 @@ entero. Discutiremos más sobre esto cuando introduzcamos múltiples restriccion
 \begin{proof}
 	A causa del Teorema \ref{th:fin:helper:correct} basta verificar que el algoritmo termina y no
 	devuelve \NIL. Además, obtenemos la maximalidad de $k$ debido a la manera en la que iniciamos el
-	ciclo en la línea \eqref{alg:fin:loop}. Tenemos $0 \leq \eta$ por hipótesis y observemos que
+	ciclo en la línea \ref{alg:fin:loop}. Tenemos $0 \leq \eta$ por hipótesis y observemos que
 	$\vec{0}$ es la única solución entera no negativa de la ecuación lineal diofantina
 	$\vec{q}^T\vec{x} = 0$. De esta manera, si la ecuación $\vec{q}^T\vec{x} = k$ no tiene solución
 	para $0 < k \leq \eta$, entonces el algoritmo devuelve $\vec{0}$ debido al Teorema
@@ -842,12 +842,12 @@ terminal\footnote{
 }.
 
 Además, este algoritmo, por ejemplo, no minimiza el número de llamadas para calcular el máximo común
-divisor en la línea \eqref{alg:fin:g}. En efecto, supongamos que un intervalo de factibilidad $I$
-definido en la línea \eqref{alg:fin:feas} induce a que $\vec{x}^{\texttt{tail}}$ sea \NIL~ para todo
+divisor en la línea \ref{alg:fin:g}. En efecto, supongamos que un intervalo de factibilidad $I$
+definido en la línea \ref{alg:fin:feas} induce a que $\vec{x}^{\texttt{tail}}$ sea \NIL~ para todo
 $t \in I$. Entonces estaríamos haciendo $|I|$ llamadas a \texttt{NonNegativeIntSol} en la línea
 \eqref{alg:fin:subeq} con el mismo vector $\vec{q}^{\texttt{tail}}$ y, por lo tanto, estaríamos
-calculando $|I|$ veces la misma $g$ en la línea \eqref{alg:fin:g}. Lo mismo ocurre con el cálculo de
-los coeficientes de Bézout $x'$ y $\omega'$ en la línea \eqref{alg:fin:bez2}.
+calculando $|I|$ veces la misma $g$ en la línea \ref{alg:fin:g}. Lo mismo ocurre con el cálculo de
+los coeficientes de Bézout $x'$ y $\omega'$ en la línea \ref{alg:fin:bez2}.
 
 A pesar de los puntos anteriores, el autor decidió escribir el Algoritmo \ref{algo:fin:helper} de
 esa manera debido a que se simplificaba de manera significativa la demostración del Teorema
@@ -859,15 +859,13 @@ eficiente a través de ciclos para obtener los resultados de la siguiente secci�
 	\SetKwProg{Fn}{Fn}{\string:}{}
 	\SetKwFunction{Bezout}{Bezout}
 	\SetKwFunction{length}{length}
-	\SetKwFunction{NonNegativeIntSol}{NonNegativeIntSol}
-	\Fn{\NonNegativeIntSol{$\vec{q}$, $k$}}{
+	\SetKwFunction{NonNegativeIntSol}{NonNegativeIntSolFin}
 		\KwData{\\
-			Vector coprimo $\vec{q} > \vec{0}$ tal que \length{$\vec{q}$} $\geq 2$. \\
-			Lado derecho $k \geq 0$.
+			$\vec{q} \in \Z^n_{> \vec{0}}$ coprimo tal que \length{$\vec{q}$} $\geq 2$. \\
+			$k \geq 0$.
 			}
 		\KwResult{\\
-			Solución entera no negativa $\vec{x}$ a la ecuación lineal diofantina $\vec{q}^T\vec{x} =
-			k$ o \NIL.
+			$\vec{x} \in \Z^n_{\geq \vec{0}}$ tal que $\vec{q}^T\vec{x} = k$ o \NIL.
 		}
 		\Begin{
 			$n \leftarrow$ \length{$\vec{q}$}\;
@@ -911,9 +909,7 @@ eficiente a través de ciclos para obtener los resultados de la siguiente secci�
 
 			\Return $\NIL$\; \label{alg:fin:return}
 		}
-	}
-	\caption{Algoritmo para obtener soluciones enteras no negativas a la ecuación lineal diofantina
-	$\vec{q}^T\vec{x} = k$, dados ciertos supuestos sobre $\vec{q}$.}
+	\caption{\texttt{NonNegativeIntSolFin}}
 	\label{algo:fin:helper}
 \end{algorithm}
 \begin{algorithm}[ht]
@@ -921,16 +917,15 @@ eficiente a través de ciclos para obtener los resultados de la siguiente secci�
 	\SetKwProg{Fn}{Fn}{\string:}{}
 	\SetKwFunction{Bezout}{Bezout}
 	\SetKwFunction{length}{length}
-	\SetKwFunction{NonNegativeIntSol}{NonNegativeIntSol}
+	\SetKwFunction{NonNegativeIntSol}{NonNegativeIntSolFin}
 	\SetKwFunction{Dioph}{Dioph}
-	\Fn{\Dioph{$\vec{q}$, $\eta$}}{
 		\KwData{\\
-			Vector coprimo $\vec{q} > \vec{0}$ tal que \length{$\vec{q}$} $\geq 2$. \\
-			Lado derecho $\eta \geq 0$.
-			}
+			$\vec{q} \in \Z_{> \vec{0}}$ coprimo tal que \length{$\vec{q}$} $\geq 2$. \\
+			$\eta \geq 0$.
+		}
 		\KwResult{\\
-			Solución entera no negativa $\vec{x}$ a la ecuación lineal diofantina $\vec{q}^T\vec{x}
-			= k$ para algún $k \leq \eta$ con $k$ maximal.
+			$\vec{x} \in \Z^n_{\geq \vec{0}}$ tal que $\vec{q}^T\vec{x} = k$ con $0 \leq k
+			\leq \eta$ maximal.
 		}
 		\Begin{
 			\For{$k \leftarrow \eta$ \KwTo $0$}{ \label{alg:fin:loop}
@@ -940,9 +935,7 @@ eficiente a través de ciclos para obtener los resultados de la siguiente secci�
 				}
 			}
 		}
-	}
-	\caption{Algoritmo para obtener soluciones enteras no negativas a la ecuación lineal diofantina
-	$\vec{q}^T\vec{x} = \eta$, dados ciertos supuestos sobre $\vec{q}$.}
+	\caption{\texttt{Dioph}}
 	\label{algo:fin:dioph}
 \end{algorithm}
 % Con respecto a la complejidad algorítmica de analizar capas enteras podemos decir lo siguiente.

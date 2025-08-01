@@ -88,9 +88,8 @@ definamos el máximo común divisor, la manera de calcularlo siempre es a travé
 Euclides. A partir de este punto usaremos ambas definiciones de manera indistinta.
 
 \begin{observation}
-	No porque una colección de enteros sea coprima ($\gcd{a_1, \ldots, a_n} = 1$) se sigue que
-	estos enteros sean coprimos a pares ($\gcd{a_i, a_j} = 1$ para todo $i, j$). Por ejemplo,
-	los enteros 1, 3 y 3 son coprimos pero evidentemente 3 y 3 no lo son.
+	No porque una colección de enteros sea coprima se sigue que estos enteros son coprimos a pares.
+	Por ejemplo, los enteros 1, 3 y 3 son coprimos pero evidentemente 3 y 3 no lo son.
 \end{observation}
 
 \begin{definition}
@@ -109,8 +108,8 @@ tesis.
 \end{theorem}
 
 \begin{example}
-	Para $a_1 \coloneq 2$, $a_2 \coloneq 3$ y $a_3 \coloneq 5$ se cumple que $\gcd{a_1, a_2, a_3} =
-	1$ y además $-3a_1 - a_2 + 2a_3 = 1$.
+	El maximo común divisor $d$ de los enteros $a_1 \coloneq 2$, $a_2 \coloneq 3$ y $a_3 \coloneq 5$
+	es 1 y además se cumple que $-3a_1 - a_2 + 2a_3 = 1 = d$.
 \end{example}
 
 \begin{lemma}
@@ -255,7 +254,7 @@ encontrar sus soluciones.
 	\centering
 	\begin{minipage}{0.45\textwidth}
 		\centering
-		\begin{tikzpicture}[scale=1.2]
+		\begin{tikzpicture}[scale=0.8]
 			% hyperplane
 			\draw[ultra thick, black] (-2,1) -- (2,-2) node[above right] {$\vec{a}^T\vec{x} = b$};
 			% labels
@@ -269,7 +268,7 @@ encontrar sus soluciones.
 	\end{minipage}
 	\begin{minipage}{0.45\textwidth}
 		\centering
-		\begin{tikzpicture}[scale=2, >=stealth]
+		\begin{tikzpicture}[scale=1.5, >=stealth]
 			% coordinates
 			\coordinate (A) at (0,0);
 			\coordinate (B) at (1.5,0);
@@ -768,8 +767,8 @@ deberá dividirse en dos casos.
 			< 0$ para algún $k \in I^\circ$, esa entrada no sería factible, pero fácilmente
 			podríamos definir $x_k^+ = 0$ para hacerla factible.
 
-			Entonces, ambos conjuntos $I^+$ e $I^-$ forman una partición de $\lbrace 1, \ldots,
-			n\rbrace$. Podemos escoger escalares positivos $c_1, \ldots, c_n$ que satisfagan
+			Entonces, ambos conjuntos $I^+$ e $I^-$ forman una partición del conjunto $\braces{1,
+			\ldots, n}$. Podemos escoger escalares positivos $c_1, \ldots, c_n$ que satisfagan
 			simultáneamente
 			\begin{align}
 				x_k + \sum_{i \in I^+}q_ic_i &\geq 0, \quad \forall k \in I^-,
@@ -874,11 +873,11 @@ definido y además es positivo. Así, la ecuación (\ref{eq:dioph}) es equivalen
 	\frac{q_1}{g_1}x_1 + g_2\omega_2 = \omega_1.
 \end{equation}
 Observemos que
-\begin{equation*}
+\begin{align*}
 	\gcd{\frac{q_1}{g_1}, g_2}
-	= \gcd{\frac{q_1}{g_1}, \gcd{\frac{q_2}{g_1}, \ldots, \frac{q_n}{g_1}}}
-	= \gcd{\frac{q_1}{g_1}, \frac{q_2}{g_1}, \ldots, \frac{q_n}{g_1}} = 1.
-\end{equation*}
+	&= \gcd{\frac{q_1}{g_1}, \gcd{\frac{q_2}{g_1}, \ldots, \frac{q_n}{g_1}}} \\
+	&= \gcd{\frac{q_1}{g_1}, \frac{q_2}{g_1}, \ldots, \frac{q_n}{g_1}} = 1.
+\end{align*}
 Por el Teorema \ref{prerreq:th:existence}, existen soluciones enteras para todo $\omega_1 \in \Z$.
 Como $q_1/g_1$ y $g_2$ son coprimos, encontramos que sus coeficientes de Bézout asociados (c.f.
 Definición \ref{prerreq:def:bezout}) $x_1', \omega_2'$ son soluciones particulares de la ecuación
@@ -1108,6 +1107,7 @@ igualdad de \eqref{eq:recurrence}, llegamos a
 	debido a que definimos el producto vacío como 1 y la suma vacía como 0. Supongamos
 	inductivamente que (\ref{eq:omega-formula}) se satisface para alguna $i \in \N$. Entonces,
 	tenemos
+	% TODO: fix overfull error
 	\begin{align*}
 		&k \cdot \prod_{j=2}^{i + 1} \omega_j'
 		- \sum_{j=1}^{i}\frac{q_j}{\prod_{\ell=1}^{j}g_\ell}

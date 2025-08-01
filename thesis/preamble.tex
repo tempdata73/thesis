@@ -1,19 +1,20 @@
 \usepackage[T1]{fontenc}
+
 \usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
+\usepackage[spanish, es-tabla]{babel}
+\usepackage{paperHeaderSpaces}
 
-\usepackage{amsmath, amssymb, amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
 \usepackage{mathtools}
-
-\usepackage{graphicx}
-\usepackage{hyperref}
-% \usepackage{natbib}
-\usepackage{cleveref}
-\usepackage{geometry}
-\geometry{margin=1in}
 
 \usepackage{subcaption}
 \usepackage{caption}
+
+\usepackage{graphicx}
+\usepackage{geometry}
+% \geometry{margin=1in}
 
 \usepackage{tikz}
 \usetikzlibrary{intersections}
@@ -23,16 +24,22 @@
 \pgfplotsset{compat=1.18}
 \usepgfplotslibrary{fillbetween}
 
-% \usepackage{algorithm}
-\usepackage[spanish,onelanguage]{algorithm2e}
-% \usepackage{algpseudocode}
-\RestyleAlgo{boxed}
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+\usepackage[spanish,onelanguage,ruled,vlined,commentsnumbered,rightnl]{algorithm2e}
+% \RestyleAlgo{boxed}
+
+\allowdisplaybreaks
 
 % theorems
 \newtheorem{theorem}{Teorema}[chapter]
 \newtheorem{corollary}[theorem]{Corolario}
 \newtheorem{lemma}[theorem]{Lema}
+
+\theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definición}
+
 \newtheorem{example}[theorem]{Ejemplo}
 
 \theoremstyle{remark}
@@ -64,9 +71,10 @@
 \newcommand{\est}[1]{\hat{\vec{ #1 }}}
 \newcommand{\optilp}[1]{#1^*_{\text{PE}}}
 \newcommand{\braces}[1]{\lbrace #1 \rbrace}
+\newcommand{\tvec}[1]{\vec{\tilde{#1}}}
+
 \newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
 \newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
-\newcommand{\tvec}[1]{\vec{\tilde{#1}}}
 
 \renewcommand{\gcd}[1]{\mathop{\mathrm{mcd}{\left\lbrace #1 \right\rbrace}}}
 \newcommand{\lcm}[1]{\mathop{\mathrm{mcm}{\left\lbrace #1 \right\rbrace}}}

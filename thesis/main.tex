@@ -1,19 +1,32 @@
-\documentclass[12pt,spanish]{report}
+\documentclass[11pt, oneside, headings=twolinechapter, spanish]{scrreprt}
 
 \input{preamble}
 
+\includeonly{
+	chapters/theory,
+	chapters/infinite,
+	chapters/finite,
+	chapters/apps
+}
+
 \begin{document}
 
-\title{Ecuaciones lineales diofantinas aplicadas a programas lineales enteros}
-\author{Iñaki Sebastián Liendo Infante}
-\date{\today}
-\maketitle
+\input{title}
 
-\tableofcontents
+\pagenumbering{Roman}
+\chapter*{Agradecimientos}
+% TODO
 \clearpage
 
-% Chapters
-% \input{chapters/prerreqs}
+\chapter*{Resumen}
+% TODO
+\clearpage
+
+\setcounter{tocdepth}{1}
+\tableofcontents
+\cleardoublepage
+\pagenumbering{arabic}
+
 \input{chapters/theory}
 \input{chapters/infinite}
 \input{chapters/finite}
