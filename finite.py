@@ -99,62 +99,46 @@ def dioph(q, eta):
 
 
 if __name__ == "__main__":
-    n = (5, 10, 100, 1_000, 5_000, 10_000, 25_000, 50_000)
+    from src.constants import bb_raw_options, bb_full_options
+    from src.common import (
+        stats_dioph_as_rhs_increases as dioph_rhs,
+        stats_dp_as_rhs_increases as dp_rhs,
+        stats_bb_as_rhs_increases as bb_rhs,
+    )
+    from src.common import run_parallel
+
     np.random.seed(42)
-    for dim in n:
-        print(f"on dimension {dim}")
 
-        p = np.sort(np.random.randint(10, 10 * dim, size=dim))[::-1]
-        m = math.gcd(*p)
-        q = p // m
-        np.testing.assert_equal(p, q * m)
+    p = np.random.randint(10, 10_000, size=1_000)
+    g = math.gcd(*p)
+    q = p // g
+    m = np.int64(g)
+    np.testing.assert_almost_equal(p, m * q)
 
-        eta = int(0.1 * q.sum())
-        x, (mu, sigma), timeout = dioph(q, eta)
-        print(f"took {mu * 1e-6:0.4f} ± {sigma * 1e-6:0.4f} ms to find solution")
-        print(f"timed out = {timeout}")
+    n = len(p)
+    create_path = lambda name: f"times/fin/rhs/{name}/{n}n"  # noqa: E731
 
-
-    # from src.constants import bb_raw_options, bb_full_options
-    # from src.common import (
-    #     stats_dioph_as_rhs_increases as dioph_rhs,
-    #     stats_dp_as_rhs_increases as dp_rhs,
-    #     stats_bb_as_rhs_increases as bb_rhs,
-    # )
-    # from src.common import run_parallel
-
-    # np.random.seed(42)
-
-    # p = np.random.randint(10, 10_000, size=1_000)
-    # g = math.gcd(*p)
-    # q = p // g
-    # m = np.int64(g)
-    # np.testing.assert_almost_equal(p, m * q)
-
-    # n = len(p)
-    # create_path = lambda name: f"times/fin/rhs/{name}/{n}n"  # noqa: E731
-
-    # rhs = np.round(p.sum() * np.linspace(0.01, 1.0, num=128)).astype(int)
-    # jobs = [
-    #     {
-    #         "name": "dioph",
-    #         "log_path": create_path("dioph"),
-    #         "job": lambda *_: dioph_rhs(dioph, q.copy(), m, rhs.copy()),
-    #     },
-    #     {
-    #         "name": "dp",
-    #         "log_path": create_path("dp"),
-    #         "job": lambda *_: dp_rhs(p.copy(), rhs.copy()),
-    #     },
-    #     {
-    #         "name": "bb_raw",
-    #         "log_path": create_path("bb_raw"),
-    #         "job": lambda *_: bb_rhs(p.copy(), rhs.copy(), **bb_raw_options.copy()),
-    #     },
-    #     {
-    #         "name": "bb_full",
-    #         "log_path": create_path("bb_full"),
-    #         "job": lambda *_: bb_rhs(p.copy(), rhs.copy(), **bb_full_options.copy()),
-    #     },
-    # ]
-    # run_parallel(jobs)
+    rhs = np.round(p.sum() * np.linspace(0.01, 1.0, num=128)).astype(int)
+    jobs = [
+        {
+            "name": "dioph",
+            "log_path": create_path("dioph"),
+            "job": lambda *_: dioph_rhs(dioph, q.copy(), m, rhs.copy()),
+        },
+        {
+            "name": "dp",
+            "log_path": create_path("dp"),
+            "job": lambda *_: dp_rhs(p.copy(), rhs.copy()),
+        },
+        {
+            "name": "bb_raw",
+            "log_path": create_path("bb_raw"),
+            "job": lambda *_: bb_rhs(p.copy(), rhs.copy(), **bb_raw_options.copy()),
+        },
+        {
+            "name": "bb_full",
+            "log_path": create_path("bb_full"),
+            "job": lambda *_: bb_rhs(p.copy(), rhs.copy(), **bb_full_options.copy()),
+        },
+    ]
+    run_parallel(jobs)
