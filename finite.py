@@ -58,8 +58,8 @@ def non_negative_int_sol(q, rhs, gcd, bez):
         lb = math.ceil(-rhs * x_b / gcd[i + 2])
         ub = math.floor(rhs * w_b / q[i + 1])
 
-        # update stack
-        stack.append([i + 1, ub, lb, rhs, x_p])
+        if lb <= ub:
+            stack.append([i + 1, ub, lb, rhs, x_p])
 
     return None
 
@@ -68,77 +68,105 @@ def non_negative_int_sol(q, rhs, gcd, bez):
 def dioph(q, eta):
     _q = q.copy()
 
-    # preprocessing: particular solutions to dot(q, x) == 1
+    # preprocessing: particular solution to dot(q, x) == 1
     gcd = [1]
     bez = []
     for i in range(len(_q) - 2):
-        g = math.gcd(*_q[i + 1:])
-        _q[i + 1:] //= g
+        g = math.gcd(*_q[i + 1 :])
+        _q[i + 1 :] //= g
 
         gcd.append(g * gcd[i])
         bez.append(bezout_2d(_q[i], g))
 
     bez.append(bezout_2d(_q[-2], _q[-1]))
 
-    # find first nonnegative solution
+    # find first nonnegative solution to dot(q, x) = eta
     while eta >= 0:
         x = non_negative_int_sol(_q, eta, gcd, bez)
         if x is not None:
-            sol = np.asarray(x)
-            if np.any(sol < 0):
-                print("nonnegativity not enforced")
-
-            if np.dot(q, sol) != eta:
-                print("equation not enforced")
-                print(np.dot(q, sol), "\\neq", eta)
-
-            return sol
+            return np.asarray(x)
         eta -= 1
 
     return None
 
 
 if __name__ == "__main__":
-    from src.constants import bb_raw_options, bb_full_options
     from src.common import (
         stats_dioph_as_rhs_increases as dioph_rhs,
         stats_dp_as_rhs_increases as dp_rhs,
-        stats_bb_as_rhs_increases as bb_rhs,
+        stats_dioph_as_dim_increases as dioph_dim,
+        stats_dp_as_dim_increases as dp_dim,
+        stats_bb_as_dim_increases as bb_dim,
     )
     from src.common import run_parallel
+    from src.constants import RANDOM_SEED, bb_raw_options, bb_full_options
 
-    np.random.seed(42)
-
-    p = np.random.randint(10, 10_000, size=1_000)
+    rng = np.random.default_rng(seed=RANDOM_SEED)
+    p = rng.integers(10, 10_000, size=1_000)
     g = math.gcd(*p)
     q = p // g
     m = np.int64(g)
     np.testing.assert_almost_equal(p, m * q)
 
     n = len(p)
-    create_path = lambda name: f"times/fin/rhs/{name}/{n}n"  # noqa: E731
+    create_rhs_path = lambda name: f"times/fin/rhs/{name}/{n}n"  # noqa: E731
+    create_dim_path = lambda name: f"times/fin/dim/{name}/mt"  # noqa: E731
 
     rhs = np.round(p.sum() * np.linspace(0.01, 1.0, num=128)).astype(int)
+    dims = np.array(
+        [
+            50,
+            100,
+            200,
+            500,
+            1_000,
+            2_000,
+            5_000,
+            10_000,
+            20_000,
+            30_000,
+            40_000,
+            50_000,
+            60_000,
+            70_000,
+            80_000,
+            90_000,
+            100_000,
+            150_000,
+            200_000,
+            250_000,
+        ]
+    )
     jobs = [
         {
-            "name": "dioph",
-            "log_path": create_path("dioph"),
+            "name": "dioph-v2",
+            "log_path": create_rhs_path("dioph-v2"),
             "job": lambda *_: dioph_rhs(dioph, q.copy(), m, rhs.copy()),
         },
         {
             "name": "dp",
-            "log_path": create_path("dp"),
+            "log_path": create_rhs_path("dp"),
             "job": lambda *_: dp_rhs(p.copy(), rhs.copy()),
         },
         {
+            "name": "dioph-v2",
+            "log_path": create_dim_path("dioph-v2"),
+            "job": lambda *_: dioph_dim(dioph, dims.copy()),
+        },
+        {
+            "name": "dp",
+            "log_path": create_dim_path("dp"),
+            "job": lambda *_: dp_dim(dims.copy()),
+        },
+        {
             "name": "bb_raw",
-            "log_path": create_path("bb_raw"),
-            "job": lambda *_: bb_rhs(p.copy(), rhs.copy(), **bb_raw_options.copy()),
+            "log_path": create_dim_path("bb_raw"),
+            "job": lambda *_: bb_dim(dims.copy(), **bb_raw_options),
         },
         {
             "name": "bb_full",
-            "log_path": create_path("bb_full"),
-            "job": lambda *_: bb_rhs(p.copy(), rhs.copy(), **bb_full_options.copy()),
+            "log_path": create_dim_path("bb_full"),
+            "job": lambda *_: bb_dim(dims.copy(), **bb_full_options),
         },
     ]
     run_parallel(jobs)

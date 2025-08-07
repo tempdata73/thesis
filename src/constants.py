@@ -2,6 +2,7 @@ from typing import Final
 
 NUM_REPS: Final[int] = 20
 TIMEOUT: Final[int] = 5 * 60  # 5 minutes per instance
+RANDOM_SEED: Final[int] = 42
 
 bb_raw_options = {
     "name": "bb_raw",

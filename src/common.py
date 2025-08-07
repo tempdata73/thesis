@@ -10,7 +10,7 @@ import multiprocessing as mp
 from tempfile import mkstemp
 from dataclasses import asdict
 
-from .constants import NUM_REPS
+from .constants import NUM_REPS, RANDOM_SEED
 from .utils import setup_logger
 from .schema import StatsSchema
 from .decorators import repeat
@@ -69,6 +69,40 @@ def stats_dioph_as_rhs_increases(solver, q, m, rhs):
     return stats
 
 
+def stats_dioph_as_dim_increases(solver, dims, seed=RANDOM_SEED):
+    rng = np.random.default_rng(seed=seed)
+    stats = StatsSchema(solver.__name__)
+
+    for i, dim in enumerate(dims):
+        logging.info(f"on problem {i + 1} of {len(dims)}")
+        p = rng.integers(10, 5 * dim, size=dim)
+        m = math.gcd(*p)
+        q = p // m
+
+        if not np.allclose(p, m * q):
+            logging.error("could not determine coprime multiple. skipping problem")
+            continue
+
+        k = 0.5 if dim <= 20_000 else 0.1
+        u = (p.sum() * k).astype(int)
+        eta = math.floor(u / m)
+        x, (mu, sigma), timed_out = solver(q, eta)
+
+        # in case all evaluations timed out
+        if x is None:
+            logging.info("all functions evaluations timed out")
+            x = np.zeros_like(q)
+
+        # sanity checks
+        if np.any(x < 0):
+            logging.error("non-negativity constraint violated")
+
+        # update
+        stats.update(mu, sigma, np.dot(p, x).item(), u.item(), timed_out)
+
+    return stats
+
+
 def stats_bb_as_rhs_increases(p, rhs, num_reps=NUM_REPS, **kwargs):
     stats = StatsSchema(kwargs.pop("name"))
 
@@ -89,6 +123,31 @@ def stats_bb_as_rhs_increases(p, rhs, num_reps=NUM_REPS, **kwargs):
     return stats
 
 
+def stats_bb_as_dim_increases(dims, num_reps=NUM_REPS, seed=RANDOM_SEED, **kwargs):
+    rng = np.random.default_rng(seed=seed)
+    stats = StatsSchema(kwargs.pop("name"))
+
+    base_path = os.path.join(".", kwargs.pop("logPath"), stats.solver)
+    os.makedirs(base_path, exist_ok=True)
+    logging.info(f"created {base_path} to store temp solver log info")
+
+    for i, dim in enumerate(dims):
+        logging.info(f"on problem {i + 1} of {len(dims)}")
+
+        p = rng.integers(10, 5 * dim, size=dim)
+        k = 0.5 if dim <= 20_000 else 0.1
+        u = (p.sum() * k).astype(int)
+
+        _, log_path = mkstemp(dir=base_path)
+        kwargs["logPath"] = log_path
+        x, (mu, sigma), timed_out = solve_pulp(p, u, num_reps, **kwargs)
+
+        # update
+        stats.update(mu, sigma, np.dot(p, x).item(), u.item(), timed_out)
+
+    return stats
+
+
 # NOTE: in case i need to use other solvers (e.g. mtu),
 # make this more generic instead of creating another function
 def stats_dp_as_rhs_increases(p, rhs):
@@ -96,6 +155,29 @@ def stats_dp_as_rhs_increases(p, rhs):
 
     for i, u in enumerate(rhs):
         logging.info(f"on problem {i + 1} of {len(rhs)}")
+        x, (mu, sigma), timed_out = ukp_dp(p, u)
+
+        # in case all evaluations timed out
+        if x is None:
+            logging.info("all functions evaluations timed out")
+            x = np.zeros_like(p)
+
+        # update
+        stats.update(mu, sigma, np.dot(p, x).item(), u.item(), timed_out)
+
+    return stats
+
+
+def stats_dp_as_dim_increases(dims, seed=RANDOM_SEED):
+    rng = np.random.default_rng(seed=seed)
+    stats = StatsSchema("dp")
+
+    for i, dim in enumerate(dims):
+        logging.info(f"on problem {i + 1} of {len(dims)}")
+
+        p = rng.integers(10, 5 * dim, size=dim)
+        k = 0.5 if dim <= 20_000 else 0.1
+        u = (p.sum() * k).astype(int)
         x, (mu, sigma), timed_out = ukp_dp(p, u)
 
         # in case all evaluations timed out

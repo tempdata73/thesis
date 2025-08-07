@@ -38,7 +38,6 @@ def repeat_with_timeout(num_reps=NUM_REPS, timeout=TIMEOUT):
                     logging.warn(f"alarm_handler: {e}")
                     timeout_counter += 1
                     res = prev_res
-                    continue
                 finally:
                     signal.alarm(0)
                     times[i] = perf_counter_ns() - start
