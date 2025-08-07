@@ -75,7 +75,7 @@ def stats_dioph_as_dim_increases(solver, dims, seed=RANDOM_SEED):
 
     for i, dim in enumerate(dims):
         logging.info(f"on problem {i + 1} of {len(dims)}")
-        p = rng.integers(10, 5 * dim, size=dim)
+        p = np.sort(rng.integers(10, 5 * dim, size=dim))[::-1]
         m = math.gcd(*p)
         q = p // m
 
@@ -175,7 +175,7 @@ def stats_dp_as_dim_increases(dims, seed=RANDOM_SEED):
     for i, dim in enumerate(dims):
         logging.info(f"on problem {i + 1} of {len(dims)}")
 
-        p = rng.integers(10, 5 * dim, size=dim)
+        p = np.sort(rng.integers(10, 5 * dim, size=dim))
         k = 0.5 if dim <= 20_000 else 0.1
         u = (p.sum() * k).astype(int)
         x, (mu, sigma), timed_out = ukp_dp(p, u)

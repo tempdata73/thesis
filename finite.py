@@ -102,7 +102,7 @@ if __name__ == "__main__":
     from src.constants import RANDOM_SEED, bb_raw_options, bb_full_options
 
     rng = np.random.default_rng(seed=RANDOM_SEED)
-    p = rng.integers(10, 10_000, size=1_000)
+    p = np.sort(rng.integers(10, 10_000, size=1_000))
     g = math.gcd(*p)
     q = p // g
     m = np.int64(g)
@@ -141,7 +141,7 @@ if __name__ == "__main__":
         {
             "name": "dioph-v2",
             "log_path": create_rhs_path("dioph-v2"),
-            "job": lambda *_: dioph_rhs(dioph, q.copy(), m, rhs.copy()),
+            "job": lambda *_: dioph_rhs(dioph, q[::-1].copy(), m, rhs.copy()),
         },
         {
             "name": "dp",
