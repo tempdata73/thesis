@@ -1,7 +1,9 @@
 \chapter{El caso finito}
 \noindent
-Debido a que $\vec{p} > \vec{0}$, resulta valioso mencionar que el problema
-(\ref{theory:formulation}) es una instancia particular del famoso Problema de la Mochila
+Nuevamente inspirados por el Teorema \ref{theory:th:feasibility}, en este capítulo analizamos el
+caso en el que el vector coprimo $\vec{q}$ tiene entradas estrictamente positivas. De esta manera,
+el problema \eqref{theory:formulation} deviene una instancia particular del famoso Problema de la
+Mochila:
 \begin{subequations}
 	\label{knapsack-formulation}
 	\begin{align}
@@ -14,43 +16,93 @@ Debido a que $\vec{p} > \vec{0}$, resulta valioso mencionar que el problema
 \end{subequations}
 donde los vectores positivos $\vec{u}, \vec{w} \in \Z^n$ son conocidos como vector de útiles y
 vector de pesos, respectivamente. Puesto que no acotamos $\vec{x}$, el problema recibe el nombre de
-Problema de la Mochila no Acotado. Pero también como $\vec{u} = \vec{w}$, el problema
-también puede ser considerado como un Problema de la Suma de Conjuntos no Acotado. En nuestro análisis
-de resultados comparamos los tiempos de terminación de nuestro algoritmo con los de Ramificación y
-Acotamiento, \texttt{MTU2} (\cite{martello}), y una formulación alternativa de programación dinámica.
+Problema de la Mochila no Acotado. Pero también como $\vec{u} = \vec{w}$, el problema puede
+ser considerado como un Problema de la Suma de Conjuntos no Acotado.
+
+En la primera sección realizamos un análisis de capas enteras a fin de obtener un resultado análogo
+al Teorema \ref{infinite:th:complexity}. En concreto, el Teorema \ref{th:intnonneg2} enuncia que
+para un presupuesto $u$ suficientemente grande en el problema \eqref{theory:formulation}, la
+búsqueda de una solución se reduce a resolver solamente una ecuación lineal diofantina.
+
+El resultado anterior, si bien interesante, es de existencia y no muestra cómo obtener las
+soluciones enteras no negativas de ecuaciones lineales diofantinas. De manera similar a como lo
+hicimos en el capítulo anterior, la segunda sección se encarga de presentar tal construcción de
+soluciones a partir de los Algoritmos \ref{algo:fin:helper} y \ref{algo:fin:dioph}.
+
+Finalmente, en la tercera y última sección de este capítulo, realizamos algunos experimentos
+numéricos que comparan la eficacia de nuestros algoritmos recién desarrollados con la de
+Ramificación y Acotamiento, así como de una formulación alternativa de programación dinámica.
 
 \section{Análisis de capas enteras}
 \noindent
-De acuerdo al Teorema \ref{theory:th:feasibility}, el número de puntos factibles sobre la
-$k$-ésima capa entera es finito y, por lo tanto, puede ser cero. No obstante, al igual que en la
-sección anterior, somos capaces de caracterizar todos los puntos enteros que se encuentran en
-cualquier capa entera. Consecuentemente, si determinamos que no hay ningún punto factible en la
-$k$-ésima capa entera, descendemos a la $(k -1)$-ésima capa entera y realizamos el mismo
-análisis.
+De acuerdo al segundo caso del Teorema \ref{theory:th:feasibility}, el número de puntos enteros no
+negativos sobre la $k$-ésima capa entera es finito y, por lo tanto, puede ser cero. Sea $k \in
+\braces{\eta, \ldots, 0}$. Sabemos de la Sección \ref{subsec:dioph-eq} que deseamos resolver la
+ecuación lineal diofantina \eqref{eq:dioph}, por lo que implementamos la misma estrategia para
+plantear una formulación recursiva. 
 
-En la primera parte de esta sección determinamos una cota superior para el número de capas enteras
-que visitamos y analizamos el comportamiento a medida que el presupuesto $u$ aumenta. En la segunda
-parte de esta sección mostramos que si el presupuesto $u$ es suficientemente grande, entonces la
-solución de (\ref{theory:formulation}) sí se encuentra sobre la $\eta$-ésima capa entera. Este
-resultado es análogo al caso infinito del Teorema \ref{theory:th:feasibility}. Finalmente, en la
-tercera parte de esta sección discutimos brevemente sobre la complejidad algorítmica de encontrar
-la solución.
+Debido al supuesto $\vec{q} > \vec{0}$, observemos de \eqref{dummy:eq:ith-equation} que podemos
+agregar la condición $\omega_{i} \geq 0$. En efecto, buscamos que $\vec{x}$ sea no negativo y
+recordemos que $g_i$ es un máximo común divisor (ver \eqref{dummy:eq:ith-g}), por lo que es
+estrictamente positivo. Juntando esto con el supuesto $\vec{q} > \vec{0}$, encontramos que
+$\omega_i$ es no negativo para toda $i \in \braces{1, \ldots, n - 1}$. Así pues, despejando $t_i$ de
+\eqref{eq:recurrence} obtenemos los intervalos de factibilidad
+\begin{equation}
+	\label{phase-1:finite:eq:param-bounds}
+	\left\lceil -\frac{\omega_ix_i'}{g_{i+1}} \right\rceil
+	\leq
+	t_i
+	\leq
+	\left\lfloor \frac{\omega_i\omega_{i+1}'}{q_i} \prod_{j=1}^{i}g_j \right\rceil,
+\end{equation}
+para todo $i \in \lbrace 1, \ldots, n - 2\rbrace$. Luego, como $0 < q_{n - 1}, q_n$, se sigue de
+\eqref{eq:last-solution} que
+\begin{equation}
+	\label{phase-1:finite:eq:param-bounds-last}
+	\left\lceil -\frac{\omega_{n-1}x_{n-1}'}{q_n} \cdot \prod_{j=1}^{n-2}g_j \right\rceil
+	\leq
+	t_{n - 1}
+	\leq
+	\left\lfloor \frac{\omega_{n-1}x_{n}'}{q_{n-1}} \cdot \prod_{j=1}^{n-2}g_j \right\rfloor.
+\end{equation}
+
+Consecuentemente, el número de elecciones que podemos realizar para el vector de variables libres
+$\vec{t} \in \Z^{n-1}$ es, como lo confirma el Teorema \ref{theory:th:feasibility}, finito. Si
+determinamos que no existe tal punto en la $k$-ésima capa entera, descendemos a la $(k -1)$-ésima
+capa entera y continuamos con nuestra búsqueda.
+
+% Observemos también que una elección de $t_i$ modifica $\omega_{i+1}$ y por lo tanto también afecta
+% el intervalo de factibilidad de $t_{i+1}$. Siguiendo con este razonamiento, encontramos que una
+% elección de $t_i$ afecta a su vez los intervalos de factibilidad de $t_{i+1}, \ldots, t_{n-1}$. En
+% la Sección \ref{subsec:complex} discutiremos cómo es que esta ``cadena'' acota la complejidad
+% algorítmica del Algoritmo \ref{algo:fin:dioph}.
+
+Ahora bien, en esta primera parte de la sección nos encargamos de calcular una cota superior para el
+número de capas enteras que debemos analizar de manera que garanticemos la existencia de un punto
+entero no negativo sobre una de estas capas enteras.
+
+% En la primera parte de esta sección determinamos una cota superior para el número de capas enteras
+% que visitamos y analizamos el comportamiento a medida que el presupuesto $u$ aumenta. En la segunda
+% parte de esta sección mostramos que si el presupuesto $u$ es suficientemente grande, entonces la
+% solución de (\ref{theory:formulation}) sí se encuentra sobre la $\eta$-ésima capa entera. Este
+% resultado es análogo al caso infinito del Teorema \ref{theory:th:feasibility}. Finalmente, en la
+% tercera parte de esta sección discutimos brevemente sobre la complejidad algorítmica de encontrar
+% la solución.
 
 \begin{lemma}
 	\label{lemma:tau}
 	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q} \in \Z^n$ su múltiplo
 	coprimo, por lo que existe $m \in \R$ tal que $\vec{p} = m\vec{q}$. Supongamos que $m > 0$ y que
-	las entradas de $\vec{q}$ son todas positivas. Consideremos el problema
-	\eqref{theory:formulation} y supongamos que es factible. Definamos $q^* \coloneq \max\lbrace
-	q_1, \ldots, q_n \rbrace$, y también
+	$\vec{q} > \vec{0}$. Sea $q^* \coloneq \max\lbrace q_1, \ldots, q_n \rbrace$, y sea
 	\begin{equation}
 		\label{eq:tau}
 		\tau \coloneq \left\lfloor \left\lfloor \frac{u}{q^*} \right\rfloor
-			\frac{q^*}{m} \right\rfloor.
+			\frac{q^*}{m} \right\rfloor,
 	\end{equation}
-	Entonces la solución del problema \eqref{theory:formulation} se encuentra en una capa entera
-	parametrizada por $k \in \lbrace \eta, \eta - 1, \ldots, \tau \rbrace$, donde $\eta$ está
-	definida en el Lema \ref{phase-1:lemma:eta}.
+	donde $u$ es el lado derecho de \eqref{theory:constraint:budget}. Entonces la solución del
+	problema \eqref{theory:formulation}, de ser factible, se encuentra en una capa entera
+	parametrizada por $k \in \lbrace \eta, \eta - 1, \ldots, \tau \rbrace$, donde recuperamos $\eta$
+	del Lema \ref{phase-1:lemma:eta}.
 \end{lemma}
 \begin{proof}
 	Definamos $i^* \coloneq \argmax\braces{q_1, \ldots, q_n}$ y consideremos el vector
@@ -58,8 +110,8 @@ la solución.
 		\vec{v} \coloneq \left\lfloor \frac{u}{q^*} \right\rfloor \vec{e}_{i^*}.
 	\end{equation*}
 	Por hipótesis tenemos $q^* > 0$ y, además, como el problema
-	\eqref{theory:formulation} es factible, se sigue del Teorema \ref{theory:th:feasibility} que $u
-	\geq 0$. De esto obtenemos que $\vec{v} \geq \vec{0}$. Así también,
+	\eqref{theory:formulation} es factible, se sigue del Teorema \ref{theory:th:feasibility} que el
+	presupuesto $u$ es no negativo. De esto obtenemos que $\vec{v} \geq \vec{0}$. Así también,
 	\begin{equation*}
 		\vec{q}^T\vec{v} = \left\lfloor \frac{u}{q^*} \right\rfloor q^*
 		\leq \frac{u}{q^*}q^* = u,
@@ -68,20 +120,20 @@ la solución.
 	el problema (\ref{theory:formulation}). Así pues, todo vector $\vec{x}$ candidato a ser el
 	óptimo del problema satisface
 	\begin{equation*}
-		\vec{q}^T\vec{x} = \frac{\vec{p}^T\vec{x}}{m} \geq \left\lfloor \frac{u}{q^*}
-		\right\rfloor \frac{q^*}{m}.
+		\vec{q}^T\vec{x} = \frac{\vec{p}^T\vec{x}}{m} \geq \frac{\vec{q}^T\vec{v}}{m} = 
+		\floor{\frac{u}{q^*}} \frac{q^*}{m}.
 	\end{equation*}
 	Nos interesa determinar el entero $\tau$ más pequeño tal que todo punto sobre la capa
 	entera $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ con $k \in \lbrace \tau, \tau + 1, \ldots \rbrace$
-	satisfaga esta desigualdad. Del Lema \ref{phase-1:lemma:layer}, toda $k$ debe satisfacer
+	satisfaga esta desigualdad. Del Lema \ref{phase-1:lemma:layer}, encontramos que $k$ debe satisfacer
 	\begin{equation*}
-		k\norm{\vec{q}}^{-2} = \frac{\vec{q}^T\vec{x}}{\norm{\vec{q}}^2} \geq
+		\frac{k}{\norm{\vec{q}}^{2}} = \frac{\vec{q}^T\vec{x}}{\norm{\vec{q}}^2} \geq
 		\left\lfloor \frac{u}{q^*} \right\rfloor \frac{q^*}{m}
 		\frac{1}{\norm{\vec{q}}^2},
 	\end{equation*}
 	equivalentemente,
 	\begin{equation*}
-		k \leq \floor{\frac{u}{q^*}}\frac{q^*}{m}.
+		k \geq \floor{\frac{u}{q^*}}\frac{q^*}{m}.
 	\end{equation*}
 	Consecuentemente,
 	\begin{equation*}
@@ -91,7 +143,7 @@ la solución.
 	\end{equation*}
 	Finalmente, recordemos del Lema \ref{phase-1:lemma:eta} que $\eta$ es la primera capa en
 	satisfacer la restricción presupuestaria. Por lo tanto, el óptimo del problema
-	(\ref{theory:formulation}) se encuentra en una capa parametrizada por $\tau \leq k \leq \eta$.
+	\eqref{theory:formulation} se encuentra en una capa entera parametrizada por $\tau \leq k \leq \eta$.
 \end{proof}
 
 \begin{observation}
@@ -105,7 +157,8 @@ la solución.
 		\left\lfloor \frac{u}{q^*} \right\rfloor \frac{q^*}{m}
 		\leq \frac{u}{m}.
 	\end{equation*}
-	Aplicando la función piso a ambos lados de la desigualdad encontramos que $\tau \leq \eta$.
+	Aplicando la función piso a ambos lados de la desigualdad y comparando con \eqref{eq:tau} y el
+	Lema \ref{phase-1:lemma:eta} encontramos que $\tau \leq \eta$.
 \end{observation}
 \begin{observation}
 	Nuevamente, la suposición de que el escalar $m$ sea positivo ocurre sin pérdida de generalidad.
@@ -114,48 +167,6 @@ la solución.
 	\eqref{theory:formulation} se encuentra en una capa parametrizada por $\eta' \leq k \leq \tau'$.
 \end{observation}
 
-Sea $k \in \braces{\eta, \ldots, \tau}$. Sabemos de la Sección \ref{subsec:dioph-eq} que deseamos
-resolver la ecuación lineal diofantina \eqref{eq:dioph}, por lo que implementamos la misma
-estrategia para plantear una formulación recursiva. Además, debido al supuesto que $\vec{q}$ tiene
-entradas estrictamente positivas, podemos interpretar $\omega_2$ de tal manera que obtengamos más
-información. Así como $\omega_1 \coloneq k$  es el presupuesto disponible en un inicio, $\omega_2$
-es el presupuesto disponible después de utilizar parte de él para adquirir $x_1 \geq 0$ unidades.
-Por lo tanto, es posible agregar la restricción $\omega_2 \geq 0$. Similarmente, en el $i$-ésimo
-paso de la formulación recursiva, somos capaces de agregar la restricción de que el presupuesto
-restante $\omega_{i + 1}$ sea no negativo.
-
-Combinando el punto anterior con la no negatividad de $x_i$, obtenemos de (\ref{eq:recurrence}) los
-intervalos de factibilidad
-\begin{equation}
-	\label{phase-1:finite:eq:param-bounds}
-	\left\lceil -\frac{\omega_ix_i'}{g_{i+1}} \right\rceil
-	\leq
-	t_i
-	\leq
-	\left\lfloor \frac{\omega_i\omega_{i+1}'}{q_i} \prod_{j=1}^{i}g_j \right\rceil,
-\end{equation}
-para todo $i \in \lbrace 1, \ldots, n - 2\rbrace$. Y también, como $0 < q_{n - 1}, q_n$, se sigue de
-(\ref{eq:last-solution}),
-\begin{equation}
-	\label{phase-1:finite:eq:param-bounds-last}
-	\left\lceil -\frac{\omega_{n-1}x_{n-1}'}{q_n} \cdot \prod_{j=1}^{n-2}g_j \right\rceil
-	\leq
-	t_{n - 1}
-	\leq
-	\left\lfloor \frac{\omega_{n-1}x_{n}'}{q_{n-1}} \cdot \prod_{j=1}^{n-2}g_j \right\rfloor.
-\end{equation}
-
-Consecuentemente, el número de elecciones que podemos hacer para $\vec{t} \in \Z^{n-1}$ es finito.
-El Algoritmo \ref{algo:fin:helper} explota estas cotas para encontrar una solución entera no
-negativa a la ecuación \eqref{eq:dioph} o para determinar que no existe tal solución.
-
-Observemos también que una elección de $t_i$ modifica $\omega_{i+1}$ y por lo tanto también afecta
-el intervalo de factibilidad de $t_{i+1}$. Siguiendo con este razonamiento, encontramos que una
-elección de $t_i$ afecta a su vez los intervalos de factibilidad de $t_{i+1}, \ldots, t_{n-1}$. En
-la Sección \ref{subsec:complex} discutiremos cómo es que esta ``cadena'' acota la complejidad
-algorítmica del Algoritmo \ref{algo:fin:dioph}. A continuación estudiamos brevemente el
-comportamiento periódico del número de capas enteras que el Algoritmo \ref{algo:fin:dioph} puede
-revisar.
 
 % Es decir, a pesar de que el óptimo se encuentre sobre la capa entera $k$ que estamos analizando, la
 % elección de los primeros parámetros que realicemos puede afectar el tiempo de terminación de nuestro
@@ -220,7 +231,7 @@ revisar.
 			\right\rfloor,
 	\end{align*}
 	pero $q, m \mid \lcm{q, m}$, por lo que $\lcm{q,m}/m$ y $\lcm{q,m}/q$ son enteros. Por las
-	propiedades de la función piso obtenemos los que queremos demostrar:
+	propiedades de la función piso obtenemos:
 	\begin{align*}
 		\Delta(x + \lcm{q,m})
 		&=
@@ -234,8 +245,9 @@ revisar.
 		&= 
 		\left\lfloor \frac{x}{m} \right\rfloor
 		- \left\lfloor \left\lfloor \frac{x}{q} \right\rfloor\frac{q}{m}\right\rfloor \\
-		&= \Delta(x).
+		&= \Delta(x),
 	\end{align*}
+	que es lo que queríamos demostrar.
 \end{proof}
 \begin{definition}
 	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q} \in \Z^n$ su múltiplo
@@ -249,14 +261,15 @@ revisar.
 	denota el \textbf{número de capas enteras a revisar} dado el presupuesto $u$.
 \end{definition}
 
-Si queremos aplicar el Lema \ref{lemma:layer-dist}, debemos reducir nuestra atención a vectores
-$\vec{p}$ enteros. Esto se debe a que debemos asegurar que el múltiplo $m$ sea entero\footnote{
-	Es la creencia del autor que el Lema \ref{lemma:layer-dist} se puede generalizar para múltiplos
+Si queremos aplicar el Lema \ref{lemma:layer-dist} a la función de la definición anterior, debemos
+reducir nuestra atención a vectores $\vec{p}$ enteros. Esto se debe a que debemos asegurar que el
+múltiplo $m$ sea entero\footnote{
+	Es la creencia del autor que el Lema \ref{lemma:layer-dist} puede ser generalizado para múltiplos
 	$m$ racionales, mas esto no agrega demasiado valor en lo que sigue de la tesis.
 }. Independientemente del comportamiento
-periódico de $\Delta^*$, observemos que esta función varía significativamente ante cambios en $m$
-(ver la Figura \ref{fig:m:ex} o el Ejemplo \ref{ex:decimals}). Esto último implica que el número de
-capas enteras a revisar depende del número de cifras decimales usadas para especificar $\vec{p}$.
+periódico de $\Delta^*$, tenemos que esta función varía significativamente ante cambios en $m$.
+Esto último implica que el número de capas enteras a revisar depende del número de cifras decimales
+usadas para especificar $\vec{p}$. Véase la Figura \ref{fig:m:ex} o el Ejemplo \ref{ex:decimals}. 
 
 \begin{example}
 	\label{ex:decimals}
@@ -288,23 +301,32 @@ capas enteras a revisar depende del número de cifras decimales usadas para espe
 \end{figure}
 
 Observaremos en el análisis de resultados que el número de capas enteras que nuestro algoritmo
-revisa en realidad disminuye a medida que aumenta el presupuesto $u$. Demostraremos a continuación
-que para $u$ suficientemente grande, la solución al problema (\ref{theory:formulation}) se encuentra
-en la $\eta$-ésima capa entera. Este resultado será análogo al Teorema \ref{infinite:th:complexity}.
-No obstante, requerimos de un par de Definiciones y Lemas preliminares. Para motivar lo que
-se encuentra a continuación mencionamos lo siguiente.
+revisa en realidad disminuye a medida que aumenta el presupuesto $u$.
 
-Primero mostramos que existe un punto entero en una vecindad fija de cada punto sobre cualquier capa
-entera. Luego, si el entero $k$ que parametriza la capa entera es suficientemente grande, debe ser
-el caso que existe una vecindad de un punto no negativo tal que esté completamente contenida en el
-cuadrante no negativo. Como necesariamente hay un punto entero en esa vencidad, habremos de
-encontrar un punto entero no negativo sobre esa $k$-ésima capa entera.
+En esta segunda parte de la sección, demostraremos que para un presupuesto $u$ suficientemente
+grande, la solución del problema \eqref{theory:formulation} se encuentra en la $\eta$-ésima capa
+entera. Este resultado será análogo al Teorema \ref{infinite:th:complexity}. No obstante, para
+lograr aquello, necesitamos de un par de definiciones y lemas preliminares.
+
+Para motivar al lector, primero mostramos que existe una vecindad fija de todo punto en $\R^n$ de
+manera que esa vecindad contiene al menos un punto entero. Esto es especificado en el Teorema
+\ref{lemma:ball-cover}.
+
+Luego, observamos que el ``trozo'' no negativo de una capa entera $H_{\vec{q},
+k\norm{\vec{q}}^{-2}}$ crece a medida que $k$ aumenta. Así pues, si $k$ es lo suficientemente
+grande, habrá un punto sobre ese trozo no negativo cuya vecindad también se encuentra contenida en
+ese trozo y, por lo tanto, habrá un punto entero no negativo sobre ese trozo. Esto es especificado
+en el Teorema \ref{th:intsimplex}.
+
+Finalmente, relacionamos el punto entero que se encuentra sobre el pedazo no negativo de
+$H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ con el problema \eqref{theory:formulation}. Así pues, concluimos
+esta sección con los Teoremas \ref{th:intnonneg1} y \ref{th:intnonneg2}.
 
 \begin{definition}
 	\label{fin:def:ball}
-	Sea $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ una capa entera. Entonces definimos la \textbf{bola
-	cerrada} sobre
-	esta capa entera con radio $r > 0$ y centro $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ como
+	Sea $\vec{q} \in \Z^n$ un vector coprimo y sea $k$ un entero positivo. Entonces definimos la
+	\textbf{bola cerrada} sobre la $k$-ésima capa entera $H_{\vec{q}, \norm{\vec{q}}^{-2}}$ con
+	radio $r > 0$ y centro $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ como
 	\begin{equation}
 		\label{eq:k-ball}
 		B_r^{(k)}(\vec{x}) \coloneq \lbrace \vec{y} \in \R^n \colon \norm{\vec{y} - \vec{x}} \leq r
@@ -314,8 +336,8 @@ encontrar un punto entero no negativo sobre esa $k$-ésima capa entera.
 % TODO: mostrar una imagen con una bola.
 \begin{theorem}
 	\label{lemma:ball-cover}
-	Sea $\vec{q} \in \Z^n$ tal que sus entradas son coprimas y supongamos que $q_n \neq 0$. Entonces
-	existe $r > 0$ tal que la familia de bolas
+	Sea $\vec{q} \in \Z^n$ un vector coprimo y supongamos que $q_n \neq 0$. Sea $k$ un entero
+	positivo. Entonces existe $r > 0$ tal que la familia de bolas
 	\begin{equation*}
 		\left\lbrace B_r^{(k)}(\vec{x}) \colon \vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap
 			\Z^n \right\rbrace
@@ -952,6 +974,7 @@ encontrar esta solución.
 	$\vec{q}^T\vec{x} = k$.
 \end{proof}
 \begin{theorem}
+	\label{th:intnonneg2}
 	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y supongamos que su múltiplo coprimo
 	$\vec{q}$ tiene entradas estrictamente positivas. Entonces el problema
 	\eqref{theory:formulation} se puede resolver a través de encontrar la solución de una sola
@@ -1028,19 +1051,20 @@ tanto buscamos y, consecuentemente, también se encargan de resolver el problema
 		\end{cases}
 	\end{equation}
 	donde $t \in \Z$ es una variable libre, y $x_1', x_2'$ son los coeficientes de Bézout (c.f.
-	Definición \ref{prerreq:def:bezout}) de $x_1, x_2$. Por claridad, escribimos $x_1'$ y $x_2'$
-	como $x_{n-1}'$ y $x_{n}'$ en la línea \ref{alg:fin:bez}. Despejando de estas soluciones,
-	encontramos que existen soluciones no negativas si y solo si existe $t \in \Z$ que satisfaga
+	Definición \ref{prerreq:def:bezout}) de $q_1$ y $q_2$, respectivamente. Por claridad, escribimos
+	$x_1'$ y $x_2'$ como $x_{n-1}'$ y $x_{n}'$ en la línea \ref{alg:fin:bez}. Despejando de estas
+	soluciones, encontramos que existen soluciones no negativas si y solo si existe $t \in \Z$ que
+	satisfaga
 	\begin{equation*}
 		\ceil{-\frac{kx_1'}{q_2}} \leq t \leq \floor{\frac{kx_2'}{q_1}}.
 	\end{equation*}
-	Los enteros $b_1$ y $b_2$ en las líneas \ref{alg:fin:b1} y \eqref{alg:fin:b2} representan el
+	Los enteros $b_1$ y $b_2$ en las líneas \ref{alg:fin:b1} y \ref{alg:fin:b2} representan el
 	lado izquierdo y derecho de estas desigualdades, respectivamente. De esta manera, el algoritmo
 	devuelve \NIL~ si solo si este intervalo no está bien definido, es decir, si y solo si no existen
 	soluciones enteras no negativas. Supongamos, pues, que este intervalo sí está bien definido.
 	Entonces, podemos escoger que la variable libre $t$ sea $b_1$. Sustituyendo en
-	\eqref{lemma:correct:base-case:sol} obtenemos una solución entera no negativa a la ecuación
-	\eqref{lemma:correct:base-case} (líneas \ref{alg:fin:xprev} y \eqref{alg:fin:xlast}) y entonces
+	\eqref{lemma:correct:base-case:sol} obtenemos una solución entera no negativa de la ecuación
+	\eqref{lemma:correct:base-case} (líneas \ref{alg:fin:xprev} y \ref{alg:fin:xlast}) y entonces
 	el algoritmo es correcto para $n = 2$.
 
 	Supongamos, inductivamente, que el algoritmo es correcto para alguna $n - 1 \geq 2$. Mostramos
@@ -1076,7 +1100,7 @@ tanto buscamos y, consecuentemente, también se encargan de resolver el problema
 	\begin{equation*}
 		\ceil{-\frac{kx'}{g}} \leq t \leq \floor{\frac{k\omega'}{q_1}}.
 	\end{equation*}
-	Los enteros $b_1$ y $b_2$ en las líneas \eqref{alg:fin:b11} y \eqref{alg:fin:b21} representan el
+	Los enteros $b_1$ y $b_2$ en las líneas \ref{alg:fin:b11} y \ref{alg:fin:b21} representan el
 	lado izquierdo y derecho de estas desigualdades, respectivamente. Si no existe tal variable
 	libre $t \in \Z$ es porque el intervalo $[b_1, b_2]$ no está bien definido y por lo tanto $b_2 <
 	b_1$. El algoritmo entonces salta a la línea \ref{alg:fin:return} y devuelve \NIL.
@@ -1120,8 +1144,7 @@ subproblema $S_i$ de optimización definido en la línea \ref{p1c9:alg:BB_loop} 
 entera tienen el mismo nivel de utilidad $k$, no es necesario desarrollar políticas de poda así como
 lo hicimos en el Ejemplo \ref{ex:ilp} en la Sección \ref{sec:prerreq}. De cierta manera, la única
 política de poda posible es la de infactibilidad por no respetar la no negatividad de un punto
-entero. Discutiremos más sobre esto cuando introduzcamos múltiples restricciones al problema
-\eqref{theory:formulation}.
+entero.
 
 \begin{theorem}
 	\label{th:fin:dioph:correct}
@@ -1138,7 +1161,7 @@ entero. Discutiremos más sobre esto cuando introduzcamos múltiples restriccion
 \end{proof}
 
 Sabemos, en realidad, por el Lema \ref{lemma:tau} que el parámetro $k$ definido en la línea
-\eqref{alg:fin:loop} descenderá hasta 0 si y solo si el parámetro $\tau$ definido en \eqref{eq:tau}
+\ref{alg:fin:loop} descenderá hasta 0 si y solo si el parámetro $\tau$ definido en \eqref{eq:tau}
 es nulo. No obstante, la demostración del Teorema \ref{th:fin:dioph:correct} deviene más simple
 cuando en el Algoritmo \ref{algo:fin:dioph} dejamos que $k$ se encuentre en $[0, \eta]$ en vez de
 $[\tau, \eta]$. Esta modificación, sin embargo, no afecta en lo más mínimo la correctud o la
@@ -1158,10 +1181,10 @@ terminal\footnote{
 Además, este algoritmo, por ejemplo, no minimiza el número de llamadas para calcular el máximo común
 divisor en la línea \ref{alg:fin:g}. En efecto, supongamos que un intervalo de factibilidad $I$
 definido en la línea \ref{alg:fin:feas} induce a que $\vec{x}^{\texttt{tail}}$ sea \NIL~ para todo
-$t \in I$. Entonces estaríamos haciendo $|I|$ llamadas a \texttt{NonNegativeIntSol} en la línea
-\eqref{alg:fin:subeq} con el mismo vector $\vec{q}^{\texttt{tail}}$ y, por lo tanto, estaríamos
-calculando $|I|$ veces la misma $g$ en la línea \ref{alg:fin:g}. Lo mismo ocurre con el cálculo de
-los coeficientes de Bézout $x'$ y $\omega'$ en la línea \ref{alg:fin:bez2}.
+$t \in I$. Entonces estaríamos haciendo $|I|$ llamadas recursivas a \texttt{NonNegativeIntSolFin} en
+la línea \ref{alg:fin:subeq} con el mismo vector $\vec{q}^{\texttt{tail}}$ y, por lo tanto,
+estaríamos calculando $|I|$ veces la misma $g$ en la línea \ref{alg:fin:g}. Lo mismo ocurre con el
+cálculo de los coeficientes de Bézout $x'$ y $\omega'$ en la línea \ref{alg:fin:bez2}.
 
 A pesar de los puntos anteriores, el autor decidió escribir el Algoritmo \ref{algo:fin:helper} de
 esa manera debido a que se simplificaba de manera significativa la demostración del Teorema
