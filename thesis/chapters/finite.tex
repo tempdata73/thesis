@@ -312,7 +312,7 @@ encontrar un punto entero no negativo sobre esa $k$-ésima capa entera.
 	\end{equation}
 \end{definition}
 % TODO: mostrar una imagen con una bola.
-\begin{lemma}
+\begin{theorem}
 	\label{lemma:ball-cover}
 	Sea $\vec{q} \in \Z^n$ tal que sus entradas son coprimas y supongamos que $q_n \neq 0$. Entonces
 	existe $r > 0$ tal que la familia de bolas
@@ -321,7 +321,7 @@ encontrar un punto entero no negativo sobre esa $k$-ésima capa entera.
 			\Z^n \right\rbrace
 	\end{equation*}
 	es una cubierta de la $k$-ésima capa entera $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$.
-\end{lemma}
+\end{theorem}
 \begin{proof}
 	Como $q_n \neq 0$, recordemos del Teorema \eqref{th:lattice} que
 	\begin{equation*}
@@ -378,199 +378,508 @@ encontrar un punto entero no negativo sobre esa $k$-ésima capa entera.
 	Juntando esto con (\ref{eq:ball-cover:1}) obtenemos lo que queríamos demostrar.
 \end{proof}
 
-Ahora bien, denotemos por $\vec{u}_i$ las intersecciones que tiene la capa entera $H_{\vec{q},
-k\norm{\vec{q}}^{-2}}$ con cada uno de los ejes. Es decir,
-\begin{equation}
-	\label{eq:generators}
-	\vec{u}_i \coloneq \frac{k}{q_i}\vec{e}_i,
-\end{equation}
-y consideremos el símplice $\sigma$ generado por estos vectores:
-\begin{equation*}
-	\sigma \coloneq \left\lbrace \theta_1\vec{u}_1 + \cdots \theta_n\vec{u}_n \colon
-		\sum_{i=1}^{n}\theta_i = 1, \theta_i \geq 0 \right\rbrace.
-\end{equation*}
-Se sigue inmediatamente que todo punto $\vec{x} \in \R^n$ no negativo sobre la $k$-ésima capa entera
-también es un elemento de este símplice $\sigma$ y viceversa.
+\begin{definition}
+	\label{def:aff}
+	Sean $\vec{v}_1, \ldots, \vec{v}_m \in \R^n$ una colección de vectores,
+	entonces definimos su \textbf{combinación afina} a partir de
+	\begin{equation*}
+		\aff\braces{\vec{v}_1, \ldots, \vec{v}_m} \coloneq \braces{\theta_1\vec{v}_1 + \cdots + \theta_k\vec{v}_k
+		\colon \theta_1 + \cdots + \theta_m = 1}.
+	\end{equation*}
+\end{definition}
 
-Ahora bien, nos interesa determinar la existencia de un punto entero sobre $\sigma$. De esta manera,
-tendríamos un punto entero no negativo que satisface la ecuación lineal diofantina
-$\vec{q}^T\vec{x} = k$. Para lograr esto, definimos el baricentro de $\sigma$ y determinamos una
-vecindad de este baricentro de manera que esté contenida en el símplice.
+\begin{lemma}
+	\label{lemma:aff}
+	Sean $\vec{v}_1, \ldots, \vec{v}_m \in \R^n$ una colección de vectores. Entonces
+	\begin{equation*}
+		\aff\braces{\vec{v}_1, \ldots, \vec{v}_m} = \vec{v}_j + \gen\braces{\vec{v}_i - \vec{v}_j}_{i \neq j}.
+	\end{equation*}
+\end{lemma}
+\begin{proof}
+	Sean $\theta_1, \ldots, \theta_m$ escalares tales que $\theta_1 + \cdots + \theta_m = 1$. Por un
+	lado, tenemos
+	\begin{align*}
+		\sum_{i=1}^{m}\theta_i\vec{v}_i
+		&= \sum_{i=1}^{m}\theta_i(\vec{v}_i - \vec{v}_j) + \sum_{i=1}^{m}\theta_i\vec{v}_j \\
+		&= \sum_{\substack{i=1 \\ i \neq j}}^{m}\theta_i(\vec{v}_i - \vec{v}_j) + \vec{v}_j.
+	\end{align*}
+	De donde se sigue que $\aff\braces{\vec{v}_1, \ldots, \vec{v}_m} \subseteq \vec{v}_j +
+	\gen\braces{\vec{v}_i - \vec{v}_j}_{i \neq j}$.
+
+	Ahora bien, sea $\braces{\lambda_i}_{i \neq j}$ un conjunto de $m - 1$ escalares y definamos
+	\begin{equation*}
+		\lambda_j = 1 - \sum_{\substack{i = 1 \\ i \neq j}}^{m}\lambda_i.
+	\end{equation*}
+	Observemos que $\lambda_1 + \cdots + \lambda_m = 1$ y, además,
+	\begin{align*}
+		\vec{v}_j + \sum_{i \neq j}\lambda_i(\vec{v}_i - \vec{v}_j)
+		&= \left(1 - \sum_{i \neq j}\lambda_i\right)\vec{v}_j
+		+ \sum_{i \neq j}\lambda_i\vec{v}_i \\
+		&= \lambda_j\vec{v}_j + \sum_{i \neq j}\lambda_i\vec{v}_i \\
+		&= \sum_{i = 1}^{m}\lambda_i\vec{v}_i.
+	\end{align*}
+	De donde se sigue que $\vec{v}_j + \gen\braces{\vec{v}_i - \vec{v}_j}_{i \neq j} \subseteq
+	\aff\braces{\vec{v}_1, \ldots, \vec{v}_m}$. Juntando esto con el punto anterior, obtenemos lo
+	que queríamos demostrar.
+\end{proof}
+\begin{example}
+	\label{ex:aff}
+	% Si $\vec{q}$ es un vector coprimo que satisface $q_n \neq 0$, entonces la $k$-ésima capa entera
+	% $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ es la combinación afina de un conjunto de vectores. En
+	% efecto, sabemos del Teorema \ref{th:lattice} que el vector $\vec{\nu}$ (ver
+	% \eqref{eq:vec-omega}) junto con las columnas $\vec{m}_1, \ldots, \vec{m}_{n-1}$ de M (ver
+	% \eqref{eq:mat-T}) forman una base de la red $\Z^n$ y, por extensión, del espacio vectorial
+	% $\R^n$.
+
+	% De esta manera tenemos $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ si y solo si $\vec{x} =
+	% k\vec{\nu} + M\vec{t}$ para alguna $\vec{t} \in \R^{n-1}$. Así pues,
+	% \begin{equation*}
+	% 	H_{\vec{q}, k\norm{\vec{q}}^{-2}} = k\vec{\nu} + \gen\braces{\vec{m}_i}
+	% 	= k\vec{\nu} + \gen\braces{(\vec{m}_i + k\vec{\nu}) - k\vec{\nu}}.
+	% \end{equation*}
+	% Por el Lema \ref{lemma:aff} sabemos entonces que la $k$-ésima capa entera es la combinación
+	% afina de los vectores $k\vec{\nu}, \vec{m}_1 + k\vec{\nu}, \ldots, \vec{m}_{n-1} + k\vec{\nu}$.
+
+	Si $\vec{q} > \vec{0}$ es un vector coprimo, entonces la $k$-ésima capa entera $H_{\vec{q},
+	k\norm{\vec{q}}^{-2}}$ es la combinación afina de un conjunto de vectores. En efecto, recordemos
+	de la Definición \ref{phase-1:def:c-layer} que esta capa entera es simplemente un hiperplano
+	afino. Como $\vec{q}$ es el vector normal a esta capa entera, se sigue que puede ser escrito
+	como $\vec{v} + \ker{\vec{q} \mapsto \vec{q}^T\vec{x}}$ para alguna $\vec{v} \in H_{\vec{q},
+	k\norm{\vec{q}}^{-2}}$.
+
+	Sean $\vec{u}_1, \ldots, \vec{u}_n$ las intersecciones de la $k$-ésima capa entera con cada uno
+	de los ejes. Es decir, sean, para cada $i \in \braces{1, \ldots, n}$,
+	\begin{equation}
+		\label{def:u-basis}
+		\vec{u}_i \coloneq \frac{k}{q_i}\vec{e}_i.
+	\end{equation}
+	Como cada $\vec{u}_i$ está en la $k$-ésima capa entera, se verifica que $\vec{q}^T\vec{u}_i = k$
+	y por lo tanto $\vec{u}_i - \vec{u}_j \in \ker{\vec{q} \mapsto \vec{q}^T\vec{x}}$. No es difícil
+	ver entonces que el conjunto de vectores $\braces{\vec{u}_i - \vec{u}_j}_{i \neq j}$ forma una
+	base del espacio nulo de la transformación lineal $\vec{q} \mapsto \vec{q}^T\vec{x}$, por lo que
+	obtenemos
+	\begin{equation*}
+		H_{\vec{q}, k\norm{\vec{q}}^{-2}} = \vec{u}_j + \gen\braces{\vec{u}_i - \vec{u}_j}_{i \neq
+		j}.
+	\end{equation*}
+	Por el Lema \ref{lemma:aff} concluimos que la $k$-ésima capa entera es la combinación
+	afina de los vectores $\vec{u}_1, \ldots, \vec{u}_n$.
+\end{example}
 
 \begin{definition}
-	Dado un símplice $\sigma$ generado por $\vec{u}_1, \ldots, \vec{u}_n$, definimos su
-	\textbf{baricentro} o \textbf{centro de masa} $\est{\sigma}$ como
+	\label{def:simplex}
+	Sean $\vec{v}_1, \ldots, \vec{v}_m \in \R^n$ vectores linealmente independientes. Entonces
+	definimos el \textbf{símplice} $\sigma$ como la combinación convexa de estos vectores:
 	\begin{equation*}
-		\est{\sigma} \coloneq \frac{1}{n} \sum_{i=1}^{n}\vec{u}_i.
+		\sigma = \conv\braces{\vec{v}_1, \ldots, \vec{v}_m}
+		\coloneq
+		\braces{\theta_i\vec{v}_1 + \cdots + \theta_k\vec{v}_m
+		\colon \theta_1 + \cdots + \theta_m = 1, \theta_i \geq 0}.
+	\end{equation*}
+	Decimos entonces que $\sigma$ es generado por $\vec{v}_1, \ldots, \vec{v}_n$. También definimos
+	la \textbf{$j$-ésima faceta} $\sigma_j$ de $\sigma$ como el símplice generado por los vectores
+	$\braces{\vec{v}_i}_{i \neq j}$.
+\end{definition}
+\begin{observation}
+	Todo símplice $\sigma$ generado por $\vec{v}_1, \ldots, \vec{v}_m$ está contenido en la
+	combinación afina de estos vectores. Es decir,
+	\begin{equation}
+		\label{aff:contention}
+		\conv\braces{\vec{v}_1, \ldots, \vec{v}_m} \subseteq
+		\aff\braces{\vec{v}_1, \ldots, \vec{v}_m}.
+	\end{equation}
+\end{observation}
+\begin{observation}
+	Si $\sigma$ es un símplice generado por $m$ vectores, entonces tiene $\binom{m}{m-1} = m$
+	facetas. Tomaremos por hecho, puesto que de otra manera arriesgamos desviarnos por una tangente,
+	que estas facetas constituyen la frontera relativa del símplice. Es decir, tomaremos por hecho
+	que las facetas constituyen las ``aristas'' de $\sigma$.
+\end{observation}
+
+\begin{lemma}
+	\label{lemma:sigmachar1}
+	Sea $\vec{q} \geq \vec{0}$ un vector coprimo y sea $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ la
+	$k$-ésima capa entera, con parámetro $k$ positivo. Consideremos el símplice $\sigma$ generado por
+	los vectores definidos en \eqref{def:u-basis}, entonces
+	\begin{equation*}
+		\sigma = H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap \R^n_{\geq \vec{0}}.
+	\end{equation*}
+\end{lemma}
+\begin{proof}
+	En el Ejemplo \ref{ex:aff} mostramos que
+	\begin{equation*}
+		\label{eq:aff-layer}
+		H_{\vec{q}, k\norm{\vec{q}}^{-2}} = \aff\braces{\vec{u}_1, \ldots, \vec{u}_n}.
+	\end{equation*}
+	Sea $\vec{x} \in \sigma$, de la Definición \ref{def:simplex} y de \eqref{aff:contention} encontramos
+	que $\vec{x}$ se encuentra en la $k$-ésima capa entera. Además, existen escalares $\theta_1,
+	\ldots, \theta_n$ no negativos tales que
+	\begin{equation*}
+		\vec{x} = \theta_1\vec{u}_1 + \cdots + \theta_n\vec{u}_n
+		= k\begin{pmatrix}
+			\theta_1 / q_1 \\
+			\vdots \\
+			\theta_n / q_n
+		\end{pmatrix}.
+	\end{equation*}
+	Como $\vec{q} > \vec{0}$ y $k > 0$ por hipótesis, tenemos que $\vec{x} \geq \vec{0}$, lo que
+	implica que $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap \R^n_{\geq \vec{0}}$.
+
+	El otro lado de la contención se muestra de manera completamente análoga.
+\end{proof}
+
+En el contexto del problema \eqref{theory:formulation}, sabemos que si $\sigma$ es generado por los
+vectores en \eqref{def:u-basis} entonces, por el Lema anterior, todo punto entero sobre $\sigma$ es
+un punto factible siempre que $0 < k \leq \eta$, donde recuperamos $\eta$ del Lema
+\ref{phase-1:lemma:eta}. Nos gustaría entonces garantizar la existencia de tal punto entero.
+
+Adoptamos la siguiente estrategia: nos concentramos en un punto $\vec{x} \in \sigma$ y abrimos una
+bola (ver Definición \ref{fin:def:ball}) con radio dado por \eqref{eq:radius}. Si esa bola está
+contenida en el símplice $\sigma$, entonces el Teorema \ref{lemma:ball-cover} garantiza la
+existencia de un punto entero sobre $\sigma$. Por el Lema anterior, garantizaríamos la
+existencia de un punto entero no negativo sobre la $k$-ésima capa entera.
+
+Lo que se encuentra a continuación es un análisis para determinar qué tan grande debe ser $k$ para
+asegurar que la bola de radio \eqref{eq:radius} esté contenida en el símplice $\sigma$, dado que la
+bola está centrada en un punto particular, a saber, en el baricentro del símplice.
+
+\begin{definition}
+	Sea $\sigma$ un símplice generado por $\vec{v}_1, \ldots, \vec{v}_m \in \R^n$, definimos su
+	\textbf{baricentro} $\est{\sigma}$ como
+	\begin{equation*}
+		\est{\sigma} \coloneq \frac{1}{m} \sum_{i=1}^{m}\vec{v}_i.
 	\end{equation*}
 \end{definition}
 \begin{observation}
 	El baricentro $\est{\sigma}$ es un elemento de $\sigma$. Esto se debe a que $\est{\sigma}$ es la
-	combinación convexa de $\vec{u}_1, \ldots, \vec{u}_n$, donde $\theta_1 = \cdots = \theta_n =
-	\frac{1}{n}$.
+	combinación convexa de $\vec{v}_1, \ldots, \vec{v}_m$, donde $\theta_1 = \cdots = \theta_m =
+	\frac{1}{m}$.
 \end{observation}
 
 \begin{definition}
-	Sea $\sigma$ un símplice y consideremos su baricentro $\est{\sigma}$. Definamos
+	\label{def:r-sigma}
+	Sea $\sigma$ un símplice y sea $\est{\sigma}$ su baricentro. Entonces definimos el \textbf{radio
+	de la circunferencia inscrita} en $\sigma$ con centro $\est{\sigma}$ como
 	\begin{equation}
 		\label{eq:def:r-sigma}
 		r_\sigma \coloneq \max \lbrace r > 0 \colon B_r^{(k)}(\est{\sigma})
-		\subseteq \sigma \rbrace.
+		\subseteq \sigma \rbrace,
 	\end{equation}
-	Entonces decimos que $\mathcal{C}^{(k)} \coloneq
-	B_{r_\sigma}^{(k)}(\est{\sigma})$ es la \textbf{circunferencia inscrita} en $\sigma$. A
-	$r_\sigma$ le llamamos el radio de tal circunferencia.
+	donde $B_r^{(k)}(\est{\sigma})$ está dada en la Definición \ref{fin:def:ball}.
 \end{definition}
 
-\begin{definition}
-	Sea $\sigma$ un símplice. Al símplice $F_j$ generado por los vectores $\lbrace \vec{u}_i
-	\rbrace_{i \neq j}$ lo llamamos la \textbf{$j$-ésima faceta} de $\sigma$.
-\end{definition}
-\begin{observation}
-	Si $\sigma$ es generado por $n$ vectores, entonces tiene $\binom{n}{n-1} = n$ facetas, y cada
-	una es generada por $n - 1$ vectores. También se cumple que la frontera del símplice es la unión
-	de sus facetas.
-\end{observation}
-
-De (\ref{eq:generators}) encontramos que el vector $\vec{u}_j$ es ortogonal a los vectores $\lbrace
-\vec{u}_i \rbrace_{i \neq j}$, y por lo tanto su proyección sobre la capa entera $H_{\vec{q},
-k\norm{\vec{q}}_2^{-2}}$ constituye el vector normal de la $j$-ésima faceta. Además, esta proyección
-apunta hacia el interior del símplice $\sigma$. Como $\vec{q}$ es el vector normal a $H_{\vec{q},
-k\norm{\vec{q}}_2}$, encontramos que la proyección de $\vec{u}_j$ sobre esta capa entera es
+Encontraremos que el radio de la circunferencia inscrita está dado por el mínimo de las distancias
+entre el baricentro del símplice con cada una de sus facetas. Sabemos, bien por álgebra lineal, bien
+por optimización, que la distancia entre $\sigma$ y su $j$-ésima faceta $\sigma_j$ es
 \begin{equation}
-	\label{eq:normal-vector}
-	\vec{\mu}_j \coloneq
-	\vec{u}_j - \frac{\vec{q}^T\vec{u}_j}{\vec{q}^T\vec{q}}\vec{q}
-	=
-	\vec{u}_j - \frac{k}{\norm{\vec{q}}_2^2}\vec{q}.
+	\label{eq:dist:v1}
+	d(\est{\sigma}, \sigma_j) = |\uvec{\mu}_j^T(\est{\sigma} - \est{\sigma}_j)|,
 \end{equation}
-Denotemos por $\est{\mu}_j$ el vector $\vec{\mu}_j$ normalizado. Encontramos entonces que cada
-faceta $F_j$ está contenida en el hiperplano afino
-\begin{equation*}
-	\lbrace \vec{x} \in \R^{n} \colon \est{\mu}_j^T\vec{x} = b_j \rbrace
-	\cap H_{\vec{q}, k\norm{\vec{q}}_2^{-2}},
-\end{equation*}
-donde $b_j \coloneq \est{\mu}_j^T\vec{x}$ para algún $\vec{x} \in F_j$. Luego, como cada
-vector normal $\est{\mu}_j$ apunta hacia el interior del símplice $\sigma$, se sigue que este puede
-ser escrito como
-\begin{equation*}
-	\sigma = \bigcap_{j=1}^{n} \lbrace \vec{x} \in \R^{n} \colon \est{\mu}^T_j\vec{x} \geq b_j
-	\rbrace \cap H_{\vec{q}, k\norm{\vec{q}}_2^{-2}}.
-\end{equation*}
-Esta caracterización de $\sigma$ nos permite demostrar el siguiente Lema.
+donde $\uvec{\mu}_j$ es un vector unitario y normal a la $j$-ésima faceta.
+
 \begin{lemma}
-	\label{lemma:sigma-radius}
-	El radio $r_\sigma$ de la circunferencia inscrita en $\sigma$ está dado por
-	\begin{equation*}
-		r_\sigma = \min_{1 \leq j \leq n} \lbrace d(\est{\sigma}, F_j) \rbrace,
-	\end{equation*}
-	donde $d(\est{\sigma}, F_j)$ denota la mínima distancia entre el baricentro
-	$\est{\sigma}$ y la $j$-ésima faceta $F_j$ del símplice $\sigma$.
+	\label{mu:orth}
+	Sean $\vec{q} > \vec{0}$, $k > 0$ y retomemos el símplice $\sigma$ generado por los vectores
+	$\braces{\vec{u}_i}_{i=1}^{n}$ en \eqref{def:u-basis}. Definamos, para cada $j \in \braces{1,
+	\ldots, n}$,
+	\begin{equation}
+		\label{eq:normal}
+		\vec{\mu}_j \coloneq \vec{u}_j - \frac{\vec{q}^T\vec{u}_j}{\vec{q}^T\vec{q}}\vec{q}
+		= \vec{u}_j - \frac{k}{\norm{\vec{q}}^2}\vec{q}.
+	\end{equation}
+	Entonces $\vec{\mu}_j$ es un vector normal a la $j$-ésima faceta $\sigma_j$ del símplice
+	$\sigma$.
 \end{lemma}
 \begin{proof}
-	Observemos que $\vec{u}_i$ con $i \neq j$ es un vector sobre el símplice $\sigma$. Luego, la
-	distancia entre el baricentro y la $j$-ésima faceta es
-	\begin{equation*}
-		d(\est{\sigma}, F_j) = |\est{\mu}_j^T(\est{\sigma} - \vec{u}_i)|
-		= \est{\mu}_j^T(\est{\sigma} - \vec{u}_i),
-	\end{equation*}
-	pues $\est{\sigma}$ es un elemento de $\sigma$ y $\est{\mu}_j$ apunta hacia adentro
-	del símplice.
+	Sea $m \in \braces{1, \ldots, n} \setminus \braces{j}$. Como $\vec{u}_m \in \sigma_j$, debemos
+	mostrar que $\vec{\mu}_j^T\vec{x} = 0$ para todo $\vec{x} \in \sigma_j - \vec{u}_m$.
 
-	Mostramos primero que si $r \leq \min_{1 \leq j \leq n} \lbrace d(\est{\sigma}, F_j) \rbrace$, entonces
-	$B_r^{(k)}(\est{\sigma}) \subseteq \sigma$. Así pues, sea $\vec{x} \in
-	B_r^{(k)}(\est{\sigma})$. Observemos que
+	Tenemos de las definiciones \ref{def:aff} y \ref{def:simplex}, así como del Lema
+	\ref{lemma:aff} que
+	\begin{equation*}
+		\sigma_j = \conv\braces{\vec{u}_i}_{i \neq j} \subseteq
+		\aff\braces{\vec{u}_i}_{i \neq j}
+		= \vec{u}_m + \gen\braces{\vec{u}_i - \vec{u}_m}_{i \neq j, m}.
+	\end{equation*}
+	De donde obtenemos
+	\begin{equation*}
+		\sigma_j - \vec{u}_m \subseteq \gen\braces{\vec{u}_i - \vec{u}_m}_{i \neq j, m},
+	\end{equation*}
+	así que basta mostrar que $\vec{\mu}_j^T(\vec{u}_i - \vec{u}_m) = 0$ para todo $i \in \braces{1,
+	\ldots, n}$ distinto de $j$ y $m$. Cabe mencionar que los vectores $\braces{\vec{u}_i}_{i=1}^{n}$
+	son ortogonales entre sí. Sustituyendo con la definición de $\vec{\mu}_j$ en la hipótesis,
+	obtenemos
 	\begin{align*}
-		\est{\mu}_j^T\vec{x} - b_j
+		\vec{\mu}_j^T(\vec{u}_i - \vec{u}_m)
 		&=
-		\est{\mu}_j^T(\vec{x} - \est{\sigma}) + \est{\mu}_j^T\est{\sigma} -
-		b_j \\
-		&= \est{\mu}_j^T(\vec{x} - \est{\sigma}) + d(\est{\sigma}, F_j).
+		\vec{u}_j^T\vec{u}_i - \vec{u}_j^T\vec{u}_m - \frac{k}{\norm{\vec{q}}^2}(\vec{q}^T\vec{u}_i
+		- \vec{q}^T\vec{u}_m) \\
+		&= -\frac{k}{\norm{\vec{q}}^2}(k - k) \\
+		&= 0.
 	\end{align*}
-	Por la desigualdad de Cauchy-Schwartz tenemos
-	\begin{equation*}
-		\est{\mu}_j^T(\vec{x} - \est{\sigma}) \geq -\norm{\est{\mu}_j}_2\norm{\vec{x} -
-		\est{\sigma}}_2 = -\norm{\vec{x} - \est{\sigma}}_2 \geq -r,
-	\end{equation*}
-	y por lo tanto,
-	\begin{equation*}
-		\est{\mu}_j^T\vec{x} - b_j \geq -r + d(\est{\sigma}, F_j) \geq 0,
-	\end{equation*}
-	pues $r \leq d(\est{\sigma}, F_j)$ para todo $j \in \lbrace 1, \ldots, n \rbrace$. Así,
-	encontramos que, para todo $\vec{x} \in B_r^{(k)}(\est{\sigma})$,
-	\begin{equation*}
-		\vec{x} \in
-		\bigcap_{j=1}^{n} \lbrace \vec{x} \in \R^{n-1} \colon \est{\mu}^T_j\vec{x} \geq b_j \rbrace
-		\cap H_{\vec{q}, k\norm{\vec{q}}_2^{-2}} = \sigma,
-	\end{equation*}
-	y por lo tanto $B_r^{(k)}(\est{\sigma}) \subseteq \sigma$. A causa de
-	(\ref{eq:def:r-sigma}) encontramos que $r_\sigma \geq \min_{1 \leq j \leq n} \lbrace
-	d(\est{\sigma}, F_j) \rbrace$.
-
-	Ahora bien, supongamos que $r > d(\est{\sigma}, F_j)$ para algún $j \in \lbrace 1, \ldots,
-	n \rbrace$. Consideremos el punto $\vec{x} \in F_j$ que satisface $d(\est{\sigma}, F_j) =
-	d(\est{\sigma}, \vec{x})$. Tal punto existe porque $F_j$ es cerrado. Luego,
-	$\norm{\est{\sigma} - \vec{x}}_2 < r$. Entonces existe $\varepsilon > 0$ tal que
-	\begin{equation*}
-		\norm{\est{\sigma} - (\vec{x} - \varepsilon\est{\mu}_j)}_2 \leq r,
-	\end{equation*}
-	lo que implica que $\vec{x} - \varepsilon\est{\mu}_j \in
-	B_r^{(k)}(\est{\sigma})$. Sin embargo, tenemos
-	\begin{equation*}
-		\est{\mu}_j^T(\vec{x} - \varepsilon\est{\mu}_j) = b_j - \varepsilon\norm{\est{\mu}_j}_2^2 < b_j,
-	\end{equation*}
-	y entonces $\vec{x} - \varepsilon\est{\mu} \not\in \sigma$. De aquí se sigue que $r_\sigma
-	\leq d(\est{\sigma}, F_j)$ para todo $j \in \lbrace 1, \ldots, n \rbrace$ y, por lo tanto,
-	$r_\sigma \leq \min_{1 \leq j \leq n} \lbrace d(\est{\sigma}, F_j) \rbrace$.
-
-	Concluimos, entonces, con
-	\begin{equation*}
-		r_\sigma = \min_{1 \leq j \leq n} \lbrace d(\est{\sigma}, F_j) \rbrace,
-	\end{equation*}
-	que es lo que queríamos demostrar.
+	De esta manera, concluimos que $\vec{\mu}_j$ es un vector normal a $\sigma_j$.
 \end{proof}
 
-Buscamos expresar el radio $r_\sigma$ en función de $k$, por lo que debemos realizar un par de
-cálculos. Retomemos de la demostración del Lema anterior que la distancia entre el baricentro y la
-$j$-ésima faceta está dada por
-\begin{equation*}
-	d(\est{\sigma}, F_j) = \frac{{\vec{\mu}}_j^T(\est{\sigma} - \vec{\mu}_j)}{\norm{\vec{\mu}_j}_2}.
-\end{equation*}
-Realizando los cálculos, encontramos que
+Ahora que encontramos vectores normales $\vec{\mu}_j$ para cada faceta $\sigma_j$, podemos
+simplificar un poco más \eqref{eq:dist:v1}. Aprovechando el hecho de que
+$\braces{\vec{u}_i}_{i=1}^{n}$ son todos ortogonales entre sí, obtenemos cálculos simples:
 \begin{align*}
-	\vec{\mu}_j^T(\est{\sigma} - \vec{u}_i)
-	% &=
-	% \left( \frac{k}{q_j}\vec{e}_j - \frac{k}{\norm{\vec{q}}_2^2}\vec{q} \right)^T
-	% \left( \frac{k}{nq_1}, \ldots, \frac{k}{nq_i} - \frac{k}{q_i}, \ldots,
-	% 		\frac{k}{nq_n} \right) \\
-	% &=
-	% k^2
-	% \left( \frac{1}{q_j}\vec{e}_j - \frac{1}{\norm{\vec{q}}_2^2}\vec{q} \right)^T
-	% \left( \frac{1}{nq_1}, \ldots, \frac{1}{nq_i} - \frac{1}{q_i}, \ldots,
-	% 		\frac{1}{nq_n} \right) \\
-	% &=
-	% k^2
-	% \left(\frac{1}{q_j}\frac{1}{nq_j} -
-	% 	\frac{1}{\norm{\vec{q}}_2^2} \cdot
-	% 	\left(\frac{1}{n} + \cdots + \frac{1}{n} - 1\right)
-	% 	\right) \\
-	&= \frac{k^2}{nq_j^2},
+	\vec{\mu}_j^T\est{\sigma}
+	&=
+	\left(\vec{u}_j - \frac{k}{\norm{\vec{q}}^2}\vec{q}\right)^T \frac{1}{n}\sum_{i=1}^{n}\vec{u}_i \\
+	&=
+	\frac{1}{n}\sum_{i=1}^{n}\vec{u}_j^T\vec{u}_i - \frac{k}{n\norm{\vec{q}}^-2}
+	\sum_{i=1}^{n}\vec{q}^T\vec{u}_i \\
+	&= \frac{1}{n}\norm{\vec{u}_j}^2 - \frac{k}{n\norm{\vec{q}}^2}\sum_{i=1}^{n}k \\
+	&= \frac{k^2}{nq_j^2} - \frac{k^2}{\norm{\vec{q}}^2}.
 \end{align*}
-y también
+A través de un procedimiento similar, encontramos también que
+\begin{equation}
+	\label{eq:facetaux}
+	\vec{\mu}_j^T\est{\sigma}_j = -\frac{k}{\norm{\vec{q}}^2},
+\end{equation}
+y por lo tanto
+\begin{equation}
+	\label{eq:signed}
+	\vec{\mu}_j^T(\est{\sigma} - \est{\sigma}_j) = \frac{k^2}{nq_j^2}.
+\end{equation}
+Más adelante normalicaremos $\vec{\mu}$ de manera que este vector sea unitario. Cabe resaltar el
+hecho de que el lado derecho \eqref{eq:signed} sea positivo. Geométricamente, lo anterior implica
+que los vectores normales $\vec{\mu}_j$ de cada faceta $\sigma_j$ apuntan hacia adentro del símplice
+$\sigma$. Esto sugiere una caracterización alternativa de $\sigma$ que nos permite interpretarlo
+como un poliedro.
+\begin{lemma}
+	\label{lemma:sigmachar2}
+	Sea $\vec{q} > \vec{0}$ un vector coprimo y sea $\sigma$ el símplice generado por los vectores
+	definidos en \eqref{def:u-basis}, con $k > 0$. Entonces
+	\begin{equation}
+		\label{eq:sigmachar2}
+		\sigma = \bigcap_{j=1}^{n}
+		\braces{\vec{x} \in \R^n \colon \uvec{\mu}_j^T(\vec{x} - \est{\sigma}_j) \geq 0}
+		\cap H_{\vec{q}, k\norm{\vec{q}}^{-2}},
+	\end{equation}
+	donde $\uvec{\mu}_j$ está definido en \eqref{eq:normal} y $\est{\sigma}_j$ es el baricentro de
+	la $j$-ésima faceta de $\sigma$.
+\end{lemma}
+\begin{proof}
+	Denotemos por $\braces{\vec{u}_i}_{i=1}^{n}$ los vectores ortogonales definidos en
+	\eqref{def:u-basis}. Como $\uvec{\mu}_j$ es el vector $\vec{\mu}_j$ normalizado, se sigue que
+	\begin{equation*}
+		\braces{ \vec{x} \in \R^n \colon \uvec{\mu}_j^T(\vec{x} - \est{\sigma}_j) \geq 0}
+		=
+		\braces{ \vec{x} \in \R^n \colon \vec{\mu}_j^T(\vec{x} - \est{\sigma}_j) \geq 0},
+	\end{equation*}
+	y entonces podemos trabajar con $\vec{\mu}_j$ sin normalizarlo. 
+
+	Sea $\vec{x} \in \sigma$. Por el Lema \ref{lemma:sigmachar1} sabemos que
+	$\vec{x}$ se encuentra en la $k$-ésima capa entera. También sabemos que existen escalares no
+	negativos $\theta_1, \ldots, \theta_n$ que suman 1 y que satisfacen $\vec{x} = \theta_1\vec{u}_1
+	+ \cdots + \theta_n\vec{u}_n$. Tenemos entonces
+	\begin{align*}
+		\vec{\mu}_j^T\vec{x}
+		&=
+		\left(\vec{u}_j - \frac{k}{\norm{\vec{q}}^2}\vec{q}\right)^T
+		\left(\theta_j\vec{u}_j + \sum_{i \neq j}\theta_i\vec{u}_i\right) \\
+		&= \theta_j\norm{\vec{u}_j}^2 - \frac{k}{\norm{\vec{q}}^2}\sum_{i \neq j}
+		\theta_i\vec{q}^T\vec{u}_i \\
+		&= \theta_j\frac{k^2}{q_j^2} - \frac{k}{\norm{\vec{q}}^2}\sum_{i \neq j}k\theta_i \\
+		&= \theta_j\frac{k^2}{q_j^2} - \frac{k^2}{\norm{\vec{q}}^2}(1 - \theta_j) \\
+		&= \theta_j\left(\frac{k^2}{q_j^2} + \frac{k^2}{\norm{\vec{q}}^2}\right)
+		- \frac{k^2}{\norm{\vec{q}}^2}.
+	\end{align*}
+	Retomamos de \eqref{eq:facetaux} el valor de $\vec{\mu}_j^T\est{\sigma}_j$, así que obtenemos
+	\begin{equation*}
+		\vec{\mu}_j^T(\vec{x} - \est{\sigma}_j)
+		= 
+		\vec{\mu}_j^T\vec{x} - \vec{\mu}_j^T\est{\sigma}_j)
+		=
+		\theta_j\left(\frac{k^2}{q_j^2} + \frac{k^2}{\norm{\vec{q}}^2}\right),
+	\end{equation*}
+	lo cual es no negativo para todo $j \in \braces{1, \ldots, n}$.
+
+	Mostramos la otra contención por contrapositiva. Así que supongamos que $\vec{x} \not\in
+	\sigma$. Por el Lema \ref{lemma:sigmachar1} se sigue o bien que $\vec{x} \not\in H_{\vec{q},
+	k\norm{\vec{q}}^{-2}}$ o bien que $\vec{x} \not\in \R^n_{\geq \vec{0}}$. En el primer caso
+	obtenemos inmediatamente que $\vec{x}$ no se encuentra en el lado derecho de
+	\eqref{eq:sigmachar2}.
+
+	Supongamos, pues, que $\vec{x}$ está en la $k$-ésima capa entera pero que tiene al menos una
+	entrada negativa. Como $\braces{\vec{u}_i}_{i=1}^{n}$ es base de $\R^n$, existen escalares
+	$\braces{\lambda_i}_{i=1}^{n}$ tales que
+	\begin{equation*}
+		\vec{x} = \sum_{i=1}^{n}\lambda_i\vec{u}_i.
+	\end{equation*}
+	Como las entradas de $\vec{u}_1, \ldots, \vec{u}_n$ son todas no negativas y $x_j < 0$ para
+	alguna $j \in \braces{1, \ldots, n}$, se sigue que $\lambda_j < 0$. Observemos que
+	\begin{align*}
+		\vec{\mu}_j^T\vec{x}
+		&=
+		\sum_{i=1}^{n}\lambda_i\vec{\mu}_j^T\vec{u}_i \\
+		&=
+		\sum_{i=1}^{n}\lambda_i\left(\vec{u}_j - \frac{k}{\norm{\vec{q}}^2}\vec{q}\right)^T\vec{u}_i \\
+		&=
+		\sum_{i=1}^{n}\lambda_i\left(\vec{u}_j^T\vec{u}_i -
+			\frac{k}{\norm{\vec{q}}^2}\vec{q}^T\vec{u}_i\right) \\
+		&=
+		\lambda_j\norm{\vec{u}_j}^2 - \frac{k^2}{\norm{\vec{q}}} \sum_{i=1}^{n}\lambda_i.
+	\end{align*}
+	Pero $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}} = \aff\braces{\vec{u}_1, \ldots, \vec{u}_n}$
+	(ver Ejemplo \ref{ex:aff}) y entonces los escalares $\lambda_1, \ldots, \lambda_n$ suman a 1.
+	Sustituyendo,
+	\begin{equation*}
+		\vec{\mu}_j^T\vec{x} = \lambda_j\frac{k^2}{q_j^2} - \frac{k^2}{\norm{\vec{q}}^2},
+	\end{equation*}
+	retomando el valor de $\vec{\mu}_j^T\est{\sigma}_j$ en \eqref{eq:facetaux}, encontramos que
+	\begin{equation*}
+		\vec{\mu}_j^T(\vec{x} - \est{\sigma}_j) = \lambda_j\frac{k^2}{q_j^2} < 0
+	\end{equation*}
+	y entonces $\vec{x}$ no es elemento del semi-espacio $\braces{\vec{x} \colon
+	\vec{\mu}_j^T(\vec{x} - \est{\sigma}_j) \geq 0}$, por lo que tampoco es elemento del lado
+	derecho de \eqref{eq:sigmachar2}.
+\end{proof}
+
+\begin{theorem}
+	\label{lemma:sigma-radius}
+	Sea $\vec{q} > \vec{0}$ un vector coprimo y sea $\sigma$ el símplice generado por los vectores
+	$\braces{\vec{u}_i}_{i=1}^{n}$ definidos en \eqref{def:u-basis}. Entonces el radio $r_\sigma$ de
+	la circunferencia inscrita (ver Definición \ref{def:r-sigma}) en $\sigma$ con centro
+	$\est{\sigma}$ está dado por
+	\begin{equation*}
+		r_\sigma = \min_{1 \leq j \leq n} d(\est{\sigma}, \sigma_j)
+		= \min_{1 \leq j \leq n} \uvec{\mu}_j^T(\est{\sigma} - \est{\sigma}_j),
+	\end{equation*}
+	donde $\uvec{\mu}_j$ es el vector $\vec{\mu}_j$ definido en \eqref{eq:normal} normalizado.
+\end{theorem}
+\begin{proof}
+	Como $\est{\sigma} \in \sigma$, tenemos del Lema \ref{lemma:sigmachar1} que
+	$\vec{\mu}_j^T(\est{\sigma} - \est{\sigma}_j) \geq 0$ y, por lo tanto, deducimos de \eqref{eq:dist:v1}
+	que la distancia entre $\est{\sigma}$ y la $j$-ésima faceta $\sigma_j$ es
+	\begin{equation}
+		\label{eq:dist}
+		d(\est{\sigma}, \sigma_j) = \uvec{\mu}_j^T(\est{\sigma} - \est{\sigma}_j)
+	\end{equation}
+
+	Supongamos que $r \leq d(\est{\sigma}, \sigma_j)$ para todo $j \in \braces{1, \ldots, n}$ y sea
+	$\vec{x} \in B_r^{(k)}(\est{\sigma})$. Observemos que
+	\begin{align*}
+		\uvec{\mu}_j^T(\vec{x} - \est{\sigma}_j)
+		&= 
+		\uvec{\mu}_j^T(\vec{x} - \est{\sigma})
+		+
+		\uvec{\mu}_j^T(\est{\sigma} - \est{\sigma}_j) \\
+		&=
+		\uvec{\mu}_j^T(\vec{x} - \est{\sigma}) + d(\est{\sigma}, \sigma_j).
+	\end{align*}
+	Por la desigualdad de Cauchy-Schwartz, tenemos
+	\begin{equation*}
+		\uvec{\mu}_j^T(\vec{x} - \est{\sigma}) \geq -\norm{\uvec{\mu}_j}\norm{\vec{x} -
+		\est{\sigma}} = -r,
+	\end{equation*}
+	pues $\uvec{\mu}$ es unitario y $\vec{x} \in B_r^{(k)}(\est{\sigma})$. Así pues, tenemos
+	\begin{equation*}
+		\uvec{\mu}_j^T(\vec{x} - \est{\sigma}_j) \geq -r + d(\est{\sigma}, \sigma_j) \geq 0,
+	\end{equation*}
+	pues supusimos que $r \leq d(\est{\sigma}, \sigma_j)$ para todo $j \in \braces{1, \ldots, n}$.
+	Además, como $\vec{x} \in B_r^{(k)}(\est{\sigma})$, por la Definición \ref{fin:def:ball} tenemos
+	que $\vec{x}$ se encuentra en la $k$-ésima capa entera. Así pues,
+	\begin{equation*}
+		\vec{x} \in
+		\bigcap_{j=1}^{n}
+		\braces{\vec{x} \in \R^n \colon \uvec{\mu}_j^T(\vec{x} - \est{\sigma}_j) \geq 0}
+		\cap H_{\vec{q}, k\norm{\vec{q}}^{-2}} = \sigma,
+	\end{equation*}
+	donde la última igualdad se sigue del Lema \ref{lemma:sigmachar2}. Así pues,
+	$B_r^{(k)}(\est{\sigma}) \subseteq \sigma$ si $r \leq d(\est{\sigma}, \sigma_j)$ para toda $j
+	\in \braces{1, \ldots, n}$. De la Definición \ref{def:r-sigma} encontramos entonces que el radio
+	$r_\sigma$ de la circunferencia inscrita satisface
+	\begin{equation}
+		\label{r-sigma:down}
+		r_\sigma \geq \min_{1 \leq j \leq n}d(\est{\sigma}, \sigma_j).
+	\end{equation}
+
+	Ahora bien, supongamos que $r > d(\est{\sigma}, \sigma_j)$ para alguna $j \in \lbrace 1, \ldots,
+	n \rbrace$. Consideremos el punto $\vec{x} \in \sigma_j$ que satisface $d(\est{\sigma}, \sigma_j) =
+	d(\est{\sigma}, \vec{x})$. Tal punto existe porque $\sigma_j$ es cerrado. Luego,
+	$\norm{\vec{x} - \est{\sigma}}_2 < r$. Entonces existe $\varepsilon > 0$ tal que
+	\begin{equation*}
+		\norm{(\vec{x} - \varepsilon\est{\mu}_j) - \est{\sigma}}_2 \leq r,
+	\end{equation*}
+	lo que implica que $\vec{x} - \varepsilon\est{\mu}_j \in
+	B_r^{(k)}(\est{\sigma})$. Observemos que
+	\begin{equation*}
+		\uvec{\mu}_j^T((\vec{x} - \varepsilon\uvec{\mu}_j) - \est{\sigma}_j)
+		=
+		\uvec{\mu}_j^T(\vec{x} - \est{\sigma}_j) - \varepsilon.
+	\end{equation*}
+	Pero $\vec{x} \in \sigma_j$ y del Lema \ref{mu:orth} sabemos que $\uvec{\mu}_j$ es un vector
+	normal a $\sigma_j$. Es decir,
+	\begin{equation*}
+		\uvec{\mu}_j^T(\vec{x} - \est{\sigma}_j) = 0,
+	\end{equation*}
+	de donde obtenemos
+	\begin{equation*}
+		\uvec{\mu}_j^T((\vec{x} - \varepsilon\uvec{\mu}_i) - \est{\sigma}_j)
+		= -\varepsilon < 0,
+	\end{equation*}
+	lo cual implica que $\vec{x} - \varepsilon\uvec{\mu}_j$ no se encuentra en el semi-espacio
+	definido por $\braces{\vec{x} \colon \uvec{\mu}^T(\vec{x} - \est{\sigma}_j) \geq 0}$. Así pues,
+	\begin{equation*}
+		\vec{x} - \varepsilon\uvec{\mu}_j \not\in
+		\bigcap_{j=1}^{n}
+		\braces{\vec{x} \in \R^n \colon \uvec{\mu}_j^T(\vec{x} - \est{\sigma}_j) \geq 0}
+		\cap H_{\vec{q}, k\norm{\vec{q}}^{-2}} = \sigma.
+	\end{equation*}
+	Donde la última igualdad sale del Lema \ref{lemma:sigmachar2}.
+	Pero $\vec{x} - \varepsilon{\mu}_j \in B_r^{(k)}(\est{\sigma})$. De aquí se desprende que
+	$B_r^{(k)}(\est{\sigma}) \not\subseteq \sigma$ si $r > d(\est{\sigma}, \sigma_j)$ para alguna $j
+	\in \braces{1, \ldots, n}$. De la Definición \ref{def:r-sigma} obtenemos entonces
+	\begin{equation}
+		\label{r-sigma:up}
+		r_\sigma \leq \min_{1 \leq j \leq n}d(\est{\sigma}, \sigma_j).
+	\end{equation}
+
+	De \eqref{r-sigma:down} y de \eqref{r-sigma:up} concluimos entonces con lo que queríamos
+	demostrar.
+\end{proof}
+
+De \eqref{eq:dist:v1} tenemos
+\begin{equation}
+	\label{dist:v2}
+	d(\est{\sigma}, \sigma_j) = \uvec{\mu}_j^T(\est{\sigma} - \est{\sigma}_j)
+	= \frac{\vec{\mu}_j^T(\est{\sigma} - \est{\sigma}_j)}{\norm{\vec{\mu}_j}}.
+\end{equation}
+Recordemos de \eqref{eq:signed} que ya contamos con el numerador, así que ahora debemos calcular la
+norma de $\vec{\mu}_j$. Tenemos
+\begin{align*}
+	\norm{\vec{\mu}_j}^2
+	&= \vec{\mu}_j^T\vec{\mu}_j \\
+	&=
+	\left(\vec{u}_j - \frac{k}{\norm{\vec{q}}^2}\vec{q}\right)^T
+	\left(\vec{u}_j - \frac{k}{\norm{\vec{q}}^2}\vec{q}\right) \\
+	&=
+	\norm{\vec{u}_j}^2 - 2\frac{k}{\norm{\vec{q}}^2}\vec{q}^T\vec{u}_j +
+	\frac{k^2}{\norm{\vec{q}}^4}\vec{q}^T\vec{q} \\
+	&= \frac{k^2}{q_j^2} - 2\frac{k^2}{\norm{\vec{q}}^2} + \frac{k^2}{\norm{\vec{q}}^2} \\
+	&= \frac{k^2}{q_j^2} - \frac{k^2}{\norm{\vec{q}}^2}.
+\end{align*}
+De donde obtenemos
+\begin{equation}
+	\label{eq:den}
+	\norm{\vec{\mu}_j} = k\sqrt{\frac{1}{q_j^2} - \frac{1}{\norm{\vec{q}}^2}}.
+\end{equation}
+
+Usando \eqref{eq:signed} y \eqref{eq:den} para sustituir en \eqref{dist:v2}, obtenemos
 \begin{equation*}
-	\norm{\vec{\mu}_j}_2 = k \sqrt{\frac{1}{q_j^2} - \frac{1}{\norm{\vec{q}}_2^2}}.
-\end{equation*}
-Sustituyendo valores, obtenemos
-\begin{equation*}
-	d(\est{\sigma}, F_j) = \frac{k}{n} \cdot
+	d(\est{\sigma}, \sigma_j) = \frac{k}{n} \cdot
 	\frac{1}{q_j^2\sqrt{q_j^{-2} - \norm{\vec{q}}_2^{-2}}}
 	= \frac{k}{n} \cdot \frac{1}{Q_j},
 \end{equation*}
-donde definimos $Q_j$ pertinentemente. Finalmente, del Lema \ref{lemma:sigma-radius} encontramos que
-el radio de la circunferencia inscrita en el símplice $\sigma$ está dado por
+donde definimos $Q_j$ pertinentemente. Finalmente, del Teorema \ref{lemma:sigma-radius} encontramos que
+el radio $r_\sigma$ de la circunferencia inscrita en el símplice $\sigma$ con centro
+$\est{\sigma}$ está dado por
 \begin{equation}
 	\label{eq:sigma-radius}
-	r_\sigma = \min_{1 \leq j \leq n} \lbrace d(\est{\sigma}, F_j) = \frac{k}{n} \cdot
+	r_\sigma = \min_{1 \leq j \leq n} \braces{d(\est{\sigma}, \sigma_j)} = \frac{k}{n} \cdot
 	\frac{1}{\max_{1 \leq j \leq n} \lbrace Q_j \rbrace}
 \end{equation}
 
