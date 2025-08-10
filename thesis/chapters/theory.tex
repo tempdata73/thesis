@@ -313,12 +313,12 @@ sobre este hiperplano.
 Sea $P$ un poliedro y sea $\vec{c} \in \R^n$ un vector. Todo problema de optimización de la forma
 \eqref{prim:lineal-opt} entra en una de las siguientes tres categorías:
 \begin{enumerate}
-	\item El valor óptimo no existe. Esto ocurre porque ningún vector $\vec{x} \in \R^n$ satisface
+	\item El valor óptimo no existe: ningún vector $\vec{x} \in \R^n$ satisface
 		el sistema de desigualdades $A\vec{x} \geq \vec{b}$. Es decir, la región factible es vacía.
-	\item El valor óptimo existe y es infinito. Esto ocurre porque el poliedro $P$ no es acotado y
+	\item El valor óptimo existe y es infinito: el poliedro $P$ no es acotado y
 		somos capaces de encontrar una sucesión de vectores $\lbrace \vec{x}_k \rbrace_{k \in \N}$
 		en el poliedro $P$ que satisface $\vec{c}^T\vec{x}_{k+1} > \vec{c}^T\vec{x}_k$ para todo $k \in \N$.
-	\item El valor óptimo existe y es finito. Este caso es la negación de los dos casos anteriores,
+	\item El valor óptimo existe y es finito: este caso es la negación de los dos casos anteriores,
 		pero cabe recalcar que esto no significa que el poliedro $P$ es acotado.
 \end{enumerate}
 En el primer caso decimos que \textbf{el problema es infactible}, mientras que en los últimos dos
@@ -1195,8 +1195,9 @@ razonamiento aplica para la matriz $M$. Entonces, como $\vec{q}$ es fijo, se sig
 $\vec{\nu}$ y $M$ lo son también.
 
 \begin{lemma} \label{lemma:iso1}
-	Sea $\vec{q} \in \Z^{n}$ un vector no nulo y cuyas entradas son coprimas. Entonces el vector
-	$\vec{\nu} \in \Z^n$ definido en \eqref{eq:vec-omega} satisface $\vec{q}^T\vec{\nu} = 1$.
+	Sea $\vec{q} \in \Z^{n}$ un vector coprimo. Entonces el vector $\vec{\nu}
+	\in \Z^n$ definido en \eqref{eq:vec-omega} satisface $\vec{q}^T\vec{\nu} =
+	1$.
 \end{lemma}
 \begin{proof}
 	Primero mostramos por inducción hacia atrás que se cumple
@@ -1261,7 +1262,8 @@ $\vec{\nu}$ y $M$ lo son también.
 \end{proof}
 \begin{lemma}
 	\label{lemma:iso2}
-	El vector $\vec{q}$ genera $\ker{M^T}$ si $q_n \neq 0$.
+	Si $q_n \neq 0$ entonces $\gen\braces{\vec{q}} = \ker{M^T}$, donde la matriz $M$ está
+	definida en \eqref{eq:mat-T}.
 \end{lemma}
 \begin{proof}
 	La matriz $M$ es triangular inferior cuya diagonal principal es distinta de cero. En efecto,
@@ -1333,8 +1335,9 @@ caractericemos a partir de $\vec{q}$.
 
 \begin{theorem}
 	\label{th:lattice}
-	Supongamos que $q_n \neq 0$. Entonces $\vec{\nu}$ y las columnas de $M$ forman una base
-	de la red $\Z^n$.
+	Supongamos que $q_n \neq 0$. Entonces $\vec{\nu}$ y las columnas de $M$
+	(definidas en \eqref{eq:vec-omega} y \eqref{eq:mat-T}, respectivamente)
+	forman una base de la red $\Z^n$.
 \end{theorem}
 \begin{proof}
 	En el Lema \ref{lemma:iso2} mostramos que las columnas de $M$ son linealmente independientes.
@@ -1412,17 +1415,17 @@ $M$ no esté bien definida\footnote{
 	permutado las entradas de $\vec{q}$. Supongamos además que $q_n, \tilde{q}_n \neq 0$.
 	Entonces
 	\begin{equation*}
-		\ker{M^T} \cong \ker{\tilde{M}^T}.
+		\ker{\tilde{M}^T} \cong \ker{M^T}.
 	\end{equation*}
 \end{corollary}
 \begin{proof}
 	Existe una matriz de permutación $P \in \Z^{n \times n}$ tal que $\tvec{q} = P\vec{q}$.
-	Por el Lema \ref{lemma:iso2} sabemos que
+	Puesto que $P$ es invertible, tenemos $\gen\braces{\tvec{q}} \cong
+	\gen\braces{\vec{q}}$. Usando el Lema \ref{lemma:iso2} obtenemos
 	\begin{equation*}
-		\ker{\tilde{M}^T} = \langle \vec{\tvec{q}} \rangle = \langle P\vec{q} \rangle,
+		\ker{\tilde{M}^T} = \gen\braces{\tvec{q}} \cong \gen\braces{\vec{q}} = \ker{M^T},
 	\end{equation*}
-	pero también $\langle \vec{q} \rangle = \ker{M^T}$. Como $P$ es una matriz invertible, se sigue
-	que $\langle P\vec{q} \rangle \cong \langle \vec{q} \rangle$ y obtenemos nuestro resultado.
+	que es lo que queríamos demostrar.
 \end{proof}
 \begin{observation}
 	No es cierto que $\tilde{M} = PM$ si $\tvec{q} = P\vec{q}$. Consideremos el vector
@@ -1449,8 +1452,8 @@ $M$ no esté bien definida\footnote{
 	\end{equation*}
 	Sí se cumple que
 	\begin{equation*}
-		\ker{\tilde{M}^T} = \langle \tvec{q} \rangle = \langle P\vec{q} \rangle
-		\cong \langle \vec{q} \rangle = \ker{M^T},
+		\ker{\tilde{M}^T} = \gen\braces{\tvec{q}}
+		\cong \gen\braces{\vec{q}} = \ker{M^T},
 	\end{equation*}
 	pero
 	\begin{equation*}
@@ -1521,12 +1524,15 @@ obstante, se encuentra fuera del propósito de la tesis.
 
 En conclusión, somos completamente capaces de caracterizar los puntos enteros sobre la $k$-ésima
 capa entera. O lo que es lo mismo, podemos resolver ecuaciones lineales diofantinas con $n$
-incógnitas. Estas ecuaciones son inducidas por el vector coprimo $\vec{q}$. Hemos analizado también
-como es que $\vec{q}$ descompone el espacio $\Z^n$ a través del vector $\vec{\nu}$ y de la matriz
-$M$. Recordemos que $\vec{\nu}$ representa el conjunto de soluciones particulares a estas ecuaciones
-lineales, mientras que las columnas de $M$ representan el conjunto de soluciones homogéneas. En la
-siguiente sección observamos cómo esta descomposición permite que desacoplemos un programa lineal
-entero en dos partes: una de maximización y otra de factibilidad.
+incógnitas. Estas ecuaciones son inducidas por el vector coprimo $\vec{q}$.
+
+Hemos analizado también como es que $\vec{q}$ descompone el espacio $\Z^n$ a través del vector
+$\vec{\nu}$ y de la matriz $M$. Recordemos que $\vec{\nu}$ representa el conjunto de soluciones
+particulares a estas ecuaciones lineales, mientras que las columnas de $M$ representan el conjunto
+de soluciones homogéneas.
+
+En la siguiente sección observamos cómo esta descomposición permite que desacoplemos un programa
+lineal entero en dos partes: una de maximización y otra de factibilidad.
 
 \subsection{Múltiples restricciones}
 \noindent

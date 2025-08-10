@@ -20,7 +20,7 @@ Problema de la Mochila no Acotado. Pero también como $\vec{u} = \vec{w}$, el pr
 ser considerado como un Problema de la Suma de Conjuntos no Acotado.
 
 En la primera sección realizamos un análisis de capas enteras a fin de obtener un resultado análogo
-al Teorema \ref{infinite:th:complexity}. En concreto, el Teorema \ref{th:intnonneg2} enuncia que
+al Teorema \ref{infinite:th:complexity}. En concreto, el Teorema \ref{th:intnonneg2} enuncia que,
 para un presupuesto $u$ suficientemente grande en el problema \eqref{theory:formulation}, la
 búsqueda de una solución se reduce a resolver solamente una ecuación lineal diofantina.
 
@@ -47,24 +47,24 @@ recordemos que $g_i$ es un máximo común divisor (ver \eqref{dummy:eq:ith-g}), 
 estrictamente positivo. Juntando esto con el supuesto $\vec{q} > \vec{0}$, encontramos que
 $\omega_i$ es no negativo para toda $i \in \braces{1, \ldots, n - 1}$. Así pues, despejando $t_i$ de
 \eqref{eq:recurrence} obtenemos los intervalos de factibilidad
-\begin{equation}
+\begin{equation*}
 	\label{phase-1:finite:eq:param-bounds}
 	\left\lceil -\frac{\omega_ix_i'}{g_{i+1}} \right\rceil
 	\leq
 	t_i
 	\leq
 	\left\lfloor \frac{\omega_i\omega_{i+1}'}{q_i} \prod_{j=1}^{i}g_j \right\rceil,
-\end{equation}
+\end{equation*}
 para todo $i \in \lbrace 1, \ldots, n - 2\rbrace$. Luego, como $0 < q_{n - 1}, q_n$, se sigue de
 \eqref{eq:last-solution} que
-\begin{equation}
+\begin{equation*}
 	\label{phase-1:finite:eq:param-bounds-last}
 	\left\lceil -\frac{\omega_{n-1}x_{n-1}'}{q_n} \cdot \prod_{j=1}^{n-2}g_j \right\rceil
 	\leq
 	t_{n - 1}
 	\leq
 	\left\lfloor \frac{\omega_{n-1}x_{n}'}{q_{n-1}} \cdot \prod_{j=1}^{n-2}g_j \right\rfloor.
-\end{equation}
+\end{equation*}
 
 Consecuentemente, el número de elecciones que podemos realizar para el vector de variables libres
 $\vec{t} \in \Z^{n-1}$ es, como lo confirma el Teorema \ref{theory:th:feasibility}, finito. Si
@@ -276,8 +276,8 @@ usadas para especificar $\vec{p}$. Véase la Figura \ref{fig:m:ex} o el Ejemplo 
 	Si tenemos $\vec{p} \coloneq (9.6, 7.2, 5.6)^T$, entonces $m = 0.8$ y por lo tanto el número de
 	capas a revisar dado $u \coloneq 119$ es $\Delta^*(u) = 14$. En cambio, si tenemos $\vec{p} \coloneq
 	(9.60, 7.28, 5.68)^T$, obtenemos $m = 0.08$, por lo que el número de capas a revisar dado $u$ es
-	$\Delta^*(u) = 1499$. Es decir, si usamos una cifra decimal más, entonces $\Delta^*(u)$ se
-	multiplica por 100, aproximadamente.
+	$\Delta^*(u) = 1499$. Es decir, si usamos una cifra decimal más en cada entrada, entonces
+	$\Delta^*(u)$ se multiplica por 100, aproximadamente.
 \end{example}
 
 \begin{figure}[htbp]
@@ -305,8 +305,9 @@ revisa en realidad disminuye a medida que aumenta el presupuesto $u$.
 
 En esta segunda parte de la sección, demostraremos que para un presupuesto $u$ suficientemente
 grande, la solución del problema \eqref{theory:formulation} se encuentra en la $\eta$-ésima capa
-entera. Este resultado será análogo al Teorema \ref{infinite:th:complexity}. No obstante, para
-lograr aquello, necesitamos de un par de definiciones y lemas preliminares.
+entera donde, como siempre, $\eta$ es recuperada del Lema \ref{phase-1:lemma:eta}. Este resultado
+será análogo al Teorema \ref{infinite:th:complexity}. No obstante, para lograr aquello, necesitamos
+de un par de definiciones y lemas preliminares.
 
 Para motivar al lector, primero mostramos que existe una vecindad fija de todo punto en $\R^n$ de
 manera que esa vecindad contiene al menos un punto entero. Esto es especificado en el Teorema
@@ -324,8 +325,8 @@ esta sección con los Teoremas \ref{th:intnonneg1} y \ref{th:intnonneg2}.
 
 \begin{definition}
 	\label{fin:def:ball}
-	Sea $\vec{q} \in \Z^n$ un vector coprimo y sea $k$ un entero positivo. Entonces definimos la
-	\textbf{bola cerrada} sobre la $k$-ésima capa entera $H_{\vec{q}, \norm{\vec{q}}^{-2}}$ con
+	Sea $\vec{q} \in \Z^n$ un vector coprimo y sea $k$ un entero. Entonces definimos la
+	\textbf{bola cerrada} sobre la $k$-ésima capa entera $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ con
 	radio $r > 0$ y centro $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ como
 	\begin{equation}
 		\label{eq:k-ball}
@@ -336,8 +337,8 @@ esta sección con los Teoremas \ref{th:intnonneg1} y \ref{th:intnonneg2}.
 % TODO: mostrar una imagen con una bola.
 \begin{theorem}
 	\label{lemma:ball-cover}
-	Sea $\vec{q} \in \Z^n$ un vector coprimo y supongamos que $q_n \neq 0$. Sea $k$ un entero
-	positivo. Entonces existe $r > 0$ tal que la familia de bolas
+	Sea $\vec{q} \in \Z^n$ un vector coprimo y supongamos que $q_n \neq 0$. Sea $k$ un entero.
+	Entonces existe $r > 0$ tal que la familia de bolas
 	\begin{equation*}
 		\left\lbrace B_r^{(k)}(\vec{x}) \colon \vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap
 			\Z^n \right\rbrace
@@ -357,9 +358,9 @@ esta sección con los Teoremas \ref{th:intnonneg1} y \ref{th:intnonneg2}.
 			=
 		\left\lbrace B_r^{(k)}(k\vec{\nu} + M\vec{t}) \colon \vec{t} \in \Z^{n-1} \right\rbrace.
 	\end{equation*}
-	A partir de esto último sabemos que $B_r^{(k)}(k\vec{\nu} + M\vec{t}) \subseteq H_{\vec{q},
-	k\norm{\vec{q}}^{-2}}$ para todo punto entero $\vec{t} \in \Z^{n-1}$. Luego, para cualquier $r >
-	0$ tenemos
+	Por la Definición \ref{fin:def:ball} sabemos que $B_r^{(k)}(k\vec{\nu} + M\vec{t}) \subseteq H_{\vec{q},
+	k\norm{\vec{q}}^{-2}}$ para todo $r > 0$ y para todo $\vec{t} \in \Z^{n-1}$. Luego, para
+	cualquier $r > 0$ tenemos
 	\begin{equation}
 		\label{eq:ball-cover:1}
 		\bigcup_{\vec{t} \in \Z^{n-1}}B_r^{(k)}(k\vec{\nu} + M\vec{t}) \subseteq
@@ -373,7 +374,8 @@ esta sección con los Teoremas \ref{th:intnonneg1} y \ref{th:intnonneg2}.
 	\end{equation*}
 	Sea $\lfloor \vec{t} \rceil \in \Z^{n-1}$ el vector resultante de redondear cada entrada de
 	$\vec{t}$ al entero más cercano. Luego, $\vec{t} = \lfloor \vec{t} \rceil + \vec{\delta}$,
-	donde $\vec{\delta} \in \R^{n-1}$ satisface $\norm{\vec{\delta}}_{\infty} \leq 0.5$. Definamos
+	para alguna $\vec{\delta} \in \R^{n-1}$ que satisface $\norm{\vec{\delta}}_{\infty} \leq 1/2$.
+	Definamos
 	\begin{equation*}
 		\vec{x} \coloneq k\vec{\nu} + M\lfloor \vec{t} \rceil \in \Z^{n-1},
 	\end{equation*}
@@ -381,7 +383,7 @@ esta sección con los Teoremas \ref{th:intnonneg1} y \ref{th:intnonneg2}.
 	\begin{align}
 		\norm{\vec{y} - \vec{x}}^{2} 
 		&= \norm{M\vec{\delta}}^{2} \nonumber \\
-		&\leq \sum_{i=1}^{n-1}|\vec{\delta}_i|^2 \norm{M\vec{e}_i}^{2} \nonumber \\
+		&\leq \sum_{i=1}^{n-1}|\delta_i|^2 \norm{M\vec{e}_i}^{2} \nonumber \\
 		&\leq \frac{1}{4}\sum_{i=1}^{n-1} \norm{M\vec{e}_i}^{2} \label{eq:alt-M-bound} \\
 		&= \frac{1}{4}\norm{M}_F^2, \nonumber
 	\end{align}
@@ -391,7 +393,8 @@ esta sección con los Teoremas \ref{th:intnonneg1} y \ref{th:intnonneg2}.
 		r \coloneq \frac{1}{2}\norm{M}_F,
 	\end{equation}
 	encontramos que $\vec{y} \in B_r^{(k)}(\vec{x})$. Luego, como $\vec{y} \in H_{\vec{q},
-	k\norm{\vec{q}}^2} \cap \Z^n$ fue genérico, se sigue que
+	k\norm{\vec{q}}^2}$ fue genérico, tenemos que si $r$ está definido por \eqref{eq:radius},
+	entonces
 	\begin{equation}
 		\label{eq:ball-cover:2}
 		H_{\vec{q}, k\norm{\vec{q}}^{-2}} \subseteq
@@ -400,6 +403,10 @@ esta sección con los Teoremas \ref{th:intnonneg1} y \ref{th:intnonneg2}.
 	Juntando esto con (\ref{eq:ball-cover:1}) obtenemos lo que queríamos demostrar.
 \end{proof}
 
+Lo que se encuentra a continuación se encarga de formalizar y caracterizar lo que nos referíamos
+anteriormente como ``trozo no negativo'' de la $k$-ésima capa entera. Todas las definiciones fueron
+tomadas de \cite{boyd} a excepción del baricentro, mientras que las demostraciones de los lemas y
+teoremas fueron realizadas completamente por el autor.
 \begin{definition}
 	\label{def:aff}
 	Sean $\vec{v}_1, \ldots, \vec{v}_m \in \R^n$ una colección de vectores,
@@ -429,8 +436,8 @@ esta sección con los Teoremas \ref{th:intnonneg1} y \ref{th:intnonneg2}.
 	lado, tenemos
 	\begin{align*}
 		\sum_{i=1}^{m}\theta_i\vec{v}_i
-		&= \sum_{i=1}^{m}\theta_i(\vec{v}_i - \vec{v}_j) + \sum_{i=1}^{m}\theta_i\vec{v}_j \\
-		&= \sum_{i \neq j}\theta_i(\vec{v}_i - \vec{v}_j) + \vec{v}_j.
+		&= \sum_{i=1}^{m}\theta_i\vec{v}_j + \sum_{i=1}^{m}\theta_i(\vec{v}_i - \vec{v}_j)  \\
+		&= \vec{v}_j  + \sum_{i \neq j}\theta_i(\vec{v}_i - \vec{v}_j).
 	\end{align*}
 	De donde se sigue que $\aff\braces{\vec{v}_1, \ldots, \vec{v}_m} \subseteq \vec{v}_j +
 	\gen\braces{\vec{v}_i - \vec{v}_j}_{i \neq j}$.
@@ -589,7 +596,7 @@ bola está centrada en un punto particular, a saber, en el baricentro del símpl
 \begin{definition}
 	\label{def:r-sigma}
 	Sea $\sigma$ un símplice y sea $\est{\sigma}$ su baricentro. Entonces definimos el \textbf{radio
-	de la circunferencia inscrita} en $\sigma$ con centro $\est{\sigma}$ como
+	de la bola inscrita} en $\sigma$ con centro $\est{\sigma}$ como
 	\begin{equation}
 		\label{eq:def:r-sigma}
 		r_\sigma \coloneq \max \lbrace r > 0 \colon B_r^{(k)}(\est{\sigma})
@@ -598,7 +605,7 @@ bola está centrada en un punto particular, a saber, en el baricentro del símpl
 	donde $B_r^{(k)}(\est{\sigma})$ está dada en la Definición \ref{fin:def:ball}.
 \end{definition}
 
-Encontraremos que el radio de la circunferencia inscrita está dado por el mínimo de las distancias
+Encontraremos que el radio de la bola inscrita está dado por el mínimo de las distancias
 entre el baricentro del símplice con cada una de sus facetas. Puesto que $\est{\sigma}_j \in
 \sigma_j$, sabemos bien por álgebra lineal, bien por optimización, que la distancia entre $\sigma$ y
 su $j$-ésima faceta $\sigma_j$ es
@@ -639,8 +646,8 @@ donde $\uvec{\mu}_j$ es un vector unitario y normal a la $j$-ésima faceta.
 		\sigma_j - \vec{u}_m \subseteq \gen\braces{\vec{u}_i - \vec{u}_m}_{i \neq j},
 	\end{equation*}
 	así que basta mostrar que $\vec{\mu}_j^T(\vec{u}_i - \vec{u}_m) = 0$ para todo $i \neq j$ Cabe
-	mencionar que los vectores $\braces{\vec{u}_i}_{i=1}^{n}$ son ortogonales entre sí. Sustituyendo
-	con la definición de $\vec{\mu}_j$ en la hipótesis, obtenemos
+	mencionar que los vectores $\braces{\vec{u}_i}_{i=1}^{n}$ son ortogonales entre sí (ver
+	\eqref{def:u-basis}). Sustituyendo con la definición de $\vec{\mu}_j$ en la hipótesis, obtenemos
 	\begin{align*}
 		\vec{\mu}_j^T(\vec{u}_i - \vec{u}_m)
 		&=
@@ -773,7 +780,7 @@ interpretarlo como un poliedro.
 	\label{lemma:sigma-radius}
 	Sea $\vec{q} > \vec{0}$ un vector coprimo y sea $\sigma$ el símplice generado por los vectores
 	$\braces{\vec{u}_i}_{i=1}^{n}$ definidos en \eqref{def:u-basis}. Entonces el radio $r_\sigma$ de
-	la circunferencia inscrita (ver Definición \ref{def:r-sigma}) en $\sigma$ con centro
+	la bola inscrita (ver Definición \ref{def:r-sigma}) en $\sigma$ con centro
 	$\est{\sigma}$ está dado por
 	\begin{equation*}
 		r_\sigma = \min_{1 \leq j \leq n} d(\est{\sigma}, \sigma_j)
@@ -822,7 +829,7 @@ interpretarlo como un poliedro.
 	donde la última igualdad se sigue del Lema \ref{lemma:sigmachar2}. Así pues,
 	$B_r^{(k)}(\est{\sigma}) \subseteq \sigma$ si $r \leq d(\est{\sigma}, \sigma_j)$ para toda $j
 	\in \braces{1, \ldots, n}$. De la Definición \ref{def:r-sigma} encontramos entonces que el radio
-	$r_\sigma$ de la circunferencia inscrita satisface
+	$r_\sigma$ de la bola inscrita satisface
 	\begin{equation}
 		\label{r-sigma:down}
 		r_\sigma \geq \min_{1 \leq j \leq n}d(\est{\sigma}, \sigma_j).
@@ -900,7 +907,7 @@ Usando \eqref{eq:signed} y \eqref{eq:den} para sustituir en \eqref{dist:v2}, obt
 	= \frac{k}{n} \cdot \frac{1}{Q_j},
 \end{equation*}
 donde definimos $Q_j$ pertinentemente. Finalmente, del Teorema \ref{lemma:sigma-radius} encontramos que
-el radio $r_\sigma$ de la circunferencia inscrita en el símplice $\sigma$ con centro
+el radio $r_\sigma$ de la bola inscrita en el símplice $\sigma$ con centro
 $\est{\sigma}$ está dado por
 \begin{equation}
 	\label{eq:sigma-radius}
@@ -1019,10 +1026,9 @@ cómo la solución del problema \eqref{theory:formulation} se traduce a la búsq
 entera no negativa de la ecuación lineal diofantina $\vec{q}^T\vec{x} = k$ para alguna $k \leq \eta$,
 donde $\eta$ es tomada del Lema \ref{phase-1:lemma:eta}.
 
-En esta sección presentamos los algoritmos \ref{algo:fin:helper} y
-\ref{algo:fin:dioph}, los cuales se encargan de obtener estas soluciones enteras no negativas que
-tanto buscamos y, consecuentemente, también se encargan de resolver el problema original
-\eqref{theory:formulation}.
+En esta sección presentamos los algoritmos \ref{algo:fin:helper} y \ref{algo:fin:dioph}, los cuales
+se encargan de obtener estas soluciones enteras no negativas que tanto buscamos. Consecuentemente,
+estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
 
 % En la segunda parte de esta sección discutimos de manera un tanto informal la complejidad
 % algorítmica del Algoritmo \ref{algo:fin:dioph}. Por lo tanto, también discutimos, así como lo
@@ -1042,7 +1048,8 @@ tanto buscamos y, consecuentemente, también se encargan de resolver el problema
 		q_1x_1 + q_2x_2 = k.
 	\end{equation}
 	Por hipótesis sabemos que $q_1$ y $q_2$ son coprimos. Luego, del Teorema
-	\ref{prerreq:th:construction}, las soluciones enteras de esta ecuación están dadas por
+	\ref{prerreq:th:construction} encontramos que las soluciones enteras de esta ecuación están
+	dadas por
 	\begin{equation}
 		\label{lemma:correct:base-case:sol}
 		\begin{cases}
@@ -1067,9 +1074,9 @@ tanto buscamos y, consecuentemente, también se encargan de resolver el problema
 	\eqref{lemma:correct:base-case} (líneas \ref{alg:fin:xprev} y \ref{alg:fin:xlast}) y entonces
 	el algoritmo es correcto para $n = 2$.
 
-	Supongamos, inductivamente, que el algoritmo es correcto para alguna $n - 1 \geq 2$. Mostramos
-	ahora que el algoritmo también es correcto para $n$. Entonces deseamos encontrar soluciones
-	enteras no negativas de la ecuación \eqref{eq:dioph} Haciendo la misma sustitución que en
+	Haciendo uso de la hipótesis inductiva, queremos mostrar que el algoritmo también es correcto
+	para $n \geq 3$ si lo es para $n - 1 \geq 2$. Entonces deseamos encontrar soluciones enteras no
+	negativas de la ecuación \eqref{eq:dioph} Haciendo la misma sustitución que en
 	\eqref{eq:dioph:first-step}, recordando que $q_1, \ldots, q_n$ son coprimos por hipótesis, que
 	definimos $\omega_1 \coloneq k$, y renombrando las variables ($x$ en vez de $x_1$, $g$ en vez de
 	$g_2$ y $\omega$ en vez de $\omega_2$), obtenemos la ecuación
@@ -1078,8 +1085,9 @@ tanto buscamos y, consecuentemente, también se encargan de resolver el problema
 		q_1x + g\omega = k.
 	\end{equation}
 	Observemos que, como $g_1 = 1$, el entero $g = \gcd{q_2/g_1, \ldots, q_n/g_1}$, es equivalente a
-	lo que se encuentra en la línea \ref{alg:fin:g}. Por el Teorema \ref{prerreq:th:construction}
-	tenemos que las soluciones enteras están dadas por
+	lo que se encuentra en la línea \ref{alg:fin:g}. Por definición de $g$, tenemos que $q_1$ y $g$
+	son coprimos (ver el Lema \ref{prerreq:lemma:gcd}), así que por el Teorema
+	\ref{prerreq:th:construction} tenemos que las soluciones enteras de esta ecuación están dadas por
 	\begin{equation}
 		\label{lemma:correct:sol}
 		\begin{cases}
@@ -1097,26 +1105,28 @@ tanto buscamos y, consecuentemente, también se encargan de resolver el problema
 	positivo, y exigimos que $x_2, \ldots, x_n$ sean no negativos, debe ser el caso que $\omega$
 	también sea no negativo. Luego, despejando de \ref{lemma:correct:sol}, existen soluciones no
 	negativas de la ecuación \eqref{lemma:correct:eq} si y solo si existe $t \in \Z$ que satisfaga
-	\begin{equation*}
+	\begin{equation}
+		\label{feas}
 		\ceil{-\frac{kx'}{g}} \leq t \leq \floor{\frac{k\omega'}{q_1}}.
-	\end{equation*}
+	\end{equation}
 	Los enteros $b_1$ y $b_2$ en las líneas \ref{alg:fin:b11} y \ref{alg:fin:b21} representan el
 	lado izquierdo y derecho de estas desigualdades, respectivamente. Si no existe tal variable
 	libre $t \in \Z$ es porque el intervalo $[b_1, b_2]$ no está bien definido y por lo tanto $b_2 <
 	b_1$. El algoritmo entonces salta a la línea \ref{alg:fin:return} y devuelve \NIL.
 
-	Si el intervalo $[b_1, b_2]$ está bien definido, podemos asegurar la no negatividad de $x$ en
-	\eqref{lemma:correct:sol} para cualquier elección de $t$ en $[b_1, b_2$] y en
-	la línea \ref{alg:fin:subeq} nos encargamos entonces de encontrar soluciones enteras no negativas
-	de la ecuación \eqref{lemma:correct:eq-omega}. Se verifica automáticamente que los coeficientes
-	del lado derecho de esta ecuación son coprimos y constituyen justamente las entradas del vector
-	$\vec{q}^{\texttt{tail}}$ (c.f. línea \ref{alg:fin:qt}). Como $g > 0$ se sigue que
-	$\vec{q}^{\texttt{tail}} > \vec{0}$. Luego, $\vec{q}^{\texttt{tail}}$ satisface las hipótesis
-	del algoritmo.
+	Si el intervalo $[b_1, b_2]$ está bien definido, entonces podemos asegurar la no negatividad de
+	$x$ y de $\omega$ en \eqref{lemma:correct:sol} para cualquier elección de $t$ en $[b_1, b_2$] a
+	causa de \eqref{feas} y en la línea \ref{alg:fin:subeq} nos encargamos entonces de encontrar
+	soluciones enteras no negativas de la ecuación \eqref{lemma:correct:eq-omega}. Se verifica
+	automáticamente que los coeficientes del lado derecho de esta ecuación son coprimos y
+	constituyen justamente las entradas del vector $\vec{q}^{\texttt{tail}}$ (c.f. línea
+	\ref{alg:fin:qt}). Como $g > 0$ se sigue que $\vec{q}^{\texttt{tail}} > \vec{0}$. Luego,
+	$\vec{q}^{\texttt{tail}}$ y $\omega$ satisfacen las hipótesis del algoritmo.
 
-	Por hipótesis inductiva, tenemos o bien que $\vec{x}^{\texttt{tail}}$ es entero no negativo y
-	solución de \eqref{lemma:correct:eq-omega}, o bien es \NIL. En el primer caso y definiendo
-	$\vec{x}$ como el vector de la línea \ref{alg:fin:vecx} encontramos que
+	Por hipótesis inductiva, en la línea \ref{alg:xtail} tenemos o bien que
+	$\vec{x}^{\texttt{tail}}$ es entero no negativo y solución de \eqref{lemma:correct:eq-omega}, o
+	bien es \NIL. En el primer caso y definiendo $\vec{x}$ como el vector de la línea
+	\ref{alg:fin:vecx} encontramos que
 	\begin{equation*}
 		\vec{q}^T\vec{x} = q_1x + g\left(\vec{q}^{\texttt{tail}}\right)^T\vec{x}^{\texttt{tail}}
 		= q_1x + g\omega = k.
@@ -1132,7 +1142,7 @@ tanto buscamos y, consecuentemente, también se encargan de resolver el problema
 	elecciones finitas, devolvemos \NIL~ en la línea \ref{alg:fin:return}.
 
 	En conclusión, si el algoritmo es correcto para vectores $\vec{q}$ con dimensión $n - 1 \geq 2$,
-	entonces también es correcto para vectores $\vec{q}$ con dimensión $n$. Juntando esto con el
+	entonces también es correcto para vectores $\vec{q}$ con dimensión $n \geq 3$. Juntando esto con el
 	caso base, se sigue por inducción que el algoritmo es correcto para toda $n \geq 2$, que es lo
 	que queríamos demostrar.
 \end{proof}
@@ -1232,6 +1242,7 @@ eficiente a través de ciclos para obtener los resultados de la siguiente secci�
 				elegir $t \in I$\;
 				$\omega \leftarrow k\omega' - tq_1$\;
 				$\vec{x}^{\texttt{tail}} \leftarrow$ \NonNegativeIntSol{$\vec{q}^{\texttt{tail}}$,
+					\label{alg:xtail}
 				$\omega$}\; \label{alg:fin:subeq}
 
 				\If{$\vec{x}^{\texttt{tail}} \neq$ \NIL}{
