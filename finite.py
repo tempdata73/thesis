@@ -161,7 +161,7 @@ if __name__ == "__main__":
     from src.constants import RANDOM_SEED
 
     rng = np.random.default_rng(seed=RANDOM_SEED)
-    p = np.sort(rng.integers(10, 10_000, size=1_000))
+    p = rng.integers(10, 10_000, size=1_000)
     g = math.gcd(*p)
     q = p // g
     m = np.int64(g)
@@ -198,13 +198,13 @@ if __name__ == "__main__":
     )
     jobs = [
         {
-            "name": "dioph-bin",
-            "log_path": create_rhs_path("dioph-bin"),
-            "job": lambda *_: dioph_rhs(dioph, q[::-1].copy(), m, rhs.copy()),
+            "name": "dioph-bin-unsorted",
+            "log_path": create_rhs_path("dioph-bin-unsorted"),
+            "job": lambda *_: dioph_rhs(dioph, q.copy(), m, rhs.copy()),
         },
         {
-            "name": "dioph-bin",
-            "log_path": create_dim_path("dioph-bin"),
+            "name": "dioph-bin-unsorted",
+            "log_path": create_dim_path("dioph-bin-unsorted"),
             "job": lambda *_: dioph_dim(dioph, dims.copy()),
         },
     ]
