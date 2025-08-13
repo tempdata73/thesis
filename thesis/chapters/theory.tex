@@ -22,7 +22,7 @@ problema fundamental que permitirá construir incrementalmente nuestro algoritmo
 \end{subequations}
 
 En la sección de Fundamentos analizaremos a profundidad este problema, cuyo punto de
-culminación será el Teorema \ref{theory:th:feasibility}. Veremos que es recomendable separar en dos
+culminación será el teorema \ref{theory:th:feasibility}. Veremos que es recomendable separar en dos
 partes el análisis de este problema: el caso $p_i < 0$ para alguna $i \in \lbrace 1, \ldots, n
 \rbrace$; y el caso $\vec{p} > \vec{0}$. Los siguientes dos capítulos examinarán respectivamente
 estos casos. Por el momento, cabe destacar que el segundo caso será de mayor interés y tendrá mayor
@@ -83,7 +83,7 @@ divisor entre ellos a partir de
 Sin embargo, debemos ser cuidadosos con esta manera de definir las cosas, pues puede ser el caso,
 por ejemplo, que $a_{n-1} = a_n = 0$ y entonces $\gcd{a_{n-1}, a_n}$ no está bien definido. Una
 manera simple de arreglar esto último es agregar la condición de que $a_n$ sea no nulo. Es por esto
-último que el autor prefirió la Definición \ref{prerreq:def:gcd}. Independientemente de cómo
+último que el autor prefirió la definición \ref{prerreq:def:gcd}. Independientemente de cómo
 definamos el máximo común divisor, la manera de calcularlo siempre es a través del Algoritmo de
 Euclides. A partir de este punto usaremos ambas definiciones de manera indistinta.
 
@@ -123,7 +123,7 @@ $a$ un entero y denotamos el conjunto de sus múltiplos como
 	M(a) \coloneq \lbrace x \in \Z \vcentcolon a \mid x \rbrace.
 \end{equation*}
 Si $a$ es nulo, entonces $M(a) = \lbrace 0 \rbrace$. En caso contrario encontramos que $M(a)$ es un
-conjunto infinito. Ánalogamente a la Definición \ref{prerreq:def:gcd}, definimos el mínimo común
+conjunto infinito. Ánalogamente a la definición \ref{prerreq:def:gcd}, definimos el mínimo común
 múltiplo $m$ de una colección de enteros $a_1, \ldots, a_n \in \Z \setminus \lbrace 0 \rbrace$ como
 el elemento minimal de $\N \cap \bigcap_{i=1}^{n}M(a_i)$. Escribimos $m = \lcm{a_1, \ldots, a_n}$.
 Para observar que está bien definido, basta mencionar que el producto $|a_1 \cdots a_n|$ es un
@@ -153,7 +153,7 @@ Para construir el conjunto de soluciones a una ecuación lineal diofantina, enco
 solución particular.
 \begin{definition}
 	\label{prerreq:def:bezout}
-	Sea $d \coloneq \gcd{a, b}$ y sean $x', y'$ enteros tales que $ax' + by' = d$ (c.f. Teorema
+	Sea $d \coloneq \gcd{a, b}$ y sean $x', y'$ enteros tales que $ax' + by' = d$ (c.f. teorema
 	\ref{prerreq:th:bezout}). Decimos entonces que $x', y'$ son \textbf{coeficientes de Bézout} asociados a
 	$a, b$, respectivamente\footnote{
 		Los coeficientes de Bézout se pueden calcular a través del Algoritmo Extendido de Euclides.
@@ -172,7 +172,7 @@ solución particular.
 \end{observation}
 
 Definamos $d \coloneq \gcd{a, b}$ y supongamos que la ecuación $ax + by = c$ tiene solución.
-Por el Teorema \ref{prerreq:th:existence}, se sigue que $d \mid c$, y entonces existe $c' \in \Z$
+Por el teorema \ref{prerreq:th:existence}, se sigue que $d \mid c$, y entonces existe $c' \in \Z$
 tal que $c = c' \cdot d$. Sean $x', y'$ los coeficientes de Bézout asociados a $a, b$
 respectivamente. Así,
 \begin{equation*}
@@ -197,7 +197,7 @@ por lo que $(c' \cdot x', c' \cdot y')$ es una solución particular de la ecuaci
 \begin{example}
 	Consideremos la ecuación lineal $2x + 3y = 5$. Los coeficientes de Bézout asociados a 2 y 3 son,
 	respectivamente, -1 y 1. Luego, una solución particular para la ecuación es $(x_0, y_0) = (-5, 5)$.
-	Por el Teorema anterior encontramos que todas las soluciones están dadas por
+	Por el teorema anterior encontramos que todas las soluciones están dadas por
 	\begin{equation*}
 		\begin{cases}
 			x = -5 + 3t, \\
@@ -355,7 +355,7 @@ generalidad, que todo problema lineal se encuentra en esta forma estándar.
 	el conjunto de soluciones óptimas contiene al menos un vértice de $P$.
 \end{theorem}
 
-Este Teorema fundamental constituye el primer paso para la construcción de varios algoritmos que
+Este teorema fundamental constituye el primer paso para la construcción de varios algoritmos que
 encuentran soluciones del problema \eqref{prerreq:formulation}. Ciertamente el más famoso de todos
 es el algoritmo simplex, el cual ``salta'' de vértice en vértice hasta llegar a uno con valor
 óptimo. Otros, más modernos y conocidos como métodos de puntos interiores, comienzan en el interior
@@ -506,7 +506,7 @@ Ramificación y Acotamiento.
 Esta sección constituye el primer paso para la construcción de nuestro algoritmo. Se divide en dos
 partes. Primeramente damos a conocer las definiciones y enunciados provistos por \cite{herr}, al
 mismo tiempo que hacemos un par de observaciones. Esta primera parte puede darse por concluida una
-vez citado el Teorema \ref{phase-1:th:cover}. Así también, es importante aclarar que el autor
+vez citado el teorema \ref{phase-1:th:cover}. Así también, es importante aclarar que el autor
 tradujo libremente algunos términos a falta de encontrar fuentes en español que hicieran uso de
 ellos. A saber, el autor decidió nombrar ``vectores esencialmente enteros'' a los
 \textit{projectively rational vectors} y ``capas enteras'' a los \textit{c-layers} en las
@@ -525,7 +525,7 @@ para atacar este problema antes de hacer la separación de casos $p_i \leq 0$ pa
 	Decimos que un vector $\vec{v} \in \R^n \setminus \lbrace \vec{0} \rbrace$ es \textbf{esencialmente
 	entero} si existe un vector $\vec{w} \in \Z^n$ y un escalar $m \in \R \setminus \lbrace 0
 	\rbrace$ tal que $\vec{v} = m\vec{w}$. Además, decimos que $\vec{w}$ es el \textbf{múltiplo
-	coprimo} de $\vec{v}$ si sus entradas son coprimas (c.f. Definición \ref{prerreq:def:gcd}) y si
+	coprimo} de $\vec{v}$ si sus entradas son coprimas (c.f. definición \ref{prerreq:def:gcd}) y si
 	su primera entrada no nula $v_i$ también es positiva.
 \end{definition}
 En otras palabras, decimos que $\vec{v}$ es esencialmente entero si es un múltiplo real de un vector
@@ -548,7 +548,7 @@ entero.
 	\begin{equation*}
 		\pm \frac{1}{\gcd{w_1, \ldots, w_n}}\vec{w}
 	\end{equation*}
-	son dos vectores cuyas entradas son coprimas, de acuerdo al Lema \ref{prerreq:lemma:gcd}. Como
+	son dos vectores cuyas entradas son coprimas, de acuerdo al lema \ref{prerreq:lemma:gcd}. Como
 	la primera entrada no nula $w_i$ también debe ser positiva, se sigue que solo uno de estos dos
 	vectores es el múltiplo coprimo de $\vec{v}$. Así, el múltiplo coprimo de un vector
 	esencialmente entero es único.
@@ -579,7 +579,7 @@ $\vec{v}$. Es decir, si $r \in \R \setminus \lbrace 0 \rbrace$ es un escalar, en
 t} = H_{r\vec{v}, t/r}$. En particular, el conjunto de hiperplanos afinos asociados a un vector
 $\vec{v}$ esencialmente entero es igual al conjunto de hiperplanos afinos asociados a su múltiplo
 coprimo $\vec{w}$. Ahora bien, cualquier vector coprimo induce una familia de capas enteras y,
-sorprendentemente, esa familia forma una cobertura de $\Z^n$, como lo indica el Teorema
+sorprendentemente, esa familia forma una cobertura de $\Z^n$, como lo indica el teorema
 \ref{phase-1:th:cover}.
 
 % \begin{figure}
@@ -644,7 +644,7 @@ $\vec{x} \in H_{\vec{p}, t}$ tiene un mismo nivel de utilidad. Como observamos p
 	=
 	\left \lbrace H_{\vec{q}, t} \vcentcolon t \in \R \right\rbrace.
 \end{equation*}
-A causa del Teorema \ref{phase-1:th:cover}, somos capaces de caracterizar todos los puntos enteros a
+A causa del teorema \ref{phase-1:th:cover}, somos capaces de caracterizar todos los puntos enteros a
 partir de $\vec{q}$. Aún más, obtenemos una enumeración de las capas enteras que cubren $\Z^n$, lo
 cual nos permite determinar si la $k$-ésima capa entera contiene puntos factibles para el problema.
 
@@ -692,7 +692,7 @@ $H_{\vec{q}, \eta\norm{\vec{q}}^{-2}}$ es la primera capa entera que satisface e
 \begin{proof}
 	Sea $\vec{x}$ tal que $\vec{p}^T\vec{x} \leq u$. Entonces buscamos el mayor entero $\eta$ que
 	satisfaga $\vec{q}^T\vec{x} \leq u/m$ para todo $\vec{x} \in H_{\vec{q},
-	\eta\norm{\vec{q}}^{-2}}$. Por el Lema \ref{phase-1:lemma:layer} sabemos que
+	\eta\norm{\vec{q}}^{-2}}$. Por el lema \ref{phase-1:lemma:layer} sabemos que
 	\begin{equation*}
 		\eta\norm{\vec{q}}^{-2} = \frac{\vec{q}^T\vec{x}}{\norm{\vec{q}}^2} \leq
 		\frac{u/m}{\norm{\vec{q}}^2},
@@ -701,7 +701,7 @@ $H_{\vec{q}, \eta\norm{\vec{q}}^{-2}}$ es la primera capa entera que satisface e
 \end{proof}
 
 Encontramos que las capas enteras que satisfacen el presupuesto son parametrizadas por $k \in
-\lbrace \eta, \eta - 1, \ldots \rbrace$ y, debido al Lema \ref{theory:lemma:utility}, se cumple
+\lbrace \eta, \eta - 1, \ldots \rbrace$ y, debido al lema \ref{theory:lemma:utility}, se cumple
 inmediatamente que $\vec{q}^T\vec{x} = k$. Deducimos que si la $\eta$-ésima capa entera contiene
 puntos no negativos, entonces las soluciones se encuentran en esa capa. En caso contrario,
 descendemos a la $(\eta - 1)$-ésima capa entera y buscamos puntos enteros no negativos, etcétera.
@@ -731,15 +731,15 @@ descendemos a la $(\eta - 1)$-ésima capa entera y buscamos puntos enteros no ne
 	además, como $u < 0$, concluimos que $\lceil u/q_i \rceil\vec{e}_i$ es no negativo.
 \end{proof}
 
-Debido al Teorema anterior, somos capaces de determinar inmediatamente si el problema
+Debido al teorema anterior, somos capaces de determinar inmediatamente si el problema
 \eqref{theory:formulation} es infactible, por lo que supondremos de ahora en adelante que es
-factible. El siguiente Teorema muestra que nuestro análisis para resolver el problema anterior
+factible. El siguiente teorema muestra que nuestro análisis para resolver el problema anterior
 deberá dividirse en dos casos.
 \begin{theorem}
 	\label{theory:th:feasibility}
 	Sea $\vec{p} \in \R^n \setminus \lbrace \vec{0} \rbrace $ un vector esencialmente entero y sea
 	$\vec{q}$ su múltiplo coprimo. Supongamos que el problema (\ref{theory:formulation}) es factible
-	y tomemos $\eta$ del Lema \ref{phase-1:lemma:eta}. Entonces se satisface lo siguiente:
+	y tomemos $\eta$ del lema \ref{phase-1:lemma:eta}. Entonces se satisface lo siguiente:
 	\begin{enumerate}
 		\item Si $q_i < 0$ para algún $i \in \lbrace 1, \ldots, n \rbrace$, entonces la $\eta$-ésima
 			capa entera contiene un número infinito de puntos factibles.
@@ -767,9 +767,11 @@ deberá dividirse en dos casos.
 			< 0$ para algún $k \in I^\circ$, esa entrada no sería factible, pero fácilmente
 			podríamos definir $x_k^+ = 0$ para hacerla factible.
 
-			Entonces, ambos conjuntos $I^+$ e $I^-$ forman una partición del conjunto $\braces{1,
-			\ldots, n}$. Podemos escoger escalares positivos $c_1, \ldots, c_n$ que satisfagan
-			simultáneamente
+			Por hipótesis, tenemos que $q_i < 0$ y por lo tanto $I^- \neq \emptyset$. Además, por la
+			definición \ref{theory:def:rational}, $\vec{q}$ tiene una entrada positiva y por lo
+			tanto $I^+ \neq \emptyset$. Luego, ambos conjuntos $I^+$ e $I^-$ forman una partición
+			del conjunto $\braces{1, \ldots, n}$. Podemos escoger escalares positivos $c_1, \ldots,
+			c_n$ que satisfagan simultáneamente
 			\begin{align}
 				x_k + \sum_{i \in I^+}q_ic_i &\geq 0, \quad \forall k \in I^-,
 				\label{theory:pf:1} \\
@@ -825,7 +827,7 @@ deberá dividirse en dos casos.
 	\end{enumerate}
 \end{proof}
 
-Así pues, suponiendo que el problema (\ref{theory:formulation}) tiene solución, el Teorema
+Así pues, suponiendo que el problema (\ref{theory:formulation}) tiene solución, el teorema
 \ref{theory:th:feasibility} nos sugiere dividir nuestro análisis en dos casos: uno donde donde una
 entrada $p_i$ es no positiva y por lo tanto existe una infinidad de soluciones en la $\eta$-ésima
 capa entera; y uno donde $\vec{p}$ es estrictamente positivo, lo que implica la finitud de puntos
@@ -838,7 +840,7 @@ división, existen muchos elementos en común que comparten ambos casos.
 Antes de atacar los casos anteriores, primero debemos mostrar que la ecuación lineal diofantina
 $\vec{q}^T\vec{x} = k$ tiene soluciones enteras para toda $k$ entera siempre que las entradas de
 $\vec{q}$ sean coprimas\footnote{
-	Recordemos que supusimos que esto era cierto para demostrar una parte del Teorema
+	Recordemos que supusimos que esto era cierto para demostrar una parte del teorema
 	\ref{theory:th:feasibility}. Además, la construcción de estas soluciones enteras proveerá
 	herramientas útiles para cuando decidamos agregar más restricciones.
 }. La siguiente sección se encarga de mostrar la existencia de tales
@@ -848,7 +850,7 @@ ellas.
 \subsection{Una ecuación lineal diofantina}
 \label{subsec:dioph-eq}
 \noindent
-De acuerdo al Teorema \ref{theory:th:feasibility}, las soluciones del problema
+De acuerdo al teorema \ref{theory:th:feasibility}, las soluciones del problema
 (\ref{theory:formulation}) se encuentran en una capa entera $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$.
 Así, los puntos $\vec{x} \in \Z^n$ que se encuentran sobre esa capa satisfacen la ecuación lineal
 diofantina
@@ -878,13 +880,13 @@ Observemos que
 	&= \gcd{\frac{q_1}{g_1}, \gcd{\frac{q_2}{g_1}, \ldots, \frac{q_n}{g_1}}} \\
 	&= \gcd{\frac{q_1}{g_1}, \frac{q_2}{g_1}, \ldots, \frac{q_n}{g_1}} = 1.
 \end{align*}
-Por el Teorema \ref{prerreq:th:existence}, existen soluciones enteras para todo $\omega_1 \in \Z$.
+Por el teorema \ref{prerreq:th:existence}, existen soluciones enteras para todo $\omega_1 \in \Z$.
 Como $q_1/g_1$ y $g_2$ son coprimos, encontramos que sus coeficientes de Bézout asociados (c.f.
-Definición \ref{prerreq:def:bezout}) $x_1', \omega_2'$ son soluciones particulares de la ecuación
+definición \ref{prerreq:def:bezout}) $x_1', \omega_2'$ son soluciones particulares de la ecuación
 \begin{equation*}
 	\frac{q_1}{g_1}x_1 + g_2\omega_2 = 1.
 \end{equation*}
-Deducimos del Teorema \ref{prerreq:th:construction} que las soluciones de la ecuación
+Deducimos del teorema \ref{prerreq:th:construction} que las soluciones de la ecuación
 (\ref{eq:dioph:first-step}) están dadas por
 \begin{equation}
 	\label{dummy:eq:first-step}
@@ -912,7 +914,7 @@ resolvemos la ecuación
 	\frac{q_n}{g_2 \cdot g_1}x_n
 	= \omega_2.
 \end{equation}
-Como $g_2 = \gcd{q_2/g_1, \ldots, q_n/g_1}$, sabemos del Lema \ref{prerreq:lemma:gcd}
+Como $g_2 = \gcd{q_2/g_1, \ldots, q_n/g_1}$, sabemos del lema \ref{prerreq:lemma:gcd}
 que
 \begin{equation*}
 	\gcd{\frac{q_2}{g_2 \cdot g_1}, \ldots, \frac{q_n}{g_2 \cdot g_1}} = 1.
@@ -962,7 +964,7 @@ donde
 	\label{dummy:eq:ith-g}
 	g_i \coloneq \gcd{\frac{q_i}{\prod_{j=1}^{i-1}g_j}, \ldots, \frac{q_n}{\prod_{j=1}^{i-1}g_j}},
 \end{equation}
-por el Lema \ref{prerreq:lemma:gcd} se sigue que
+por el lema \ref{prerreq:lemma:gcd} se sigue que
 \begin{equation}
 	\label{dummy:coprime}
 	\gcd{\frac{q_i}{\prod_{j=1}^{i}g_j}, \ldots, \frac{q_n}{\prod_{j=1}^{i}g_j}} = 1.
@@ -1003,8 +1005,8 @@ A partir de \eqref{dummy:coprime} y de \eqref{dummy:next-g}, encontramos que
 		\frac{q_n}{\prod_{j=1}^{i}g_j}
 	} = 1,
 \end{align*}
-y del Teorema \ref{prerreq:th:existence} se sigue que la ecuación \eqref{dummy:eq:simplified}
-tiene soluciones enteras para todo $\omega_i \in \Z$. Por el Teorema \ref{prerreq:th:construction},
+y del teorema \ref{prerreq:th:existence} se sigue que la ecuación \eqref{dummy:eq:simplified}
+tiene soluciones enteras para todo $\omega_i \in \Z$. Por el teorema \ref{prerreq:th:construction},
 las soluciones enteras de \eqref{dummy:eq:simplified} están dadas por
 \begin{equation}
 	\label{eq:recurrence}
@@ -1015,7 +1017,7 @@ las soluciones enteras de \eqref{dummy:eq:simplified} están dadas por
 \end{equation}
 donde $t_i \in \Z$ es la $i$-ésima variable libre. Es valioso mencionar, otra vez, que los
 coeficientes de Bézout $x_i', \omega_{i+1}'$ dependen exclusivamente de $\vec{q}$ a través de sus
-entradas $q_i$ y de los máximos común divisores entre ellas. En efecto, por el Teorema
+entradas $q_i$ y de los máximos común divisores entre ellas. En efecto, por el teorema
 \ref{prerreq:th:bezout}, estos coeficientes son soluciones particulares de la ecuación
 \begin{equation}
 	\label{dummy:eq:bez-eq}
@@ -1029,7 +1031,7 @@ Finalmente, en el último paso de la recursión obtenemos la ecuación lineal di
 	\frac{q_{n}}{\prod_{j=1}^{n-1}g_j}x_n
 	= \omega_{n-1}.
 \end{equation}
-Por construcción, los coeficientes de $x_{n - 1}$ y $x_n$ son coprimos. A causa del Teorema
+Por construcción, los coeficientes de $x_{n - 1}$ y $x_n$ son coprimos. A causa del teorema
 \ref{prerreq:th:construction} las soluciones enteras están dadas por
 \begin{equation}
 	\label{eq:last-solution}
@@ -1053,7 +1055,7 @@ soluciones enteras para todo $k \in \Z$ siempre que las entradas de $\vec{q}$ se
 realidad, hemos mostrado también la existencia de una infinidad de soluciones enteras, pues cada
 elección distinta de $t_i \in \Z$ para cualquier $i \in \lbrace 1, \ldots, n - 1\rbrace$ proveerá una
 solución distinta. Por lo tanto, hemos saldado nuestra cuenta pendiente con respecto a una parte de
-la demostración en el Teorema \ref{theory:th:feasibility}.
+la demostración en el teorema \ref{theory:th:feasibility}.
 
 Con respecto a la restricción de no negatividad $\vec{x} \geq 0$ en el problema
 (\ref{theory:formulation}), podemos acotar nuestra elección de variables libres $t_i \in \Z$ a
@@ -1068,7 +1070,7 @@ $x_{n-1}$ y $x_n$, observamos de (\ref{eq:last-solution}) que dependemos de los 
 de $q_{n-1}$ y de $q_n$. Mucho tendremos que decir en los siguientes dos capítulos sobre
 cómo acotar mejor $t_1, \ldots, t_{n-1}$ para asegurar la no negatividad de $\vec{x}$. Así pues,
 relegamos la discusión en los siguientes dos capítulos cuando analicemos separadamente el caso
-infinito y el caso finito del Teorema \ref{theory:th:feasibility}.
+infinito y el caso finito del teorema \ref{theory:th:feasibility}.
 
 Ahora bien, hemos encontrado una relación entre el vector de soluciones $\vec{x} \in \Z^n$ y el
 vector de variables libres $\vec{t} \in \Z^{n-1}$. Hemos manejado esta relación de manera recursiva
@@ -1214,7 +1216,7 @@ $\vec{\nu}$ y $M$ lo son también.
 	\end{equation}
 	Recordemos que $x_{n-1}'$ y $x_n'$ son coeficientes de Bézout asociados a los coeficientes del
 	lado izquierdo de \eqref{eq:last-equation}, los cuales son coprimos. Entonces se cumple, por el
-	Teorema \ref{prerreq:th:bezout},
+	teorema \ref{prerreq:th:bezout},
 	\begin{equation*}
 		\frac{q_{n-1}}{\prod_{j=1}^{n-1}g_j}x_{n-1}' +
 		\frac{q_n}{\prod_{j=1}^{n-1}g_j}x_n' = 1,
@@ -1278,14 +1280,14 @@ $\vec{\nu}$ y $M$ lo son también.
 	\end{equation*}
 	Se sigue que las columnas de $M$ son linealmente
 	independientes, y entonces su imagen tiene dimensión $n - 1$. Por lo tanto, $M^T$ tiene $n - 1$
-	renglones linealmente independientes. Se sigue por el Teorema de la Dimensión que $\dim
+	renglones linealmente independientes. Se sigue por el teorema de la Dimensión que $\dim
 	\ker{M^T} = 1$, así que basta mostrar que $\vec{q} \in \ker{M^T}$.
 
-	Sea $\vec{x} \in \Z^n$. Por el Teorema \ref{phase-1:th:cover}, existe una capa entera
-	$H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ que contiene a $\vec{x}$. Así, por el Lema
+	Sea $\vec{x} \in \Z^n$. Por el teorema \ref{phase-1:th:cover}, existe una capa entera
+	$H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ que contiene a $\vec{x}$. Así, por el lema
 	\ref{theory:lemma:utility}, $\vec{x}$ satisface la
 	ecuación lineal diofantina $\vec{q}^T\vec{x} = k$. Por construcción, existe $\vec{t} \in
-	\Z^{n-1}$ tal que $\vec{x} = k\vec{\nu} + M\vec{t}$. Luego, por el Lema \ref{lemma:iso1},
+	\Z^{n-1}$ tal que $\vec{x} = k\vec{\nu} + M\vec{t}$. Luego, por el lema \ref{lemma:iso1},
 	tenemos
 	\begin{equation*}
 		k = \vec{q}^T\vec{x} = k \vec{q}^T\vec{\nu} + \vec{q}^TM\vec{t} = k +
@@ -1297,12 +1299,12 @@ $\vec{\nu}$ y $M$ lo son también.
 \end{proof}
 
 La gran mayoría de nuestra argumentación para demostrar los resultados ha sido fundamentada a través
-de las capas enteras $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$, así como por el Teorema
+de las capas enteras $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$, así como por el teorema
 \ref{phase-1:th:cover}. Sin embargo, estas capas enteras contienen puntos que, en el contexto de
 programación lineal entera, no son de interés, a saber, contienen puntos no enteros. Nos gustaría
 concentrarnos exclusivamente en estos puntos enteros, al mismo tiempo que buscamos caracterizarlos
-por medio de $\vec{q}$. La siguiente Definición hará que logremos este primer objetivo de enfocarnos
-exclusivamente en los puntos enteros, mientras que el Teorema \ref{th:lattice} permitirá que los
+por medio de $\vec{q}$. La siguiente definición hará que logremos este primer objetivo de enfocarnos
+exclusivamente en los puntos enteros, mientras que el teorema \ref{th:lattice} permitirá que los
 caractericemos a partir de $\vec{q}$.
 
 \begin{definition}[\cite{alex}]
@@ -1340,14 +1342,14 @@ caractericemos a partir de $\vec{q}$.
 	forman una base de la red $\Z^n$.
 \end{theorem}
 \begin{proof}
-	En el Lema \ref{lemma:iso2} mostramos que las columnas de $M$ son linealmente independientes.
+	En el lema \ref{lemma:iso2} mostramos que las columnas de $M$ son linealmente independientes.
 	Mostramos por contradicción que $\vec{\nu}$ es linealmente independiente de las columnas de
 	$M$, así que supongamos que no lo es, por lo que existen escalares $\lambda_1, \ldots,
 	\lambda_{n-1}$ tales que
 	\begin{equation*}
 		\vec{\nu} = \lambda_1 \vec{m}_1 + \cdots + \lambda_{n-1} \vec{m}_{n-1},
 	\end{equation*}
-	donde $\vec{m}_1, \ldots, \vec{m}_{n-1}$ son las columnas de $M$. De los Lemas \ref{lemma:iso1}
+	donde $\vec{m}_1, \ldots, \vec{m}_{n-1}$ son las columnas de $M$. De los lemas \ref{lemma:iso1}
 	y \ref{lemma:iso2} obtenemos
 	\begin{equation*}
 		1 = \vec{q}^T\vec{\nu} = \lambda_1 \vec{q}^T\vec{m}_1 + \cdots + \lambda_{n-1}
@@ -1356,10 +1358,10 @@ caractericemos a partir de $\vec{q}$.
 	lo cual es una contradicción. Se sigue que $\lbrace \vec{\nu}, \vec{m}_1, \ldots,
 	\vec{m}_{n-1}\rbrace$ es un conjunto de vectores linealmente independiente.
 
-	Ahora bien, sea $\vec{x} \in \Z^n$, por el Teorema \ref{phase-1:th:cover}, sabemos que se
+	Ahora bien, sea $\vec{x} \in \Z^n$, por el teorema \ref{phase-1:th:cover}, sabemos que se
 	encuentra sobre una capa entera, y entonces satisface la ecuación lineal diofantina
 	$\vec{q}^T\vec{x} = k$ para alguna $k \in \Z$. Por construcción en el inicio de esta sección junto
-	con la exhaustividad del Teorema \ref{prerreq:th:construction}, existe un vector $\vec{t} \in
+	con la exhaustividad del teorema \ref{prerreq:th:construction}, existe un vector $\vec{t} \in
 	\Z^{n-1}$ tal que
 	\begin{equation*}
 		\vec{x} = k\vec{\nu} + M\vec{t} = k\vec{\nu} + t_1\vec{m}_1 + \cdots +
@@ -1376,8 +1378,8 @@ caractericemos a partir de $\vec{q}$.
 	una base de $\Z^n$.
 \end{proof}
 
-El siguiente Corolario es presentado sin demostración, pero cabe mencionar que es una consecuencia
-directa del Teorema anterior junto con las equivalencias encontradas en el Teorema 4.3 en \cite{alex}.
+El siguiente corolario es presentado sin demostración, pero cabe mencionar que es una consecuencia
+directa del teorema anterior junto con las equivalencias encontradas en el teorema 4.3 en \cite{alex}.
 \begin{corollary}
 	Supongamos que $q_n \neq 0$ y consideremos $\vec{\nu} \in \Z^n$ (definido en
 	\eqref{eq:vec-omega}) y las columnas $\vec{m}_1, \ldots, \vec{m}_{n-1} \in \Z^n$ de la matriz $M
@@ -1421,7 +1423,7 @@ $M$ no esté bien definida\footnote{
 \begin{proof}
 	Existe una matriz de permutación $P \in \Z^{n \times n}$ tal que $\tvec{q} = P\vec{q}$.
 	Puesto que $P$ es invertible, tenemos $\gen\braces{\tvec{q}} \cong
-	\gen\braces{\vec{q}}$. Usando el Lema \ref{lemma:iso2} obtenemos
+	\gen\braces{\vec{q}}$. Usando el lema \ref{lemma:iso2} obtenemos
 	\begin{equation*}
 		\ker{\tilde{M}^T} = \gen\braces{\tvec{q}} \cong \gen\braces{\vec{q}} = \ker{M^T},
 	\end{equation*}
@@ -1503,7 +1505,7 @@ $\sigma.\vec{e}_i = \vec{e}_{\sigma(i)}$ para tener una notación más clara.
 	\end{equation*}
 \end{example}
 
-De manera informal, podemos fortalecer el Corolario \ref{cor:iso3} con el siguiente argumento. Si
+De manera informal, podemos fortalecer el corolario \ref{cor:iso3} con el siguiente argumento. Si
 $q_i = 0$ para alguna $i \in \lbrace 1, \ldots, n \rbrace$, podemos proyectar $\vec{q}$ sobre
 la subred $\Z^{n-1}$ de $\Z$. Repetimos este proceso hasta que todas las entradas de $\vec{q}$ sean
 distintas de cero. Y es sobre esta subred que podemos considerar cualquier permutación en las
@@ -1516,7 +1518,7 @@ entradas del vector $\vec{q}$ proyectado.
 \end{definition}
 Como $\varphi$ es un homomorfismo, es posible mostrar que $\sim$ es una relación de equivalencia
 sobre el conjunto de vectores coprimos cuyas entradas son distintas de cero. De esta manera, sabemos
-del Corolario \ref{cor:iso3} que si $\vec{q} \sim \tvec{q}$, entonces ambos vectores
+del corolario \ref{cor:iso3} que si $\vec{q} \sim \tvec{q}$, entonces ambos vectores
 descomponen la red $\Z^n$ de la misma forma. Es decir, existe un isomorfismo tal que $(\vec{\nu},
 M) \mapsto (\tvec{\nu}, \tilde{M})$. Podemos entonces empezar a hablar de una
 clasificación de programas lineales a partir de las clases de equivalencia de $\vec{q}$. Esto, no
@@ -1561,7 +1563,7 @@ No obstante, si el problema (\ref{formulation:multiple}) es factible, sabemos qu
 encontrará en alguna capa entera con parámetro $k \in \lbrace \eta, \eta - 1, \ldots \rbrace$, pues
 todavía contamos con una restricción presupuestaria que se debe satisfacer.
 \begin{observation}
-	Recordemos del Teorema \ref{theory:th:feasibility} que, si tenemos solamente la restricción
+	Recordemos del teorema \ref{theory:th:feasibility} que, si tenemos solamente la restricción
 	presupuestaria, entonces la utilidad máxima es $\eta$ si $q_i < 0$ para alguna $i \in
 	\lbrace 2, \ldots, n - 1\rbrace$. Al igual que en el caso finito, ahora no somos capaces de
 	saber inmediatamente en qué capa entera se encuentra nuestra solución.
@@ -1587,7 +1589,7 @@ el vector $\vec{t} \in \Z^{n-1}$ se encarga de respetar las otras restricciones
 	\end{subequations}
 \end{theorem}
 \begin{proof}
-	Por el Teorema \ref{th:lattice}, sabemos que la transformación lineal
+	Por el teorema \ref{th:lattice}, sabemos que la transformación lineal
 	\begin{align*}
 		(k, \vec{t}) &\mapsto \vec{x} \coloneq k\vec{\nu} + M\vec{t}
 	\end{align*}
@@ -1602,8 +1604,8 @@ el vector $\vec{t} \in \Z^{n-1}$ se encarga de respetar las otras restricciones
 
 	Sea $\vec{x} \in \Z^n$ un vector factible de (\ref{formulation:multiple}) Como $\vec{x}$ es
 	entero, entonces se debe cumplir $\vec{q}^T\vec{x} \leq \eta$. Ahora bien, existe $(k, \vec{t})
-	\in \Z^n$ que satisface $\vec{x} = k\vec{\nu} + M\vec{t}$. Por el Lema \ref{lemma:iso1} y el
-	Corolario \ref{lemma:iso2} encontramos que
+	\in \Z^n$ que satisface $\vec{x} = k\vec{\nu} + M\vec{t}$. Por el lema \ref{lemma:iso1} y el
+	corolario \ref{lemma:iso2} encontramos que
 	\begin{equation*}
 		k = \vec{q}^T\vec{x} \leq \eta,
 	\end{equation*}
@@ -1629,7 +1631,7 @@ el vector $\vec{t} \in \Z^{n-1}$ se encarga de respetar las otras restricciones
 	comparaciones de tiempo en los tiempos de terminación entre esta formulación y la original.
 \end{observation}
 
-La formulación del problema equivalente en el Teorema anterior resulta ser más interesante. Podemos
+La formulación del problema equivalente en el teorema anterior resulta ser más interesante. Podemos
 desacoplar esta nueva formulación de manera que obtengamos un problema de maximización y otro de
 factibilidad. Supongamos, sin pérdida de generalidad, que las entradas de $A$ y $\vec{b}$ son
 enteras. Como los renglones de $A$ son linealmente independientes, de \cite{alex} sabemos que tiene
@@ -1954,7 +1956,7 @@ estos valores $\ell^*$ y $u^*$, respectivamente. Ahora la restricción
 \end{equation*}
 es válida para el problema (\ref{formulation:last}). De la misma manera que $\eta$ parametriza la
 primera capa entera que satisface el presupuesto, podemos definir análogamente la última capa que
-satisface el presupuesto. Usando el mismo razonamiento que en el Lema \ref{phase-1:lemma:eta},
+satisface el presupuesto. Usando el mismo razonamiento que en el lema \ref{phase-1:lemma:eta},
 encontramos que esta capa está parametrizada por $\tau \coloneq \lceil \ell^*/m \rceil$ si $m$ es
 positiva. Así pues, al definir nuestro conjunto de factibilidad $F$ como
 \begin{equation*}

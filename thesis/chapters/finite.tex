@@ -1,6 +1,6 @@
 \chapter{El caso finito}
 \noindent
-Nuevamente inspirados por el Teorema \ref{theory:th:feasibility}, en este capítulo analizamos el
+Nuevamente inspirados por el teorema \ref{theory:th:feasibility}, en este capítulo analizamos el
 caso en el que el vector coprimo $\vec{q}$ tiene entradas estrictamente positivas. De esta manera,
 el problema \eqref{theory:formulation} deviene una instancia particular del famoso Problema de la
 Mochila:
@@ -20,7 +20,7 @@ Problema de la Mochila no Acotado. Pero también como $\vec{u} = \vec{w}$, el pr
 ser considerado como un Problema de la Suma de Conjuntos no Acotado.
 
 En la primera sección realizamos un análisis de capas enteras a fin de obtener un resultado análogo
-al Teorema \ref{infinite:th:complexity}. En concreto, el Teorema \ref{th:intnonneg2} enuncia que,
+al teorema \ref{infinite:th:complexity}. En concreto, el teorema \ref{th:intnonneg2} enuncia que,
 para un presupuesto $u$ suficientemente grande en el problema \eqref{theory:formulation}, la
 búsqueda de una solución se reduce a resolver solamente una ecuación lineal diofantina.
 
@@ -35,7 +35,7 @@ Ramificación y Acotamiento, así como de una formulación alternativa de progra
 
 \section{Análisis de capas enteras}
 \noindent
-De acuerdo al segundo caso del Teorema \ref{theory:th:feasibility}, el número de puntos enteros no
+De acuerdo al segundo caso del teorema \ref{theory:th:feasibility}, el número de puntos enteros no
 negativos sobre la $k$-ésima capa entera es finito y, por lo tanto, puede ser cero. Sea $k \in
 \braces{\eta, \ldots, 0}$. Sabemos de la Sección \ref{subsec:dioph-eq} que deseamos resolver la
 ecuación lineal diofantina \eqref{eq:dioph}, por lo que implementamos la misma estrategia para
@@ -67,7 +67,7 @@ para todo $i \in \lbrace 1, \ldots, n - 2\rbrace$. Luego, como $0 < q_{n - 1}, q
 \end{equation*}
 
 Consecuentemente, el número de elecciones que podemos realizar para el vector de variables libres
-$\vec{t} \in \Z^{n-1}$ es, como lo confirma el Teorema \ref{theory:th:feasibility}, finito. Si
+$\vec{t} \in \Z^{n-1}$ es, como lo confirma el teorema \ref{theory:th:feasibility}, finito. Si
 determinamos que no existe tal punto en la $k$-ésima capa entera, descendemos a la $(k -1)$-ésima
 capa entera y continuamos con nuestra búsqueda.
 
@@ -85,7 +85,7 @@ entero no negativo sobre una de estas capas enteras.
 % que visitamos y analizamos el comportamiento a medida que el presupuesto $u$ aumenta. En la segunda
 % parte de esta sección mostramos que si el presupuesto $u$ es suficientemente grande, entonces la
 % solución de (\ref{theory:formulation}) sí se encuentra sobre la $\eta$-ésima capa entera. Este
-% resultado es análogo al caso infinito del Teorema \ref{theory:th:feasibility}. Finalmente, en la
+% resultado es análogo al caso infinito del teorema \ref{theory:th:feasibility}. Finalmente, en la
 % tercera parte de esta sección discutimos brevemente sobre la complejidad algorítmica de encontrar
 % la solución.
 
@@ -102,7 +102,7 @@ entero no negativo sobre una de estas capas enteras.
 	donde $u$ es el lado derecho de \eqref{theory:constraint:budget}. Entonces la solución del
 	problema \eqref{theory:formulation}, de ser factible, se encuentra en una capa entera
 	parametrizada por $k \in \lbrace \eta, \eta - 1, \ldots, \tau \rbrace$, donde recuperamos $\eta$
-	del Lema \ref{phase-1:lemma:eta}.
+	del lema \ref{phase-1:lemma:eta}.
 \end{lemma}
 \begin{proof}
 	Definamos $i^* \coloneq \argmax\braces{q_1, \ldots, q_n}$ y consideremos el vector
@@ -110,7 +110,7 @@ entero no negativo sobre una de estas capas enteras.
 		\vec{v} \coloneq \left\lfloor \frac{u}{q^*} \right\rfloor \vec{e}_{i^*}.
 	\end{equation*}
 	Por hipótesis tenemos $q^* > 0$ y, además, como el problema
-	\eqref{theory:formulation} es factible, se sigue del Teorema \ref{theory:th:feasibility} que el
+	\eqref{theory:formulation} es factible, se sigue del teorema \ref{theory:th:feasibility} que el
 	presupuesto $u$ es no negativo. De esto obtenemos que $\vec{v} \geq \vec{0}$. Así también,
 	\begin{equation*}
 		\vec{q}^T\vec{v} = \left\lfloor \frac{u}{q^*} \right\rfloor q^*
@@ -125,7 +125,7 @@ entero no negativo sobre una de estas capas enteras.
 	\end{equation*}
 	Nos interesa determinar el entero $\tau$ más pequeño tal que todo punto sobre la capa
 	entera $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ con $k \in \lbrace \tau, \tau + 1, \ldots \rbrace$
-	satisfaga esta desigualdad. Del Lema \ref{phase-1:lemma:layer}, encontramos que $k$ debe satisfacer
+	satisfaga esta desigualdad. Del lema \ref{phase-1:lemma:layer}, encontramos que $k$ debe satisfacer
 	\begin{equation*}
 		\frac{k}{\norm{\vec{q}}^{2}} = \frac{\vec{q}^T\vec{x}}{\norm{\vec{q}}^2} \geq
 		\left\lfloor \frac{u}{q^*} \right\rfloor \frac{q^*}{m}
@@ -141,7 +141,7 @@ entero no negativo sobre una de estas capas enteras.
 		\left\lfloor \left\lfloor \frac{u}{q^*} \right\rfloor \frac{q^*}{m}
 			\right\rfloor.
 	\end{equation*}
-	Finalmente, recordemos del Lema \ref{phase-1:lemma:eta} que $\eta$ es la primera capa en
+	Finalmente, recordemos del lema \ref{phase-1:lemma:eta} que $\eta$ es la primera capa en
 	satisfacer la restricción presupuestaria. Por lo tanto, el óptimo del problema
 	\eqref{theory:formulation} se encuentra en una capa entera parametrizada por $\tau \leq k \leq \eta$.
 \end{proof}
@@ -158,7 +158,7 @@ entero no negativo sobre una de estas capas enteras.
 		\leq \frac{u}{m}.
 	\end{equation*}
 	Aplicando la función piso a ambos lados de la desigualdad y comparando con \eqref{eq:tau} y el
-	Lema \ref{phase-1:lemma:eta} encontramos que $\tau \leq \eta$.
+	lema \ref{phase-1:lemma:eta} encontramos que $\tau \leq \eta$.
 \end{observation}
 \begin{observation}
 	Nuevamente, la suposición de que el escalar $m$ sea positivo ocurre sin pérdida de generalidad.
@@ -251,7 +251,7 @@ entero no negativo sobre una de estas capas enteras.
 \end{proof}
 \begin{definition}
 	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q} \in \Z^n$ su múltiplo
-	coprimo. Consideremos los parámetros $\eta$ y $\tau$ (c.f. Lemas \ref{phase-1:lemma:eta} y
+	coprimo. Consideremos los parámetros $\eta$ y $\tau$ (c.f. lemas \ref{phase-1:lemma:eta} y
 	\ref{lemma:tau}) como funciones del presupuesto $u$. Entonces decimos que la función $\Delta^*
 	\colon \R \to \R$ dada por
 	\begin{equation}
@@ -261,10 +261,10 @@ entero no negativo sobre una de estas capas enteras.
 	denota el \textbf{número de capas enteras a revisar} dado el presupuesto $u$.
 \end{definition}
 
-Si queremos aplicar el Lema \ref{lemma:layer-dist} a la función de la definición anterior, debemos
+Si queremos aplicar el lema \ref{lemma:layer-dist} a la función de la definición anterior, debemos
 reducir nuestra atención a vectores $\vec{p}$ enteros. Esto se debe a que debemos asegurar que el
 múltiplo $m$ sea entero\footnote{
-	Es la creencia del autor que el Lema \ref{lemma:layer-dist} puede ser generalizado para múltiplos
+	Es la creencia del autor que el lema \ref{lemma:layer-dist} puede ser generalizado para múltiplos
 	$m$ racionales, mas esto no agrega demasiado valor en lo que sigue de la tesis.
 }. Independientemente del comportamiento
 periódico de $\Delta^*$, tenemos que esta función varía significativamente ante cambios en $m$.
@@ -305,23 +305,23 @@ revisa en realidad disminuye a medida que aumenta el presupuesto $u$.
 
 En esta segunda parte de la sección, demostraremos que para un presupuesto $u$ suficientemente
 grande, la solución del problema \eqref{theory:formulation} se encuentra en la $\eta$-ésima capa
-entera donde, como siempre, $\eta$ es recuperada del Lema \ref{phase-1:lemma:eta}. Este resultado
-será análogo al Teorema \ref{infinite:th:complexity}. No obstante, para lograr aquello, necesitamos
+entera donde, como siempre, $\eta$ es recuperada del lema \ref{phase-1:lemma:eta}. Este resultado
+será análogo al teorema \ref{infinite:th:complexity}. No obstante, para lograr aquello, necesitamos
 de un par de definiciones y lemas preliminares.
 
 Para motivar al lector, primero mostramos que existe una vecindad fija de todo punto en $\R^n$ de
-manera que esa vecindad contiene al menos un punto entero. Esto es especificado en el Teorema
+manera que esa vecindad contiene al menos un punto entero. Esto es especificado en el teorema
 \ref{lemma:ball-cover}.
 
 Luego, observamos que el ``trozo'' no negativo de una capa entera $H_{\vec{q},
 k\norm{\vec{q}}^{-2}}$ crece a medida que $k$ aumenta. Así pues, si $k$ es lo suficientemente
 grande, habrá un punto sobre ese trozo no negativo cuya vecindad también se encuentra contenida en
 ese trozo y, por lo tanto, habrá un punto entero no negativo sobre ese trozo. Esto es especificado
-en el Teorema \ref{th:intsimplex}.
+en el teorema \ref{th:intsimplex}.
 
 Finalmente, relacionamos el punto entero que se encuentra sobre el pedazo no negativo de
 $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ con el problema \eqref{theory:formulation}. Así pues, concluimos
-esta sección con los Teoremas \ref{th:intnonneg1} y \ref{th:intnonneg2}.
+esta sección con los teoremas \ref{th:intnonneg1} y \ref{th:intnonneg2}.
 
 \begin{definition}
 	\label{fin:def:ball}
@@ -346,7 +346,7 @@ esta sección con los Teoremas \ref{th:intnonneg1} y \ref{th:intnonneg2}.
 	es una cubierta de la $k$-ésima capa entera $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$.
 \end{theorem}
 \begin{proof}
-	Como $q_n \neq 0$, recordemos del Teorema \eqref{th:lattice} que
+	Como $q_n \neq 0$, recordemos del teorema \eqref{th:lattice} que
 	\begin{equation*}
 		\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap \Z^n \iff \vec{x} = k\vec{\nu} + M\vec{t}
 	\end{equation*}
@@ -358,7 +358,7 @@ esta sección con los Teoremas \ref{th:intnonneg1} y \ref{th:intnonneg2}.
 			=
 		\left\lbrace B_r^{(k)}(k\vec{\nu} + M\vec{t}) \colon \vec{t} \in \Z^{n-1} \right\rbrace.
 	\end{equation*}
-	Por la Definición \ref{fin:def:ball} sabemos que $B_r^{(k)}(k\vec{\nu} + M\vec{t}) \subseteq H_{\vec{q},
+	Por la definición \ref{fin:def:ball} sabemos que $B_r^{(k)}(k\vec{\nu} + M\vec{t}) \subseteq H_{\vec{q},
 	k\norm{\vec{q}}^{-2}}$ para todo $r > 0$ y para todo $\vec{t} \in \Z^{n-1}$. Luego, para
 	cualquier $r > 0$ tenemos
 	\begin{equation}
@@ -366,7 +366,7 @@ esta sección con los Teoremas \ref{th:intnonneg1} y \ref{th:intnonneg2}.
 		\bigcup_{\vec{t} \in \Z^{n-1}}B_r^{(k)}(k\vec{\nu} + M\vec{t}) \subseteq
 		H_{\vec{q}, k\norm{\vec{q}}^{-2}}.
 	\end{equation}
-	Ahora bien, sea $\vec{y}$ un punto sobre la $k$-ésima capa entera. Por el Lema \ref{lemma:iso2}
+	Ahora bien, sea $\vec{y}$ un punto sobre la $k$-ésima capa entera. Por el lema \ref{lemma:iso2}
 	sabemos que las columnas de $M$ son linealmente independientes, y entonces existe $\vec{t} \in
 	\R^{n-1}$ tal que
 	\begin{equation*}
@@ -462,7 +462,7 @@ teoremas fueron realizadas completamente por el autor.
 	\label{ex:aff}
 	% Si $\vec{q}$ es un vector coprimo que satisface $q_n \neq 0$, entonces la $k$-ésima capa entera
 	% $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ es la combinación afina de un conjunto de vectores. En
-	% efecto, sabemos del Teorema \ref{th:lattice} que el vector $\vec{\nu}$ (ver
+	% efecto, sabemos del teorema \ref{th:lattice} que el vector $\vec{\nu}$ (ver
 	% \eqref{eq:vec-omega}) junto con las columnas $\vec{m}_1, \ldots, \vec{m}_{n-1}$ de M (ver
 	% \eqref{eq:mat-T}) forman una base de la red $\Z^n$ y, por extensión, del espacio vectorial
 	% $\R^n$.
@@ -473,12 +473,12 @@ teoremas fueron realizadas completamente por el autor.
 	% 	H_{\vec{q}, k\norm{\vec{q}}^{-2}} = k\vec{\nu} + \gen\braces{\vec{m}_i}
 	% 	= k\vec{\nu} + \gen\braces{(\vec{m}_i + k\vec{\nu}) - k\vec{\nu}}.
 	% \end{equation*}
-	% Por el Lema \ref{lemma:aff} sabemos entonces que la $k$-ésima capa entera es la combinación
+	% Por el lema \ref{lemma:aff} sabemos entonces que la $k$-ésima capa entera es la combinación
 	% afina de los vectores $k\vec{\nu}, \vec{m}_1 + k\vec{\nu}, \ldots, \vec{m}_{n-1} + k\vec{\nu}$.
 
 	Si $\vec{q} > \vec{0}$ es un vector coprimo y $k$ un entero positivo, entonces la $k$-ésima capa
 	entera $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ es la combinación afina de un conjunto de vectores.
-	En efecto, recordemos de la Definición \ref{phase-1:def:c-layer} que esta capa entera es
+	En efecto, recordemos de la definición \ref{phase-1:def:c-layer} que esta capa entera es
 	simplemente un hiperplano afino. Como $\vec{q}$ es el vector normal a este hiperplano, se sigue
 	que puede ser escrito como $\vec{v} + \ker{\vec{q} \mapsto \vec{q}^T\vec{x}}$ para alguna
 	$\vec{v} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$.
@@ -498,7 +498,7 @@ teoremas fueron realizadas completamente por el autor.
 		H_{\vec{q}, k\norm{\vec{q}}^{-2}} = \vec{u}_j + \gen\braces{\vec{u}_i - \vec{u}_j}_{i \neq
 		j}.
 	\end{equation*}
-	Por el Lema \ref{lemma:aff} concluimos que la $k$-ésima capa entera es la combinación
+	Por el lema \ref{lemma:aff} concluimos que la $k$-ésima capa entera es la combinación
 	afina de los vectores $\vec{u}_1, \ldots, \vec{u}_n$.
 \end{example}
 
@@ -517,7 +517,7 @@ teoremas fueron realizadas completamente por el autor.
 	$\braces{\vec{v}_i}_{i \neq j}$.
 \end{definition}
 \begin{observation}
-	Comparando con la Definición \ref{def:aff}, encontramos que todo símplice $\sigma$ generado por
+	Comparando con la definición \ref{def:aff}, encontramos que todo símplice $\sigma$ generado por
 	$\vec{v}_1, \ldots, \vec{v}_m$ está contenido en la combinación afina de estos vectores. Es
 	decir,
 	\begin{equation}
@@ -548,7 +548,7 @@ teoremas fueron realizadas completamente por el autor.
 		\label{eq:aff-layer}
 		H_{\vec{q}, k\norm{\vec{q}}^{-2}} = \aff\braces{\vec{u}_1, \ldots, \vec{u}_n}.
 	\end{equation*}
-	Sea $\vec{x} \in \sigma$, de la Definición \ref{def:simplex} y de \eqref{aff:contention} encontramos
+	Sea $\vec{x} \in \sigma$, de la definición \ref{def:simplex} y de \eqref{aff:contention} encontramos
 	que $\vec{x}$ se encuentra en la $k$-ésima capa entera. Además, existen escalares $\theta_1,
 	\ldots, \theta_n$ no negativos tales que
 	\begin{equation*}
@@ -566,14 +566,14 @@ teoremas fueron realizadas completamente por el autor.
 \end{proof}
 
 En el contexto del problema \eqref{theory:formulation}, sabemos que si $\sigma$ es generado por los
-vectores en \eqref{def:u-basis} entonces, por el Lema anterior, todo punto entero sobre $\sigma$ es
-un punto factible siempre que $0 < k \leq \eta$, donde recuperamos $\eta$ del Lema
+vectores en \eqref{def:u-basis} entonces, por el lema anterior, todo punto entero sobre $\sigma$ es
+un punto factible siempre que $0 < k \leq \eta$, donde recuperamos $\eta$ del lema
 \ref{phase-1:lemma:eta}. Nos gustaría entonces garantizar la existencia de tal punto entero.
 
 Adoptamos la siguiente estrategia: nos concentramos en un punto $\vec{x} \in \sigma$ y abrimos una
-bola (ver Definición \ref{fin:def:ball}) con radio dado por \eqref{eq:radius}. Si esa bola está
-contenida en el símplice $\sigma$, entonces el Teorema \ref{lemma:ball-cover} garantiza la
-existencia de un punto entero sobre $\sigma$. Por el Lema anterior, garantizaríamos la
+bola (ver definición \ref{fin:def:ball}) con radio dado por \eqref{eq:radius}. Si esa bola está
+contenida en el símplice $\sigma$, entonces el teorema \ref{lemma:ball-cover} garantiza la
+existencia de un punto entero sobre $\sigma$. Por el lema anterior, garantizaríamos la
 existencia de un punto entero no negativo sobre la $k$-ésima capa entera.
 
 Lo que se encuentra a continuación es un análisis para determinar qué tan grande debe ser $k$ para
@@ -602,7 +602,7 @@ bola está centrada en un punto particular, a saber, en el baricentro del símpl
 		r_\sigma \coloneq \max \lbrace r > 0 \colon B_r^{(k)}(\est{\sigma})
 		\subseteq \sigma \rbrace,
 	\end{equation}
-	donde $B_r^{(k)}(\est{\sigma})$ está dada en la Definición \ref{fin:def:ball}.
+	donde $B_r^{(k)}(\est{\sigma})$ está dada en la definición \ref{fin:def:ball}.
 \end{definition}
 
 Encontraremos que el radio de la bola inscrita está dado por el mínimo de las distancias
@@ -630,12 +630,12 @@ donde $\uvec{\mu}_j$ es un vector unitario y normal a la $j$-ésima faceta.
 \end{lemma}
 \begin{proof}
 	Debemos mostrar que si $\vec{x} \in \sigma_j$, entonces $\vec{\mu}_j^T\vec{y} = 0$ para todo
-	$\vec{y} \in \sigma_j - \vec{x}$. Por la Definición \ref{def:simplex}, tenemos que los vectores
+	$\vec{y} \in \sigma_j - \vec{x}$. Por la definición \ref{def:simplex}, tenemos que los vectores
 	$\braces{\vec{u}_i}_{i \neq j}$ generan la $j$-ésima faceta $\sigma_j$, y entonces basta mostrar
 	que $\vec{\mu}_j^T\vec{y} = 0$ para todo $\vec{y} \in \sigma_j - \vec{u}_m$ con $m \neq j$.
 
 	Sea, pues, $m \in \braces{1, \ldots, n} \setminus \braces{j}$. Tenemos de las definiciones
-	\ref{def:aff} y \ref{def:simplex}, así como del Lema \ref{lemma:aff} que
+	\ref{def:aff} y \ref{def:simplex}, así como del lema \ref{lemma:aff} que
 	\begin{equation*}
 		\sigma_j = \conv\braces{\vec{u}_i}_{i \neq j} \subseteq
 		\aff\braces{\vec{u}_i}_{i \neq j}
@@ -709,7 +709,7 @@ interpretarlo como un poliedro.
 	\end{equation*}
 	y entonces podemos trabajar con $\vec{\mu}_j$ sin normalizarlo. 
 
-	Sea $\vec{x} \in \sigma$. Por el Lema \ref{lemma:sigmachar1} sabemos que
+	Sea $\vec{x} \in \sigma$. Por el lema \ref{lemma:sigmachar1} sabemos que
 	$\vec{x}$ se encuentra en la $k$-ésima capa entera. También sabemos que existen escalares no
 	negativos $\theta_1, \ldots, \theta_n$ que suman 1 y que satisfacen $\vec{x} = \theta_1\vec{u}_1
 	+ \cdots + \theta_n\vec{u}_n$. Tenemos entonces
@@ -736,7 +736,7 @@ interpretarlo como un poliedro.
 	lo cual es no negativo para todo $j \in \braces{1, \ldots, n}$.
 
 	Mostramos la otra contención por contrapositiva, así que supongamos que $\vec{x} \not\in
-	\sigma$. Por el Lema \ref{lemma:sigmachar1} se sigue o bien que $\vec{x} \not\in H_{\vec{q},
+	\sigma$. Por el lema \ref{lemma:sigmachar1} se sigue o bien que $\vec{x} \not\in H_{\vec{q},
 	k\norm{\vec{q}}^{-2}}$ o bien que $\vec{x} \not\in \R^n_{\geq \vec{0}}$. En el primer caso
 	obtenemos inmediatamente que $\vec{x}$ no se encuentra en el lado derecho de
 	\eqref{eq:sigmachar2}.
@@ -780,7 +780,7 @@ interpretarlo como un poliedro.
 	\label{lemma:sigma-radius}
 	Sea $\vec{q} > \vec{0}$ un vector coprimo y sea $\sigma$ el símplice generado por los vectores
 	$\braces{\vec{u}_i}_{i=1}^{n}$ definidos en \eqref{def:u-basis}. Entonces el radio $r_\sigma$ de
-	la bola inscrita (ver Definición \ref{def:r-sigma}) en $\sigma$ con centro
+	la bola inscrita (ver definición \ref{def:r-sigma}) en $\sigma$ con centro
 	$\est{\sigma}$ está dado por
 	\begin{equation*}
 		r_\sigma = \min_{1 \leq j \leq n} d(\est{\sigma}, \sigma_j)
@@ -789,7 +789,7 @@ interpretarlo como un poliedro.
 	donde $\uvec{\mu}_j$ es el vector $\vec{\mu}_j$ definido en \eqref{eq:normal} normalizado.
 \end{theorem}
 \begin{proof}
-	Como $\est{\sigma} \in \sigma$, tenemos del Lema \ref{lemma:sigmachar2} que
+	Como $\est{\sigma} \in \sigma$, tenemos del lema \ref{lemma:sigmachar2} que
 	$\vec{\mu}_j^T(\est{\sigma} - \est{\sigma}_j) \geq 0$ y, por lo tanto, deducimos de \eqref{eq:dist:v1}
 	que la distancia entre $\est{\sigma}$ y la $j$-ésima faceta $\sigma_j$ es
 	\begin{equation}
@@ -818,7 +818,7 @@ interpretarlo como un poliedro.
 		\uvec{\mu}_j^T(\vec{x} - \est{\sigma}_j) \geq -r + d(\est{\sigma}, \sigma_j) \geq 0,
 	\end{equation*}
 	pues supusimos que $r \leq d(\est{\sigma}, \sigma_j)$ para todo $j \in \braces{1, \ldots, n}$.
-	Además, como $\vec{x} \in B_r^{(k)}(\est{\sigma})$, por la Definición \ref{fin:def:ball} tenemos
+	Además, como $\vec{x} \in B_r^{(k)}(\est{\sigma})$, por la definición \ref{fin:def:ball} tenemos
 	que $\vec{x}$ se encuentra en la $k$-ésima capa entera. Así pues,
 	\begin{equation*}
 		\vec{x} \in
@@ -826,9 +826,9 @@ interpretarlo como un poliedro.
 		\braces{\vec{x} \in \R^n \colon \uvec{\mu}_j^T(\vec{x} - \est{\sigma}_j) \geq 0}
 		\cap H_{\vec{q}, k\norm{\vec{q}}^{-2}} = \sigma,
 	\end{equation*}
-	donde la última igualdad se sigue del Lema \ref{lemma:sigmachar2}. Así pues,
+	donde la última igualdad se sigue del lema \ref{lemma:sigmachar2}. Así pues,
 	$B_r^{(k)}(\est{\sigma}) \subseteq \sigma$ si $r \leq d(\est{\sigma}, \sigma_j)$ para toda $j
-	\in \braces{1, \ldots, n}$. De la Definición \ref{def:r-sigma} encontramos entonces que el radio
+	\in \braces{1, \ldots, n}$. De la definición \ref{def:r-sigma} encontramos entonces que el radio
 	$r_\sigma$ de la bola inscrita satisface
 	\begin{equation}
 		\label{r-sigma:down}
@@ -850,7 +850,7 @@ interpretarlo como un poliedro.
 		\uvec{\mu}_j^T(\vec{x} - \est{\sigma}_j) - \varepsilon.
 	\end{equation*}
 	Pero $\vec{x}, \est{\sigma}_j \in \sigma_j$, así que $\vec{x} - \est{\sigma}_j \in \sigma_j -
-	\est{\sigma}_j$. Del Lema \ref{mu:orth} encontramos que
+	\est{\sigma}_j$. Del lema \ref{mu:orth} encontramos que
 	\begin{equation*}
 		\uvec{\mu}_j^T(\vec{x} - \est{\sigma}_j) = 0,
 	\end{equation*}
@@ -861,10 +861,10 @@ interpretarlo como un poliedro.
 	\end{equation*}
 	lo cual implica que $\vec{x} - \varepsilon\uvec{\mu}_j$ no se encuentra en el semi-espacio
 	definido por $\braces{\vec{x} \colon \uvec{\mu}^T(\vec{x} - \est{\sigma}_j) \geq 0}$. Así pues,
-	por el Lema \ref{lemma:sigmachar2}, encontramos que $\vec{x} - \varepsilon\uvec{\mu}_j \not\in
+	por el lema \ref{lemma:sigmachar2}, encontramos que $\vec{x} - \varepsilon\uvec{\mu}_j \not\in
 	\sigma$. Pero $\vec{x} - \varepsilon\uvec{\mu}_j \in B_r^{(k)}(\est{\sigma})$. De aquí se desprende
 	que $B_r^{(k)}(\est{\sigma}) \not\subseteq \sigma$ si $r > d(\est{\sigma}, \sigma_j)$ para
-	alguna $j \in \braces{1, \ldots, n}$. De la Definición \ref{def:r-sigma} obtenemos entonces
+	alguna $j \in \braces{1, \ldots, n}$. De la definición \ref{def:r-sigma} obtenemos entonces
 	\begin{equation}
 		\label{r-sigma:up}
 		r_\sigma \leq \min_{1 \leq j \leq n}d(\est{\sigma}, \sigma_j).
@@ -906,7 +906,7 @@ Usando \eqref{eq:signed} y \eqref{eq:den} para sustituir en \eqref{dist:v2}, obt
 	\frac{1}{q_j^2\sqrt{q_j^{-2} - \norm{\vec{q}}^{-2}}}
 	= \frac{k}{n} \cdot \frac{1}{Q_j},
 \end{equation*}
-donde definimos $Q_j$ pertinentemente. Finalmente, del Teorema \ref{lemma:sigma-radius} encontramos que
+donde definimos $Q_j$ pertinentemente. Finalmente, del teorema \ref{lemma:sigma-radius} encontramos que
 el radio $r_\sigma$ de la bola inscrita en el símplice $\sigma$ con centro
 $\est{\sigma}$ está dado por
 \begin{equation}
@@ -923,8 +923,8 @@ $\est{\sigma}$ está dado por
 \end{theorem}
 \begin{proof}
 	Sea $r$ el radio definido en \eqref{eq:radius} y sea $r_\sigma$ el radio definido en
-	\eqref{eq:sigma-radius}. Por el Teorema \ref{lemma:ball-cover} sabemos que existe un punto
-	entero $\vec{x}$ en $B_r^{(k)}(\est{\sigma})$, y por el Teorema \ref{lemma:sigma-radius} sabemos
+	\eqref{eq:sigma-radius}. Por el teorema \ref{lemma:ball-cover} sabemos que existe un punto
+	entero $\vec{x}$ en $B_r^{(k)}(\est{\sigma})$, y por el teorema \ref{lemma:sigma-radius} sabemos
 	que la bola $B_{r_\sigma}^{(k)}(\est{\sigma})$ está contenida en $\sigma$. Entonces basta
 	mostrar que existe $k$ suficientemente grande tal que $r \leq r_\sigma$, pues esto implicaría la
 	contención de en medio en la cadena
@@ -947,7 +947,7 @@ implícitamente de $n$. Para ser más explícitos con respecto a esta dependenci
 	\leq
 	\frac{n-1}{4}\max_{1 \leq j \leq n} \lbrace \norm{M\vec{e}_j}^2 \rbrace,
 \end{equation*}
-de donde reemplazaríamos la cota \eqref{eq:eta-limit} en el Teorema \ref{th:intsimplex} por
+de donde reemplazaríamos la cota \eqref{eq:eta-limit} en el teorema \ref{th:intsimplex} por
 \begin{equation*}
 	k \geq \frac{n\sqrt{n-1}}{2} \max_{1 \leq j \leq n} \lbrace \norm{M\vec{e}_j} \rbrace \cdot
 	\max_{1 \leq j \leq n} \lbrace Q_j \rbrace.
@@ -963,7 +963,7 @@ $k$. El punto más interesante es aquel que provee la cota inferior más pequeñ
 	Una hipótesis del autor es que el baricentro $\est{\sigma}$ provee, en efecto, la mejor cota.
 }.
 
-De manera inmediata obtenemos también los siguientes Teoremas. Cabe mencionar que estos resultados
+De manera inmediata obtenemos también los siguientes teoremas. Cabe mencionar que estos resultados
 solamente muestran la existencia de una solución entera $\vec{x}$ no negativa para la ecuación lineal
 diofantina $\vec{q}^T\vec{x} = k$. Será en la Sección \ref{subsec:complex} que discutiremos cómo
 encontrar esta solución.
@@ -975,9 +975,9 @@ encontrar esta solución.
 \begin{proof}
 	Consideremos el símplice $\sigma$ generado por los vectores en \eqref{def:u-basis} y supongamos
 	que $k$ satisface la cota en \eqref{eq:eta-limit}.
-	Por el Teorema \ref{th:intsimplex} existe un punto entero no negativo $\vec{x} \in \sigma$, y
-	esto implica que $x \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ por el Lema \ref{lemma:sigmachar1}.
-	Luego, por el Lema \ref{theory:lemma:utility}, $\vec{x}$ satisface la ecuación lineal diofantina
+	Por el teorema \ref{th:intsimplex} existe un punto entero no negativo $\vec{x} \in \sigma$, y
+	esto implica que $x \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ por el lema \ref{lemma:sigmachar1}.
+	Luego, por el lema \ref{theory:lemma:utility}, $\vec{x}$ satisface la ecuación lineal diofantina
 	$\vec{q}^T\vec{x} = k$.
 \end{proof}
 \begin{theorem}
@@ -988,10 +988,10 @@ encontrar esta solución.
 	ecuación lineal en $n$ incógnitas para un presupuesto $u$ suficientemente grande.
 \end{theorem}
 \begin{proof}
-	Por la Definición \ref{theory:def:rational} sabemos que existe un escalar $m$ tal que
-	$\vec{p} = m\vec{q}$. Supongamos, sin pérdida de generalidad, que $m$ es positivo. Del Lema
+	Por la definición \ref{theory:def:rational} sabemos que existe un escalar $m$ tal que
+	$\vec{p} = m\vec{q}$. Supongamos, sin pérdida de generalidad, que $m$ es positivo. Del lema
 	\ref{phase-1:lemma:eta} tenemos que el entero $\eta$ parametriza la primera capa entera en
-	satisfacer el presupuesto y que $\eta = \floor{u/m}$. Por el Teorema \ref{th:intnonneg1} sabemos
+	satisfacer el presupuesto y que $\eta = \floor{u/m}$. Por el teorema \ref{th:intnonneg1} sabemos
 	que si $\eta$ es suficientemente grande, entonces la ecuación lineal diofantina
 	$\vec{q}^T\vec{x} = \eta$ tiene al menos una solución entera no negativa $\vec{x}$. Luego,
 	$\vec{x}$ es factible para el problema \eqref{theory:formulation}, pero por la maximalidad de
@@ -1000,7 +1000,7 @@ encontrar esta solución.
 	\eqref{theory:formulation}.
 \end{proof}
 
-El Teorema \ref{th:intnonneg1} junto con la cota \eqref{eq:eta-limit} provee, hasta donde llega el
+El teorema \ref{th:intnonneg1} junto con la cota \eqref{eq:eta-limit} provee, hasta donde llega el
 conocimiento del autor, nuevas cotas superiores para los números de Frobenius\footnote{
 	Véase el Problema de la Moneda en \url{https://en.wikipedia.org/wiki/Coin_problem}.
 }. De manera resumida,
@@ -1024,7 +1024,7 @@ coprimo $\vec{q}$ son todas estrictamente positivas. Supongamos, sin pérdida de
 escalar $m$ que satisface $\vec{p} = m\vec{q}$ es también positivo. Bastante hemos discutido sobre
 cómo la solución del problema \eqref{theory:formulation} se traduce a la búsqueda de una solución
 entera no negativa de la ecuación lineal diofantina $\vec{q}^T\vec{x} = k$ para alguna $k \leq \eta$,
-donde $\eta$ es tomada del Lema \ref{phase-1:lemma:eta}.
+donde $\eta$ es tomada del lema \ref{phase-1:lemma:eta}.
 
 En esta sección presentamos los algoritmos \ref{algo:fin:helper} y \ref{algo:fin:dioph}, los cuales
 se encargan de obtener estas soluciones enteras no negativas que tanto buscamos. Consecuentemente,
@@ -1047,7 +1047,7 @@ estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
 		\label{lemma:correct:base-case}
 		q_1x_1 + q_2x_2 = k.
 	\end{equation}
-	Por hipótesis sabemos que $q_1$ y $q_2$ son coprimos. Luego, del Teorema
+	Por hipótesis sabemos que $q_1$ y $q_2$ son coprimos. Luego, del teorema
 	\ref{prerreq:th:construction} encontramos que las soluciones enteras de esta ecuación están
 	dadas por
 	\begin{equation}
@@ -1058,7 +1058,7 @@ estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
 		\end{cases}
 	\end{equation}
 	donde $t \in \Z$ es una variable libre, y $x_1', x_2'$ son los coeficientes de Bézout (c.f.
-	Definición \ref{prerreq:def:bezout}) de $q_1$ y $q_2$, respectivamente. Por claridad, escribimos
+	definición \ref{prerreq:def:bezout}) de $q_1$ y $q_2$, respectivamente. Por claridad, escribimos
 	$x_1'$ y $x_2'$ como $x_{n-1}'$ y $x_{n}'$ en la línea \ref{alg:fin:bez}. Despejando de estas
 	soluciones, encontramos que existen soluciones no negativas si y solo si existe $t \in \Z$ que
 	satisfaga
@@ -1086,7 +1086,7 @@ estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
 	\end{equation}
 	Observemos que, como $g_1 = 1$, el entero $g = \gcd{q_2/g_1, \ldots, q_n/g_1}$, es equivalente a
 	lo que se encuentra en la línea \ref{alg:fin:g}. Por definición de $g$, tenemos que $q_1$ y $g$
-	son coprimos (ver el Lema \ref{prerreq:lemma:gcd}), así que por el Teorema
+	son coprimos (ver el lema \ref{prerreq:lemma:gcd}), así que por el teorema
 	\ref{prerreq:th:construction} tenemos que las soluciones enteras de esta ecuación están dadas por
 	\begin{equation}
 		\label{lemma:correct:sol}
@@ -1161,18 +1161,18 @@ entero.
 	El algoritmo \ref{algo:fin:dioph} es correcto.
 \end{theorem}
 \begin{proof}
-	A causa del Teorema \ref{th:fin:helper:correct} basta verificar que el algoritmo termina y no
+	A causa del teorema \ref{th:fin:helper:correct} basta verificar que el algoritmo termina y no
 	devuelve \NIL. Además, obtenemos la maximalidad de $k$ debido a la manera en la que iniciamos el
 	ciclo en la línea \ref{alg:fin:loop}. Tenemos $0 \leq \eta$ por hipótesis y observemos que
 	$\vec{0}$ es la única solución entera no negativa de la ecuación lineal diofantina
 	$\vec{q}^T\vec{x} = 0$. De esta manera, si la ecuación $\vec{q}^T\vec{x} = k$ no tiene solución
-	para $0 < k \leq \eta$, entonces el algoritmo devuelve $\vec{0}$ debido al Teorema
+	para $0 < k \leq \eta$, entonces el algoritmo devuelve $\vec{0}$ debido al teorema
 	\ref{th:fin:helper:correct}.
 \end{proof}
 
-Sabemos, en realidad, por el Lema \ref{lemma:tau} que el parámetro $k$ definido en la línea
+Sabemos, en realidad, por el lema \ref{lemma:tau} que el parámetro $k$ definido en la línea
 \ref{alg:fin:loop} descenderá hasta 0 si y solo si el parámetro $\tau$ definido en \eqref{eq:tau}
-es nulo. No obstante, la demostración del Teorema \ref{th:fin:dioph:correct} deviene más simple
+es nulo. No obstante, la demostración del teorema \ref{th:fin:dioph:correct} deviene más simple
 cuando en el Algoritmo \ref{algo:fin:dioph} dejamos que $k$ se encuentre en $[0, \eta]$ en vez de
 $[\tau, \eta]$. Esta modificación, sin embargo, no afecta en lo más mínimo la correctud o la
 complejidad del algoritmo.
@@ -1197,7 +1197,7 @@ estaríamos calculando $|I|$ veces la misma $g$ en la línea \ref{alg:fin:g}. Lo
 cálculo de los coeficientes de Bézout $x'$ y $\omega'$ en la línea \ref{alg:fin:bez2}.
 
 A pesar de los puntos anteriores, el autor decidió escribir el Algoritmo \ref{algo:fin:helper} de
-esa manera debido a que se simplificaba de manera significativa la demostración del Teorema
+esa manera debido a que se simplificaba de manera significativa la demostración del teorema
 \ref{th:fin:helper:correct}. Sin embargo, el autor realizó una implementación equivalente más
 eficiente a través de ciclos para obtener los resultados de la siguiente sección.
 

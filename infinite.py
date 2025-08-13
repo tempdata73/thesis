@@ -63,109 +63,68 @@ def dioph(q, eta):
 
 
 if __name__ == "__main__":
-    from src.constants import bb_raw_options, bb_full_options
     from src.common import (
-        stats_dioph_as_dim_increases as dioph_dim,
-        stats_bb_as_dim_increases as bb_dim,
+        stats_bb_as_rhs_increases as bb_rhs,
+        stats_dioph_as_rhs_increases as dioph_rhs,
     )
-    from src.common import run_parallel
+    from src.constants import bb_raw_options, bb_full_options
 
-    dims = np.array(
+    rhs = np.logspace(3, 7, num=128, base=10.0, dtype=int)
+
+    p_int = np.array(
         [
-            50,
-            100,
-            200,
-            500,
-            1_000,
-            2_000,
-            5_000,
-            10_000,
-            20_000,
-            30_000,
-            40_000,
-            50_000,
-            60_000,
-            70_000,
-            80_000,
-            90_000,
-            100_000,
-            150_000,
-            200_000,
-            250_000,
+            [9932, -9774, 9538, -9132],  # 3 decimal digits
+            [99322, -97743, 95389, -91320],  # 4 decimal digits
+            [993224, -977435, 953891, -913203],  # 5 decimal digits
         ]
     )
 
-    create_path = lambda name: f"times/inf/dim/{name}/mt"  # noqa: E731
-    jobs = [
-        {
-            "name": "dioph",
-            "log_path": create_path("dioph"),
-            "job": lambda *_: dioph_dim(dioph, dims.copy()),
-        },
-        {
-            "name": "bb_raw",
-            "log_path": create_path("bb_raw"),
-            "job": lambda *_: bb_dim(dims.copy(), **bb_raw_options),
-        },
-        {
-            "name": "bb_full",
-            "log_path": create_path("bb_full"),
-            "job": lambda *_: bb_dim(dims.copy(), **bb_full_options),
-        },
-    ]
-    run_parallel(jobs)
+    # original projectively rational vector
+    f = np.power(10.0, [-3, -4, -5])
+    p = f[:, np.newaxis] * p_int
 
-    # rhs = np.logspace(3, 7, num=128, base=10.0, dtype=int)
+    # finding coprime multiples
+    num_experiments = len(p_int)
+    m = np.zeros(num_experiments)
+    q = np.zeros_like(p_int)
 
-    # p_int = np.array(
-    #     [
-    #         [9932, -9774, 9538, -9132],  # 3 decimal digits
-    #         [99322, -97743, 95389, -91320],  # 4 decimal digits
-    #         [993224, -977435, 953891, -913203],  # 5 decimal digits
-    #     ]
-    # )
+    for i in range(num_experiments):
+        g = math.gcd(*p_int[i])
+        q[i] = p_int[i] // g
+        m[i] = float(g) * f[i]
 
-    # # original projectively rational vector
-    # f = np.power(10.0, [-3, -4, -5])
-    # p = f[:, np.newaxis] * p_int
+    # sanity check
+    np.testing.assert_almost_equal(p, m[:, np.newaxis] * q)
+    print(p)
+    for i in range(3):
+        print(p[i])
+        print()
+    exit(0)
 
-    # # finding coprime multiples
-    # num_experiments = len(p_int)
-    # m = np.zeros(num_experiments)
-    # q = np.zeros_like(p_int)
-
-    # for i in range(num_experiments):
-    #     g = math.gcd(*p_int[i])
-    #     q[i] = p_int[i] // g
-    #     m[i] = float(g) * f[i]
-
-    # # sanity check
-    # np.testing.assert_almost_equal(p, m[:, np.newaxis] * q)
-
-    # n = p.shape[1]
-    # create_path = lambda name, d: f"times/inf/{name}/{n}n-{d}d"  # noqa: E731
-    # jobs = []
-    # for i in range(num_experiments):
-    #     jobs.extend(
-    #         [
-    #             {
-    #                 "name": "dioph",
-    #                 "log_path": create_path("dioph", i + 3),
-    #                 "job": lambda *_: dioph_rhs(dioph, q[i].copy(), m[i], rhs.copy()),
-    #             },
-    #             {
-    #                 "name": "bb_raw",
-    #                 "log_path": create_path("bb_raw", i + 3),
-    #                 "job": lambda *_: bb_rhs(
-    #                     p[i].copy(), rhs.copy(), **bb_raw_options.copy()
-    #                 ),
-    #             },
-    #             {
-    #                 "name": "bb_full",
-    #                 "log_path": create_path("bb_full", i + 3),
-    #                 "job": lambda *_: bb_rhs(
-    #                     p[i].copy(), rhs.copy(), **bb_full_options.copy()
-    #                 ),
-    #             },
-    #         ]
-    #     )
+    n = p.shape[1]
+    create_path = lambda name, d: f"times/inf/{name}/{n}n-{d}d"  # noqa: E731
+    jobs = []
+    for i in range(num_experiments):
+        jobs.extend(
+            [
+                {
+                    "name": "dioph",
+                    "log_path": create_path("dioph", i + 3),
+                    "job": lambda *_: dioph_rhs(dioph, q[i].copy(), m[i], rhs.copy()),
+                },
+                {
+                    "name": "bb_raw",
+                    "log_path": create_path("bb_raw", i + 3),
+                    "job": lambda *_: bb_rhs(
+                        p[i].copy(), rhs.copy(), **bb_raw_options.copy()
+                    ),
+                },
+                {
+                    "name": "bb_full",
+                    "log_path": create_path("bb_full", i + 3),
+                    "job": lambda *_: bb_rhs(
+                        p[i].copy(), rhs.copy(), **bb_full_options.copy()
+                    ),
+                },
+            ]
+        )

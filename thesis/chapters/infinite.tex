@@ -5,7 +5,7 @@
 
 \noindent
 Sea $\vec{p} \in \R^n \setminus \braces{\vec{0}}$ un vector esencialmente entero y recordemos de la
-Definición \ref{theory:def:rational} que tiene un único múltiplo coprimo $\vec{q} \in \Z^n$. Es
+definición \ref{theory:def:rational} que tiene un único múltiplo coprimo $\vec{q} \in \Z^n$. Es
 decir, existe un único escalar $m \in \R$ que satisface tres cosas: $\vec{p} = m\vec{q}$, las
 entradas $q_1, \ldots, q_n$ son coprimas, y la primera entrada no nula $q_i$ es positiva. Al igual
 que en el capítulo anterior, supondremos que $m$ es positivo. Equivalentemente, supondremos que la
@@ -14,8 +14,8 @@ primera entrada no nula $p_i$ es positiva\footnote{ El autor hace recordar que e
 se mantienen pero es necesario voltear las desigualdades y cambiar las funciones piso por las
 funciones techo, lo cual añadiría un número innecesario de casos a analizar.}.
 
-Retomemos el entero $\eta \in \Z$ del Lema \ref{phase-1:lemma:eta} que parametriza la primera capa
-entera que satisface el presupuesto \eqref{theory:constraint:budget}. A causa del Teorema
+Retomemos el entero $\eta \in \Z$ del lema \ref{phase-1:lemma:eta} que parametriza la primera capa
+entera que satisface el presupuesto \eqref{theory:constraint:budget}. A causa del teorema
 \ref{theory:th:feasibility} sabemos que si $q_i \leq 0$ para alguna $i \in \braces{1, \ldots, n}$,
 entonces la $\eta$-ésima capa entera contiene un número infinito de puntos factibles. A partir de
 esto último, somos capaces de resolver el automáticamente el problema de decisión de determinar si
@@ -28,12 +28,12 @@ un escalar $u^* \in \R$ es el valor óptimo del programa (\ref{theory:formulatio
 	el lado derecho de la restricción presupuestaria \eqref{theory:constraint:budget}.
 \end{corollary}
 \begin{proof}
-	Por el Teorema \ref{theory:th:feasibility} sabemos que existen una infinidad de soluciones en la
+	Por el teorema \ref{theory:th:feasibility} sabemos que existen una infinidad de soluciones en la
 	$\eta$-ésima capa entera, así que sea $\vec{x}^*$ una de ellas. Entonces $\vec{q}^T\vec{x}^* =
-	\eta$, pero $\vec{p} = m\vec{q}$ por la Definición \ref{theory:def:rational}, por lo que
+	\eta$, pero $\vec{p} = m\vec{q}$ por la definición \ref{theory:def:rational}, por lo que
 	obtenemos $\vec{p}^T\vec{x}^* = m\vec{q}^T\vec{x}^* = m\eta$.
 
-	Ahora bien, si $m$ es positivo, por el Lema \ref{phase-1:lemma:eta} tenemos que
+	Ahora bien, si $m$ es positivo, por el lema \ref{phase-1:lemma:eta} tenemos que
 	$\eta = \lfloor u/m \rfloor$
 	. Supongamos que $\xi \in \Z$ satisface $m\xi \leq u$ y también $\lfloor
 	u/m \rfloor < \xi$. Luego,
@@ -46,7 +46,7 @@ un escalar $u^* \in \R$ es el valor óptimo del programa (\ref{theory:formulatio
 
 \begin{observation}
 	Para ilustrar la conveniencia de restringir $m$ a que sea positivo, consideremos el caso cuando
-	$m < 0$. De una manera similar a la del Lema \ref{phase-1:lemma:eta}, podemos demostrar que
+	$m < 0$. De una manera similar a la del lema \ref{phase-1:lemma:eta}, podemos demostrar que
 	$\eta \coloneq \lceil u/m \rceil$ parametriza también la primera capa entera que satisface el
 	presupuesto, pues ahora tenemos de la restricción \eqref{theory:constraint:budget} que
 	$\vec{p}^T\vec{x} \leq u$ si y solo si $\vec{q}^T\vec{x} \geq u/m$. Se sigue cumpliendo que el
@@ -55,14 +55,14 @@ un escalar $u^* \in \R$ es el valor óptimo del programa (\ref{theory:formulatio
 \end{observation}
 
 Una vez resuelto el problema de decisión, podemos preguntarnos concretamente cómo obtener el punto
-óptimo. Por el Teorema \ref{theory:th:feasibility} sabemos que debemos resolver la ecuación lineal
-diofantina $\vec{q}^T\vec{x} = \eta$. Del Teorema \ref{th:lattice} sabemos que si $q_n \neq 0$,
+óptimo. Por el teorema \ref{theory:th:feasibility} sabemos que debemos resolver la ecuación lineal
+diofantina $\vec{q}^T\vec{x} = \eta$. Del teorema \ref{th:lattice} sabemos que si $q_n \neq 0$,
 entonces existen $k \in \Z$ y $\vec{t} \in \Z^{n-1}$ tales que
 \begin{equation*}
 	\vec{x} = k\vec{\nu} + M\vec{t},
 \end{equation*}
 donde $\vec{\nu}$ y $M$ están definidas por \eqref{eq:vec-omega} y \eqref{eq:mat-T},
-respectivamente. De los Lemas \ref{lemma:iso1} y \ref{lemma:iso2} sabemos que
+respectivamente. De los lemas \ref{lemma:iso1} y \ref{lemma:iso2} sabemos que
 \begin{equation*}
 	\vec{q}^T\left(\eta\vec{\nu} + M\vec{t}\right) = \eta\vec{q}^T\vec{\nu} + \vec{q}^TM\vec{t} = \eta
 \end{equation*}
@@ -79,11 +79,11 @@ soluciones de la ecuación $\vec{q}^T\vec{x} = \eta$ están dadas por
 \end{equation*}
 donde los enteros $g_i$ están definidos por \eqref{dummy:next-g} con $g_1 = 1$, $\omega_{n-1}$ está
 definida a través de la relación de recurrencia \eqref{eq:omega-recurrence} con condición inicial
-$\omega_1 = \eta$ (o bien a partir del Lema \ref{eq:omega-formula} con $k = \eta$), y $x_{n-1}',
+$\omega_1 = \eta$ (o bien a partir del lema \ref{eq:omega-formula} con $k = \eta$), y $x_{n-1}',
 x_n'$ son coeficientes de Bézout que satisfacen \eqref{eq:last-equation-bez}.
 
 En lo que se encuentra a continuación supondremos que ninguna entrada $q_i$ es nula. Esto no
-constituye problema alguno debido a un razonamiento similar al de la demostración del Teorema
+constituye problema alguno debido a un razonamiento similar al de la demostración del teorema
 \ref{theory:th:feasibility}. Definimos
 \begin{equation*}
 	I^\circ \coloneq \braces{i \colon q_i = 0},
@@ -123,11 +123,11 @@ Entonces, para asegurar la no-negatividad de $x_{n - 1}$ y de $x_n$, debe ser el
 \end{equation}
 
 Podemos emplear la misma estrategia de permutar las entradas de $q_i$ de manera que colapsemos estos
-cuatro casos distintos en uno solo. Como estamos en el caso infinito del Teorema
+cuatro casos distintos en uno solo. Como estamos en el caso infinito del teorema
 \ref{theory:th:feasibility}, naturalmente supondremos que $q_i < 0$ para alguna $i \in \braces{1,
 \ldots n}$. Así pues, podemos permutar esta $i$-ésima entrada de $\vec{q}$ con $q_{n-1}$, con lo que
 obtenemos $q_{n-1} < 0$. Luego, como $\vec{q}$ es el múltiplo coprimo de $\vec{p}$ y ninguna entrada
-de $\vec{q}$ es nula, se sigue de la Definición \ref{theory:def:rational} que $q_1 > 0$. Así pues,
+de $\vec{q}$ es nula, se sigue de la definición \ref{theory:def:rational} que $q_1 > 0$. Así pues,
 podemos permutar la primera y última entrada de $\vec{q}$, de donde se sigue que $q_n > 0$.
 Juntándolo todo, obtenemos $q_{n-1} < 0 < q_n$. De esta manera, para asegurar la no negatividad de
 $x_{n-1}$ y $x_n$, basta con que se satisfaga el primer caso:
@@ -175,7 +175,7 @@ $x_{n-1}$ y $x_n$, basta con que se satisfaga el primer caso:
 % 	q_{n - 1}$ es completamente similar.
 % 
 % 	Consideremos el caso $q_{n - 1}, q_n < 0$. Como ninguna entrada de $\vec{p}$ es nula y el vector
-% 	$\vec{q}$ es su múltiplo coprimo, se sigue de la Definición \ref{theory:def:rational} que $q_1 >
+% 	$\vec{q}$ es su múltiplo coprimo, se sigue de la definición \ref{theory:def:rational} que $q_1 >
 % 	0$. Podemos entonces permutar las entradas $q_1$ y $q_{n}$ para regresar al primer caso.
 % 
 % 	Finalmente, consideremos el caso $0 < q_{n - 1}, q_n$. Queremos encontrar condiciones
@@ -238,14 +238,14 @@ $x_{n-1}$ y $x_n$, basta con que se satisfaga el primer caso:
 % 	Se verifica que $\vec{t}$ satisface ambos (\ref{eq:param-lb}) y (\ref{eq:feasible-param}).
 % \end{proof}
 
-En síntesis, por el Lema \ref{lemma:t-existence} sabemos que existe un vector
+En síntesis, por el lema \ref{lemma:t-existence} sabemos que existe un vector
 $\vec{t} \in \Z^{n-1}$ que satisface ambos (\ref{eq:param-lb}) y (\ref{eq:feasible-param}).
 Al definir $\vec{x}^* \coloneq \eta\vec{\nu} + M\vec{t}$, encontramos que $\vec{x}^*$ es entero y
-no negativo, y además por los Lemas \ref{lemma:iso1} y \ref{lemma:iso2} encontramos que
+no negativo, y además por los lemas \ref{lemma:iso1} y \ref{lemma:iso2} encontramos que
 \begin{equation*}
 	\vec{q}^T\vec{x}^* = \eta\vec{q}^T\vec{\nu} + \vec{q}^TM\vec{t} = \eta.
 \end{equation*}
-Por el Teorema \ref{theory:th:feasibility}, se sigue que $\vec{x}^*$ es la solución al problema
+Por el teorema \ref{theory:th:feasibility}, se sigue que $\vec{x}^*$ es la solución al problema
 \eqref{theory:formulation}.
 
 En la práctica es mejor usar la relación de recurrencia (\ref{eq:recurrence}) y ``construir'' las
@@ -306,7 +306,7 @@ Extendido de Euclides.
 \begin{proof}
 	Basta observar que el algoritmo sigue la construcción recursiva de la Sección
 	\ref{subsec:dioph-eq}, donde escogemos las variables libres $t_i$ como lo indica la demostración
-	del Lema \ref{lemma:t-existence} para asegurar que $\vec{x}$ sea no negativo. El único punto de
+	del lema \ref{lemma:t-existence} para asegurar que $\vec{x}$ sea no negativo. El único punto de
 	aclaración lo hacemos con respecto a las redefiniciones en la línea \ref{alg:def:inf:q}.
 
 	Sea $\vec{q}'$ una copia del vector $\vec{q}$ antes de realizar cualquier modificación. No es
@@ -317,7 +317,7 @@ Extendido de Euclides.
 	\end{equation*}
 	para todo $i \in \braces{1, \ldots, n}$. Luego, las definiciones en las líneas
 	\eqref{alg:def:inf:g}, \eqref{alg:def:inf:bez} y \eqref{alg:def:inf:lastw} son consistentes con
-	la construcción recursiva de la Sección \ref{subsec:dioph-eq}. Juntando esto con el Lema
+	la construcción recursiva de la Sección \ref{subsec:dioph-eq}. Juntando esto con el lema
 	\ref{lemma:t-existence} encontramos que $\vec{x}$ es no negativo y satisface la ecuación lineal
 	diofantinca $\vec{q}^T\vec{x} = \eta$.
 
@@ -388,14 +388,14 @@ Extendido de Euclides.
 El Algoritmo \ref{algo:inf:ext} extiende el Algoritmo \ref{algo:inf}. Solamente construimos un
 vector $\tvec{q}$ a partir del vector coprimo $\vec{q}$ de manera que se satisfagan las
 hipótesis del Algoritmo \ref{algo:inf}. Esta construcción sigue la misma lógica con la que
-justificamos los supuestos $q_i \neq 0$ y $q_{n-1} < 0 < q_n$ antes de presentar el Lema
+justificamos los supuestos $q_i \neq 0$ y $q_{n-1} < 0 < q_n$ antes de presentar el lema
 \ref{lemma:t-existence}.
 
 Al igual que en el algoritmo anterior, suponemos la existencia de las subrutinas \texttt{length} y
 \texttt{switch}, las cuales determinan la dimensión de un vector $\vec{q}$ y permutan sus entradas,
 respectivamente. Ambas subrutinas son estándar en la literatura y por lo tanto diremos que son
 correctos sin proveer alguna demostración. Así también, la subrutina \texttt{NonNegativeIntSol} es
-el Algoritmo \ref{algo:inf}, el cual es correcto a causa del Lema \ref{lemma:alg:inf:correct}.
+el Algoritmo \ref{algo:inf}, el cual es correcto a causa del lema \ref{lemma:alg:inf:correct}.
 
 \begin{algorithm}[ht]
 	\LinesNumbered
@@ -448,7 +448,7 @@ el Algoritmo \ref{algo:inf}, el cual es correcto a causa del Lema \ref{lemma:alg
 	\ref{algo:inf}. Por definición, en la línea \ref{alg:def:inf:tilde-q}, tenemos que ninguna
 	entrada de $\tvec{q}$ es nula.
 
-	Recordemos de la Definición \ref{theory:def:rational} que, como $\vec{q}$ es el vector coprimo
+	Recordemos de la definición \ref{theory:def:rational} que, como $\vec{q}$ es el vector coprimo
 	de un vector esencialmente entero $\vec{p}$, su primera entrada no nula es positiva. Así, es
 	cierto que $\tilde{q}_1 > 0$. A partir de la permutación en la línea \ref{alg:subr:switch1}
 	encontramos que $\tilde{q}_m > 0$.
@@ -460,7 +460,7 @@ el Algoritmo \ref{algo:inf}, el cual es correcto a causa del Lema \ref{lemma:alg
 	Con los tres puntos anteriores, encontramos que el vector $\tvec{q}$ satisface las
 	hipótesis del Algoritmo \ref{algo:inf} y por lo tanto el vector $\tvec{x}$ es no negativo
 	y satisface la ecuación lineal diofantina $\tvec{q}^T\tvec{x} = \eta$, debido al
-	Lema \ref{lemma:alg:inf:correct}.
+	lema \ref{lemma:alg:inf:correct}.
 
 	Las siguientes dos líneas se encargan de invertir las permutaciones hechas previamente.
 	Finalmente, en el ciclo \eqref{alg:inf:loop2} insertamos en $\vec{x}$ las entradas $i$ de
@@ -484,18 +484,18 @@ el Algoritmo \ref{algo:inf}, el cual es correcto a causa del Lema \ref{lemma:alg
 \begin{proof}
 	Como $\vec{q}$ es el múltiplo coprimo de $\vec{p}$, existe un escalar $m \in \R$ tal que
 	$\vec{p} = m\vec{q}$. Supongamos, sin pérdida de generalidad, que $m$ es positivo. Recuperemos
-	$\eta$ del Lema \ref{phase-1:lemma:eta}. Por hipótesis, una entrada de $\vec{q}$ es negativa, y
-	entonces este vector satisface las condiciones del Algoritmo \ref{algo:inf:ext}. Por el Teorema
+	$\eta$ del lema \ref{phase-1:lemma:eta}. Por hipótesis, una entrada de $\vec{q}$ es negativa, y
+	entonces este vector satisface las condiciones del Algoritmo \ref{algo:inf:ext}. Por el teorema
 	\ref{th:alg:inf} podemos encontrar, a partir de resolver solo una ecuación lineal diofantina, un
 	vector entero no negativo $\vec{x}$ que satisface $\vec{q}^T\vec{x} = \eta$. Observemos que
 	\begin{equation*}
 		\vec{p}^T\vec{x} = m\vec{q}^T\vec{x} = m\eta.
 	\end{equation*}
-	Por el Corolario \ref{cor:inf:obj} concluimos que $\vec{x}$ no solo es factible para el problema
+	Por el corolario \ref{cor:inf:obj} concluimos que $\vec{x}$ no solo es factible para el problema
 	\eqref{theory:formulation}, sino que también es un punto óptimo.
 \end{proof}
 
-A partir del Teorema anterior, podemos discutir informalmente sobre la complejidad algorítmica del
+A partir del teorema anterior, podemos discutir informalmente sobre la complejidad algorítmica del
 problema \eqref{theory:formulation} en el caso especial que una entrada $q_i$ sea negativa. Sea
 $T(\vec{v})$ el número de pasos necesarios para calcular el máximo común divisor de las entradas de
 un vector entero $\vec{v}$. Como los coeficientes de Bézout entre dos enteros $a, b$ se determinan a
@@ -504,7 +504,7 @@ múltiplo entero de $T(a, b)$.
 
 \section{Análisis de resultados}
 \noindent
-Una consecuencia del Teorema \ref{infinite:th:complexity} es que la complejidad algoritmítica del
+Una consecuencia del teorema \ref{infinite:th:complexity} es que la complejidad algoritmítica del
 problema (\ref{theory:formulation}) es lineal en la dimensión $n$ siempre y cuando $q_i < 0$
 para alguna $i \in \lbrace 2, \ldots, n\rbrace$. En esta sección describimos un algoritmo cuyo
 tiempo de terminación es $\mathcal{O}(n)$. A través de los resultados obtenidos previamente, somos
