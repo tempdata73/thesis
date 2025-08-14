@@ -80,7 +80,7 @@ def preprocess(q):
 
     for i in range(len(q) - 2):
         g = cumgcd(q[i + 1:])
-        q[i + 1] //= g
+        q[i + 1:] //= g
         gcd.append(g * gcd[i])
         bez.append(bezout_2d(q[i], g))
     bez.append(bezout_2d(q[-2], q[-1]))
@@ -88,7 +88,7 @@ def preprocess(q):
     return gcd, bez
 
 
-@repeat_with_timeout(num_reps=2)
+@repeat_with_timeout()
 def dioph(q, eta):
     # preprocessing: particular solution to dot(q, x) == 1
     gcd, bez = preprocess(q)
