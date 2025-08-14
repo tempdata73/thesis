@@ -64,7 +64,9 @@ def stats_dioph_as_rhs_increases(solver, q, m, rhs):
             logging.error(f"dioph equation is not satisfied. {obj=} is not {eta=}")
 
         # update
-        stats.update(mu, sigma, (m * eta).item(), u.item(), timed_out)
+        num_layers = eta - np.dot(q, x) + 1
+        logging.info(f"searched through {num_layers} layers")
+        stats.update(mu, sigma, (m * np.dot(q, x)).item(), u.item(), timed_out)
 
     return stats
 
@@ -98,6 +100,8 @@ def stats_dioph_as_dim_increases(solver, dims, seed=RANDOM_SEED):
             logging.error("non-negativity constraint violated")
 
         # update
+        num_layers = eta - np.dot(q, x) + 1
+        logging.info(f"searched through {num_layers} layers")
         stats.update(mu, sigma, np.dot(p, x).item(), u.item(), timed_out)
 
     return stats

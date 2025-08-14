@@ -2,9 +2,7 @@ import os
 import math
 import logging
 
-# math module has not yet implemented a sign function
-# see https://bugs.python.org/msg59154
-sign = lambda x: int(math.copysign(1.0, x))  # noqa: E731
+from numba import njit
 
 
 def setup_logger(log_path):
@@ -22,8 +20,10 @@ def setup_logger(log_path):
     logger.addHandler(handler)
 
 
+@njit
 def bezout_2d(a: int, b: int) -> tuple[int, int]:
-    sgn_a, sgn_b = sign(a), sign(b)
+    sgn_a = int(math.copysign(1.0, a))
+    sgn_b = int(math.copysign(1.0, b))
     a, b = abs(a), abs(b)
 
     prev_r, r = a, b
@@ -40,19 +40,9 @@ def bezout_2d(a: int, b: int) -> tuple[int, int]:
     return sgn_a * prev_x, sgn_b * prev_y
 
 
-def bezout(integers: list[int]) -> list[int]:
-    a, b = integers[0], integers[1]
-    x, y = bezout_2d(a, b)
-
-    coeffs: list[int] = [x, y]
-    for i in range(2, len(integers)):
-        a = a * x + b * y
-        b = integers[i]
-        x, y = bezout_2d(a, b)
-
-        for j in range(i):
-            coeffs[j] *= x
-
-        coeffs.append(y)
-
-    return coeffs
+@njit
+def cumgcd(q):
+    g = q[0]
+    for i in range(1, len(q)):
+        g = math.gcd(g, q[i])
+    return g

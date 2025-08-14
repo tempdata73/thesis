@@ -1,6 +1,8 @@
 from typing import Final
 
-NUM_REPS: Final[int] = 20
+NUM_REPS: Final[int] = 10
+# number of initial runs to ignore when measuring performance
+NUM_IGNORE: Final[int] = 1
 TIMEOUT: Final[int] = 5 * 60  # 5 minutes per instance
 RANDOM_SEED: Final[int] = 42
 

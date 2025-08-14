@@ -6,7 +6,7 @@ from time import perf_counter_ns
 from functools import wraps
 
 
-from .constants import NUM_REPS, TIMEOUT
+from .constants import NUM_REPS, TIMEOUT, NUM_IGNORE
 
 
 def alarm_handler(signum, frame):
@@ -14,20 +14,21 @@ def alarm_handler(signum, frame):
     raise TimeoutError(msg)
 
 
-def repeat_with_timeout(num_reps=NUM_REPS, timeout=TIMEOUT):
+def repeat_with_timeout(num_reps=NUM_REPS, timeout=TIMEOUT, num_ignore=NUM_IGNORE):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            logging.info(f"running {func.__name__} {num_reps} times")
-            signal.signal(signal.SIGALRM, alarm_handler)
+            logging.info(f"running {func.__name__} {num_reps + num_ignore} times")
+            logging.info(f"ignoring first {num_ignore} runs")
 
-            times = [0 for _ in range(num_reps)]
+            signal.signal(signal.SIGALRM, alarm_handler)
+            times = []
             timeout_counter = 0
 
             # get samples. even if function timed out,
             # the observation will still be part of the sample
             prev_res = None
-            for i in range(num_reps):
+            for i in range(num_reps + num_ignore):
                 signal.alarm(timeout)
                 start = perf_counter_ns()
 
@@ -40,15 +41,15 @@ def repeat_with_timeout(num_reps=NUM_REPS, timeout=TIMEOUT):
                     res = prev_res
                 finally:
                     signal.alarm(0)
-                    times[i] = perf_counter_ns() - start
+                    times.append(perf_counter_ns() - start)
 
             # calc stats
-            mu = stats.fmean(times)
-            std = stats.stdev(times, xbar=mu)
+            mu = stats.fmean(times[num_ignore:])
+            std = stats.stdev(times[num_ignore:], xbar=mu)
             logging.info(f"took {mu * 1e-6:0.4f} ± {std * 1e-6:0.4f} ms")
 
             # majority rule to determine whether the function times out in general
-            timed_out = (timeout_counter / num_reps) >= 0.5
+            timed_out = (timeout_counter / (num_reps + num_ignore)) >= 0.5
 
             return res, (mu, std), timed_out
 
@@ -57,22 +58,23 @@ def repeat_with_timeout(num_reps=NUM_REPS, timeout=TIMEOUT):
     return decorator
 
 
-def repeat(num_reps=NUM_REPS):
+def repeat(num_reps=NUM_REPS, num_ignore=NUM_IGNORE):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
             logging.info(f"running {func.__name__} {num_reps} times")
-            times = [0 for _ in range(num_reps)]
+            logging.info(f"running {func.__name__} {num_reps + num_ignore} times")
+            times = []
 
             # get samples
             for i in range(num_reps):
                 start = perf_counter_ns()
                 res = func(*args, **kwargs)
-                times[i] = perf_counter_ns() - start
+                times.append(perf_counter_ns() - start)
 
             # calc stats
-            mu = stats.fmean(times)
-            std = stats.stdev(times, xbar=mu)
+            mu = stats.fmean(times[num_ignore:])
+            std = stats.stdev(times[num_ignore:], xbar=mu)
             logging.info(f"took {mu * 1e-6:0.4f} ± {std * 1e-6:0.4f} ms")
             return res, (mu, std)
 
