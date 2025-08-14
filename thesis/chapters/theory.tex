@@ -4,8 +4,8 @@
 
 \noindent
 En este capítulo cimentamos las bases teóricas necesarias para resolver instancias particulares de
-programas lineales enteros. En primer lugar, la sección de Prerrequisitos recopila resultados
-básicos de teoría de números y de programación que constituyen las herramientas principales para la
+programas lineales enteros. En primer lugar, la sección de prerrequisitos recopila resultados
+básicos de teoría de números y de programación lineal que constituyen las herramientas principales para la
 derivación de nuestros propios resultados. En segundo lugar, la sección de Fundamentos comienza con
 definiciones y enunciados obtenidos de \cite{herr}, los cuales utilizaremos para continuar con la
 construcción de nuestros resultados que, en pleno conocimiento del autor, son originales. El
@@ -23,12 +23,17 @@ problema fundamental que permitirá construir incrementalmente nuestro algoritmo
 
 En la sección de Fundamentos analizaremos a profundidad este problema, cuyo punto de
 culminación será el teorema \ref{theory:th:feasibility}. Veremos que es recomendable separar en dos
-partes el análisis de este problema: el caso $p_i < 0$ para alguna $i \in \lbrace 1, \ldots, n
-\rbrace$; y el caso $\vec{p} > \vec{0}$. Los siguientes dos capítulos examinarán respectivamente
-estos casos. Por el momento, cabe destacar que el segundo caso será de mayor interés y tendrá mayor
-aplicabilidad en problemas reales, pues es una instancia particular del Problema de la Mochila. No
-obstante, el caso $p_i < 0$ también será de utilidad para exhibir casos particulares en donde
-el algoritmo de Ramificación y Acotamiento obtiene un rendimiento deficiente.
+partes el análisis de este problema: el caso $p_i < 0$ para alguna $i \in \braces{1, \ldots, n}$; y
+el caso $\vec{p} > \vec{0}$. Observemos que, para este problema, podemos suponer sin pérdida de
+generalidad que todas las entradas de $\vec{p}$ son no nulas. Cuando introduzcamos múltiples
+restricciones en la sección \ref{sec:multiple} nos desharemos de este supuesto.
+
+Los siguientes dos capítulos examinarán respectivamente los casos que induce el teorema
+\ref{theory:th:feasibility}. Por el momento, cabe destacar que el segundo caso será de mayor interés
+y tendrá mayor aplicabilidad en problemas reales, pues es una instancia particular del Problema de
+la Mochila. No obstante, el caso $p_i < 0$ para alguna $i \in \braces{1, \ldots, n}$ también será de
+utilidad para exhibir casos particulares en donde el algoritmo de Ramificación y Acotamiento obtiene
+un rendimiento deficiente.
 
 \section{Prerrequisitos}
 \label{sec:prerreq}
@@ -236,7 +241,7 @@ encontrar sus soluciones.
 	\R^m$ un vector. Entonces al conjunto definido por
 	\begin{equation}
 		\label{prerreq:def:poly}
-		P \coloneq \lbrace \vec{x} \in \R^n \colon A\vec{x} \geq b \rbrace
+		P \coloneq \lbrace \vec{x} \in \R^n \colon A\vec{x} \geq \vec{b} \rbrace
 	\end{equation}
 	lo llamamos \textbf{poliedro}. Si, además, $P$ es acotado, entonces decimos que $P$ es un
 	\textbf{politopo}.
@@ -294,8 +299,8 @@ encontrar sus soluciones.
 		\end{tikzpicture}
 	\end{minipage}
 	\caption{\textit{Izquierda:} Un hiperplano afino $\braces{\vec{x} \colon \vec{a}^T\vec{x} = b}$
-	junto con los dos semi-espacios que induce. \textit{Derecha:} Todo poliedro $P$ es la intersección
-	de un conjunto finito de semi-espacios inducidos por un hiperplano afino.}
+	junto con los dos semi-espacios que induce. \textit{Derecha:} Este poliedro $P$ es acotado y es
+	la intersección de un conjunto finito de semi-espacios inducidos por un hiperplano afino.}
 	\label{fig:hyp}
 \end{figure}
 
@@ -394,9 +399,9 @@ entonces tenemos que $P \cap \Z^n$ corresponde a la región factible de
 \eqref{prerreq:formulation:ilp}, mientras que $P$ corresponde a la región factible de su problema
 relajado.
 
-A partir de lo anterior, deducimos inmediatamente que la solución óptima $\optilp{z}$ de un programa
-entero es una cota inferior del óptimo $z^*$ de su problema relajado, pues ambos son problemas de
-maximización y es cierto que $P \cap \Z^n \subseteq P$. De aquí se sigue entonces que si $z^* =
+A partir de lo anterior, deducimos inmediatamente que el valor óptimo $\optilp{z}$ de un programa
+entero es una cota inferior del valor óptimo $z^*$ de su problema relajado, pues ambos son problemas
+de maximización y es cierto que $P \cap \Z^n \subseteq P$. De aquí se sigue entonces que si $z^* =
 \optilp{z}$, entonces la solución óptima $\vec{x}^*$ del problema relajado también es la solución
 óptima del programa lineal entero.
 
@@ -423,6 +428,7 @@ Ramificación y Acotamiento.
 			& 4x_1 - x_2, \\
 			\text{s.a.} \quad
 			& 7x_1 - 2x_2 \leq 14, \\
+			& 2x_1 - 2x_2 \leq 3, \\
 			& x_2 \leq 3, \\
 			& x_1, x_2 \geq 0.
 	\end{align*}
@@ -767,11 +773,11 @@ deberá dividirse en dos casos.
 			< 0$ para algún $k \in I^\circ$, esa entrada no sería factible, pero fácilmente
 			podríamos definir $x_k^+ = 0$ para hacerla factible.
 
-			Por hipótesis, tenemos que $q_i < 0$ y por lo tanto $I^- \neq \emptyset$. Además, por la
-			definición \ref{theory:def:rational}, $\vec{q}$ tiene una entrada positiva y por lo
-			tanto $I^+ \neq \emptyset$. Luego, ambos conjuntos $I^+$ e $I^-$ forman una partición
-			del conjunto $\braces{1, \ldots, n}$. Podemos escoger escalares positivos $c_1, \ldots,
-			c_n$ que satisfagan simultáneamente
+			Por hipótesis, sabemos que $\vec{q}$ tiene una entrada negativa y por lo tanto $I^- \neq
+			\emptyset$. Además, por la definición \ref{theory:def:rational}, $\vec{q}$ tiene una
+			entrada positiva y por lo tanto $I^+ \neq \emptyset$. Luego, ambos conjuntos $I^+$ e
+			$I^-$ forman una partición del conjunto $\braces{1, \ldots, n}$. Podemos escoger
+			escalares positivos $c_1, \ldots, c_n$ que satisfagan simultáneamente
 			\begin{align}
 				x_k + \sum_{i \in I^+}q_ic_i &\geq 0, \quad \forall k \in I^-,
 				\label{theory:pf:1} \\
@@ -798,7 +804,7 @@ deberá dividirse en dos casos.
 			\end{align*}
 			Así pues, tenemos existencia de un punto factible. Para concluir que hay un número
 			infinito de puntos factibles, basta observar que si la elección de coeficientes $c_1,
-			\ldots, c_n$ satisface ambas desigualdades (\ref{theory:pf:1}) y (\ref{theory:pf:2}),
+			\ldots, c_n$ satisface ambas desigualdades \eqref{theory:pf:1} y \eqref{theory:pf:2},
 			entonces cualquier múltiplo positivo de estos coeficientes también las satisface.
 		\item Se sigue que $u \geq 0$. Definamos
 			\begin{equation}
@@ -827,9 +833,9 @@ deberá dividirse en dos casos.
 	\end{enumerate}
 \end{proof}
 
-Así pues, suponiendo que el problema (\ref{theory:formulation}) tiene solución, el teorema
-\ref{theory:th:feasibility} nos sugiere dividir nuestro análisis en dos casos: uno donde donde una
-entrada $p_i$ es no positiva y por lo tanto existe una infinidad de soluciones en la $\eta$-ésima
+Así pues, suponiendo que el problema \eqref{theory:formulation} tiene solución, el teorema
+\ref{theory:th:feasibility} nos sugiere dividir nuestro análisis en dos casos: uno donde una
+entrada $p_i$ es negativa y por lo tanto existe una infinidad de soluciones en la $\eta$-ésima
 capa entera; y uno donde $\vec{p}$ es estrictamente positivo, lo que implica la finitud de puntos
 factibles. Ciertamente el segundo caso es el más interesante, pues de alguna manera conocemos
 automáticamente el óptimo de los problemas que recaen en el primer caso. Efectivamente esta es una
@@ -1057,7 +1063,7 @@ elección distinta de $t_i \in \Z$ para cualquier $i \in \lbrace 1, \ldots, n - 
 solución distinta. Por lo tanto, hemos saldado nuestra cuenta pendiente con respecto a una parte de
 la demostración en el teorema \ref{theory:th:feasibility}.
 
-Con respecto a la restricción de no negatividad $\vec{x} \geq 0$ en el problema
+Con respecto a la restricción de no negatividad $\vec{x} \geq \vec{0}$ en el problema
 (\ref{theory:formulation}), podemos acotar nuestra elección de variables libres $t_i \in \Z$ a
 partir de (\ref{eq:recurrence}). De la primera igualdad encontramos que necesariamente se debe
 satisfacer
@@ -1150,13 +1156,14 @@ Sustituyendo en la forma cerrada \eqref{eq:omega-formula}, obtenemos la fórmula
 	- \sum_{j=1}^{i - 1}m_{ij}t_j,
 \end{equation}
 Así pues, juntando esto último con \eqref{eq:recurrence}, obtenemos para $i \in \{1, \ldots, n -
-2\}$, 
+2\}$: 
 \begin{align}
 	x_i &= \omega_i \cdot x_i' + g_{i + 1}t_i \nonumber \\
 		&= k \cdot \prod_{j=2}^{i}\omega_j' \cdot x_i' - \sum_{j=1}^{i - 1}m_{ij}x_i'
 		t_j + g_{i + 1}t_i \label{eq:x:i}.
 \end{align}
 Similarmente, usando \eqref{eq:omega-formula-simplified} y sustituyendo en \eqref{eq:last-solution},
+llegamos a
 \begin{subequations}
 	\label{eq:x:last}
 	\begin{align}
@@ -1184,7 +1191,7 @@ También definimos la matriz $M \in \Z^{n \times (n - 1)}$ a través de
 		0, &\quad \text{e.o.c.}
 	\end{cases}
 \end{equation}
-De (\ref{eq:x:i}) y (\ref{eq:x:last}) encontramos que
+Sustituyendo estas definiciones en \eqref{eq:x:i} y \eqref{eq:x:last} encontramos que
 \begin{equation}
 	\label{eq:transf}
 	\vec{x} = k\vec{\nu} + M\vec{t}.
@@ -1415,7 +1422,7 @@ $M$ no esté bien definida\footnote{
 	\label{cor:iso3}
 	Sea $\vec{q}$ un vector coprimo y sea $\tvec{q}$ el vector coprimo resultante de haber
 	permutado las entradas de $\vec{q}$. Supongamos además que $q_n, \tilde{q}_n \neq 0$.
-	Entonces
+	Entonces sus respectivas matrices $M$ y $\tilde{M}$ definidas en \eqref{eq:mat-T} son isomorfas:
 	\begin{equation*}
 		\ker{\tilde{M}^T} \cong \ker{M^T}.
 	\end{equation*}
@@ -1537,6 +1544,7 @@ En la siguiente sección observamos cómo esta descomposición permite que desac
 lineal entero en dos partes: una de maximización y otra de factibilidad.
 
 \subsection{Múltiples restricciones}
+\label{sec:multiple}
 \noindent
 En esta sección hacemos un análisis extensivo sobre lo resulta de agregar más restricciones al
 problema (\ref{theory:formulation}). Sea $\vec{p} \in \R^n$ esencialmente entero y consideremos su
