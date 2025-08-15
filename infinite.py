@@ -1,16 +1,18 @@
 import math
 import numpy as np
+from numba import njit
 
-from src.utils import bezout_2d
+from src.utils import bezout_2d, cumgcd
 from src.decorators import repeat_with_timeout
 
 
+@njit
 def non_negative_int_sol(q, eta):
     n = len(q)
     x = np.zeros(n)
 
     for i in range(n - 2):
-        g = math.gcd(*q[i + 1 :])
+        g = cumgcd(q[i + 1 :])
         x_b, w_b = bezout_2d(q[i], g)
 
         # feasible parameter and nonnegative solution
@@ -63,11 +65,13 @@ def dioph(q, eta):
 
 
 if __name__ == "__main__":
+    from functools import partial
     from src.common import (
-        stats_bb_as_rhs_increases as bb_rhs,
         stats_dioph_as_rhs_increases as dioph_rhs,
+        stats_bb_as_rhs_increases as bb_rhs,
     )
     from src.constants import bb_raw_options, bb_full_options
+    from src.common import run_parallel
 
     rhs = np.logspace(3, 7, num=128, base=10.0, dtype=int)
 
@@ -95,36 +99,32 @@ if __name__ == "__main__":
 
     # sanity check
     np.testing.assert_almost_equal(p, m[:, np.newaxis] * q)
-    print(p)
-    for i in range(3):
-        print(p[i])
-        print()
-    exit(0)
 
     n = p.shape[1]
     create_path = lambda name, d: f"times/inf/{name}/{n}n-{d}d"  # noqa: E731
     jobs = []
+
     for i in range(num_experiments):
         jobs.extend(
             [
                 {
                     "name": "dioph",
                     "log_path": create_path("dioph", i + 3),
-                    "job": lambda *_: dioph_rhs(dioph, q[i].copy(), m[i], rhs.copy()),
+                    "job": partial(
+                        dioph_rhs, dioph, q[i].copy(), m[i].copy(), rhs.copy()
+                    ),
                 },
                 {
                     "name": "bb_raw",
                     "log_path": create_path("bb_raw", i + 3),
-                    "job": lambda *_: bb_rhs(
-                        p[i].copy(), rhs.copy(), **bb_raw_options.copy()
-                    ),
+                    "job": partial(bb_rhs, p[i].copy(), rhs.copy(), **bb_raw_options),
                 },
                 {
                     "name": "bb_full",
                     "log_path": create_path("bb_full", i + 3),
-                    "job": lambda *_: bb_rhs(
-                        p[i].copy(), rhs.copy(), **bb_full_options.copy()
-                    ),
+                    "job": partial(bb_rhs, p[i].copy(), rhs.copy(), **bb_full_options),
                 },
             ]
         )
+
+    run_parallel(jobs)

@@ -104,6 +104,7 @@ def dioph(q, eta):
 
 
 if __name__ == "__main__":
+    from functools import partial
     from src.common import (
         stats_dioph_as_dim_increases as dioph_dim,
         stats_dioph_as_rhs_increases as dioph_rhs,
@@ -153,42 +154,42 @@ if __name__ == "__main__":
         {
             "name": "dioph",
             "log_path": create_dim_path("dioph"),
-            "job": lambda *_: dioph_dim(dioph, dims.copy()),
+            "job": partial(dioph_dim, dioph, dims.copy()),
         },
         {
             "name": "dioph",
             "log_path": create_rhs_path("dioph"),
-            "job": lambda *_: dioph_rhs(dioph, q.copy(), m, rhs.copy()),
+            "job": partial(dioph_rhs, q.copy(), m, rhs.copy()),
         },
         {
             "name": "dioph-sorted",
             "log_path": create_rhs_path("dioph-sorted"),
-            "job": lambda *_: dioph_rhs(dioph, np.sort(q).copy(), m, rhs.copy()),
+            "job": partial(dioph_rhs, np.sort(q).copy(), m, rhs.copy()),
         },
         {
             "name": "dioph-sorted-rev",
             "log_path": create_rhs_path("dioph-sorted-rev"),
-            "job": lambda *_: dioph_rhs(dioph, np.sort(q)[::-1].copy(), m, rhs.copy()),
+            "job": partial(dioph_rhs, np.sort(q)[::-1].copy(), m, rhs.copy()),
         },
         {
             "name": "bb_raw",
             "log_path": create_dim_path("bb_raw"),
-            "job": lambda *_: bb_dim(dims.copy(), **bb_raw_options),
+            "job": partial(bb_dim, dims.copy(), **bb_raw_options),
         },
         {
             "name": "bb_full",
             "log_path": create_dim_path("bb_full"),
-            "job": lambda *_: bb_dim(dims.copy(), **bb_full_options),
+            "job": partial(bb_dim, dims.copy(), **bb_full_options),
         },
         {
             "name": "bb_raw",
             "log_path": create_rhs_path("bb_raw"),
-            "job": lambda *_: bb_rhs(p.copy(), rhs.copy(), **bb_raw_options),
+            "job": partial(bb_rhs, p.copy(), rhs.copy(), **bb_raw_options),
         },
         {
             "name": "bb_full",
             "log_path": create_rhs_path("bb_full"),
-            "job": lambda *_: bb_dim(p.copy(), rhs.copy(), **bb_full_options),
+            "job": partial(bb_rhs, p.copy(), rhs.copy(), **bb_full_options),
         },
     ]
     run_parallel(jobs)
