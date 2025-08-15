@@ -67,7 +67,7 @@ def repeat(num_reps=NUM_REPS, num_ignore=NUM_IGNORE):
             times = []
 
             # get samples
-            for i in range(num_reps):
+            for i in range(num_reps + num_ignore):
                 start = perf_counter_ns()
                 res = func(*args, **kwargs)
                 times.append(perf_counter_ns() - start)

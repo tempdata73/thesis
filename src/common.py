@@ -10,21 +10,21 @@ import multiprocessing as mp
 from tempfile import mkstemp
 from dataclasses import asdict
 
-from .constants import NUM_REPS, RANDOM_SEED
+from .constants import RANDOM_SEED
 from .utils import setup_logger
 from .schema import StatsSchema
 from .decorators import repeat
 from .knapsack import ukp_dp
 
 
-def solve_pulp(p, rhs, num_reps, **kwargs):
+def solve_pulp(p, rhs, **kwargs):
     # create lp problem
     x = [lp.LpVariable(f"b_{i}", lowBound=0, cat=lp.LpInteger) for i in range(len(p))]
     prob = lp.LpProblem(sense=lp.LpMaximize)
     prob += lp.lpDot(p, x), "objective"
     prob += lp.lpDot(p, x) <= rhs, "constraint"
 
-    @repeat(num_reps)
+    @repeat()
     def solve_pulp():
         prob.solve(lp.PULP_CBC_CMD(**kwargs))
         return np.array([lp.value(var) for var in x])
@@ -107,7 +107,7 @@ def stats_dioph_as_dim_increases(solver, dims, seed=RANDOM_SEED):
     return stats
 
 
-def stats_bb_as_rhs_increases(p, rhs, num_reps=NUM_REPS, **kwargs):
+def stats_bb_as_rhs_increases(p, rhs, **kwargs):
     stats = StatsSchema(kwargs.pop("name"))
 
     base_path = os.path.join(".", kwargs.pop("logPath"), stats.solver)
@@ -119,7 +119,7 @@ def stats_bb_as_rhs_increases(p, rhs, num_reps=NUM_REPS, **kwargs):
 
         _, log_path = mkstemp(dir=base_path)
         kwargs["logPath"] = log_path
-        x, (mu, sigma), timed_out = solve_pulp(p, u, num_reps, **kwargs)
+        x, (mu, sigma), timed_out = solve_pulp(p, u, **kwargs)
 
         # update
         stats.update(mu, sigma, np.dot(p, x).item(), u.item(), timed_out)
@@ -127,7 +127,7 @@ def stats_bb_as_rhs_increases(p, rhs, num_reps=NUM_REPS, **kwargs):
     return stats
 
 
-def stats_bb_as_dim_increases(dims, num_reps=NUM_REPS, seed=RANDOM_SEED, **kwargs):
+def stats_bb_as_dim_increases(dims, seed=RANDOM_SEED, **kwargs):
     rng = np.random.default_rng(seed=seed)
     stats = StatsSchema(kwargs.pop("name"))
 
@@ -144,7 +144,7 @@ def stats_bb_as_dim_increases(dims, num_reps=NUM_REPS, seed=RANDOM_SEED, **kwarg
 
         _, log_path = mkstemp(dir=base_path)
         kwargs["logPath"] = log_path
-        x, (mu, sigma), timed_out = solve_pulp(p, u, num_reps, **kwargs)
+        x, (mu, sigma), timed_out = solve_pulp(p, u, **kwargs)
 
         # update
         stats.update(mu, sigma, np.dot(p, x).item(), u.item(), timed_out)
