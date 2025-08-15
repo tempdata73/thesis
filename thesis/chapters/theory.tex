@@ -1,15 +1,16 @@
 \chapter{Aspectos Teóricos}
-
-% TODO: escribir la idea general
-
 \noindent
-En este capítulo cimentamos las bases teóricas necesarias para resolver instancias particulares de
-programas lineales enteros. En primer lugar, la sección de prerrequisitos recopila resultados
-básicos de teoría de números y de programación lineal que constituyen las herramientas principales para la
-derivación de nuestros propios resultados. En segundo lugar, la sección de Fundamentos comienza con
-definiciones y enunciados obtenidos de \cite{herr}, los cuales utilizaremos para continuar con la
-construcción de nuestros resultados que, en pleno conocimiento del autor, son originales. El
-problema fundamental que permitirá construir incrementalmente nuestro algoritmo es
+Este capítulo presenta los prerrequisitos necesarios para obtener los resultados que se encuentran a
+lo largo de esta tesis.
+En primer lugar, la sección \ref{sec:prerreq} recopila resultados básicos de teoría de números y de
+programación lineal. Estas herramientas forman parte de la literatura tradicional y constituyen lo
+mínimo necesario para la derivación de nuestros propios resultados.
+En segundo lugar, la sección \ref{sec:foundations} presenta enunciados y definiciones obtenidos de
+\cite{herr}, los cuales utilizaremos para continuar con la construcción de nuestros propios
+resultados que, en pleno conocimiento del autor, son originales.
+
+Como mencionamos en la motivación de esta tesis, nos concentraremos casi exclusivamente en problemas
+de programación lineal entera del tipo
 \begin{subequations}
 	\label{theory:formulation}
 	\begin{align}
@@ -21,44 +22,46 @@ problema fundamental que permitirá construir incrementalmente nuestro algoritmo
 	\end{align}
 \end{subequations}
 
-En la sección de Fundamentos analizaremos a profundidad este problema, cuyo punto de
-culminación será el teorema \ref{theory:th:feasibility}. Veremos que es recomendable separar en dos
-partes el análisis de este problema: el caso $p_i < 0$ para alguna $i \in \braces{1, \ldots, n}$; y
-el caso $\vec{p} > \vec{0}$. Observemos que, para este problema, podemos suponer sin pérdida de
-generalidad que todas las entradas de $\vec{p}$ son no nulas. Cuando introduzcamos múltiples
-restricciones en la sección \ref{sec:multiple} nos desharemos de este supuesto.
+En la sección \ref{sec:foundations} analizaremos a profundidad este problema, cuyo punto de
+culminación será el teorema \ref{theory:th:feasibility}. De manera resumida, el análisis de este
+problema se divide en dos casos, dependiendo de los signos de las entradas de un vector $\vec{q}$
+asociado a $\vec{p}$.
 
-Los siguientes dos capítulos examinarán respectivamente los casos que induce el teorema
-\ref{theory:th:feasibility}. Por el momento, cabe destacar que el segundo caso será de mayor interés
-y tendrá mayor aplicabilidad en problemas reales, pues es una instancia particular del Problema de
-la Mochila. No obstante, el caso $p_i < 0$ para alguna $i \in \braces{1, \ldots, n}$ también será de
-utilidad para exhibir casos particulares en donde el algoritmo de Ramificación y Acotamiento obtiene
-un rendimiento deficiente.
+Observemos que, para este problema, podemos suponer sin pérdida de generalidad que todas las
+entradas de $\vec{p}$ son distintas de cero. En efecto, si alguna entrada $p_i$ es cero, podremos
+decir que $x_i = 0$. Cuando introduzcamos en el capítulo 4 múltiples restricciones nos desharemos de
+este supuesto.
 
 \section{Prerrequisitos}
 \label{sec:prerreq}
 \noindent
-En los siguientes capítulos usaremos extensivamente resultados básicos de teoría de números y de
-programación lineal, por lo que es provechoso recopilarlos en esta primera sección. En
-particular, destaca la importancia de las ecuaciones lineales diofantinas para la construcción
-de nuestro algoritmo. En esta sección el autor consideró pertinente no incluir demostraciones, pues los
-enunciados son mostrados en cualquier clase de álgebra superior, programación lineal, o
-investigación de operaciones, por ejemplo. La referencia principal para la parte de teoría de
-números es \cite{carmen}, mientras que la de programación lineal es \cite{fabs}.
+El autor consideró pertinente no incluir demostraciones en esta sección, pues los enunciados son
+mostrados en cualquier clase de álgebra superior, programación lineal, o investigación de
+operaciones. Las referencias principales para las subsecciones de teoría de números y de
+programación lineal son \cite{carmen} y \cite{fabs}, respectivamente.
 
 \subsection{Teoría de Números}
 \label{section:number-theory}
 \subsubsection{Máximo común divisor y mínimo común múltiplo}
 \noindent
-En primer lugar, introducimos el símbolo de relación ``$\mid$'' para indicar divisibilidad. Dados
-dos enteros $a, b$, decimos que $b$ divide a $a$ (y escribimos $b \mid a$) si y solo si existe un
-entero $k$ tal que $a = k \cdot b$. Así también, denotamos el conjunto de divisores de $a$ como
-\begin{equation*}
-	D(a) \coloneq \lbrace b \in \Z \vcentcolon b \mid a \rbrace.
-\end{equation*}
-Si $a$ es distinto de cero, encontramos que $D(a)$ es finito, puesto que si $b \mid a$, entonces
-$|b| \leq |a|$, lo cual implica que $|D(a)| \leq 2|a|$. En caso de que $a$ sea nulo, obtenemos $D(a)
-= \Z$. Observemos también que $\lbrace -1, 1 \rbrace \subseteq D(a)$ para todo entero $a$.
+
+\begin{definition}
+	Dados dos enteros $a$ y $b$, decimos que \textbf{$a$ divide a $b$} (y escribimos $a \mid b$) si
+	existe un entero $k$ tal que $a = k \cdot b$. También denotamos por $D(a)$ al \textbf{conjunto de
+	divisores de $a$}, es decir, definimos
+	\begin{equation*}
+		D(a) \coloneq \braces{b \in \Z \vcentcolon b \mid a}.
+	\end{equation*}
+\end{definition}
+\begin{observation}
+	Si $a$ es distinto de cero, entonces $D(a)$ es finito. En efecto, si $b \mid a$ y $a \neq 0$, es
+	posible mostrar que $|b| \leq |a|$, lo cual implica que $|D(a)| \leq 2|a|$. En caso de que $a$
+	sea nulo, se sigue que $D(a) = \Z$.
+\end{observation}
+\begin{observation}
+	Para cualquier entero $a$ se satisface $\lbrace -1, 1 \rbrace \subseteq D(a)$, pues $a = a \cdot
+	1$ y también $a = (-a) \cdot (-1)$.
+\end{observation}
 
 \begin{definition}
 	\label{prerreq:def:gcd}
@@ -68,29 +71,35 @@ $|b| \leq |a|$, lo cual implica que $|D(a)| \leq 2|a|$. En caso de que $a$ sea n
 	\textbf{coprimos}.
 \end{definition}
 
-Puesto que $a_i \neq 0$ para alguna $i$ en la definición anterior, encontramos que el conjunto
-$\bigcap_{i=1}^{n}D(a_i)$ es finito y, como también es no vacío, en efecto existe un elemento maximal.
-Es decir, el máximo común divisor $d$ siempre está bien definido. Cabe mencionar que el máximo común
-divisor siempre es estrictamente positivo, pues se cumple que $1 \in D(a)$ para todo entero $a$.
+Puesto que alguna entrada $a_i$ es distinta de cero en la definición anterior, encontramos que el conjunto
+$\bigcap_{i=1}^{n}D(a_i)$ es finito y también es no vacío (ver observación anterior), por lo que
+este conjunto tiene un elemento maximal. Es decir, el máximo común divisor $d$ siempre está bien
+definido.
+\begin{observation}
+	El máximo común divisor siempre es positivo, pues se cumple que $1 \in D(a)$ para todo entero
+	$a$, lo que implica por maximalidad que $1 \leq \gcd{a_1, \ldots, a_n}$ para cualquier colección
+	de enteros no todos nulos.
+\end{observation}
 
-Otra definición equivalente para el máximo común divisor normalmente es dada de manera inductiva.
-Decimos que $d$ es el máximo común divisor de dos enteros $a_1, a_2$, no ambos nulos, si se
-satisface
+La definición más común del máximo común es dada de manera inductiva. Decimos que $d$ es el máximo
+común divisor de dos enteros $a_1, a_2$, no ambos iguales a cero, si se satisface
 \begin{enumerate}
 	\item $d \mid a_1$ y $d \mid a_2$, y también,
 	\item si $d' \mid a_1$ y $d' \mid a_2$, entonces $d' \mid d$.
 \end{enumerate}
-Luego, para un conjunto de enteros $a_1, a_2 \ldots a_n$, no todos nulos, definimos el máximo común
+Luego, para un conjunto de enteros $a_1, a_2 \ldots a_n$, no todos iguales a cero, definimos el máximo común
 divisor entre ellos a partir de
 \begin{equation*}
 	\gcd{a_1, a_2, \ldots, a_{n-1}, a_n} \coloneq \gcd{a_1, \gcd{a_2, \ldots, \gcd{a_{n-1}, a_n}}}.
 \end{equation*}
 Sin embargo, debemos ser cuidadosos con esta manera de definir las cosas, pues puede ser el caso,
-por ejemplo, que $a_{n-1} = a_n = 0$ y entonces $\gcd{a_{n-1}, a_n}$ no está bien definido. Una
-manera simple de arreglar esto último es agregar la condición de que $a_n$ sea no nulo. Es por esto
-último que el autor prefirió la definición \ref{prerreq:def:gcd}. Independientemente de cómo
-definamos el máximo común divisor, la manera de calcularlo siempre es a través del Algoritmo de
-Euclides. A partir de este punto usaremos ambas definiciones de manera indistinta.
+por ejemplo, que $a_{n-1}$ y $a_n$ sean ambos cero y entonces $\gcd{a_{n-1}, a_n}$ no está bien definido.
+
+Para que esta manera de definir el máximo común divisor sea equivalente a la definición
+\ref{prerreq:def:gcd}, deberemos presuponer o bien que $a_{n - 1} \neq 0$ o bien que $a_n \neq 0$. A
+partir de este punto usaremos ambas definiciones de manera indistinta. Independientemente de qué
+definición usemos, la manera de calcular el máximo común divisor siempre es a través del Algoritmo
+de Euclides.
 
 \begin{observation}
 	No porque una colección de enteros sea coprima se sigue que estos enteros son coprimos a pares.
@@ -103,8 +112,8 @@ Euclides. A partir de este punto usaremos ambas definiciones de manera indistint
 	positivo, también decimos que esto último es una \textbf{combinación lineal entera positiva}.
 \end{definition}
 
-El siguiente teorema, a pesar de su simpleza, es central para los resultados obtenidos en esta
-tesis.
+% El siguiente teorema, a pesar de su simpleza, es central para los resultados obtenidos en esta
+% tesis.
 \begin{theorem}
 	\label{prerreq:th:bezout}
 	Sea $d$ un entero y sean $a_1, \ldots, a_n$ una colección de enteros no todos iguales a cero.
@@ -113,7 +122,7 @@ tesis.
 \end{theorem}
 
 \begin{example}
-	El maximo común divisor $d$ de los enteros $a_1 \coloneq 2$, $a_2 \coloneq 3$ y $a_3 \coloneq 5$
+	El máximo común divisor $d$ de los enteros $a_1 \coloneq 2$, $a_2 \coloneq 3$ y $a_3 \coloneq 5$
 	es 1 y además se cumple que $-3a_1 - a_2 + 2a_3 = 1 = d$.
 \end{example}
 
@@ -122,45 +131,54 @@ tesis.
 	Si $d = \gcd{a_1, \ldots, a_n}$, entonces $\gcd{\frac{a_1}{d}, \ldots, \frac{a_n}{d}} = 1$.
 \end{lemma}
 
-Además del máximo común divisor, requeriremos al mínimo común múltiplo, empero en menor medida. Sea
-$a$ un entero y denotamos el conjunto de sus múltiplos como
-\begin{equation*}
-	M(a) \coloneq \lbrace x \in \Z \vcentcolon a \mid x \rbrace.
-\end{equation*}
-Si $a$ es nulo, entonces $M(a) = \lbrace 0 \rbrace$. En caso contrario encontramos que $M(a)$ es un
-conjunto infinito. Ánalogamente a la definición \ref{prerreq:def:gcd}, definimos el mínimo común
-múltiplo $m$ de una colección de enteros $a_1, \ldots, a_n \in \Z \setminus \lbrace 0 \rbrace$ como
-el elemento minimal de $\N \cap \bigcap_{i=1}^{n}M(a_i)$. Escribimos $m = \lcm{a_1, \ldots, a_n}$.
-Para observar que está bien definido, basta mencionar que el producto $|a_1 \cdots a_n|$ es un
-elemento de la intersección y por lo tanto esta es no vacía.
+Además del máximo común divisor, haremos uso del mínimo común múltiplo, aunque será en menor medida.
+\begin{definition}
+	Definimos el \textbf{conjunto de múltiplos} de un entero $a$ como
+	\begin{equation*}
+		M(a) \coloneq \braces{x \in \Z \vcentcolon a \mid x}.
+	\end{equation*}
+	También definimos el \textbf{mínimo común múltiplo} de un conjunto de enteros $a_1, \ldots,
+	a_n$, no todos iguales a cero, como el elemento minimal del conjunto $\Z_{\geq 0} \cap
+	\bigcap_{i=1}^{n}M(a_i)$. Escribimos $\lcm{a_1, \ldots, a_n}$ para denotar a este mínimo común
+	múltiplo.
+\end{definition}
+
+\begin{observation}
+	Si $a$ es nulo, entonces $M(a) = \braces{0}$. En caso contrario encontramos que $M(a)$ es un
+	conjunto infinito.
+\end{observation}
+
+Para mostrar que el múltiplo común múltiplo está bien definido, basta observar que el producto $|a_1
+\cdots a_n|$ es no negativo y también es un elemento de $M(a_i)$ para toda $i \in \braces{1, \ldots,
+n}$.
 
 \subsubsection{Ecuaciones lineales diofantinas}
 
 \noindent
 Sea $c \in \Z$ y sean $a_1, \ldots, a_n$ enteros. Una ecuación lineal diofantina es una ecuación
-donde queremos encontrar enteros $x_1, \ldots, x_n$ que satisfagan
+donde deseamos determinar enteros $x_1, \ldots, x_n$ que satisfagan
 \begin{equation*}
 	a_1x_1 + \cdots + a_nx_n = c.
 \end{equation*}
 Será de nuestro interés en las siguientes secciones resolver iterativamente este tipo de ecuaciones.
 Por el momento basta mencionar que podemos enfocarnos en el caso $n = 2$ sin ninguna pérdida de
-generalidad. No obstante, los resultados se mantienen para cualquier $n \in \N$. Los siguientes
-enunciados abordan el problema de determinar existencia y unicidad para las ecuaciones lineales
-diofantinas, así como la construcción de sus soluciones.
+generalidad. No obstante, los resultados se mantienen para cualquier $n \in \N$.
 
+Los siguientes enunciados abordan el problema de determinar la existencia de soluciones para este
+tipo de ecuaciones, así como de construir estas soluciones.
 \begin{theorem}[Existencia]
 	\label{prerreq:th:existence}
-	Sean $a, b \in \Z$, no ambos cero. La ecuación $ax + by = c$ tiene solución entera si y solo si
-	$\gcd{a, b} \mid c$.
+	Sean $a$ y $b$ enteros, no ambos iguales a cero. Entonces la ecuación lineal diofantina $ax + by
+	= c$ tiene solución entera si y solo si $\gcd{a, b} \mid c$.
 \end{theorem}
 
-Para construir el conjunto de soluciones a una ecuación lineal diofantina, encontramos primero una
+Para construir el conjunto de soluciones a una ecuación lineal diofantina, primero encontramos  una
 solución particular.
 \begin{definition}
 	\label{prerreq:def:bezout}
 	Sea $d \coloneq \gcd{a, b}$ y sean $x', y'$ enteros tales que $ax' + by' = d$ (c.f. teorema
 	\ref{prerreq:th:bezout}). Decimos entonces que $x', y'$ son \textbf{coeficientes de Bézout} asociados a
-	$a, b$, respectivamente\footnote{
+	$a$ y $b$, respectivamente\footnote{
 		Los coeficientes de Bézout se pueden calcular a través del Algoritmo Extendido de Euclides.
 		Véase \url{https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm}.
 	}.
@@ -168,7 +186,7 @@ solución particular.
 
 \begin{observation}
 	Los coeficientes de Bézout asociados a un par de enteros no son únicos. En efecto, si $x', y'$
-	son coeficientes de Bézout de $a, b$, entonces $x' + b$, $y' - a$ también lo son:
+	son coeficientes de Bézout de $a$ y $b$, entonces $x' + b$, $y' - a$ también lo son:
 	\begin{equation*}
 		a(x' + b) + b(y' - a) = ax' + by' + ab - ab = ax' + by' = d.
 	\end{equation*}
@@ -188,7 +206,7 @@ por lo que $(c' \cdot x', c' \cdot y')$ es una solución particular de la ecuaci
 \begin{theorem}[Construcción]
 	\label{prerreq:th:construction}
 	Sea $(x_0, y_0)$ una solución particular de la ecuación lineal diofantina $ax + by = c$.
-	Entonces todas las soluciones de la ecuación están dadas por
+	Entonces todas las soluciones enteras de aquella ecuación están dadas por
 	\begin{equation}
 		\label{prerreq:eq:construction}
 		\begin{cases}
@@ -196,7 +214,7 @@ por lo que $(c' \cdot x', c' \cdot y')$ es una solución particular de la ecuaci
 			y = y_0 - \frac{a}{d}t,
 		\end{cases}
 	\end{equation}
-	donde $d \coloneq \gcd{a, b}$ y $t \in \Z$.
+	donde $d \coloneq \gcd{a, b}$ y $t \in \Z$ es una variable libre.
 \end{theorem}
 
 \begin{example}
@@ -223,11 +241,13 @@ La programación lineal se encarga de resolver problemas de optimización de la 
 	\label{prim:lineal-opt}
 	\max_{\vec{x}} ~\lbrace \vec{c}^T\vec{x} \colon \vec{x} \in P \rbrace,
 \end{equation}
-donde $P$ es un poliedro. En esta sección repasamos brevemente propiedades del poliedro $P$ al cual
-llamamos región factible. Así también, indicamos dónde se encuentra el óptimo del problema y
-hacemos mención rápida sobre cómo obtenerlo. Finalmente, nos enfocamos en programas lineales enteros
-y, más importantemente, describimos cómo funciona el algoritmo de Ramificación y Acotamiento para
-encontrar sus soluciones.
+donde $P$ es un poliedro.
+
+En esta sección repasamos brevemente propiedades del poliedro $P$ al cual llamamos región factible.
+Así también, indicamos dónde se encuentra el óptimo del problema \eqref{prim:lineal-opt} y hacemos
+mención rápida sobre cómo obtenerlo. Finalmente, nos enfocamos en programas lineales enteros y, más
+importantemente, describimos cómo funciona el algoritmo de Ramificación y Acotamiento para encontrar
+soluciones de estos programas enteros.
 
 \begin{definition}
 	Sea $\vec{a} \in \R^n$ un vector no nulo y sea $b \in \R$ un escalar. Llamamos
@@ -300,16 +320,16 @@ encontrar sus soluciones.
 		\end{tikzpicture}
 	\end{minipage}
 	\caption{\textit{Izquierda:} Un hiperplano afino $\braces{\vec{x} \colon \vec{a}^T\vec{x} = b}$
-	junto con los dos semi-espacios que induce. \textit{Derecha:} Este poliedro $P$ es acotado y es
-	la intersección de un conjunto finito de semi-espacios inducidos por un hiperplano afino.}
+	junto con los dos semi-espacios que induce. \textit{Derecha:} Un politopo $P$.}
 	\label{fig:hyp}
 \end{figure}
 
 \begin{definition}
 	Sea $P$ un poliedro. Decimos que el vector $\vec{x} \in P$ es un \textbf{vértice} de $P$ si existe
 	$\vec{c} \in \R^n$ de manera que $\vec{c}^T\vec{x} < \vec{c}^T\vec{y}$ para todo $\vec{y} \in P
-	\setminus \lbrace \vec{x} \rbrace$.
+	\setminus \braces{\vec{x}}$.
 \end{definition}
+
 En términos gráficos, decimos que $\vec{x}$ es un vértice si se satisfacen dos condiciones: en
 primer lugar, existe un hiperplano afino que pasa por $\vec{x}$ y uno de sus semi-espacios inducidos
 contiene completamente al poliedro $P$; en segundo lugar, ningún otro punto de $P$ se encuentra
@@ -347,12 +367,12 @@ sin pérdida de generalidad como
 			& \vec{c}^T\vec{x}, \label{prerreq:formulation:objective} \\
 		\text{s.a.} \quad
 			& A\vec{x} = \vec{b}, \label{prerreq:formulation:constraints} \\
-			& \vec{x} \geq \vec{0} \nonumber,
+			& \vec{x} \geq \vec{0} \nonumber.
 	\end{align}
 \end{subequations}
-donde ``s.a.'' es una abreviación de ``sujeto a''. De ahora en adelante, nuestro análisis se
-concentrará exclusivamente en problemas lineales de este tipo. Es decir, supondremos, sin pérdida de
-generalidad, que todo problema lineal se encuentra en esta forma estándar.
+De ahora en adelante nuestro análisis se concentrará exclusivamente en problemas lineales de este
+tipo. Es decir, supondremos, sin pérdida de generalidad, que todo problema lineal se encuentra en
+esta forma estándar.
 
 \begin{theorem}
 	\label{prerreq:th:linear-sol}
@@ -362,12 +382,12 @@ generalidad, que todo problema lineal se encuentra en esta forma estándar.
 \end{theorem}
 
 Este teorema fundamental constituye el primer paso para la construcción de varios algoritmos que
-encuentran soluciones del problema \eqref{prerreq:formulation}. Ciertamente el más famoso de todos
+encuentran soluciones del problema \eqref{prerreq:formulation}. Ciertamente, el más famoso de todos
 es el algoritmo simplex, el cual ``salta'' de vértice en vértice hasta llegar a uno con valor
 óptimo. Otros, más modernos y conocidos como métodos de puntos interiores, comienzan en el interior
 del poliedro $P$ y son ``atraídos'' como imanes a uno de los vértices con valor óptimo. No es el
 objetivo de esta tesis exponer la maquinaria matemática detrás de estos algoritmos\footnote{
-	Sin embargo, la literatura para explicar estos métodos es harto abundante. Véase, por ejemplo,
+	Sin embargo, la literatura para explicar estos métodos es abundante. Véase, por ejemplo,
 	\cite{nocedal}.
 }.
 
@@ -390,8 +410,8 @@ algoritmo para resolver problemas del tipo \eqref{prerreq:formulation}.
 	\end{subequations}
 \end{definition}
 Resalta el hecho de que la formulación de un programa lineal entero es idéntico a su formulación
-relajada, solamente agregamos la restricción de que nuestro vector solución $\vec{x}^*$
-sea entero. Es decir, lo único que cambia es la región de factibilidad. De hecho, si
+relajada, solamente agregamos la restricción de que nuestra solución óptima $\vec{x}^*$
+sea entera. Es decir, lo único que cambia es la región de factibilidad. De hecho, si
 definimos el poliedro
 \begin{equation*}
 	P \coloneq \lbrace \vec{x} \in \R^n \colon A\vec{x} = \vec{b}, \vec{x} \geq \vec{0} \rbrace,
@@ -402,13 +422,13 @@ relajado.
 
 A partir de lo anterior, deducimos inmediatamente que el valor óptimo $\optilp{z}$ de un programa
 entero es una cota inferior del valor óptimo $z^*$ de su problema relajado, pues ambos son problemas
-de maximización y es cierto que $P \cap \Z^n \subseteq P$. De aquí se sigue entonces que si $z^* =
-\optilp{z}$, entonces la solución óptima $\vec{x}^*$ del problema relajado también es la solución
-óptima del programa lineal entero.
+de maximización y es cierto que $P \cap \Z^n \subseteq P$. De aquí se sigue que si $\optilp{z} =
+z^*$, entonces la solución óptima $\vec{x}^*$ del problema relajado también es la solución
+óptima del programa lineal entero si $\vec{x}^* \in \Z^n$.
 
-Para resolver problemas lineales enteros más generales, comúnmente se utiliza el algoritmo de
-Ramificación y Acotamiento. Este método consiste en generar un árbol binario donde cada nodo
-representa un subproblema lineal a resolver. En la raíz del árbol resolvemos el problema relajado
+El algoritmo estándar para encontrar soluciones de programas lineales enteros es Ramificación y
+Acotamiento. Este método consiste en generar un árbol binario donde cada nodo representa un
+subproblema lineal a resolver. En la raíz del árbol resolvemos el problema relajado
 \eqref{prerreq:formulation} y, si la solución óptima $\vec{x}^* \in \R^n$ no es entera, entonces
 para alguna entrada $x_i^*$ no entera agregamos la restricción $x_i \leq \lfloor x_i^* \rfloor$ para
 crear un subproblema, y también añadimos la restricción $x_i \geq \lceil x_i^* \rceil$ para crear
@@ -461,7 +481,8 @@ Ramificación y Acotamiento.
 	de nuevo en otros dos subproblemas. No obstante, observemos que el valor objetivo de este
 	subproblema es $z_3^* \coloneq 6$, el cual es menor que $z_2^* = 7$. Como la región factible de
 	cualquier subproblema generado a partir de este último problema estára contenido en $S_{000}$,
-	se sigue que su valor objetivo será menor o igual al de $S_{000}$ Decimos entonces que
+	se sigue que su valor objetivo será menor o igual al de $S_{000}$. Es decir, no encontraremos
+	otro vector cuyo valor objetivo sea mayor que $z_2^*$. Decimos entonces que
 	\textbf{podamos $S_{000}$ por cota}.
 
 	Como hemos agotado todos los subproblemas que podríamos generar, entonces concluimos que la
@@ -509,6 +530,7 @@ Ramificación y Acotamiento.
 \end{figure}
 
 \section{Fundamentos}
+\label{sec:foundations}
 \noindent
 Esta sección constituye el primer paso para la construcción de nuestro algoritmo. Se divide en dos
 partes. Primeramente damos a conocer las definiciones y enunciados provistos por \cite{herr}, al
@@ -1544,446 +1566,3 @@ de soluciones homogéneas.
 
 En la siguiente sección observamos cómo esta descomposición permite que desacoplemos un programa
 lineal entero en dos partes: una de maximización y otra de factibilidad.
-
-\subsection{Múltiples restricciones}
-\label{sec:multiple}
-\noindent
-En esta sección hacemos un análisis extensivo sobre lo resulta de agregar más restricciones al
-problema (\ref{theory:formulation}). Sea $\vec{p} \in \R^n$ esencialmente entero y consideremos su
-múltiplo coprimo $\vec{q} \in \Z^n$. Sea $A \in \Q^{m \times n}$ una matriz racional con renglones
-linealmente independientes y sea $\vec{b} \in \Q^m$ un vector. Consideremos el problema
-\begin{subequations}
-	\label{formulation:multiple}
-	\begin{align}
-		\max_{\vec{x} \in \Z^n} \quad
-			& \vec{q}^T\vec{x}, \label{formulation:multiple:objective} \\
-		\text{s.a.} \quad
-			& \vec{q}^T\vec{x} \leq u, \label{formulation:multiple:constraint:budget} \\
-			& A\vec{x} = \vec{b}, \label{formulation:multiple:constraints} \\
-			& \vec{x} \geq \vec{0}. \nonumber
-	\end{align}
-\end{subequations}
-Ciertamente, la solución no se encuentra necesariamente en la $\eta$-ésima capa entera. Por ejemplo,
-si dejamos que $A \coloneq \vec{q}^T$ y $b \coloneq u - m$, la solución se encontrará en la
-$\xi$-ésima capa entera, donde
-\begin{equation*}
-	\xi \coloneq \left\lfloor \frac{u}{m} - 1 \right\rfloor < \eta.
-\end{equation*}
-No obstante, si el problema (\ref{formulation:multiple}) es factible, sabemos que la solución se
-encontrará en alguna capa entera con parámetro $k \in \lbrace \eta, \eta - 1, \ldots \rbrace$, pues
-todavía contamos con una restricción presupuestaria que se debe satisfacer.
-\begin{observation}
-	Recordemos del teorema \ref{theory:th:feasibility} que, si tenemos solamente la restricción
-	presupuestaria, entonces la utilidad máxima es $\eta$ si $q_i < 0$ para alguna $i \in
-	\lbrace 2, \ldots, n - 1\rbrace$. Al igual que en el caso finito, ahora no somos capaces de
-	saber inmediatamente en qué capa entera se encuentra nuestra solución.
-\end{observation}
-
-Ahora bien, en el contexto del problema (\ref{formulation:multiple}), el parámetro $k \in \Z$ se
-encarga de maximizar la utilidad (\ref{formulation:multiple:objective}), así como de respetar el
-presupuesto (\ref{formulation:multiple:constraint:budget}) a través de $k \leq \eta$. Similarmente,
-el vector $\vec{t} \in \Z^{n-1}$ se encarga de respetar las otras restricciones
-(\ref{formulation:multiple:constraints}).
-\begin{theorem}
-	El problema (\ref{formulation:multiple}) es equivalente al problema de maximización
-	\begin{subequations}
-		\label{formulation:lattice}
-		\begin{align}
-			\max_{k \in \Z, \vec{t} \in \Z^{n-1}}
-				& k, \\
-			\text{s.a.} \quad
-				& k \leq \eta, \label{lattice:c-layer} \\
-				& AM\vec{t} = kA\vec{\nu} - \vec{b}, \label{lattice:constraints} \\
-				& M\vec{t} \geq -k\vec{\nu}.
-		\end{align}
-	\end{subequations}
-\end{theorem}
-\begin{proof}
-	Por el teorema \ref{th:lattice}, sabemos que la transformación lineal
-	\begin{align*}
-		(k, \vec{t}) &\mapsto \vec{x} \coloneq k\vec{\nu} + M\vec{t}
-	\end{align*}
-	es un isomorfismo entre las redes $\Z \oplus \Z^{n - 1}$ y $\Z^n$. Así, tenemos
-	\begin{align*}
-		A\vec{x} = \vec{b} &\iff AM\vec{t} = \vec{b} - kA\vec{\nu}, \\
-		\vec{x} \geq \vec{0} &\iff M\vec{t} \geq -k\vec{\nu},
-	\end{align*}
-	y por lo tanto basta mostrar que si un vector es factible para un problema, entonces satisface
-	la correspondiente restricción presupuestaria del otro problema. Para ello, es de utilidad
-	recordar que $\eta$ parametriza la primera capa entera que satisface el presupuesto.
-
-	Sea $\vec{x} \in \Z^n$ un vector factible de (\ref{formulation:multiple}) Como $\vec{x}$ es
-	entero, entonces se debe cumplir $\vec{q}^T\vec{x} \leq \eta$. Ahora bien, existe $(k, \vec{t})
-	\in \Z^n$ que satisface $\vec{x} = k\vec{\nu} + M\vec{t}$. Por el lema \ref{lemma:iso1} y el
-	corolario \ref{lemma:iso2} encontramos que
-	\begin{equation*}
-		k = \vec{q}^T\vec{x} \leq \eta,
-	\end{equation*}
-	y entonces $(k, \vec{t})$ es factible. Como $\vec{x}$ fue arbitrario, se sigue que la solución
-	del problema (\ref{formulation:multiple}) es una cota inferior del problema
-	(\ref{formulation:lattice}). La demostración de que la solución de (\ref{formulation:lattice})
-	es una cota inferior de (\ref{formulation:multiple}) es análoga.
-
-	Finalmente, supongamos que $(k, \vec{t}) \in \Z^n$ es solución de (\ref{formulation:lattice}).
-	Si existe $\hat{\vec{x}}$ factible para (\ref{formulation:multiple}) con utilidad
-	$\vec{q}^T\hat{\vec{x}} = \hat{k}$ estrictamente mayor, entonces consideramos $(\hat{k},
-	\hat{\vec{t}})$ tal que $\hat{\vec{x}} = \hat{k}\vec{\nu} + M\hat{\vec{t}}$. Este vector
-	también es factible con utilidad $k < \hat{k} \leq \eta$, y entonces $(k, \vec{t})$ no era la
-	solución de (\ref{formulation:lattice}). Obtenemos una contradicción.
-\end{proof}
-
-\begin{observation}
-	El vector objetivo todavía es ortogonal a la restricción presupuestaria. No obstante, es más
-	fácil de manejar en caso de usar cortes como en Ramificación y Acotamiento. Si $k^*$ no es
-	entero en la solución al problema relajado, la única manera de ramificar es con el nuevo corte
-	$k \leq \lfloor k^* \rfloor$, pues el otro corte $k \geq \lceil k^* \rceil$ generará un
-	subproblema infactible. Evidentemente, en la sección de análisis de resultados haremos
-	comparaciones de tiempo en los tiempos de terminación entre esta formulación y la original.
-\end{observation}
-
-La formulación del problema equivalente en el teorema anterior resulta ser más interesante. Podemos
-desacoplar esta nueva formulación de manera que obtengamos un problema de maximización y otro de
-factibilidad. Supongamos, sin pérdida de generalidad, que las entradas de $A$ y $\vec{b}$ son
-enteras. Como los renglones de $A$ son linealmente independientes, de \cite{alex} sabemos que tiene
-una única factorización de Hermite. Es decir, existe una matriz $U \in \Z^{n \times n}$ unimodular
-que satisface $AU = [H, \vec{0}]$, donde $H \in \Z^{m \times m}$ es triangular inferior y no
-singular.
-
-Consideremos el subproblema de maximización
-\begin{subequations}
-	\label{subformulation:lattice}
-	\begin{align}
-		\max_{k \in \Z}
-			& ~ k, \\
-		\text{s.a.} \quad
-		k &\leq \eta, \\
-			A\tvec{y} &= kA\vec{\nu} - \vec{b},
-	\end{align}
-\end{subequations}
-donde 
-\begin{equation*}
-	\tvec{y} \coloneq U \begin{pmatrix} \tvec{y}_m \\ \tvec{y}_{n-m} \end{pmatrix}
-	= U_m\tvec{y}_m + U_{n-m}\tvec{y}_{n-m} \in \Z^n,
-\end{equation*}
-con $\tvec{y}_m \in \Z^m$ y $\tvec{y}_{n-m} \in \Z^{n-m}$. Así también, $U_m$ y
-$U_{n-m}$ denotan las primeras $m$ columnas y últimas $n - m$ columnas de $U$, respectivamente.
-Observemos que para toda $k \in \Z$ se cumple
-\begin{equation}
-	AU \begin{pmatrix} \inv{H}\left(kA\vec{\nu} - \vec{b}\right) \\ \tvec{y}_{n-m} \end{pmatrix}
-	=
-	[H, \vec{0}] \begin{pmatrix} \inv{H}\left(kA\vec{\nu} - \vec{b}\right) \\ \tvec{y}_{n-m} \end{pmatrix}
-	= kA\vec{\nu} - \vec{b},
-\end{equation}
-lo cual sugiere definir $\tvec{y}_m \coloneq \inv{H}(\vec{b} - kA\vec{w})$. No obstante,
-también debemos asegurarnos que este vector sea entero. Observemos que $\tvec{y}_{n-m}$ queda
-libre, así que en realidad este subproblema tiene dimensión $m + 1$. Definimos el conjunto de
-factibilidad
-\begin{equation}
-	\label{eq:feas-set}
-	F \coloneq \lbrace k \in \Z \vcentcolon \inv{H}\left(kA\vec{\nu} - \vec{b}\right) \in \Z^m \rbrace
-	\cap \lbrace k \in \Z \vcentcolon k \leq \eta \rbrace.
-\end{equation}
-\begin{observation}
-	Para que $F$ sea no vacío, debe existir $k \in \Z$ tal que $\det(H) \mid (k\vec{a}_j^T
-	\vec{\nu} - b_j)$ para todo $j \in \lbrace 1, \ldots, m \rbrace$, donde $\vec{a}^T_j$
-	denota el $j$-ésimo vector renglón de $A$. Es decir, una condición suficiente y necesaria para
-	la no vacuidad de $F$ es
-	\begin{equation*}
-		\det(H) \mid \gcd{k\vec{a}_1^T\vec{\nu} - b_1, \ldots, k\vec{a}_m^T\vec{\nu} - b_m}.
-	\end{equation*}
-	Ahora bien, $H$ es triangular inferior e invertible, por lo que $\det(H) \neq 0$ es el producto
-	de los elementos $h_1, \ldots, h_m$ en su diagonal. Entonces $h_j \mid \det(H)$ para todo $j \in
-	\lbrace 1, \ldots m \rbrace$ y una condición necesaria para la no vacuidad de $F$ es
-	\begin{equation*}
-		\lcm{h_1, \ldots, h_m} \mid \gcd{k\vec{a}_1^T\vec{\nu} - b_1, \ldots, k\vec{a}_m^T\vec{\nu} - b_m}.
-	\end{equation*}
-\end{observation}
-
-Si $F$ es vacío, deducimos que este subproblema es infactible y por lo tanto
-(\ref{formulation:lattice}) también lo es. Supongamos, pues, que $F \neq \emptyset$. No es difícil
-observar que $F$ tiene un elemento maximal $k^*$ y que este elemento es la solución al subproblema
-(\ref{subformulation:lattice}). Luego, dada esta solución $k^* \in \Z$, buscamos resolver el
-subproblema de factibilidad
-\begin{subequations}
-	\label{subformulation:feasibility}
-	\begin{align}
-		M\vec{t} &= \tvec{y}, \\
-		M\vec{t} &\geq -k^*\vec{\nu}.
-	\end{align}
-\end{subequations}
-Observemos que tenemos un sistema de $n$ ecuaciones lineales con $2n - m - 1$ incógnitas, por lo que
-tendremos que lidiar con $n - m - 1$ parámetros libres:
-\begin{align}
-	\label{eq:feasibility-eqs}
-	M\vec{t} = \tvec{y} = U_m\tvec{y}_m + U_{n-m}\tvec{y}_{n-m}
-   \iff [M, -U_{n-m}] \begin{pmatrix} \vec{t} \\ \tvec{y}_{n-m} \end{pmatrix} = U_m\tvec{y}_m.
-\end{align}
-Si consideramos ahora la forma normal de Smith de esta matriz por bloques, obtenemos dos matrices
-unimodulares $S \in \Z^{n \times n}$ y $T \in \Z^{(2n - m - 1) \times (2n - m -1)}$ que satisfacen
-\begin{equation*}
-	S[M, -U_{n-m}]T = D \in \Z^{n \times (2n - m - 1)},
-\end{equation*}
-donde $D$ es una matriz diagonal cuyas $n$ primeras entradas son distintas de cero y las restantes
-$n - m - 1$ son cero. Si multiplicamos $S$ por la izquierda en ambos lados de la ecuación
-(\ref{eq:feasibility-eqs}), tenemos
-\begin{equation*}
-	D\inv{T}\begin{pmatrix} \vec{t} \\ \tvec{y}_{n-m} \end{pmatrix}
-	= SU_m\tvec{y}_{m}.
-\end{equation*}
-Si $d_i$ no divide a $(SU_m\tvec{y}_{m})_i$ para alguna $i \in \lbrace 1, \ldots, n \rbrace$,
-encontramos que la primera ecuación del subproblema (\ref{subformulation:feasibility}) no tiene
-solución en los enteros, lo que implica que la elección de $k^*$ fue la incorrecta para asegurar
-soluciones enteras a este subproblema. De ser este el caso, redefinimos $F \leftarrow F \setminus
-\lbrace k^* \rbrace$. Si $F$ ahora es vacío, entonces (\ref{formulation:lattice}) es
-infactible, de caso contrario escogemos el nuevo elemento de maximal de $F$ y repetimos el proceso.
-
-Supongamos, pues que $d_i \mid (SU_m\tvec{y}_{m})_i$ para todo $i \in \lbrace 1, \ldots,
-n\rbrace$, por lo que obtenemos $n$ soluciones enteras $\vec{r} \in \Z^n$ y $n - m - 1$ variables
-libres $\vec{s} \in \Z^{n-m-1}$:
-\begin{equation*}
-	\inv{T}\begin{pmatrix} \vec{t} \\ \tvec{y}_{n-m} \end{pmatrix}
-	=
-	\begin{pmatrix} \vec{r} \\ \vec{s} \end{pmatrix}.
-\end{equation*}
-Por lo tanto, nuestro vector $\vec{t}$ es una función lineal de $\vec{s}$, es decir, $\vec{t} =
-\vec{t}(\vec{s})$. Hasta este punto el proceso no ha sido complicado, pues nos hemos encargado de
-resolver sistemas de ecuaciones lineales diofantinas. En términos del problema original
-(\ref{formulation:multiple}), hemos encontrado los vectores $\vec{x}(\vec{s}) \coloneq
-k^*\vec{\nu} + M\vec{t}(\vec{s})$ que maximizan la utilidad y que satisfacen todas las
-restricciones excepto, posiblemente, las de no negatividad.
-
-La dificultad entra en juego cuando queremos determinar el vector de variables libres $\vec{s} \in
-\Z^{n-m-1}$ que hagan que $\vec{t}(\vec{s})$ satisfaga la desigualdad en el subproblema
-(\ref{subformulation:feasibility}). Debilitando más esta condición, nos gustaría determinar si el
-conjunto
-\begin{equation*}
-	\lbrace \vec{s} \in \Z^{n-m-1} \vcentcolon M\vec{t}(\vec{s}) \geq -k^*\vec{\nu} \rbrace
-\end{equation*}
-es vacío o no. En esta versión debilitada no nos interesa saber qué elementos contiene o tan
-siquiera cuántos elementos contiene. Es sabido que los programas enteros tales como
-(\ref{formulation:multiple}) o (\ref{formulation:lattice}) son problemas difíciles de resolver, en
-el sentido de que no es conocido si se pueden resolver en tiempo polinomial. A lo largo de este
-capítulo, no obstante, hemos resuelto todos los problemas en tiempo polinomial\footnote{En
-	\cite{alex} se muestra que calcular el máximo común divisor, resolver ecuaciones lineales
-	diofantinas, y calcular las factorizaciones tanto de Hermite como de Smith son operaciones
-	acotadas por tiempo polinomial.}.
-La única deducción posible, entonces, es que el problema de determinar las variables $\vec{s}$, o
-bien de determinar cuántas hay, o bien de determinar su existencia, son todos problemas difíciles de
-resolver.
-
-A pesar de lo anterior, hay dos casos donde la dificultad se reduce drásticamente. El caso menos
-interesante es cuando $m = n - 1$, de manera que no hay parámetros libres. Esto se debe a que el
-politopo factible resultante es un semirrayo o un segmento de línea. Al momento de escoger la
-$k^*$-ésima capa entera, estamos agregando la ecuación $k^* = k$, con lo que obtenemos un sistema
-lineal entero de $n$ ecuaciones con $n$ incógnitas, y entonces la solución es única. Basta entonces
-verificar que este único vector $\vec{t}$ satisface la desigualdad en el subproblema
-(\ref{subformulation:feasibility}). El caso un poco más interesante se obtiene cuando $m = n - 2$.
-De esta manera obtenemos un solo parámetro, con lo que podemos determinar rápidamente la existencia
-o inexistencia de un intervalo de factibilidad.
-
-\begin{example}
-	\label{ex:two-var}
-	Consideremos el problema con $n = 2$ variables y $m = 1$ restricciones
-	\begin{align*}
-		\max
-			~& x - y, \\
-		\text{s.a.} \quad
-			& x - y \leq 12, \\
-			& 3x + 5y = 25, \\
-			& x, y \geq 0.
-	\end{align*}
-	En este caso tenemos $A = (3, 5), \vec{b} = 25$, y también $\vec{q} = (1, -1)^T$, al igual que
-	$\eta = 12$. De (\ref{eq:vec-omega}) y (\ref{eq:mat-T}) obtenemos
-	\begin{equation*}
-		\vec{\nu} = \begin{pmatrix} 1 \\ 0 \end{pmatrix},
-		M = \begin{pmatrix} -1 \\ -1 \end{pmatrix}.
-	\end{equation*}
-	De la forma normal de Hermite de $A$ tenemos
-	\begin{equation*}
-		H = 1, U = \begin{pmatrix} 2 & -5 \\ -1 & 3 \end{pmatrix},
-	\end{equation*}
-	y de la forma normal de Smith de $[M, -U_m]$,
-	\begin{equation*}
-		S = \begin{pmatrix} -1 & 0 \\ 1 & -1 \end{pmatrix},
-		D = \begin{pmatrix} 1 & 0 \\ 0 & 8 \end{pmatrix},
-		T = \begin{pmatrix} 1 & 5 \\ 0 & 1 \end{pmatrix}. 
-	\end{equation*}
-
-	Como $H = 1$, se sigue que $\inv{H} (\vec{b} - kA\vec{\nu}) = 25 - 3k$ es entero para todo $k
-	\in \Z$. Así, el conjunto factible $F$ (c.f. \ref{eq:feas-set}) está dado por
-	\begin{equation*}
-		F = \Z \cap \lbrace k \in \Z \vcentcolon k \leq 12 \rbrace
-		= \lbrace k \in \Z \vcentcolon k \leq \eta = 12 \rbrace.
-	\end{equation*}
-	Entonces escogemos $k^* = 12$ por ser el elemento maximal de $F$. Así, encontramos
-	\begin{equation*}
-		SU_m\tvec{y}_m = SU_m \left(\inv{H} (\vec{b} - k^*A\vec{\nu})\right)
-		= \begin{pmatrix} 22 \\ 33 \end{pmatrix}
-	\end{equation*}
-	Observemos que la segunda entrada de $SU_m\tvec{y}_m$ no es divisible por $D_{22} = 8$.
-	Así, el subproblema (\ref{subformulation:feasibility}) no es factible para la elección de $k^*$
-	previa. Escogemos el segundo elemento de $F$ más grande, con lo que tenemos $k^* \leftarrow 11$.
-	En este caso obtenemos $SU_m\tvec{y}_m = (-16, -24)^T$, por lo que sí hay soluciones
-	enteras. Luego, se debe satisfacer,
-	\begin{equation*}
-		\inv{T} \begin{pmatrix} \vec{t} \\ \tvec{y}_{n-m} \end{pmatrix} =
-		\begin{pmatrix} 16 \\ 24 \end{pmatrix},
-	\end{equation*}
-	de donde se sigue que $(\vec{t}, \tvec{y}_{n-m}) = (1, 3)$. Verificamos factibilidad:
-	\begin{equation*}
-		M\vec{t} + k^*\vec{\nu}
-		= 1 \begin{pmatrix} -1 \\ -1 \end{pmatrix} + 11 \begin{pmatrix} 1 \\ 0 \end{pmatrix}
-		= \begin{pmatrix} 10 \\ -1 \end{pmatrix} \not \geq \vec{0}.
-	\end{equation*}
-	Ahora la elección de $k^*$ dio un punto entero pero con una entrada negativa. Seguimos este
-	procedimiento hasta llegar a $k^* \leftarrow 3$. En este caso obtenemos $(\vec{t},
-	\tvec{y}_{n-m}) = (-2, -6)^T$, de donde
-	\begin{equation*}
-		M\vec{t} + k^*\vec{\nu}
-		= -2 \begin{pmatrix} -1 \\ -1 \end{pmatrix} + 3 \begin{pmatrix} 1 \\ 0 \end{pmatrix}
-		= \begin{pmatrix} 5 \\ 2 \end{pmatrix} \geq \vec{0}.
-	\end{equation*}
-	Concluimos diciendo que $(k^*, \vec{t}) \coloneq (3, -2)$ es el óptimo del programa
-	(\ref{formulation:lattice}) y entonces $(x, y) = (5, 2)$ es el óptimo de
-	(\ref{formulation:multiple}).
-\end{example}
-\begin{example}
-	Ahora consideremos el problema con $n = 3$ variables y $m = 1$ restricciones
-	\begin{align*}
-		\max
-			~& x - y + 2z, \\
-		\text{s.a.} \quad
-			& x - y  + 2z \leq 10 \\
-			& 3x + 4y - z = 15 \\
-			& x, y, z \geq 0.
-	\end{align*}
-	En este caso tenemos $A = (3, 4, -1), \vec{b} = 15$, y también $\vec{q} = (1, -1, 2)^T$, al igual que
-	$\eta = 10$. De (\ref{eq:vec-omega}) y (\ref{eq:mat-T}) obtenemos
-	\begin{equation*}
-		\vec{\nu} = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix},
-		M = \begin{pmatrix} 1 & 0 \\ -1 & 2 \\ -1 & 1 \end{pmatrix}.
-	\end{equation*}
-	De la forma normal de Hermite de $A$ tenemos
-	\begin{equation*}
-		H = 1, U = \begin{pmatrix} 0 & 0 & 1 \\ 0 & 1 & 0 \\ -1 & 4 & 3 \end{pmatrix},
-	\end{equation*}
-	y de la forma normal de Smith de $[M, -U_m]$,
-	\begin{equation*}
-		S = \begin{pmatrix}
-			1 & 0 & 0 \\
-			-1 & -1 & 0 \\
-			3 & 4 & -1
-		\end{pmatrix},
-		D = \begin{pmatrix}
-			1 & 0 & 0 & 0 \\
-			0 & 1 & 0 & 0 \\
-			0 & 0 & 7 & 0
-		\end{pmatrix},
-		T = \begin{pmatrix}
-			1 & 0 & 0 & 1 \\
-			0 & 0 & 1 & 0 \\
-			0 & 1 & 2 & -1 \\
-			0 & 0 & 0 & 1
-		\end{pmatrix}.
-	\end{equation*}
-	Nuevamente, observemos que $H = 1$ y por lo tanto $F = \lbrace k \in \Z \vcentcolon k \leq 10
-	\rbrace$. Seguimos exactamente el mismo procedimiento que en el Ejemplo \ref{ex:two-var} hasta
-	llegar a $k^* \leftarrow 5$. Encontramos que se satisface
-	\begin{equation*}
-		\inv{T} \begin{pmatrix} \vec{t} \\ \tvec{y}_{n-m} \end{pmatrix}
-		=
-		\begin{pmatrix} 0 \\ 0 \\ 0 \\ s \end{pmatrix}
-		\implies
-		\begin{pmatrix} \vec{t} \\ \tvec{y}_{n-m} \end{pmatrix}
-		=
-		s \begin{pmatrix} 1 \\ 0 \\ -1 \\ 1 \end{pmatrix},
-	\end{equation*}
-	donde $s \in \Z$ es la única variable libre. En este caso podemos determinar rápidamente un
-	intervalo de existencia: tenemos $M\vec{t} \geq -k^*\vec{\nu}$ si y solo si
-	\begin{equation*}
-		s\begin{pmatrix} 1 \\ 0 \\ -1 \end{pmatrix} \geq
-		\begin{pmatrix} -5 \\ 0 \\ 0 \end{pmatrix},
-	\end{equation*}
-	de donde se sigue inmediatamente que $s \in \lbrace -5, -4, \ldots, 0 \rbrace$. Sustituyendo en
-	$\vec{t}$ y transformando a $\vec{x}$, encontramos que
-	\begin{equation*}
-		\left\lbrace
-			\begin{pmatrix} 0 \\ 5 \\ 5 \end{pmatrix},
-			\begin{pmatrix} 1 \\ 4 \\ 4 \end{pmatrix},
-			\begin{pmatrix} 2 \\ 3 \\ 3 \end{pmatrix},
-			\begin{pmatrix} 3 \\ 2 \\ 2 \end{pmatrix},
-			\begin{pmatrix} 4 \\ 1 \\ 1 \end{pmatrix},
-			\begin{pmatrix} 5 \\ 0 \\ 0 \end{pmatrix}
-		\right\rbrace
-	\end{equation*}
-	son las seis soluciones del problema. Todas alcanzan un nivel de utilidad $k^* = 5$.
-\end{example}
-
-Si el programa (\ref{formulation:multiple}) es factible, entonces el programa
-(\ref{formulation:lattice}) también lo es. A partir de nuestro procedimiento, eventualmente
-encontraremos un par $(k^*, \vec{t}^*)$ que resuelva tanto el subproblema de maximización
-(\ref{subformulation:lattice}) como el de factibilidad (\ref{subformulation:feasibility}).
-
-Ahora bien, son dos las maneras en las que nuestro problema sea infactible. Puede que nuestro
-conjunto de factibilidad $F$ sea vacío y por lo tanto el sistema de ecuaciones lineales
-(\ref{formulation:multiple:constraints}) sea inconsistente. O bien, puede ser que $F$ tenga
-cardinalidad infinita pero para ninguno de sus elementos se satisfaga el subproblema de
-factibilidad.
-
-% TODO: mostrar una imagen.
-Esto último puede ocurrir cuando el sistema de ecuaciones siempre tiene solución pero todas ellas
-son negativas. En efecto, si en el Ejemplo \ref{ex:two-var} reemplazamos el lado derecho de la
-igualdad $\vec{b} = 25$ por $\vec{b} = -4$, nos encontramos en aquella situación.
-
-En conclusión, para asegurar terminación en tiempo finito, cualquier algoritmo basado en este método debe
-asegurarse primero que el conjunto de factibilidad $F$ tiene un número finito de puntos. Este caso
-lo estudiamos en la siguiente sección.
-
-\subsection{Eliminando la restricción presupuestaria}
-\noindent
-Consideremos ahora el problema
-\begin{subequations}
-	\label{formulation:last}
-	\begin{align}
-		\max_{\vec{x} \in \Z^n} \quad
-			& \vec{q}^T\vec{x}, \label{formulation:last:objective} \\
-		\text{s.a.} \quad
-			& A\vec{x} = \vec{b}, \label{formulation:last:constraints} \\
-			& \vec{x} \geq \vec{0}, \nonumber
-	\end{align}
-\end{subequations}
-Evidentemente, si su programa relajado tiene un valor objetivo $u^*$ finito, podemos agregar la
-restricción presupuestaria $\vec{q}^T\vec{x} \leq u^*$ a este problema de manera válida. Entonces
-podemos suponer sin pérdida de generalidad que este programa es equivalente a
-(\ref{formulation:multiple}) siempre que su valor objetivo sea finito. Consecuentemente, podemos
-utilizar las herramientas desarrolladas en la sección pasada para resolver este problema entero.
-
-Es más, supongamos que el politopo asociado al problema relajado es acotado y no vacío. Entonces
-tanto el problema de maximización como de minimización tienen valores objetivos finitos. Llamemos a
-estos valores $\ell^*$ y $u^*$, respectivamente. Ahora la restricción
-\begin{equation*}
-	\ell^* \leq \vec{q}^T\vec{x} \leq u^*
-\end{equation*}
-es válida para el problema (\ref{formulation:last}). De la misma manera que $\eta$ parametriza la
-primera capa entera que satisface el presupuesto, podemos definir análogamente la última capa que
-satisface el presupuesto. Usando el mismo razonamiento que en el lema \ref{phase-1:lemma:eta},
-encontramos que esta capa está parametrizada por $\tau \coloneq \lceil \ell^*/m \rceil$ si $m$ es
-positiva. Así pues, al definir nuestro conjunto de factibilidad $F$ como
-\begin{equation*}
-	F \coloneq \lbrace k \in \Z \vcentcolon \inv{H}\left(kA\vec{\nu} - \vec{b}\right) \in \Z^m \rbrace
-	\cap \lbrace k \in \Z \vcentcolon \tau \leq k \leq \eta \rbrace,
-\end{equation*}
-podemos replicar las mismas técnicas que en la sección pasada. Pero además, $F$ es un conjunto
-finito y por lo tanto tenemos terminación en tiempo finito para este caso. Es decir, cualquier
-algoritmo basado en los métodos desarrollados en la sección pasada podrá decidir en tiempo finito si
-el problema es factible o no. En caso de que sí lo sea entonces terminará con la solución óptima.
-
-Existen varios algoritmos para resolver el problema relajado de (\ref{formulation:last}) en su
-versión general. Es cierto que el método del simplex es el más utilizado, a pesar de tener una
-complejidad algorítmica no acotada polinomialmente. También es cierto que existen métodos
-polinomiales para resolver este problema, tales como el método elipsoidal o el algoritmo de
-Karmarkar. Pero más interesante es el hecho de que ya existen cotas superiores para ciertas
-instancias de estos problemas, por ejemplo, en el caso del Problema de la Mochila, \cite{martello}
-provee una cota superior razonable, y ciertamente el valor de 0 es una cota inferior justa. Mucho
-hablaremos de este problema en el Capítulo 3. No obstante, el autor considera prudente dedicar el
-siguiente capítulo para el caso infinito.
