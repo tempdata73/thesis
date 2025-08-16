@@ -62,7 +62,6 @@ def repeat(num_reps=NUM_REPS, num_ignore=NUM_IGNORE):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            logging.info(f"running {func.__name__} {num_reps} times")
             logging.info(f"running {func.__name__} {num_reps + num_ignore} times")
             times = []
 

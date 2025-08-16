@@ -532,43 +532,49 @@ Ramificación y Acotamiento.
 \section{Fundamentos}
 \label{sec:foundations}
 \noindent
-Esta sección constituye el primer paso para la construcción de nuestro algoritmo. Se divide en dos
-partes. Primeramente damos a conocer las definiciones y enunciados provistos por \cite{herr}, al
-mismo tiempo que hacemos un par de observaciones. Esta primera parte puede darse por concluida una
-vez citado el teorema \ref{phase-1:th:cover}. Así también, es importante aclarar que el autor
-tradujo libremente algunos términos a falta de encontrar fuentes en español que hicieran uso de
-ellos. A saber, el autor decidió nombrar ``vectores esencialmente enteros'' a los
-\textit{projectively rational vectors} y ``capas enteras'' a los \textit{c-layers} en las
-Definiciones \ref{theory:def:rational} y \ref{phase-1:def:c-layer}, respectivamente.
+Esta sección se divide en tres partes. En primer lugar, damos a conocer las definiciones y
+encunciados provistos por \cite{herr}. Es importante aclarar que el autor tradujo libremente algunos
+términos a falta de encontrar fuentes en español que hicieran uso de ellos. En particular, el autor
+decidió nombrar ``vectores esencialmente enteros'' a los \textit{projectively rational vectors} (ver
+definición \ref{theory:def:rational}) y ``capas enteras'' a los \textit{c-layers} (ver definición
+\ref{phase-1:def:c-layer}).
 
-En la segunda parte de esta sección comenzamos con nuestro análisis del problema
-(\ref{theory:formulation}). La razón de considerarlo fundamental para esta tesis fue mencionado en
-el capítulo de Motivación, pero lo repetimos una vez más: en esta clase de problemas el vector es
-ortogonal a la única restricción, y esto implica que el problema relajado tenga una infinidad de
-soluciones. Hemos observado que, en presencia de este fenómeno, el algoritmo de Ramificación y
-Acotamiento no divide la región factible de manera óptima. Por ello investigamos formas alternativas
-para atacar este problema antes de hacer la separación de casos $p_i \leq 0$ para alguna $i \in
-\lbrace 1, \ldots, n \rbrace$ o $\vec{p} > \vec{0}$.
+En segundo lugar, mostramos la equivalencia entre resolver problemas del tipo
+\eqref{theory:formulation} y resolver ecuaciones lineales diofantinas. Nos basamos en los teoremas
+\ref{prerreq:th:existence} y \ref{prerreq:th:construction} para construir inductivamente el conjunto
+de soluciones de una ecuación lineal diofantina en $n$ incógnitas. Las soluciones de estas
+ecuaciones serán definidas a partir de una relación de recurrencia y también dependerán de una
+colección de $n - 1$ parámetros libres.
+
+En tercer lugar, establecemos una transformación lineal entre el conjunto de soluciones de una ecuación
+lineal diofantina en $n$ incógnitas y el conjunto de $n - 1$ parámetros libres que determinan estas
+soluciones. Luego, investigamos las propiedades de esta transformación lineal que serán de gran utilidad
+teórica para los siguientes capítulos, en especial para el capítulo 4. Finalmente, discutimos
+brevemente cómo se pueden relacionar las distintas transformaciones lineales si dejamos que vector
+objetivo $\vec{p}$ del problema original \eqref{theory:formulation} varíe.
+
+\subsection{Capas enteras}
+\label{subsec:sym}
+
 \begin{definition}
 	\label{theory:def:rational}
 	Decimos que un vector $\vec{v} \in \R^n \setminus \lbrace \vec{0} \rbrace$ es \textbf{esencialmente
 	entero} si existe un vector $\vec{w} \in \Z^n$ y un escalar $m \in \R \setminus \lbrace 0
 	\rbrace$ tal que $\vec{v} = m\vec{w}$. Además, decimos que $\vec{w}$ es el \textbf{múltiplo
-	coprimo} de $\vec{v}$ si sus entradas son coprimas (c.f. definición \ref{prerreq:def:gcd}) y si
-	su primera entrada no nula $v_i$ también es positiva.
+	coprimo} de $\vec{v}$ si sus entradas son coprimas y si su primera entrada no nula es
+	positiva.
 \end{definition}
-En otras palabras, decimos que $\vec{v}$ es esencialmente entero si es un múltiplo real de un vector
-entero.
 \begin{example}
-	El vector $\left(-\sqrt{2}, 1/\sqrt{2}\right)^T = \sqrt{2}(-1, 1/2)^T$ es esencialmente entero
-	y $(2, -1)^T$ es su múltiplo coprimo. Contrariamente, el vector $(\sqrt{2}, \sqrt{3})^T$ no es
+	El vector $\left(-\sqrt{2}, 1/\sqrt{2}\right)^T = 2\sqrt{2}(-2, 1)^T$ es esencialmente entero
+	y $(2, -1)^T$ es su múltiplo coprimo. En contraste, el vector $\paren{\sqrt{2}, \sqrt{3}}^T$ no es
 	esencialmente entero.
 \end{example}
 \begin{observation}
-	Todo vector $\vec{v}$ cuyas entradas son racionales ($\vec{v} \in \Q^n$) es esencialmente
-	entero. En efecto, $v_i = \frac{p_i}{q_i}$ para algunos enteros $p_i$ y $q_i$ con $q_i$
-	distinto de cero. Si definimos $m \coloneq \lcm{q_1, \ldots, q_n} \neq 0$ y $\vec{w} \coloneq
-	m\vec{v}$, se sigue que $\vec{v} = \frac{1}{m}\vec{w}$ y también $\vec{w} \in \Z^n$.
+	Todo vector racional $\vec{v} \in \Q^n \setminus \braces{\vec{0}} $  es esencialmente
+	entero. En efecto, para cada $i \in \braces{1, \ldots, n}$ existen $p_i, q_i \in
+	\Z$ con $q_i \neq 0$ tales que $v_i = p_i/q_i$. Luego, si definimos $m \coloneq \lcm{q_1,
+	\ldots, q_n} \neq 0$ y también $\vec{w} \coloneq m\vec{v} \in \Z^n$, encontramos que $\vec{v} =
+	\frac{1}{m}\vec{w}$.
 \end{observation}
 \begin{observation}
 	\label{obs:coprime-unique}
@@ -583,14 +589,12 @@ entero.
 	esencialmente entero es único.
 \end{observation}
 
-Porque todo número representable en cualquier sistema de aritmética finita es necesariamente
+Puesto que todo número representable en cualquier sistema de aritmética finita es necesariamente
 racional, decidimos enfocar nuestro análisis en vectores esencialmente enteros. Desde el punto de
-vista puramente teórico, esta condición reduce drásticamente el tipo de programas lineales que
+vista puramente teórico, esta condición reduce de manera drástica el tipo de programas lineales que
 podemos resolver. No obstante, esta clase de vectores es un poco más general que los considerados en
-otros textos de programación lineal, por ejemplo, \cite{martello} y \cite{alex} toman en cuenta
-vectores puramente racionales. En \cite{herr} se revelan propiedades de los vectores esencialmente
-enteros que reproducimos aquí y que nos permitirán plantear ecuaciones lineales diofantinas cuyas
-soluciones otorgan candidatos para puntos óptimos de un problema lineal.
+otros textos de programación lineal. Por ejemplo, \cite{martello} y \cite{alex} toman en cuenta
+vectores puramente racionales.
 
 \begin{definition}
 	\label{phase-1:def:c-layer}
@@ -598,148 +602,137 @@ soluciones otorgan candidatos para puntos óptimos de un problema lineal.
 	su hiperplano afino asociado
 	\begin{equation}
 		\label{phase-1:def:affine-hyperplane}
-		H_{\vec{v}, t} \coloneq \ker{\vec{x} \mapsto \vec{v}^T\vec{x}} + t\vec{v}
+		\clayer{\vec{v}}{t} \coloneq \ker{\vec{x} \mapsto \vec{v}^T\vec{x}} + t\vec{v}
 		= \lbrace \vec{v}^{\perp} + t\vec{v} \vcentcolon \vec{v}^T\vec{v}^{\perp} = 0 \rbrace
 	\end{equation}
 	es una \textbf{capa entera} si contiene al menos un punto entero.
 \end{definition}
-Observemos que todo hiperplano afino $H_{\vec{v}, t}$ es invariante ante reescalamientos en
-$\vec{v}$. Es decir, si $r \in \R \setminus \lbrace 0 \rbrace$ es un escalar, entonces $H_{\vec{v},
-t} = H_{r\vec{v}, t/r}$. En particular, el conjunto de hiperplanos afinos asociados a un vector
-$\vec{v}$ esencialmente entero es igual al conjunto de hiperplanos afinos asociados a su múltiplo
-coprimo $\vec{w}$. Ahora bien, cualquier vector coprimo induce una familia de capas enteras y,
-sorprendentemente, esa familia forma una cobertura de $\Z^n$, como lo indica el teorema
-\ref{phase-1:th:cover}.
-
-% \begin{figure}
-% 	\centering
-% 	\begin{tikzpicture}[scale=1.0, xscale=1, yscale=0.7]
-% 		\centering
-% 		\draw (0,0) -- (5,0) node[right] {\(x\)};
-% 		\draw (0,0) -- (0,7) node[above] {\(y\)};
-% 		% Add tick marks (optional)
-% 
-% 		\foreach \x in {1,2,3,4}
-% 			\draw (\x,0.1) -- (\x,-0.1) node[below] {\x};
-% 
-% 		\foreach \y in {1,2,3,4,5,6}
-% 			\draw (0.1,\y) -- (-0.1,\y) node[left] {\y};
-% 
-% 		\draw (0,0.1) -- (0, -0.1) node[below left] {0};
-% 		\draw (0.1,0) -- (-0.1, 0) node[below left] {};
-% 
-% 		\draw[very thin, gray!30] (0,0) grid (5,7);
-% 
-% 		\draw[thick, black, domain=0:3.5] plot (\x, {7 - 2*\x}) node[right] {};
-% 		\draw[thick, gray, domain=0:5.0] plot (\x, {9/sqrt(2) - sqrt(1.5)*\x}) node[right] {};
-% 
-% 		\filldraw[black] (3,1) circle (2pt) node[below right] {};
-% 		\filldraw[black] (2,3) circle (2pt) node[above right] {};
-% 		\filldraw[black] (1,5) circle (2pt) node[above left] {};
-% 	\end{tikzpicture}
-% 	\caption{Representación de una capa entera (en negro) junto a un hiperplano afino que no es capa
-% 	entera (en gris). La capa entera tiene como parámetros $\vec{v} = (2, 1)^T$ y $t = 1.4$,
-% 	mientras que los del hiperplano afino son $\vec{v} = (\sqrt{3}, \sqrt{2})^T$ y $t = 1.4$.}
-% 	\label{phase-1:fig:c-layer}
-% \end{figure}
 
 \begin{lemma}
 	\label{phase-1:lemma:layer}
 	Sean $\vec{v}, \vec{x} \in \R^n$ con $\vec{v}$ distinto de cero. Entonces $\vec{x} \in
-	H_{\vec{v}, t_{\vec{x}}}$, donde $t_{\vec{x}} \coloneq \frac{\vec{v}^T\vec{x}}{\norm{\vec{v}}^2}$.
+	\clayer{\vec{v}}{t_{\vec{x}}}$, donde $t_{\vec{x}} \coloneq
+	\frac{\vec{v}^T\vec{x}}{\norm{\vec{v}}^2}$.
 \end{lemma}
+
+Las capas enteras son invariantes ante reescalamientos en el vector $\vec{v}$: si $r \neq 0$,
+entonces $\clayer{\vec{v}}{t} = \clayer{r\vec{v}}{t/r}$. En efecto, sea $\vec{x} \in
+\clayer{\vec{v}}{t}$. Luego, existe $\vec{v}^\perp$ ortogonal a $\vec{v}$ tal que
+\begin{equation*}
+	\vec{x} = \vec{v}^\perp + t\vec{v} = \vec{v}^\perp + \frac{t}{r}(r\vec{v}).
+\end{equation*}
+Pero si $\vec{v}^\perp$ es ortogonal a $\vec{v}$, entonces también es ortogonal a $r\vec{v}$.
+Así, encontramos que $\vec{x} \in \clayer{r\vec{v}}{t/r}$. La otra contención se muestra de
+manera similar.
+
+En particular, si $\vec{w}$ es el múltiplo coprimo de $\vec{v}$, se cumple que
+\begin{equation}
+	\label{eq:clayer-eq}
+	\braces{\clayer{\vec{v}}{t} \vcentcolon t \in \R}
+	=
+	\braces{\clayer{\vec{v}/m}{t m} \vcentcolon t \in \R}
+	=
+	\braces{\clayer{\vec{w}}{t} \vcentcolon t \in \R},
+\end{equation}
+donde $m \neq 0$ es el escalar que satisface $\vec{v} = m\vec{w}$. Así pues, para analizar las capas
+enteras, basta con fijarnos en los múltiplos coprimos que las definen en vez de sus vectores
+esencialmente enteros asociados.
 
 \begin{theorem}
 	\label{phase-1:th:cover}
 	Sea $\vec{v} \in \R^n$ un vector esencialmente entero y sea $\vec{w}$ su múltiplo coprimo.
-	Entonces la familia de capas enteras $\left\lbrace H_{\vec{w}, k\norm{\vec{w}}^{-2}} \vcentcolon k
-			\in \Z \right\rbrace$ cubre a $\Z^n$.
+	Entonces la familia de capas enteras $\braces{\qlayer{w}{k} \vcentcolon k \in \Z}$.
 \end{theorem}
-
-Pasemos a considerar el programa lineal (\ref{theory:formulation}) donde $\vec{p}$ es un vector
-esencialmente entero y $\vec{q}$ es su múltiplo coprimo. Comúnmente a la función objetivo
-(\ref{theory:objective}) le daremos el nombre de utilidad y a la restricción
-(\ref{theory:constraint:budget}) la llamaremos restricción presupuestaria, así como presupuesto al
-lado derecho de esta restricción.
-\begin{observation}
-	Debido a la restricción presupuestaria, encontramos que el politopo está acotado por arriba. Así
-	pues, el problema o bien es infactible, o bien tiene una utilidad finita.
-\end{observation}
-
-Cada escalar $t \in \R$ induce un hiperplano afino $H_{\vec{p}, t}$ donde se cumple que todo punto
-$\vec{x} \in H_{\vec{p}, t}$ tiene un mismo nivel de utilidad. Como observamos previamente,
-\begin{equation*}
-	\left \lbrace H_{\vec{p}, t} \vcentcolon t \in \R \right\rbrace
-	=
-	\left \lbrace H_{\vec{q}, t} \vcentcolon t \in \R \right\rbrace.
-\end{equation*}
-A causa del teorema \ref{phase-1:th:cover}, somos capaces de caracterizar todos los puntos enteros a
-partir de $\vec{q}$. Aún más, obtenemos una enumeración de las capas enteras que cubren $\Z^n$, lo
-cual nos permite determinar si la $k$-ésima capa entera contiene puntos factibles para el problema.
 
 \begin{lemma}
 	\label{theory:lemma:utility}
-	Sea $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^2}$, entonces su nivel de utilidad
-	$\vec{q}^T\vec{x}$ es $k$.
+	Sea $\vec{v} \in \R^n$ un vector esencialmente entero y sea $\vec{w}$ su múltiplo coprimo.
+	Entonces $\vec{q}^T\vec{x} = k$ para todo $\vec{x} \in \qlayer{w}{k}$.
 \end{lemma}
 \begin{proof}
-	Sea $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$, entonces tenemos
+	Sea $\vec{x} \in \qlayer{w}{k}$, por lo que existe un vector $\vec{w}^\perp$ ortogonal a
+	$\vec{w}$ tal que
 	\begin{equation*}
-		\vec{x} = \vec{q}^{\perp} + k\norm{\vec{q}}^{-2}\vec{q},
+		\vec{x} = \vec{w}^\perp + \frac{k}{\norm{\vec{w}}^2}\vec{w}.
 	\end{equation*}
-	donde $\vec{q}^{\perp}$ es un vector ortogonal a $\vec{q}$. Por lo tanto,
+	Luego,
 	\begin{equation*}
-		\vec{q}^T\vec{x} = \vec{q}^T\vec{q}^{\perp} + k\norm{\vec{q}}^{-2}\vec{q}^T\vec{q}
-		= 0 + k \norm{\vec{q}}^{-2} \norm{\vec{q}}^{2} = k.
+		\vec{w}^T\vec{x} = \vec{w}^T\vec{w}^\perp + \frac{k}{\norm{\vec{w}}^2}\vec{w}^T\vec{w}
+		=
+		0 + \frac{k}{\norm{\vec{w}}^2}\norm{\vec{w}}^2 = k.
 	\end{equation*}
+	que es lo que deseábamos obtener.
 \end{proof}
 
-Consideremos el vector esencialmente entero $\vec{p}$ y su múltiplo coprimo $\vec{q}$, entonces
-existe un escalar $m \in \R \setminus \lbrace 0 \rbrace$ tal que $\vec{p} = m\vec{q}$. Si la
-restricción \eqref{theory:constraint:budget} se cumple, es decir $\vec{p}^T\vec{x} \leq u$, también
-se cumple que $\vec{q}^T\vec{x} \leq u/m$ si $m$ es positivo, o bien que $\vec{q}^T\vec{x} \geq u/m$
-si $m$ es negativo.
+% Pasemos a considerar el programa lineal (\ref{theory:formulation}) donde $\vec{p}$ es un vector
+% esencialmente entero y $\vec{q}$ es su múltiplo coprimo. Comúnmente a la función objetivo
+% (\ref{theory:objective}) le daremos el nombre de utilidad y a la restricción
+% (\ref{theory:constraint:budget}) la llamaremos restricción presupuestaria, así como presupuesto al
+% lado derecho de esta restricción.
 
-La gran mayoría de resultados que obtendremos dependerán de un entero que denotamos como $\eta$, el
-cual depende de $m$ y por lo tanto del signo que este tenga. Para evitar ser repetitivos o dividir
-los resultados innecesariamente en casos, supondremos de ahora en adelante que $m$ es positivo. Esto
-equivale a decir que la primera entrada no nula $p_i$ es positiva, pues se debe cumplir que $q_i$
-sea positivo. Basta mencionar que la gran mayoría de desigualdades se invierten en caso de que $m$
-sea negativo, y también que usamos la función techo en vez de la función piso.
+Consideremos el problema \eqref{theory:formulation} y supongamos que el vector objetivo $\vec{p}$ es
+esencialmente entero. Sea $\vec{q}$ su múltiplo coprimo. Sabemos de \eqref{eq:clayer-eq} que 
+	$\braces{\clayer{\vec{p}}{t} \vcentcolon t \in \R}
+	=
+	\braces{\clayer{\vec{q}}{t} \vcentcolon t \in \R}$.
+Puesto que nos concentramos en puntos enteros, por el teorema \ref{phase-1:th:cover}
+podemos considerar exclusivamente el subconjunto $\braces{\qlayer{q}{k} \vcentcolon k \in \Z}$.
 
-Para respetar la restricción presupuestaria, podemos encontrar el entero $\eta$ más grande que
-satisfaga $\vec{q}^T\vec{x} \leq u/m$ para todo $\vec{x} \in H_{\vec{q}, \eta\norm{\vec{q}}^{-2}}$.
-Diremos que $\eta$ es el primer entero que satisface la restricción presupuestaria, o bien que
-$H_{\vec{q}, \eta\norm{\vec{q}}^{-2}}$ es la primera capa entera que satisface el presupuesto.
+Observemos del lema \ref{theory:lemma:utility} junto con la restricción presupuestaria
+\eqref{theory:constraint:budget} que los puntos enteros de la \textbf{$k$-ésima capa entera}
+$\qlayer{q}{k}$ o bien respetan todos esta restricción o bien ninguno la respeta. Nos gustaría
+entonces determinar el primer parámetro $\eta \in \Z$ que induce a que todos los puntos enteros de
+$\qlayer{q}{\eta}$ respeten la restricción presupuestaria.
+
+Para respetar la restricción presupuestaria \eqref{theory:constraint:budget}, debe ser el caso que
+todo $\vec{x} \in \qlayer{q}{k}$ satisfaga
+\begin{equation}
+	\label{eq:eta-cases}
+	\vec{p}^T\vec{x} = m\vec{q}^T\vec{x} = mk \leq u
+	\iff
+	\begin{cases}
+		k \geq u/m, & m < 0, \\
+		k \leq u/m, & m > 0,
+	\end{cases}
+\end{equation}
+donde $m \neq 0$ es el escalar que satisface $\vec{p} = m\vec{q}$. Así pues, dependiendo del signo
+de $m$, tenemos que el primer parámetro $\eta$ en satisfacer la restricción presupuestaria puede ser
+interpretado como el entero más pequeño o el entero más grande que satisface su respectiva
+desigualdad.
+
 \begin{lemma}
 	\label{phase-1:lemma:eta}
 	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q}$ su múltiplo coprimo, de
-	manera que $\vec{p} = m\vec{q}$ para algún escalar $m > 0$. Entonces la primera capa
-	entera $H_{\vec{q}, \eta \norm{\vec{q}}^{-2}}$ que satisface el presupuesto está parametrizada
-	por $\eta \coloneq \lfloor u/m \rfloor$.
+	manera que $\vec{p} = m\vec{q}$ para algún escalar $m \neq 0$. Entonces la primera capa entera
+	$\qlayer{q}{\eta}$ que satisfacen la restricción \eqref{theory:constraint:budget} está
+	parametrizada por
+	\begin{equation}
+		\label{lemma:eq:eta-cases}
+		\eta \coloneq \begin{cases}
+			\ceil{u/m}, & m < 0, \\
+			\floor{u/m}, & m > 0.
+		\end{cases}
+	\end{equation}
 \end{lemma}
 \begin{proof}
-	Sea $\vec{x}$ tal que $\vec{p}^T\vec{x} \leq u$. Entonces buscamos el mayor entero $\eta$ que
-	satisfaga $\vec{q}^T\vec{x} \leq u/m$ para todo $\vec{x} \in H_{\vec{q},
-	\eta\norm{\vec{q}}^{-2}}$. Por el lema \ref{phase-1:lemma:layer} sabemos que
-	\begin{equation*}
-		\eta\norm{\vec{q}}^{-2} = \frac{\vec{q}^T\vec{x}}{\norm{\vec{q}}^2} \leq
-		\frac{u/m}{\norm{\vec{q}}^2},
-	\end{equation*}
-	de donde se sigue inmediatamente que $\eta = \lfloor u/m \rfloor$.
+	Se sigue inmediatamente de \eqref{eq:eta-cases}.
 \end{proof}
 
-Encontramos que las capas enteras que satisfacen el presupuesto son parametrizadas por $k \in
-\lbrace \eta, \eta - 1, \ldots \rbrace$ y, debido al lema \ref{theory:lemma:utility}, se cumple
-inmediatamente que $\vec{q}^T\vec{x} = k$. Deducimos que si la $\eta$-ésima capa entera contiene
-puntos no negativos, entonces las soluciones se encuentran en esa capa. En caso contrario,
-descendemos a la $(\eta - 1)$-ésima capa entera y buscamos puntos enteros no negativos, etcétera.
+Puesto que la gran mayoría de nuestros enunciados y algoritmos dependen de este primer parámetro
+$\eta$, tendremos que separarlos al menos en dos casos. Por ello, el autor creyó prudente
+considerar solamente el caso $m > 0$, aunque cabe mencionar que los enunciados y demostraciones para
+el caso $m < 0$ son completamente análogos, donde el orden de las desigualdades cambian o las
+funciones piso se transforman en funciones techo, por ejemplo.
 
+En resumen, si $m > 0$, encontramos que las capas enteras que respetan la restricción
+\eqref{theory:constraint:budget} están parametrizadas por $k \in \braces{\eta, \eta - 1, \ldots}$,
+donde $\eta$ está definida en \ref{phase-1:lemma:eta}. Además, por el lema
+\ref{theory:lemma:utility}, todo $\vec{x} \in \qlayer{q}{k}$ satisface la ecuación $\vec{q}^T\vec{x} = k$.
 \begin{theorem}
 	\label{theory:th:infeasibility}
-	Sea $\vec{p} \in \R^n \setminus \lbrace \vec{0} \rbrace $ un vector esencialmente entero y sea
-	$\vec{q}$ su múltiplo coprimo. Entonces el problema (\ref{theory:formulation}) es infactible si
-	y solo si $\vec{q} \geq \vec{0}$ y $u < 0$.
+	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q}$ su múltiplo coprimo.
+	Entonces el problema \eqref{theory:formulation} es infactible si y solo si $\vec{q} \geq
+	\vec{0}$ y el lado derecho $u$ de \eqref{theory:constraint:budget} es negativo. 
 \end{theorem}
 \begin{proof}
 	Supongamos que $\vec{q} \geq \vec{0}$ y $u < 0$. Si $\vec{x} \in \Z_{\geq \vec{0}}^n$
@@ -748,7 +741,9 @@ descendemos a la $(\eta - 1)$-ésima capa entera y buscamos puntos enteros no ne
 		\Z_{\geq \vec{0}}^{n} \cap \lbrace \vec{x} \vcentcolon \vec{q}^T\vec{x} 
 		\leq u \rbrace = \emptyset,
 	\end{equation*}
-	y el problema no es factible. Mostramos la otra implicación por contraposición. Si $u
+	y el problema no es factible.
+
+	Mostramos la otra implicación por contraposición. Si $u
 	\geq 0$ observamos que $\vec{0} \in \Z^n$ es factible. Se debe cumplir $u < 0$. Similarmente, si
 	$q_i < 0$ para algún $i \in \lbrace 1, \ldots, n \rbrace$, encontramos que $\lceil u/q_i
 	\rceil\vec{e}_i \in \Z^n$ es factible:
@@ -760,20 +755,21 @@ descendemos a la $(\eta - 1)$-ésima capa entera y buscamos puntos enteros no ne
 	además, como $u < 0$, concluimos que $\lceil u/q_i \rceil\vec{e}_i$ es no negativo.
 \end{proof}
 
-Debido al teorema anterior, somos capaces de determinar inmediatamente si el problema
+Debido al teorema anterior, somos capaces de determinar automáticamente si el problema
 \eqref{theory:formulation} es infactible, por lo que supondremos de ahora en adelante que es
-factible. El siguiente teorema muestra que nuestro análisis para resolver el problema anterior
-deberá dividirse en dos casos.
+factible. El siguiente teorema muestra que nuestro análisis para resolver este problema debe
+dividirse en dos casos.
+
 \begin{theorem}
 	\label{theory:th:feasibility}
-	Sea $\vec{p} \in \R^n \setminus \lbrace \vec{0} \rbrace $ un vector esencialmente entero y sea
+	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea
 	$\vec{q}$ su múltiplo coprimo. Supongamos que el problema (\ref{theory:formulation}) es factible
 	y tomemos $\eta$ del lema \ref{phase-1:lemma:eta}. Entonces se satisface lo siguiente:
 	\begin{enumerate}
-		\item Si $q_i < 0$ para algún $i \in \lbrace 1, \ldots, n \rbrace$, entonces la $\eta$-ésima
-			capa entera contiene un número infinito de puntos factibles.
-		\item Si $\vec{q} > \vec{0}$, enconces para todo $k \in \lbrace \eta, \eta - 1, \ldots, 0
-			\rbrace$, la $k$-ésima capa entera contiene un número finito de puntos factibles.
+		\item Si $q_i < 0$ para algún $i \in \braces{1, \ldots, n}$, entonces la $\eta$-ésima
+			capa entera $\qlayer{q}{\eta}$ contiene un número infinito de puntos factibles.
+		\item Si $\vec{q} > \vec{0}$ entonces, para todo $k \in \braces{\eta, \eta - 1, \ldots, 0}$,
+			la $k$-ésima capa entera $\qlayer{q}{k}$ contiene un número finito de puntos factibles.
 	\end{enumerate}
 \end{theorem}
 \begin{proof} \hfill
