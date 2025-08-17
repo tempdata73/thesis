@@ -558,11 +558,10 @@ objetivo $\vec{p}$ del problema original \eqref{theory:formulation} varíe.
 
 \begin{definition}
 	\label{theory:def:rational}
-	Decimos que un vector $\vec{v} \in \R^n \setminus \lbrace \vec{0} \rbrace$ es \textbf{esencialmente
-	entero} si existe un vector $\vec{w} \in \Z^n$ y un escalar $m \in \R \setminus \lbrace 0
-	\rbrace$ tal que $\vec{v} = m\vec{w}$. Además, decimos que $\vec{w}$ es el \textbf{múltiplo
-	coprimo} de $\vec{v}$ si sus entradas son coprimas y si su primera entrada no nula es
-	positiva.
+	Decimos que un vector $\vec{v} \in \R^n \setminus \lbrace \vec{0} \rbrace$ es
+	\textbf{esencialmente entero} si existen un vector $\vec{w} \in \Z^n$ y un escalar $m \neq 0$
+	tales que $\vec{v} = m\vec{w}$. Además, decimos que $\vec{w}$ es el \textbf{múltiplo coprimo} de
+	$\vec{v}$ si sus entradas son coprimas y si su primera entrada no nula es positiva.
 \end{definition}
 \begin{example}
 	El vector $\left(-\sqrt{2}, 1/\sqrt{2}\right)^T = 2\sqrt{2}(-2, 1)^T$ es esencialmente entero
@@ -641,7 +640,8 @@ esencialmente enteros asociados.
 \begin{theorem}
 	\label{phase-1:th:cover}
 	Sea $\vec{v} \in \R^n$ un vector esencialmente entero y sea $\vec{w}$ su múltiplo coprimo.
-	Entonces la familia de capas enteras $\braces{\qlayer{w}{k} \vcentcolon k \in \Z}$.
+	Entonces la familia de capas enteras $\braces{\qlayer{w}{k} \vcentcolon k \in \Z}$ cubre a
+	$\Z^n$.
 \end{theorem}
 
 \begin{lemma}
@@ -675,8 +675,9 @@ esencialmente entero. Sea $\vec{q}$ su múltiplo coprimo. Sabemos de \eqref{eq:c
 	$\braces{\clayer{\vec{p}}{t} \vcentcolon t \in \R}
 	=
 	\braces{\clayer{\vec{q}}{t} \vcentcolon t \in \R}$.
-Puesto que nos concentramos en puntos enteros, por el teorema \ref{phase-1:th:cover}
-podemos considerar exclusivamente el subconjunto $\braces{\qlayer{q}{k} \vcentcolon k \in \Z}$.
+Puesto que nos concentramos en puntos enteros, por el teorema \ref{phase-1:th:cover} podemos
+considerar exclusivamente el subconjunto de capas enteras $\braces{\qlayer{q}{k} \vcentcolon k \in
+\Z}$.
 
 Observemos del lema \ref{theory:lemma:utility} junto con la restricción presupuestaria
 \eqref{theory:constraint:budget} que los puntos enteros de la \textbf{$k$-ésima capa entera}
@@ -684,7 +685,7 @@ $\qlayer{q}{k}$ o bien respetan todos esta restricción o bien ninguno la respet
 entonces determinar el primer parámetro $\eta \in \Z$ que induce a que todos los puntos enteros de
 $\qlayer{q}{\eta}$ respeten la restricción presupuestaria.
 
-Para respetar la restricción presupuestaria \eqref{theory:constraint:budget}, debe ser el caso que
+Para respetar la restricción \eqref{theory:constraint:budget}, debe ser el caso que
 todo $\vec{x} \in \qlayer{q}{k}$ satisfaga
 \begin{equation}
 	\label{eq:eta-cases}
@@ -721,10 +722,10 @@ desigualdad.
 Puesto que la gran mayoría de nuestros enunciados y algoritmos dependen de este primer parámetro
 $\eta$, tendremos que separarlos al menos en dos casos. Por ello, el autor creyó prudente
 considerar solamente el caso $m > 0$, aunque cabe mencionar que los enunciados y demostraciones para
-el caso $m < 0$ son completamente análogos, donde el orden de las desigualdades cambian o las
-funciones piso se transforman en funciones techo, por ejemplo.
+el caso $m < 0$ son completamente análogos, donde las diferencias recaen en que el orden de las
+desigualdades cambian o las funciones piso se reemplazan por funciones techo, por ejemplo.
 
-En resumen, si $m > 0$, encontramos que las capas enteras que respetan la restricción
+En resumen, si $m > 0$, encontramos que las capas enteras que satsifacen la restricción
 \eqref{theory:constraint:budget} están parametrizadas por $k \in \braces{\eta, \eta - 1, \ldots}$,
 donde $\eta$ está definida en \ref{phase-1:lemma:eta}. Además, por el lema
 \ref{theory:lemma:utility}, todo $\vec{x} \in \qlayer{q}{k}$ satisface la ecuación $\vec{q}^T\vec{x} = k$.
@@ -763,9 +764,9 @@ dividirse en dos casos.
 \begin{theorem}
 	\label{theory:th:feasibility}
 	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea
-	$\vec{q}$ su múltiplo coprimo. Supongamos que el problema (\ref{theory:formulation}) es factible
-	y tomemos $\eta$ del lema \ref{phase-1:lemma:eta}. Entonces se satisface lo siguiente:
-	\begin{enumerate}
+	$\vec{q}$ su múltiplo coprimo, de manera que $\vec{p} = m\vec{q}$ para alguna $m > 0$.
+	Supongamos que el problema \eqref{theory:formulation} es factible y tomemos $\eta$ del lema
+	\ref{phase-1:lemma:eta}. Entonces se satisface lo siguiente: \begin{enumerate}
 		\item Si $q_i < 0$ para algún $i \in \braces{1, \ldots, n}$, entonces la $\eta$-ésima
 			capa entera $\qlayer{q}{\eta}$ contiene un número infinito de puntos factibles.
 		\item Si $\vec{q} > \vec{0}$ entonces, para todo $k \in \braces{\eta, \eta - 1, \ldots, 0}$,
@@ -775,14 +776,21 @@ dividirse en dos casos.
 \begin{proof} \hfill
 	\begin{enumerate}
 		\item
-			En la siguiente sección mostraremos que, como $\vec{q}$ es un vector cuyas entradas son
-			coprimas, entonces existe un punto entero $\vec{x}$ que satisface la ecuación lineal
-			diofantina $\vec{q}^T\vec{x} = \eta$. Por el momento, confiemos que esto es verdadero.
+			En la subsección \ref{subsec:dioph-eq} mostraremos que, como $\vec{q}$ es un vector
+			cuyas entradas son coprimas, entonces existe un punto entero $\vec{x}$ que satisface la
+			ecuación lineal diofantina $\vec{q}^T\vec{x} = \eta$. Por el momento confiemos que esto
+			es verdadero. Luego,
+			\begin{equation*}
+				\vec{p}^T\vec{x} = m\vec{q}^T\vec{x} = m\eta = m\floor{\frac{u}{m}} \leq
+				m\frac{u}{m} = u,
+			\end{equation*}
+			y se satisface la restricción \eqref{theory:constraint:budget}.
+
 			Como no tenemos asegurada la no negatividad de $\vec{x}$, construiremos un vector entero
 			$\vec{x}^+$ que sí satisface la restricción de no negatividad y también la restricción
 			presupuestaria $\vec{q}^T\vec{x}^+ = \eta$, de manera que $\vec{x}^+$ sí será factible.
 
-			Definamos los siguientes conjuntos de índices
+			Definamos los siguientes conjuntos de índices:
 			\begin{equation*}
 				I^+ \coloneq \lbrace i \vcentcolon q_i > 0 \rbrace,
 				\quad I^\circ \coloneq \lbrace \ell \vcentcolon q_\ell = 0 \rbrace.
@@ -796,7 +804,7 @@ dividirse en dos casos.
 			\emptyset$. Además, por la definición \ref{theory:def:rational}, $\vec{q}$ tiene una
 			entrada positiva y por lo tanto $I^+ \neq \emptyset$. Luego, ambos conjuntos $I^+$ e
 			$I^-$ forman una partición del conjunto $\braces{1, \ldots, n}$. Podemos escoger
-			escalares positivos $c_1, \ldots, c_n$ que satisfagan simultáneamente
+			enteros positivos $c_1, \ldots, c_n$ que satisfagan simultáneamente
 			\begin{align}
 				x_k + \sum_{i \in I^+}q_ic_i &\geq 0, \quad \forall k \in I^-,
 				\label{theory:pf:1} \\
@@ -824,20 +832,20 @@ dividirse en dos casos.
 			Así pues, tenemos existencia de un punto factible. Para concluir que hay un número
 			infinito de puntos factibles, basta observar que si la elección de coeficientes $c_1,
 			\ldots, c_n$ satisface ambas desigualdades \eqref{theory:pf:1} y \eqref{theory:pf:2},
-			entonces cualquier múltiplo positivo de estos coeficientes también las satisface.
+			entonces cualquier múltiplo entero positivo de estos coeficientes también las satisface.
 		\item Se sigue que $u \geq 0$. Definamos
 			\begin{equation}
 				\label{theory:pf:p_k}
-				P_k \coloneq H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap \Z_{\geq \vec{0}}^n
+				P_k \coloneq \qlayer{q}{k} \cap \Z_{\geq \vec{0}}^n
 				= \left\lbrace \vec{x} \in \Z^n \vcentcolon \vec{q}^T\vec{x} = k,
-					\vec{x} \geq \vec{0} \right\rbrace.
+					\vec{x} \geq \vec{0} \right\rbrace,
 			\end{equation}
-			Observemos que $P_k = \emptyset$ para todo $k$ negativo, pues $\vec{q} > \vec{0}$ y por
-			lo tanto $\vec{q}^T\vec{x} \geq 0$ para cualquier $\vec{x}$ no negativo. Esto implica que
+			y observemos que $P_k = \emptyset$ para todo $k$ negativo, pues $\vec{q} > \vec{0}$ y por
+			lo tanto $\vec{q}^T\vec{x} \geq 0$ para cualquier $\vec{x} \in \Z^n_{\geq \vec{0}}$. Esto implica que
 			ningún punto sobre capas enteras con parámetros negativos es factible.
 
-			Sea $k \in \lbrace \eta, \eta - 1, \ldots, 0 \rbrace$. La capa entera $H_{\vec{q},
-			k\norm{\vec{q}}^{-2}}$ interseca los ejes positivos en $\frac{k}{q_i}\vec{e}_i$.
+			Sea $k \in \braces{\eta, \eta - 1, \ldots, 0}$. La capa entera $\qlayer{q}{k}$
+			interseca los ejes positivos en $\frac{k}{q_i}\vec{e}_i$.
 			Definamos $\ell_i \coloneq \lceil k/q_i \rceil$. No es difícil ver que $P_k$ está
 			contenido en el prisma cuyas aristas son $[0, \ell_i]$ y, por lo tanto,
 			\begin{equation*}
@@ -852,49 +860,52 @@ dividirse en dos casos.
 	\end{enumerate}
 \end{proof}
 
-Así pues, suponiendo que el problema \eqref{theory:formulation} tiene solución, el teorema
-\ref{theory:th:feasibility} nos sugiere dividir nuestro análisis en dos casos: uno donde una
-entrada $p_i$ es negativa y por lo tanto existe una infinidad de soluciones en la $\eta$-ésima
-capa entera; y uno donde $\vec{p}$ es estrictamente positivo, lo que implica la finitud de puntos
-factibles. Ciertamente el segundo caso es el más interesante, pues de alguna manera conocemos
-automáticamente el óptimo de los problemas que recaen en el primer caso. Efectivamente esta es una
-de las razones por las que el autor decidió ordenar de tal manera los casos: porque en el primero
-sabemos exactamente dónde buscar la solución. Aún así, a pesar de encontrarnos con esta primera
-división, existen muchos elementos en común que comparten ambos casos.
+% Así pues, suponiendo que el problema \eqref{theory:formulation} tiene solución, el teorema
+% \ref{theory:th:feasibility} nos sugiere dividir nuestro análisis en dos casos: uno donde una
+% entrada $p_i$ es negativa y por lo tanto existe una infinidad de soluciones en la $\eta$-ésima
+% capa entera; y uno donde $\vec{p}$ es estrictamente positivo, lo que implica la finitud de puntos
+% factibles.
 
-Antes de atacar los casos anteriores, primero debemos mostrar que la ecuación lineal diofantina
-$\vec{q}^T\vec{x} = k$ tiene soluciones enteras para toda $k$ entera siempre que las entradas de
-$\vec{q}$ sean coprimas\footnote{
-	Recordemos que supusimos que esto era cierto para demostrar una parte del teorema
-	\ref{theory:th:feasibility}. Además, la construcción de estas soluciones enteras proveerá
-	herramientas útiles para cuando decidamos agregar más restricciones.
-}. La siguiente sección se encarga de mostrar la existencia de tales
-soluciones enteras y, más tarde, nos enfocaremos en cómo obtener soluciones no negativas a partir de
-ellas.
+Ciertamente el primer caso del teorema \ref{theory:th:feasibility} es el menos interesante, pues
+conocemos inmediatamente el valor óptimo de estas instancias. No obstante, existen muchos elementos
+en común que comparten ambos casos. También es cierto que esta división dejará de existir una vez
+que introduzcamos múltiples restricciones en el capítulo 4.
 
-\subsection{Una ecuación lineal diofantina}
+Además, antes de analizar los dos casos que el teorema anterior impone, primero debemos mostrar que la
+ecuación lineal diofantina $\vec{q}^T\vec{x} = k$ admite soluciones enteras para toda $k \in \Z$
+siempre que las entradas de $\vec{q}$ sean coprimas. Habíamos supuesto esto en la demostración
+anterior.
+
+Así también, la construcción de soluciones enteras de ecuaciones lineales diofantinas proveerá
+herramientas teóricas útiles para demostrar la gran mayoría de resultados que presentaremos. Cabe
+mencionar que la siguiente subsección se encarga de construir solamente soluciones enteras de estas
+ecuaciones. Será cuestión de los capítulos 2 y 3 obtener soluciones que además sean no negativas.
+
+\subsection{Construcción de soluciones enteras}
 \label{subsec:dioph-eq}
 \noindent
-De acuerdo al teorema \ref{theory:th:feasibility}, las soluciones del problema
-(\ref{theory:formulation}) se encuentran en una capa entera $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$.
-Así, los puntos $\vec{x} \in \Z^n$ que se encuentran sobre esa capa satisfacen la ecuación lineal
-diofantina
+Debido al teorema \ref{phase-1:th:cover}, las soluciones del problema \eqref{theory:formulation} se
+encuentran en una capa entera $\qlayer{q}{k}$. Luego, por el lema \ref{theory:lemma:utility}, los
+puntos $\vec{x} \in \Z^n$ que se encuentran sobre esa capa satisfacen la ecuación lineal diofantina
 \begin{equation}
 	\label{eq:dioph}
 	\vec{q}^T\vec{x} = q_1x_1 + q_2x_2 + \cdots + q_nx_n = k.
 \end{equation}
-Como $\vec{q} \neq \vec{0}$, podemos suponer, por el momento, que $q_n \neq 0$. En la sección
-\ref{section:number-theory} de Teoría de Números mostramos bajo qué condiciones existen soluciones a
-este tipo de ecuaciones y también cómo construirlas cuando solamente tenemos dos incógnitas.
-Partimos de la observación que podemos resolver recursivamente esta ecuación. Definamos, por
-conveniencia, $g_1 \coloneq \gcd{q_1, \ldots, q_n}$ y también $\omega_1 \coloneq k$. Como $\vec{q}$
-es un vector coprimo, sabemos que $g_1 = 1$. Además, definamos
-\begin{equation*}
+Como hemos mencionado previamente, podemos suponer sin pérdida de generalidad que ninguna entrada
+de $\vec{q}$ es nula.
+
+En la sección \ref{section:number-theory} mostramos condiciones de existencia
+de este tipo de ecuaciones, así como su construcción, cuando $n = 2$. Partimos de la
+observación que podemos resolver recursivamente esta ecuación. Definamos, por conveniencia, $g_1
+\coloneq \gcd{q_1, \ldots, q_n}$ y también $\omega_1 \coloneq k$. Puesto que $\vec{q}$ es un vector
+con entradas coprimas, sabemos que $g_1 = 1$. También definamos
+\begin{equation}
+	\label{def:dummy:omega-2}
 	\omega_2 \coloneq \frac{q_2}{g_2 \cdot g_1}x_2 + \cdots + \frac{q_n}{g_2 \cdot
 	g_1}x_n,
-\end{equation*}
+\end{equation}
 donde $g_2 \coloneq \gcd{q_2/g_1, \ldots, q_n/g_1}$. Como $q_n \neq 0$, tenemos que $g_2$ está bien
-definido y además es positivo. Así, la ecuación (\ref{eq:dioph}) es equivalente a
+definido y además es positivo. Así, la ecuación \eqref{eq:dioph} es equivalente a
 \begin{equation}
 	\label{eq:dioph:first-step}
 	\frac{q_1}{g_1}x_1 + g_2\omega_2 = \omega_1.
@@ -906,8 +917,8 @@ Observemos que
 	&= \gcd{\frac{q_1}{g_1}, \frac{q_2}{g_1}, \ldots, \frac{q_n}{g_1}} = 1.
 \end{align*}
 Por el teorema \ref{prerreq:th:existence}, existen soluciones enteras para todo $\omega_1 \in \Z$.
-Como $q_1/g_1$ y $g_2$ son coprimos, encontramos que sus coeficientes de Bézout asociados (c.f.
-definición \ref{prerreq:def:bezout}) $x_1', \omega_2'$ son soluciones particulares de la ecuación
+Como $q_1/g_1$ y $g_2$ son coprimos, encontramos que sus coeficientes de Bézout (ver definición
+\ref{prerreq:def:bezout}) asociados $x_1', \omega_2'$ son soluciones particulares de la ecuación
 \begin{equation*}
 	\frac{q_1}{g_1}x_1 + g_2\omega_2 = 1.
 \end{equation*}
@@ -925,12 +936,12 @@ donde $t_1 \in \Z$ es una variable libre.
 \begin{observation}
 	Los coeficientes de Bézout $x_1'$ y $\omega_2'$ dependen exclusivamente de $\vec{q}$ y no del
 	punto $\vec{x}$. En efecto, $x_1'$ está asociado a $q_1/g_1$ y $\omega_2'$ está asociado a
-	$g_2$. Pero ambos $g_1$ y $g_2$ son el máximo común divisor de $q_1, \ldots q_n$ y
+	$g_2$. Pero ambos $g_1$ y $g_2$ son el máximo común divisor de $q_1, \ldots q_n$ y de
 	$q_1/g_1, \ldots, q_n/g_1$, respectivamente. 
 \end{observation}
 
-Para el siguiente paso de la recursión escogemos cualquier $t_1 \in \Z$ para fijar $\omega_2$  y
-resolvemos la ecuación
+Para el siguiente paso de la recursión, escogemos cualquier $t_1 \in \Z$ para fijar $\omega_2$.
+Tenemos de \eqref{def:dummy:omega-2} que debemos resolvemos la ecuación
 \begin{equation}
 	\label{eq:dioph:second-step}
 	\frac{q_2}{g_2 \cdot g_1}x_2 +
@@ -944,7 +955,7 @@ que
 \begin{equation*}
 	\gcd{\frac{q_2}{g_2 \cdot g_1}, \ldots, \frac{q_n}{g_2 \cdot g_1}} = 1.
 \end{equation*}
-En el mismo espíritu que el primer paso de la recursión, definimos
+En el mismo espíritu del primer paso de la recursión, definimos
 \begin{equation*}
 	\omega_3 \coloneq \frac{q_3}{g_3 \cdot g_2 \cdot g_1}x_3 + \cdots + \frac{q_n}{g_3
 	\cdot g_2 \cdot g_1}x_n,
@@ -953,8 +964,8 @@ donde
 \begin{equation*}
 	g_3 \coloneq  \gcd{\frac{q_3}{g_2 \cdot g_1}, \ldots, \frac{q_n}{g_2 \cdot g_1}}.
 \end{equation*}
-Nuevamente, como $q_n$ es no nulo, $g_3$ está bien definido y además es positivo. Por lo que la
-ecuación (\ref{eq:dioph:second-step}) es equivalente a
+Nuevamente, como $q_n$ es distinto de cero, $g_3$ está bien definido y además es positivo. Así pues,
+la ecuación \eqref{eq:dioph:second-step} es equivalente a
 \begin{equation}
 	\label{eq:dioph:second-step:short}
 	\frac{q_2}{g_2 \cdot g_1}x_2 + g_3\omega_3 = \omega_2.
@@ -963,7 +974,7 @@ También se cumple que
 \begin{equation*}
 	\gcd{\frac{q_2}{g_2 \cdot g_1}, g_3} = 1,
 \end{equation*}
-y entonces (\ref{eq:dioph:second-step:short}) tiene una infinidad de soluciones para todo $\omega_2 \in
+y entonces \eqref{eq:dioph:second-step:short} tiene una infinidad de soluciones para todo $\omega_2 \in
 \Z$, las cuales están dadas por
 \begin{equation*}
 	\begin{cases}
@@ -1003,10 +1014,10 @@ Ahora bien, definamos
 		\frac{q_{n}}{\prod_{j=1}^{i}g_j}
 	}.
 \end{equation}
-Como $q_n$ es no nulo, se sigue que $g_{i + 1}$ está bien definido y es positivo. Definamos,
-también,
+Como $q_n$ es distinto de cero, se sigue que $g_{i + 1}$ está bien definido y es positivo.
+Definamos
 \begin{equation*}
-	\omega_{i+1} =
+	\omega_{i+1} \coloneq
 	\frac{q_{i+1}}{\prod_{j=1}^{i + 1}g_j}x_{i+1}
 	+ \cdots +
 	\frac{q_{n}}{\prod_{j=1}^{i + 1}g_j}x_{n},
@@ -1075,35 +1086,34 @@ respectivamente, por lo que satisfacen
 	= 1.
 \end{equation}
 
-Hasta este punto, hemos demostrado que la ecuación lineal diofantina $\vec{q}^T\vec{x} = k$ tiene
-soluciones enteras para todo $k \in \Z$ siempre que las entradas de $\vec{q}$ sean coprimas. En
-realidad, hemos mostrado también la existencia de una infinidad de soluciones enteras, pues cada
-elección distinta de $t_i \in \Z$ para cualquier $i \in \lbrace 1, \ldots, n - 1\rbrace$ proveerá una
-solución distinta. Por lo tanto, hemos saldado nuestra cuenta pendiente con respecto a una parte de
-la demostración en el teorema \ref{theory:th:feasibility}.
+Hemos demostrado, que la ecuación lineal diofantina \eqref{eq:dioph} tiene al menos una solución,
+siempre que $\vec{q}$ sea un vector coprimo. Así pues, saldamos nuestra
+cuenta pendiente con respecto a una parte de la demostración \ref{theory:th:feasibility}.
+Además, construimos una infinidad de soluciones enteras, pues la elección de
+cada variable libre $t_i \in \Z$ provee una solución distinta. Aún más, por el teorema
+\ref{prerreq:th:construction}, sabemos que el conjunto de estas soluciones es exhaustiva.
 
-Con respecto a la restricción de no negatividad $\vec{x} \geq \vec{0}$ en el problema
-(\ref{theory:formulation}), podemos acotar nuestra elección de variables libres $t_i \in \Z$ a
-partir de (\ref{eq:recurrence}). De la primera igualdad encontramos que necesariamente se debe
-satisfacer
+Con respecto a la no negatividad de las soluciones mencionamos brevemente lo siguiente.
+Observamos de \eqref{eq:recurrence} que $t_i$ debe satisfacer
 \begin{equation}
 	\label{eq:param-lb}
-	t_i \geq \left\lceil -\frac{\omega_ix_i'}{g_{i + 1}} \right\rceil,
+	t_i \geq \ceil{-\frac{\omega_ix_i'}{g_{i + 1}}},
 \end{equation}
-para $i \in \lbrace 1, \ldots, n - 2\rbrace$. Para determinar intervalos de no negatividad de
-$x_{n-1}$ y $x_n$, observamos de (\ref{eq:last-solution}) que dependemos de los signos
-de $q_{n-1}$ y de $q_n$. Mucho tendremos que decir en los siguientes dos capítulos sobre
-cómo acotar mejor $t_1, \ldots, t_{n-1}$ para asegurar la no negatividad de $\vec{x}$. Así pues,
-relegamos la discusión en los siguientes dos capítulos cuando analicemos separadamente el caso
-infinito y el caso finito del teorema \ref{theory:th:feasibility}.
+para todo $i \in \braces{1, \ldots, n - 2}$. Ahora bien, para asegurar la no negatividad de
+$x_{n-1}$ y $x_n$, observamos de \eqref{eq:last-equation} que dependemos de los signos de $q_{n-1}$
+y de $q_n$. Debido al teorema \ref{theory:th:feasibility}, relegamos esta discusión para los
+siguientes dos capítulos.
 
-Ahora bien, hemos encontrado una relación entre el vector de soluciones $\vec{x} \in \Z^n$ y el
-vector de variables libres $\vec{t} \in \Z^{n-1}$. Hemos manejado esta relación de manera recursiva
-a través de (\ref{eq:recurrence}). Resultará conveniente encontrar una forma cerrada a la relación
-de recurrencia inducida. Para ello, recordemos que el vector $\vec{x}$ se encuentra sobre la capa entera
-$H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ y por lo tanto satisface (\ref{eq:dioph}). Recordemos que
-habíamos definido, por construcción, $\omega_1 \coloneq k$. Combinando esto último con la última
-igualdad de \eqref{eq:recurrence}, llegamos a
+\subsection{Soluciones y variables libres}
+\label{subsec:linear}
+\noindent
+Hemos encontrado una relación entre un vector de variables libres $\vec{t} \in \Z^{n-1}$
+y un vector solución $\vec{x} \in \Z^n$ de la ecuación \eqref{eq:dioph}. Sabemos de
+\eqref{eq:recurrence} que la relación está dada de manera recursiva. Puesto que deseamos establecer
+una transformación lineal entre $\vec{t}$ y $\vec{x}$, resulta sumamente conveniente determinar una
+forma cerrada de esta relación. Recordemos que habíamos definido, por construcción, $\omega_1
+\coloneq k$. Combinando esto con la segunda igualdad de \eqref{eq:recurrence}, obtenemos la relación
+de recurrencia
 \begin{equation}
 	\label{eq:omega-recurrence}
 	\begin{cases}
@@ -1112,13 +1122,15 @@ igualdad de \eqref{eq:recurrence}, llegamos a
 	\end{cases}
 \end{equation}
 \begin{lemma}
-	La forma cerrada de la relación de recurrencia (\ref{eq:omega-recurrence}) está dada por
+	La forma cerrada de la relación de recurrencia \eqref{eq:omega-recurrence} está dada por
 	\begin{equation}
 		\label{eq:omega-formula}
 		\omega_i =
 		k \cdot \prod_{j=2}^{i} \omega_j'
-		- \sum_{j=1}^{i - 1}\frac{q_j}{\prod_{\ell=1}^{j}g_\ell}
-		\cdot \prod_{\ell=j+2}^{i}\omega_\ell' \cdot t_j,
+		- \sum_{j=1}^{i - 1}
+		t_j \cdot
+		\frac{q_j}{\prod_{\ell=1}^{j}g_\ell}
+		\cdot \prod_{\ell=j+2}^{i}\omega_\ell'.
 	\end{equation}
 	donde, por conveniencia, le asignamos el valor de 0 a la suma vacía y el valor de 1 al producto
 	vacío.
@@ -1128,8 +1140,10 @@ igualdad de \eqref{eq:recurrence}, llegamos a
 	\begin{equation*}
 		\omega_1 =
 		k \cdot \prod_{j=2}^{1} \omega_j'
-		- \sum_{j=1}^{0}\frac{q_j}{\prod_{\ell=1}^{j}g_\ell}
-		\cdot \prod_{\ell=j+2}^{1}\omega_\ell' \cdot t_j
+		- \sum_{j=1}^{0}
+		t_j \cdot
+		\frac{q_j}{\prod_{\ell=1}^{j}g_\ell}
+		\cdot \prod_{\ell=j+2}^{1}\omega_\ell'
 		= k,
 	\end{equation*}
 	debido a que definimos el producto vacío como 1 y la suma vacía como 0. Supongamos
@@ -1138,30 +1152,37 @@ igualdad de \eqref{eq:recurrence}, llegamos a
 	% TODO: fix overfull error
 	\begin{align*}
 		&k \cdot \prod_{j=2}^{i + 1} \omega_j'
-		- \sum_{j=1}^{i}\frac{q_j}{\prod_{\ell=1}^{j}g_\ell}
-		\cdot \prod_{\ell=j+2}^{i + 1}\omega_\ell' \cdot t_j \\
+		- \sum_{j=1}^{i}
+		t_j \cdot
+		\frac{q_j}{\prod_{\ell=1}^{j}g_\ell}
+		\cdot \prod_{\ell=j+2}^{i + 1}\omega_\ell' \\
 		&=
 		k \cdot \prod_{j=2}^{i} \omega_j' \cdot \omega_{i+1}'
-		- \sum_{j=1}^{i - 1}\frac{q_j}{\prod_{\ell=1}^{j}g_\ell}
-		\cdot \prod_{\ell=j+2}^{i}\omega_\ell' \cdot t_j \cdot \omega_{i + 1}'
+		- \sum_{j=1}^{i - 1}
+		t_j \cdot
+		\frac{q_j}{\prod_{\ell=1}^{j}g_\ell}
+		\cdot \prod_{\ell=j+2}^{i}\omega_\ell' \cdot \omega_{i + 1}'
 		- \frac{q_i}{\prod_{\ell = 1}^{i}g_\ell}
 		\cdot \prod_{\ell = i + 2}^{i + 1}\omega_\ell' \cdot t_i \\
 		&= 
 		\left( k \cdot \prod_{j=2}^{i} \omega_j'
-		- \sum_{j=1}^{i - 1}\frac{q_j}{\prod_{\ell=1}^{j}g_\ell}
-		\cdot \prod_{\ell=j+2}^{i}\omega_\ell' \cdot t_j \right) \omega_{i+1}'
+		- \sum_{j=1}^{i - 1}
+		t_j \cdot
+		\frac{q_j}{\prod_{\ell=1}^{j}g_\ell}
+		\cdot \prod_{\ell=j+2}^{i}\omega_\ell' \right) \omega_{i+1}'
 		- \frac{q_i}{\prod_{\ell = 1}^{i}g_\ell} \cdot t_i  \\
 		&= \omega_i \cdot \omega_{i + 1}' - \frac{q_i}{\prod_{\ell = 1}^{i}g_\ell} \cdot t_i \\
 		&= \omega_{i+1}.
 	\end{align*}
-	Por el principio de inducción se sigue que (\ref{eq:omega-formula}) satisface
-	(\ref{eq:omega-recurrence}) para todo $i \in \N$. Así, esta fórmula es la forma cerrada de la
+	Por el principio de inducción se sigue que \eqref{eq:omega-formula} satisface
+	\eqref{eq:omega-recurrence} para todo $i \in \N$. Así, esta fórmula es la forma cerrada de la
 	relación de recurrencia propuesta.
 \end{proof}
 
 Ahora que encontramos una forma cerrada a la relación de recurrencia \eqref{eq:omega-recurrence},
-somos capaces de determinar una relación lineal entre $\vec{x} \in \Z^n$ y $\vec{t} \in \Z^{n-1}$.
-Definamos, por conveniencia, los coeficientes $m_{ij} \in \mathbb{Z}$ con $i > j$ como
+somos capaces de establecer una transformación lineal entre el vector de variables libres $\vec{t}
+\in \Z^{n-1}$ y el vector solución $\vec{x} \in \Z^{n}$ de \eqref{eq:dioph}. Definamos, por
+conveniencia, los coeficientes $m_{ij} \in \mathbb{Z}$ con $i > j$ como
 \begin{equation}
 	\label{phase-2:eq:coeffs}
 	m_{ij} \coloneq \frac{q_j}{\prod_{\ell = 1}^{j}g_\ell} \cdot \prod_{\ell = j +
@@ -1187,14 +1208,13 @@ llegamos a
 	\label{eq:x:last}
 	\begin{align}
 		x_{n-1} &= k \cdot \prod_{j=2}^{n-1} \omega_j' \cdot x_{n-1}' - \sum_{j=1}^{n-2}
-		m_{n-1,j}x_{n-1}' t_j + \frac{q_n}{\prod_{j=1}^{n-2}g_j} t_{n-1}, \\
+		m_{n-1,j}x_{n-1}' t_j + \frac{q_n}{\prod_{j=1}^{n-1}g_j} t_{n-1}, \\
 		x_{n} &= k \cdot \prod_{j=2}^{n-1} \omega_j' \cdot x_{n}' - \sum_{j=1}^{n-2}
-		m_{n-1,j}x_{n}' t_j - \frac{q_{n - 1}}{\prod_{j=1}^{n-2}g_j} t_{n-1}.
+		m_{n-1,j}x_{n}' t_j - \frac{q_{n - 1}}{\prod_{j=1}^{n-1}g_j} t_{n-1}.
 	\end{align}
 \end{subequations}
 
-Con este trabajo anterior, ya podemos establecer una relación lineal entre $\vec{t} \in \Z^{n-1}$ y
-$\vec{x} \in \Z^n$. Definimos $\vec{\nu} \in \Z^n$ a partir de
+Así pues, definimos $\vec{\nu} \in \Z^n$ como
 \begin{equation}
 	\label{eq:vec-omega}
 	\nu_i \coloneq x_i' \cdot \prod_{j = 2}^{\min{\lbrace i, n - 1 \rbrace}}\omega_j'.
@@ -1216,11 +1236,11 @@ Sustituyendo estas definiciones en \eqref{eq:x:i} y \eqref{eq:x:last} encontramo
 	\vec{x} = k\vec{\nu} + M\vec{t}.
 \end{equation}
 
-En una observación pasada mencionamos que los coeficientes de Bézout $\omega_i', x_i'$ están
-asociados a términos exclusivamente dependientes de $\vec{q}$, por lo que no dependen de la elección
-$\vec{x} \in \Z$. De esta manera, $\vec{\nu}$ depende exclusivamente de $\vec{q}$. El mismo
-razonamiento aplica para la matriz $M$. Entonces, como $\vec{q}$ es fijo, se sigue que
-$\vec{\nu}$ y $M$ lo son también.
+En la subsección \ref{subsec:dioph-eq} mencionamos a lo largo de la construcción de soluciones que
+los coeficientes de Bézout $\omega_i', x_i'$ están asociados a términos exclusivamente dependientes
+de $\vec{q}$, por lo que no dependen de la elección $\vec{x} \in \Z$. Se sigue de
+\eqref{eq:vec-omega} y de \eqref{eq:mat-T} que $\vec{\nu}$ y $M$ dependen exclusivamente de
+$\vec{q}$ y no de $\vec{x}$.
 
 \begin{lemma} \label{lemma:iso1}
 	Sea $\vec{q} \in \Z^{n}$ un vector coprimo. Entonces el vector $\vec{\nu}
@@ -1242,7 +1262,7 @@ $\vec{\nu}$ y $M$ lo son también.
 	\end{equation}
 	Recordemos que $x_{n-1}'$ y $x_n'$ son coeficientes de Bézout asociados a los coeficientes del
 	lado izquierdo de \eqref{eq:last-equation}, los cuales son coprimos. Entonces se cumple, por el
-	teorema \ref{prerreq:th:bezout},
+	teorema \ref{prerreq:th:bezout}, que
 	\begin{equation*}
 		\frac{q_{n-1}}{\prod_{j=1}^{n-1}g_j}x_{n-1}' +
 		\frac{q_n}{\prod_{j=1}^{n-1}g_j}x_n' = 1,
@@ -1251,13 +1271,13 @@ $\vec{\nu}$ y $M$ lo son también.
 	\begin{equation*}
 		q_{n-1}x_{n-1}' + q_nx_n' = \prod_{j=1}^{n-1}g_j.
 	\end{equation*}
-	Sustituyendo en (\ref{eq:omega-base-case}), obtenemos la base de la inducción, i.e.,
+	Sustituyendo en \eqref{eq:omega-base-case}, obtenemos la base de la inducción:
 	\begin{equation*}
 		q_{n-1}\nu_{n-1} + q_n\nu_n  =
 		\prod_{j=2}^{n-1}\omega_j' \cdot \prod_{j=1}^{n-1}g_j.
 	\end{equation*}
-	Supongamos inductivamente que (\ref{eq:omega-induction}) se satisface para alguna $2 \leq i \leq
-	n - 1$. Reduciendo $i$, ocupando \eqref{eq:vec-omega} y usando la hipótesis inductiva,
+	Supongamos que \eqref{eq:omega-induction} se satisface para alguna $i \in \braces{2, \ldots, n -
+	1}$. Reduciendo $i$, ocupando \eqref{eq:vec-omega} y usando la hipótesis inductiva,
 	obtenemos
 	\begin{align*}
 		\sum_{j=i-1}^{n}q_j\nu_j
@@ -1278,15 +1298,15 @@ $\vec{\nu}$ y $M$ lo son también.
 	\begin{equation*}
 		q_{i-1}x_{i-1}' + \omega_i'\prod_{j=1}^{i}g_j = \prod_{j=1}^{i-1}g_j.
 	\end{equation*}
-	Sustituyendo, obtenemos el resultado (\ref{eq:omega-induction}) para $i - 1$. Así, por inducción
-	hacía atrás, (\ref{eq:omega-induction}) se cumple para todo $i \in \lbrace 1, \ldots, n - 1
+	Sustituyendo, obtenemos el resultado \eqref{eq:omega-induction} para $i - 1$. Así, por inducción
+	hacía atrás, \eqref{eq:omega-induction} se cumple para todo $i \in \lbrace 1, \ldots, n - 1
 	\rbrace$. Finalmente, para demostrar este lema, observamos que
 	\begin{equation*}
 		\vec{q}^T\vec{\nu} = \sum_{j=1}^{n}q_j\nu_j = \prod_{j=2}^{1}\omega_j'
 		\cdot \prod_{j=1}^{1}g_j = g_1 = 1.
 	\end{equation*}
 	El primer producto es uno por ser el producto vacío. Recordemos también que $g_1$ es el máximo
-	común divisor de $q_1, \ldots, q_n$, los cuales son coprimos, y entonces $g_1 = 1$.
+	común divisor de $q_1, \ldots, q_n$, los cuales son coprimos por hipótesis, y entonces $g_1 = 1$.
 \end{proof}
 \begin{lemma}
 	\label{lemma:iso2}
@@ -1294,13 +1314,14 @@ $\vec{\nu}$ y $M$ lo son también.
 	definida en \eqref{eq:mat-T}.
 \end{lemma}
 \begin{proof}
-	La matriz $M$ es triangular inferior cuya diagonal principal es distinta de cero. En efecto,
+	La matriz $M$ es triangular inferior y su diagonal principal es distinta de cero. En efecto,
 	para todo $i \in \lbrace 1, \ldots, n - 2\rbrace$, tenemos
 	\begin{equation*}
 		M_{ii} = g_{i + 1} = \gcd{\frac{q_i}{\prod_{j=1}^{i}g_j}, \ldots,
 		\frac{q_n}{\prod_{j=1}^{i}g_j}}.
 	\end{equation*}
-	Pero el máximo común divisor entre cualesquiera enteros siempre es positivo. También tenemos
+	Pero el máximo común divisor entre cualesquiera enteros siempre es positivo. También tenemos por
+	hipótesis que
 	\begin{equation*}
 		M_{n-1, n-1} = \frac{q_n}{\prod_{j=1}^{n-1}g_j} \neq 0.
 	\end{equation*}
@@ -1310,28 +1331,30 @@ $\vec{\nu}$ y $M$ lo son también.
 	\ker{M^T} = 1$, así que basta mostrar que $\vec{q} \in \ker{M^T}$.
 
 	Sea $\vec{x} \in \Z^n$. Por el teorema \ref{phase-1:th:cover}, existe una capa entera
-	$H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ que contiene a $\vec{x}$. Así, por el lema
+	$\qlayer{q}{k}$ que contiene a $\vec{x}$. Así, por el lema
 	\ref{theory:lemma:utility}, $\vec{x}$ satisface la
-	ecuación lineal diofantina $\vec{q}^T\vec{x} = k$. Por construcción, existe $\vec{t} \in
-	\Z^{n-1}$ tal que $\vec{x} = k\vec{\nu} + M\vec{t}$. Luego, por el lema \ref{lemma:iso1},
-	tenemos
+	ecuación lineal diofantina $\vec{q}^T\vec{x} = k$.
+	Por construcción en la subsección
+	\ref{subsec:dioph-eq} y por la exhaustividad del teorema \ref{prerreq:th:construction}
+	sabemos que existe $\vec{t} \in \Z^{n-1}$ tal que $\vec{x} = k\vec{\nu} + M\vec{t}$. Luego,
+	por el lema \ref{lemma:iso1}, tenemos
 	\begin{equation*}
 		k = \vec{q}^T\vec{x} = k \vec{q}^T\vec{\nu} + \vec{q}^TM\vec{t} = k +
 		(\vec{q}^TM)\vec{t}.
 	\end{equation*}
 	De donde obtenemos $(\vec{q}^TM)\vec{t} = 0$. Pero $\vec{x}$ fue arbitrario, así que también lo
-	fue $\vec{t}$. Entonces se debe cumplir $\vec{q}^TM = \vec{0}^T$, lo que implica que $\vec{q} \in
-	\ker{M^T}$.
+	fue $\vec{t}$. Entonces $\vec{q}^TM = \vec{0}^T$, lo que implica $\vec{q} \in \ker{M^T}$.
 \end{proof}
 
 La gran mayoría de nuestra argumentación para demostrar los resultados ha sido fundamentada a través
-de las capas enteras $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$, así como por el teorema
-\ref{phase-1:th:cover}. Sin embargo, estas capas enteras contienen puntos que, en el contexto de
-programación lineal entera, no son de interés, a saber, contienen puntos no enteros. Nos gustaría
-concentrarnos exclusivamente en estos puntos enteros, al mismo tiempo que buscamos caracterizarlos
-por medio de $\vec{q}$. La siguiente definición hará que logremos este primer objetivo de enfocarnos
-exclusivamente en los puntos enteros, mientras que el teorema \ref{th:lattice} permitirá que los
-caractericemos a partir de $\vec{q}$.
+de las capas enteras $\qlayer{q}{k}$, al igual que por el teorema \ref{phase-1:th:cover}. Sin embargo,
+estas capas enteras contienen puntos que no son enteros y por lo tanto no son de nuestro interés.
+Nos gustaría concentrarnos exclusivamente en puntos enteros, al mismo tiempo que buscamos
+caracterizarlos por medio de $\vec{q}$.
+
+% La siguiente definición hará que logremos este primer objetivo de enfocarnos exclusivamente en los
+% puntos enteros, mientras que el teorema \ref{th:lattice} permitirá que los caractericemos a partir
+% de $\vec{q}$.
 
 \begin{definition}[\cite{alex}]
 	Decimos que un subconjunto $\Lambda$ de $\R^n$ es un \textbf{grupo aditivo} si
@@ -1363,9 +1386,9 @@ caractericemos a partir de $\vec{q}$.
 
 \begin{theorem}
 	\label{th:lattice}
-	Supongamos que $q_n \neq 0$. Entonces $\vec{\nu}$ y las columnas de $M$
-	(definidas en \eqref{eq:vec-omega} y \eqref{eq:mat-T}, respectivamente)
-	forman una base de la red $\Z^n$.
+	Sean $\vec{q} \in \Z^n$ un vector coprimo y supongamos que $q_n$ es distinto de cero. Entonces
+	$\vec{\nu}$ y las columnas de $M$ (definidas en \eqref{eq:vec-omega} y \eqref{eq:mat-T},
+	respectivamente) forman una base de la red $\Z^n$.
 \end{theorem}
 \begin{proof}
 	En el lema \ref{lemma:iso2} mostramos que las columnas de $M$ son linealmente independientes.
@@ -1384,52 +1407,75 @@ caractericemos a partir de $\vec{q}$.
 	lo cual es una contradicción. Se sigue que $\lbrace \vec{\nu}, \vec{m}_1, \ldots,
 	\vec{m}_{n-1}\rbrace$ es un conjunto de vectores linealmente independiente.
 
-	Ahora bien, sea $\vec{x} \in \Z^n$, por el teorema \ref{phase-1:th:cover}, sabemos que se
-	encuentra sobre una capa entera, y entonces satisface la ecuación lineal diofantina
-	$\vec{q}^T\vec{x} = k$ para alguna $k \in \Z$. Por construcción en el inicio de esta sección junto
-	con la exhaustividad del teorema \ref{prerreq:th:construction}, existe un vector $\vec{t} \in
-	\Z^{n-1}$ tal que
+	Ahora bien, sea $\vec{x} \in \Z^n$, por el teorema \ref{phase-1:th:cover}, sabemos que $\vec{x}
+	\in \qlayer{q}{k}$ para alguna $k \in \Z$. Por el lema \ref{theory:lemma:utility}, $\vec{x}$
+	satisface la ecuación lineal diofantina $\vec{q}^T\vec{x} = k$. Por construcción en la
+	subsección \ref{subsec:dioph-eq} y por la exhaustividad del teorema
+	\ref{prerreq:th:construction} sabemos que existe $\vec{t} \in \Z^{n-1}$ que satisface
 	\begin{equation*}
 		\vec{x} = k\vec{\nu} + M\vec{t} = k\vec{\nu} + t_1\vec{m}_1 + \cdots +
 		t_{n-1}\vec{m}_{n-1}.
 	\end{equation*}
-	Como $\vec{x}$ fue arbitrario, se sigue que
+	Pero $\vec{x}$ fue arbitrario, lo que implica que
 	\begin{equation*}
-		\Z^n = \lbrace
-		k\vec{\nu} + t_1\vec{m}_1 + \cdots + t_{n-1}\vec{m}_{n-1}
-		\vcentcolon k, t_1, \ldots, t_{n-1} \in \Z
-		\rbrace.
+		\Z^n = \braces{
+			k\vec{\nu} + t_1\vec{m}_1 + \cdots + t_{n-1}\vec{m}_{n-1}
+		\vcentcolon k, t_1, \ldots, t_{n-1} \in \Z}
 	\end{equation*}
-	De esta manera, se cumple que $\lbrace \vec{\nu}, \vec{m}_1, \ldots, \vec{m}_{n-1}\rbrace$ es
-	una base de $\Z^n$.
+	De esta manera, se cumple que $\braces{\vec{\nu}, \vec{m}_1, \ldots, \vec{m}_{n-1}}$ forma
+	una base de la red $\Z^n$.
 \end{proof}
 
 El siguiente corolario es presentado sin demostración, pero cabe mencionar que es una consecuencia
-directa del teorema anterior junto con las equivalencias encontradas en el teorema 4.3 en \cite{alex}.
+directa del teorema anterior junto con las equivalencias encontradas en el teorema 4.3 de \cite{alex}.
 \begin{corollary}
 	\label{cor:unimodular}
-	Supongamos que $q_n \neq 0$ y consideremos $\vec{\nu} \in \Z^n$ (definido en
-	\eqref{eq:vec-omega}) y las columnas $\vec{m}_1, \ldots, \vec{m}_{n-1} \in \Z^n$ de la matriz $M
-	\in \Z^{n \times (n-1)}$ (definida en \eqref{eq:mat-T}), entonces la matriz
+	Sea $\vec{q} \in \Z^n$ un vector coprimo y supongamos que $q_n$ es distinto de cero.
+	Consideremos $\vec{\nu} \in \Z^n$ y las columnas $\vec{m}_1, \ldots, \vec{m}_{n-1} \in \Z^n$ de
+	la matriz $M$ (definidas en \eqref{eq:vec-omega} y \eqref{eq:mat-T}, respectivamente), entonces
+	la matriz
 	\begin{equation*}
 		[ \vec{\nu} \mid \vec{m}_1 \mid \cdots \mid \vec{m}_{n-1} ] \in \Z^{n \times n}
 	\end{equation*}
 	es unimodular, es decir, su determinante es $\pm 1$.
 \end{corollary}
 
-Geométricamente, a partir de $\vec{q}$ descomponemos la red $\Z^n$ como una suma directa de dos
-subredes isomorfas a $\Z$ y $\Z^{n-1}$, cuyas bases están dadas por $\vec{\nu}$ y las columnas de
-$M$, respectivamente. El vector $\vec{\nu}$ es una solución particular de la ecuación no
-homogénea $\vec{q}^T\vec{\nu} = 1$, mientras que las columnas de $M$ forman una base del conjunto
-de soluciones de la ecuación homogénea $\vec{q}^T\vec{m} = 0$. Tenemos entonces que si $q_n \neq 0$,
-el vector $\vec{q}$ induce una descomposición de $\Z^n$. Ciertamente, esta idea de descomponer el
-espacio vectorial completo a partir de soluciones particulares y homogéneas no es novedosa.
+% Geométricamente, a partir de $\vec{q}$ descomponemos la red $\Z^n$ como una suma directa de dos
+% subredes isomorfas a $\Z$ y $\Z^{n-1}$, cuyas bases están dadas por $\vec{\nu}$ y las columnas de
+% $M$, respectivamente. El vector $\vec{\nu}$ es una solución particular de la ecuación no
+% homogénea $\vec{q}^T\vec{\nu} = 1$, mientras que las columnas de $M$ forman una base del conjunto
+% de soluciones de la ecuación homogénea $\vec{q}^T\vec{m} = 0$. Tenemos entonces que si $q_n \neq 0$,
+% el vector $\vec{q}$ induce una descomposición de $\Z^n$. Ciertamente, esta idea de descomponer el
+% espacio vectorial completo a partir de soluciones particulares y homogéneas no es novedosa.
 
-Hasta este punto hemos supuesto que $q_n \neq 0$. Ciertamente si este no es el caso podemos
-permutar las entradas de $\vec{q}$ de manera que el vector permutado $\tvec{q}$ cumpla el
-supuesto. Ahora bien, podemos preguntarnos cómo se relacionan las imágenes de las matrices $M$ y
-$\tilde{M}$ de estos dos vectores. No obstante, si $q_n = 0$, puede ser el caso que la matriz
-$M$ no esté bien definida\footnote{
+Geométricamente, tenemos que si $\vec{q} \in \Z^n$ es un vector coprimo tal que $q_n \neq 0$,
+entonces $\vec{q}$ induce una descomposición de $\Z^n$ como la suma directa de las subredes
+$\Lambda_p$ y $\Lambda_h$, donde
+\begin{equation*}
+	\Lambda_p \coloneq \braces{k\vec{\nu} \vcentcolon k \in \Z}, \quad
+	\Lambda_h \coloneq \braces{M\vec{t} \vcentcolon \vec{t} \in \Z^{n-1}}.
+\end{equation*}
+Para todo vector $\vec{x} \in \Lambda_p$ existe una $k \in \Z$ tal que $\vec{x} =
+k\vec{\nu}$. Luego, por el lema \ref{lemma:iso1}, $\vec{x}$ es una solución particular de la
+ecuación lineal diofantina $\vec{q}^T\vec{x} = k$. Similarmente, por el lema \ref{lemma:iso2}, todo
+vector $\vec{x} \in \Lambda_h$ es una solución de la ecuación lineal diofantina homogénea
+$\vec{q}^T\vec{x} = 0$.
+
+Sea $\vec{x} \in \Z^n$. Por un lado, el teorema \ref{phase-1:th:cover} indica que $\vec{x} \in
+\qlayer{q}{k}$ para alguna $k \in \Z$. Por el otro lado, la descomposición $\Z^n \cong \Lambda_p
+\oplus \Lambda_h$ es tal que $\vec{x}$ puede ser escrito como $\vec{x}_p + \vec{x}_h$,
+donde $\vec{x}_p \in \Lambda_p$ y $\vec{x}_h \in \Lambda_h$, así que se satisface simultáneamente
+$\vec{q}^T\vec{x}_p = k$ y $\vec{q}^T\vec{x}_h = 0$.
+
+De manera intuitiva, $\vec{x}_p$ se encarga de que $\vec{x}$ se encuentre sobre la $k$-ésima capa
+entera, mientras que $\vec{x}_h$ se desliza sobre esta capa. Esta idea de descomponer el
+espacio a partir de soluciones particulares y homogéneas de una ecuación no es novedosa,
+pues es sumamente frecuente hacerlo para espacios vectoriales.
+
+Observemos que si $q_n = 0$, es válido permutar las entradas de $\vec{q}$ de manera que el vector
+permutado $\tvec{q}$ cumpla el supuesto $\tilde{q}_n \neq 0$. Podemos preguntarnos cómo se
+relacionan las imágenes de las matrices $M$ y $\tilde{M}$ de estos dos vectores. Pero si
+$q_n = 0$, entonces puede ser que $M$ no esté bien definida\footnote{
 	Por ejemplo, si $q_n = q_{n-1} = 0$, encontramos que
 	\begin{equation*}
 		g_{n-1} \coloneq \gcd{\frac{q_{n-1}}{\prod_{j=1}^{n-2}g_j},
@@ -1437,28 +1483,28 @@ $M$ no esté bien definida\footnote{
 	\end{equation*}
 	Pero el máximo común divisor de dos números no está bien definido si ambos son cero. Esto
 	implica que la entrada $M_{n-2, n-2} \coloneq g_{n-1}$ no está bien definida.
-}. Para responder la pregunta requerimos de un supuesto más fuerte.
+}. Requerimos de un supuesto más fuerte para responder la pregunta.
 \begin{corollary}
 	\label{cor:iso3}
-	Sea $\vec{q}$ un vector coprimo y sea $\tvec{q}$ el vector coprimo resultante de haber
-	permutado las entradas de $\vec{q}$. Supongamos además que $q_n, \tilde{q}_n \neq 0$.
-	Entonces sus respectivas matrices $M$ y $\tilde{M}$ definidas en \eqref{eq:mat-T} son isomorfas:
+	Sea $\vec{q}$ un vector coprimo y sea $\tvec{q}$ un vector con las entradas de $\vec{q}$
+	permutadas. Supongamos que $q_n, \tilde{q}_n \neq 0$. Entonces sus respectivas matrices $M$ y
+	$\tilde{M}$ definidas en \eqref{eq:mat-T} son isomorfas:
 	\begin{equation*}
-		\ker{\tilde{M}^T} \cong \ker{M^T}.
+		\ker{M^T} \cong \ker{\tilde{M}^T}.
 	\end{equation*}
 \end{corollary}
 \begin{proof}
 	Existe una matriz de permutación $P \in \Z^{n \times n}$ tal que $\tvec{q} = P\vec{q}$.
-	Puesto que $P$ es invertible, tenemos $\gen\braces{\tvec{q}} \cong
-	\gen\braces{\vec{q}}$. Usando el lema \ref{lemma:iso2} obtenemos
+	Puesto que $P$ es invertible, tenemos $\gen\braces{\vec{q}} \cong
+	\gen\braces{\tvec{q}}$. Usando el lema \ref{lemma:iso2} obtenemos
 	\begin{equation*}
-		\ker{\tilde{M}^T} = \gen\braces{\tvec{q}} \cong \gen\braces{\vec{q}} = \ker{M^T},
+		\ker{M^T} = \gen\braces{\vec{q}} \cong \gen\braces{\tvec{q}} = \ker{\tilde{M}^T},
 	\end{equation*}
 	que es lo que queríamos demostrar.
 \end{proof}
 \begin{observation}
-	No es cierto que $\tilde{M} = PM$ si $\tvec{q} = P\vec{q}$. Consideremos el vector
-	$\vec{q} \coloneq (1, 1, -2)^T$ y la permutación
+	Si $\tvec{q} = P\vec{q}$ no es cierto que $\tilde{M} = PM$. Por ejemplo, consideremos el vector
+	$\vec{q} \coloneq (1, 1, -2)^T$ y la matriz de permutación
 	\begin{equation*}
 		P \coloneq \begin{pmatrix}
 			1 & 0 & 0 \\
@@ -1466,7 +1512,7 @@ $M$ no esté bien definida\footnote{
 			0 & 1 & 0 \\
 		\end{pmatrix},
 	\end{equation*}
-	de donde obtenemos $\tvec{q} = (1, -2, 1)^T$. Observemos que
+	de donde obtenemos $\tvec{q} = (1, -2, 1)^T$. Tenemos
 	\begin{equation*}
 		M = \begin{pmatrix}
 			1 & 0 \\
@@ -1477,88 +1523,124 @@ $M$ no esté bien definida\footnote{
 			1 & 0 \\
 			1 & 1 \\
 			1 & 2 \\
-		\end{pmatrix}.
-	\end{equation*}
-	Sí se cumple que
-	\begin{equation*}
-		\ker{\tilde{M}^T} = \gen\braces{\tvec{q}}
-		\cong \gen\braces{\vec{q}} = \ker{M^T},
-	\end{equation*}
-	pero
-	\begin{equation*}
+		\end{pmatrix}, \quad
 		PM = \begin{pmatrix}
 			1 & 0 \\
 			1 & -1 \\
 			1 & -2 \\
-		\end{pmatrix}
-		\neq \tilde{M}.
-	\end{equation*}
-\end{observation}
-
-Extendamos más la idea anterior y denotemos por $\glz{n}{\Z}$ el grupo de permutaciones de $\Z^n$.
-Es decir,
-\begin{equation*}
-	\glz{n}{\Z} \coloneq \lbrace P \in \Z^{n \times n} ~\text{es matriz de
-	permutación} \rbrace.
-\end{equation*}
-También definamos el grupo de permutaciones en $n$ letras como
-\begin{equation*}
-	S_n \coloneq \lbrace \sigma \colon \lbrace 1, \ldots, n \rbrace \to \lbrace
-	1, \ldots, n \rbrace ~\text{es función biyectiva} \rbrace.
-\end{equation*}
-Entonces $S_n$ actúa naturalmente sobre la red $\Z^n$. En efecto, consideremos el homomorfismo
-\begin{align*}
-	\varphi &\colon S_n \to \glz{n}{\Z},\\
-	\sigma &\mapsto (\Z^n \mapsto \Z^n),
-\end{align*}
-a partir de la extensión lineal de $\varphi(\sigma)(\vec{e}_i) = \vec{e}_{\sigma(i)}$. Escribimos
-$\sigma.\vec{e}_i = \vec{e}_{\sigma(i)}$ para tener una notación más clara.
-\begin{example}
-	Sea $\sigma \in S_4$ definida por $\sigma \coloneq (12)(34)$. La permutación $\sigma$ actúa
-	sobre la base canónica como
-	\begin{align*}
-		\sigma.\vec{e}_1 &= \vec{e}_2, \quad \sigma.\vec{e}_2 = \vec{e}_1, \\
-		\sigma.\vec{e}_3 &= \vec{e}_4, \quad \sigma.\vec{e}_4 = \vec{e}_3.
-	\end{align*}
-	Por lo que $\sigma$ es realizada como
-	\begin{equation*}
-		\sigma \mapsto [\vec{e}_2 \mid \vec{e}_1 \mid \vec{e}_4 \mid \vec{e}_3]
-		= \begin{pmatrix}
-			0 & 1 & 0 & 0 \\
-			1 & 0 & 0 & 0 \\
-			0 & 0 & 0 & 1 \\
-			0 & 0 & 1 & 0
 		\end{pmatrix}.
 	\end{equation*}
-\end{example}
+	% Sí se cumple que
+	% \begin{equation*}
+	% 	\ker{\tilde{M}^T} = \gen\braces{\tvec{q}}
+	% 	\cong \gen\braces{\vec{q}} = \ker{M^T},
+	% \end{equation*}
+	% pero
+	% \begin{equation*}
+	% 	PM = \begin{pmatrix}
+	% 		1 & 0 \\
+	% 		1 & -1 \\
+	% 		1 & -2 \\
+	% 	\end{pmatrix}
+	% 	\neq \tilde{M}.
+	% \end{equation*}
+	Se verifica inmediatamente que $\tilde{M} \neq PM$.
+\end{observation}
 
-De manera informal, podemos fortalecer el corolario \ref{cor:iso3} con el siguiente argumento. Si
-$q_i = 0$ para alguna $i \in \lbrace 1, \ldots, n \rbrace$, podemos proyectar $\vec{q}$ sobre
-la subred $\Z^{n-1}$ de $\Z$. Repetimos este proceso hasta que todas las entradas de $\vec{q}$ sean
-distintas de cero. Y es sobre esta subred que podemos considerar cualquier permutación en las
-entradas del vector $\vec{q}$ proyectado.
+Fortalecemos el corolario \ref{cor:iso3} de manera incremental.
 \begin{definition}
-	Sean $\vec{q}, \tvec{q} \in \Z^n$ dos vectores coprimos cuyas entradas son todas
-	distintas de cero. Entonces decimos que $\vec{q}$ y $\tvec{q}$ son \textbf{equivalentes} si y solo
-	si existe $\sigma \in S_n$ tal que $\tvec{q} = \sigma.\vec{q}$. En este caso escribimos
-	$\vec{q} \sim \tvec{q}$.
+	\label{def:orb}
+	Sea $\vec{q} \in \Z^n$ un vector coprimo cuyas entradas son todas distintas de cero, entonces
+	definimos su \textbf{órbita} como
+	\begin{equation*}
+		\orb(\vec{q}) \coloneq \braces{P\vec{q} \vcentcolon P \in \Z^{n\times n} ~\text{es matriz de
+		permutación}}.
+	\end{equation*}
 \end{definition}
-Como $\varphi$ es un homomorfismo, es posible mostrar que $\sim$ es una relación de equivalencia
-sobre el conjunto de vectores coprimos cuyas entradas son distintas de cero. De esta manera, sabemos
-del corolario \ref{cor:iso3} que si $\vec{q} \sim \tvec{q}$, entonces ambos vectores
-descomponen la red $\Z^n$ de la misma forma. Es decir, existe un isomorfismo tal que $(\vec{\nu},
-M) \mapsto (\tvec{\nu}, \tilde{M})$. Podemos entonces empezar a hablar de una
-clasificación de programas lineales a partir de las clases de equivalencia de $\vec{q}$. Esto, no
-obstante, se encuentra fuera del propósito de la tesis.
+\begin{lemma}
+	\label{lemma:orb}
+	Sea $\vec{q} \in \Z^n$ un vector coprimo cuyas entradas son todas distintas de cero. Entonces
+	$\tvec{q} \in \orb(\vec{q})$ si y solo si $\orb(\tvec{q}) = \orb(\vec{q})$.
+\end{lemma}
+\begin{proof}
+	Supongamos que $\tvec{q} \in \orb(\vec{q})$, luego una matriz de permutación $P \in \Z^{n\times
+	n}$ tal que $\tvec{q} = P\vec{q}$. Ahora bien, sea $\vec{\hat{q}} \in \orb(\tvec{q})$, por lo
+	que existe una matriz de permutación $P' \in \Z^{n\times n}$ tal que $\vec{\hat{q}} = P'\tvec{q}
+	= (P'P)\vec{q}$. Como el producto de matrices de permutación también es una matriz de
+	permutación, se sigue que $\vec{\hat{q}} \in \orb(\vec{q})$. Con esto mostramos la contención
+	$\orb(\tvec{q}) \subseteq \orb(\vec{q})$. La otra contención se muestra de manera análoga, pues
+	$\vec{q} = \inv{P}\tvec{q}$ y la inversa de una matriz de permutación también es una matriz de
+	permutación.
 
-En conclusión, somos completamente capaces de caracterizar los puntos enteros sobre la $k$-ésima
-capa entera. O lo que es lo mismo, podemos resolver ecuaciones lineales diofantinas con $n$
-incógnitas. Estas ecuaciones son inducidas por el vector coprimo $\vec{q}$.
+	Supongamos que $\orb(\tvec{q}) = \orb(\vec{q})$. Entonces basta mostrar que $\tvec{q} \in
+	\orb(\tvec{q})$, pero esto es inmediatamente cierto puesto que $\tvec{q} = I_n\tvec{q}$ y la
+	matriz identidad $I_n \in \Z^{n \times n}$ es una matriz de permutación.
+\end{proof}
 
-Hemos analizado también como es que $\vec{q}$ descompone el espacio $\Z^n$ a través del vector
-$\vec{\nu}$ y de la matriz $M$. Recordemos que $\vec{\nu}$ representa el conjunto de soluciones
-particulares a estas ecuaciones lineales, mientras que las columnas de $M$ representan el conjunto
-de soluciones homogéneas.
+Por la definición \ref{def:orb} y el corolario \ref{cor:iso3}, encontramos que si $\vec{q} \in \Z^n$
+es un vector coprimo con entradas distintas de cero, entonces todos los vectores en
+$\orb(\vec{q})$ descomponen la red $\Z^n$ a través del teorema \ref{th:lattice} de manera similar.
+El lema \ref{lemma:orb} se asegura de que haya consistencia entre estas descomposiciones.
 
-En la siguiente sección observamos cómo esta descomposición permite que desacoplemos un programa
-lineal entero en dos partes: una de maximización y otra de factibilidad.
+Extendemos más esta idea con el siguiente argumento: si el vector
+coprimo $\vec{q} \in \Z^n$ tiene $\ell$ entradas nulas, podemos proyectarlo sobre la subred $\Z^{n -
+\ell}$ deshaciéndonos de esas entradas. De manera formal, definimos el conjunto ordenado de índices
+no nulos de $\vec{q}$ como $\sigma = (i \vcentcolon q_i \neq 0)$. También definimos la proyección
+$\pi \colon \Z^n \to \Z^{n - \ell}$ a partir de $\pi(\vec{q})_i \coloneq q_{\sigma_i}$. De aquí y de
+la definición \ref{prerreq:def:gcd} sigue que si $\vec{q} \in \Z^n$ es un vector coprimo con
+entradas posiblemente nulas, entonces $\pi(\vec{q}) \in \Z^{n-\ell}$ también es un vector coprimo
+pero con entradas no nulas.
+
+Así pues, decimos que dos vectores coprimos $\vec{q}, \tvec{q} \in \Z^n$ descomponen la subred
+$\Z^{n-\ell}$ a través del teorema \ref{th:lattice} de manera equivalente si y solo si
+$\orb(\pi(\tvec{q})) = \orb(\pi(\vec{q}))$.
+
+
+% También definamos el grupo de permutaciones en $n$ letras como
+% \begin{equation*}
+% 	S_n \coloneq \lbrace \sigma \colon \lbrace 1, \ldots, n \rbrace \to \lbrace
+% 	1, \ldots, n \rbrace ~\text{es función biyectiva} \rbrace.
+% \end{equation*}
+% Entonces $S_n$ actúa naturalmente sobre la red $\Z^n$. En efecto, consideremos el homomorfismo
+% 	$\varphi \colon S_n \to \glz{n}{\Z}$ definido
+% a partir de la extensión lineal de $\varphi(\sigma)(\vec{e}_i) = \vec{e}_{\sigma(i)}$. Escribimos
+% $\sigma.\vec{e}_i = \vec{e}_{\sigma(i)}$ para tener una notación más clara.
+% \begin{example}
+% 	Sea $\sigma \in S_4$ definida por $\sigma \coloneq (12)(34)$. La permutación $\sigma$ actúa
+% 	sobre la base canónica como
+% 	\begin{align*}
+% 		\sigma.\vec{e}_1 &= \vec{e}_2, \quad \sigma.\vec{e}_2 = \vec{e}_1, \\
+% 		\sigma.\vec{e}_3 &= \vec{e}_4, \quad \sigma.\vec{e}_4 = \vec{e}_3.
+% 	\end{align*}
+% 	Por lo que $\sigma$ a través de
+% 	\begin{equation*}
+% 		\sigma \mapsto [\vec{e}_2 \mid \vec{e}_1 \mid \vec{e}_4 \mid \vec{e}_3]
+% 		= \begin{pmatrix}
+% 			0 & 1 & 0 & 0 \\
+% 			1 & 0 & 0 & 0 \\
+% 			0 & 0 & 0 & 1 \\
+% 			0 & 0 & 1 & 0
+% 		\end{pmatrix}.
+% 	\end{equation*}
+% \end{example}
+% 
+% \begin{definition}
+% 	Sean $\vec{q}$ y $\tvec{q} \in \Z^n$ dos vectores. Entonces decimos que $\vec{q}$ y $\tvec{q}$
+% 	son \textbf{equivalentes} si y solo si existe $\sigma \in S_n$ tal que $\tvec{q} =
+% 	\sigma.\vec{q}$. En este caso escribimos $\vec{q} \sim \tvec{q}$.
+% \end{definition}
+% Es posible mostrar a traves de las propiedades de homomorfismo de $\varphi$ que $\sim$ es una
+% relación de equivalencia sobre $\Z^n$.
+% 
+% Fortalecemos el corolario \ref{cor:iso3} con el siguiente argumento: si el vector coprimo $\vec{q}
+% \in \Z^n$ tiene $\ell$ entradas nulas, podemos proyectarlo sobre la subred $\Z^{n - \ell}$
+% deshaciéndonos de esas entradas. Luego, es sobre esta subred que consideramos cualquier permutación
+% de las entradas del vector $\vec{q}$ proyectado.
+% 
+% cero. Del corolario \ref{cor:iso3} tenemos que si $\vec{q} \sim \tvec{q}$, entonces estos dos
+% vectores descomponen la red $\Z^n$ de manera equivalente. Es decir, existe un isomorfismo
+% $(\vec{\nu}, M) \mapsto (\tvec{\nu}, \tilde{M})$.
+% 
+% Podemos entonces empezar a hablar de una
+% clasificación de programas lineales a partir de las clases de equivalencia de $\vec{q}$. Esto, no
+% obstante, se encuentra fuera del propósito de la tesis.
