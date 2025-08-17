@@ -17,6 +17,8 @@ thesis/*
 !thesis/main.pdf
 !thesis/chapters/
 
+# backups
+*.bkp/*
 
 logs/*
 

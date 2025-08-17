@@ -532,7 +532,7 @@ Ramificación y Acotamiento.
 \section{Fundamentos}
 \label{sec:foundations}
 \noindent
-Esta sección se divide en tres partes. En primer lugar, damos a conocer las definiciones y
+Esta sección se divide en cuatro partes. En primer lugar, damos a conocer las definiciones y
 encunciados provistos por \cite{herr}. Es importante aclarar que el autor tradujo libremente algunos
 términos a falta de encontrar fuentes en español que hicieran uso de ellos. En particular, el autor
 decidió nombrar ``vectores esencialmente enteros'' a los \textit{projectively rational vectors} (ver
@@ -549,9 +549,12 @@ colección de $n - 1$ parámetros libres.
 En tercer lugar, establecemos una transformación lineal entre el conjunto de soluciones de una ecuación
 lineal diofantina en $n$ incógnitas y el conjunto de $n - 1$ parámetros libres que determinan estas
 soluciones. Luego, investigamos las propiedades de esta transformación lineal que serán de gran utilidad
-teórica para los siguientes capítulos, en especial para el capítulo 4. Finalmente, discutimos
-brevemente cómo se pueden relacionar las distintas transformaciones lineales si dejamos que vector
-objetivo $\vec{p}$ del problema original \eqref{theory:formulation} varíe.
+teórica para los siguientes capítulos, en especial para el capítulo 4.
+
+Finalmente, mostramos que el vector objetivo $\vec{p}$ del problema original
+\eqref{theory:formulation} induce una descomposición interesante de $\Z^n$ y analizamos cómo se
+relacionan estas descomposiciones al considerar distintos vectores $\vec{p}$. Esto nos permitirá
+mostrar equivalencias entre distintas instancias del problema \eqref{theory:formulation}.
 
 \subsection{Capas enteras}
 \label{subsec:sym}
@@ -1451,10 +1454,11 @@ directa del teorema anterior junto con las equivalencias encontradas en el teore
 Geométricamente, tenemos que si $\vec{q} \in \Z^n$ es un vector coprimo tal que $q_n \neq 0$,
 entonces $\vec{q}$ induce una descomposición de $\Z^n$ como la suma directa de las subredes
 $\Lambda_p$ y $\Lambda_h$, donde
-\begin{equation*}
+\begin{equation}
+	\label{eq:dec}
 	\Lambda_p \coloneq \braces{k\vec{\nu} \vcentcolon k \in \Z}, \quad
 	\Lambda_h \coloneq \braces{M\vec{t} \vcentcolon \vec{t} \in \Z^{n-1}}.
-\end{equation*}
+\end{equation}
 Para todo vector $\vec{x} \in \Lambda_p$ existe una $k \in \Z$ tal que $\vec{x} =
 k\vec{\nu}$. Luego, por el lema \ref{lemma:iso1}, $\vec{x}$ es una solución particular de la
 ecuación lineal diofantina $\vec{q}^T\vec{x} = k$. Similarmente, por el lema \ref{lemma:iso2}, todo
@@ -1547,10 +1551,14 @@ $q_n = 0$, entonces puede ser que $M$ no esté bien definida\footnote{
 	Se verifica inmediatamente que $\tilde{M} \neq PM$.
 \end{observation}
 
-Fortalecemos el corolario \ref{cor:iso3} de manera incremental.
+En esta última parte del capítulo, exploramos las consecuencias del corolario \ref{cor:iso3}. Esto
+nos llevará de regreso a justificar de forma algebraica o geométrica por qué es posible ignorar las
+entradas nulas del vector $\vec{q}$, o tan siquiera por qué podemos concentrarnos en este vector
+coprimo en vez del vector esencialmente entero $\vec{p}$ en el problema original
+\eqref{theory:formulation}.
 \begin{definition}
 	\label{def:orb}
-	Sea $\vec{q} \in \Z^n$ un vector coprimo cuyas entradas son todas distintas de cero, entonces
+	Sea $\vec{q} \in \Z^n$ un vector coprimo con entradas distintas de cero, entonces
 	definimos su \textbf{órbita} como
 	\begin{equation*}
 		\orb(\vec{q}) \coloneq \braces{P\vec{q} \vcentcolon P \in \Z^{n\times n} ~\text{es matriz de
@@ -1559,11 +1567,11 @@ Fortalecemos el corolario \ref{cor:iso3} de manera incremental.
 \end{definition}
 \begin{lemma}
 	\label{lemma:orb}
-	Sea $\vec{q} \in \Z^n$ un vector coprimo cuyas entradas son todas distintas de cero. Entonces
+	Sean $\vec{q}, \tvec{q} \in \Z^n$ vectores coprimos con entradas distintas de cero. Entonces
 	$\tvec{q} \in \orb(\vec{q})$ si y solo si $\orb(\tvec{q}) = \orb(\vec{q})$.
 \end{lemma}
 \begin{proof}
-	Supongamos que $\tvec{q} \in \orb(\vec{q})$, luego una matriz de permutación $P \in \Z^{n\times
+	Supongamos que $\tvec{q} \in \orb(\vec{q})$, luego existe una matriz de permutación $P \in \Z^{n\times
 	n}$ tal que $\tvec{q} = P\vec{q}$. Ahora bien, sea $\vec{\hat{q}} \in \orb(\tvec{q})$, por lo
 	que existe una matriz de permutación $P' \in \Z^{n\times n}$ tal que $\vec{\hat{q}} = P'\tvec{q}
 	= (P'P)\vec{q}$. Como el producto de matrices de permutación también es una matriz de
@@ -1577,24 +1585,77 @@ Fortalecemos el corolario \ref{cor:iso3} de manera incremental.
 	matriz identidad $I_n \in \Z^{n \times n}$ es una matriz de permutación.
 \end{proof}
 
-Por la definición \ref{def:orb} y el corolario \ref{cor:iso3}, encontramos que si $\vec{q} \in \Z^n$
-es un vector coprimo con entradas distintas de cero, entonces todos los vectores en
-$\orb(\vec{q})$ descomponen la red $\Z^n$ a través del teorema \ref{th:lattice} de manera similar.
-El lema \ref{lemma:orb} se asegura de que haya consistencia entre estas descomposiciones.
+\begin{lemma}
+	\label{lemma:isoclass}
+	Sea $\vec{q} \in \Z^n$ un vector coprimo con entradas distintas de cero y sea $\tvec{q} \in
+	\orb(\vec{q})$. Entonces las redes $\tilde{\Lambda}_h$ y $\Lambda_h$ definidas en \eqref{eq:dec}
+	son isomorfas. Similarmente, las redes $\tilde{\Lambda}_p$ y $\Lambda_p$ son isomorfas.
+\end{lemma}
+\begin{proof}
+	Se sigue inmediatamente de la definición \ref{def:orb} junto con el corolario \ref{cor:iso3}.
+\end{proof}
 
-Extendemos más esta idea con el siguiente argumento: si el vector
-coprimo $\vec{q} \in \Z^n$ tiene $\ell$ entradas nulas, podemos proyectarlo sobre la subred $\Z^{n -
-\ell}$ deshaciéndonos de esas entradas. De manera formal, definimos el conjunto ordenado de índices
-no nulos de $\vec{q}$ como $\sigma = (i \vcentcolon q_i \neq 0)$. También definimos la proyección
-$\pi \colon \Z^n \to \Z^{n - \ell}$ a partir de $\pi(\vec{q})_i \coloneq q_{\sigma_i}$. De aquí y de
-la definición \ref{prerreq:def:gcd} sigue que si $\vec{q} \in \Z^n$ es un vector coprimo con
-entradas posiblemente nulas, entonces $\pi(\vec{q}) \in \Z^{n-\ell}$ también es un vector coprimo
-pero con entradas no nulas.
+% Por la definición \ref{def:orb} y el corolario \ref{cor:iso3}, encontramos que si $\vec{q} \in \Z^n$
+% es un vector coprimo con entradas distintas de cero, entonces todos los vectores en
+% $\orb(\vec{q})$ descomponen la red $\Z^n$ a través del teorema \ref{th:lattice} de maneras
+% isomorfas. El lema \ref{lemma:orb} se asegura de que haya consistencia entre estas
+% descomposiciones. Así pues, podemos identificar la descomposición de $\Z^n$ a partir de
+% $\orb(\vec{q})$ y no solamente de $\vec{q}$.
 
-Así pues, decimos que dos vectores coprimos $\vec{q}, \tvec{q} \in \Z^n$ descomponen la subred
-$\Z^{n-\ell}$ a través del teorema \ref{th:lattice} de manera equivalente si y solo si
-$\orb(\pi(\tvec{q})) = \orb(\pi(\vec{q}))$.
+% Extendemos más esta idea con el siguiente argumento: si el vector
+% coprimo $\vec{q} \in \Z^n$ tiene $\ell$ entradas nulas, podemos proyectarlo sobre la subred $\Z^{n -
+% \ell}$ deshaciéndonos de esas entradas.
 
+El lema anterior nos permite identificar la descomposición de $\Z^n$ a partir de $\orb(\vec{q})$ y
+no solamente de $\vec{q}$. Ahora bien, supongamos que $\vec{q} \in \Z^{n + \ell}$ es un vector coprimo con
+$\ell$ entradas nulas. Definamos el conjunto ordenado de índices no nulos de $\vec{q}$ como $\sigma
+= (i \vcentcolon q_i \neq 0)$, y también definamos la proyección $\proy{n + \ell} \colon \Z^{n +
+\ell} \to \Z^{n}$ a partir de $\proy{n + \ell}(\vec{q})_i \coloneq q_{\sigma_i}$. Luego, $\proy{n +
+\ell}(\vec{q})$ es un vector coprimo con entradas distintas de cero. Por el teorema
+\ref{th:lattice} (y también por la discusión que le sucede), sabemos que $\proy{n + \ell}(\vec{q})$
+induce la descomposición
+\begin{equation*}
+	\Z^n \cong \Lambda_p \oplus \Lambda_h,
+\end{equation*}
+donde $\Lambda_p$ y $\Lambda_h$ están definidas en \eqref{eq:dec}. Pero en el lema
+\ref{lemma:isoclass} vimos que todo vector $\tvec{q} \in \orb(\proy{n + \ell}(\vec{q}))$ induce una
+descomposición isomorfa. Esto justifica el hecho de que podamos ignorar las entradas nulas del
+vector coprimo $\vec{q}$, y también motiva el siguiente resultado.
+\begin{theorem}
+	\label{th:isoclass}
+	Sean $\vec{q} \in \Z^n$ y $\tvec{q} \in \Z^m$ vectores coprimos con $n < m$.
+	Si $\orb(\proy{n}(\vec{q})) = \orb(\proy{m}(\tvec{q}))$, entonces $\vec{q}$ y $\tvec{q}$
+	inducen descomposiciones isomorfas de una subred de $\Z^n$.
+\end{theorem}
+\begin{proof}
+	Supongamos, sin pérdida de generalidad, que $\vec{q}$ no tiene entradas nulas. Luego,
+	$\proy{n}(\vec{q}) = \vec{q}$. Entonces $\tvec{q}$ tiene $m - n$ entradas no nulas, pues de otra
+	forma las dimensiones de $\proy{n}(\vec{q})$ y $\proy{m}(\tvec{q})$ serían distintas y por lo
+	tanto sus órbitas no serían iguales. Tenemos por hipótesis y del lema \ref{lemma:orb} que
+	$\proy{m}(\tvec{q}) \in \orb(\vec{q})$. Finalmente, del lema \ref{lemma:isoclass} junto
+	con el teorema \ref{th:lattice} obtenemos lo que queríamos demostrar.
+\end{proof}
+
+\begin{definition}
+	Sean $\vec{p} \in \R^n$ y $\tvec{p} \in \R^m$ vectores esencialmente enteros (ver definición
+	\ref{theory:def:rational}). Entonces decimos que $\vec{p}$ y $\tvec{p}$ son equivalentes si y
+	solo si $\orb(\proy{n}(\vec{q})) = \orb(\proy{m}(\tvec{q}))$, donde $\vec{q}$ y $\tvec{q}$ son
+	sus respectivos múltiplos coprimos. En este caso escribimos $\vec{p} \sim \tvec{p}$.
+\end{definition}
+Puesto que el múltiplo coprimo de un vector esencialmente entero es único (ver la discusión al
+inicio de la subsección \ref{subsec:sym}), esta relación está bien definida. Luego, por las
+propiedades de la igualdad, tenemos que esta relación es una de equivalencia sobre el conjunto de
+vectores esencialmente enteros, independientemente de su dimensión.
+
+Con esta definición y el teorema \ref{th:isoclass} encontramos que si los vectores esencialmente
+enteros $\vec{p} \in \R^n$ y $\tvec{p} \in \R^{m}$ son equivalentes, entonces el programa lineal
+\eqref{theory:formulation} es esencialmente el mismo.
+
+En conclusión, encontramos una suerte de clasificación de este tipo de programas lineales. Hemos
+visto que el único representante importante para resolver estos problemas es el múltiplo coprimo
+$\vec{q} \in \Z^n$ o, más bien, una proyección de este de manera que no tenga entradas nulas.
+Solamente cuando querramos relacionar los resultados con una instancia específica del problema
+\eqref{theory:formulation} haremos mención del vector esencialmente entero $\vec{p} \in \R^n$.
 
 % También definamos el grupo de permutaciones en $n$ letras como
 % \begin{equation*}
