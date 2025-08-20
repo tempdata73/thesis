@@ -27,7 +27,7 @@ búsqueda de una solución se reduce a resolver solamente una ecuación lineal d
 El resultado anterior, si bien interesante, es de existencia y no muestra cómo obtener las
 soluciones enteras no negativas de ecuaciones lineales diofantinas. De manera similar a como lo
 hicimos en el capítulo anterior, la segunda sección se encarga de presentar tal construcción de
-soluciones a partir de los Algoritmos \ref{algo:fin:helper} y \ref{algo:fin:dioph}.
+soluciones a partir de los algoritmos \ref{algo:fin:helper} y \ref{algo:fin:dioph}.
 
 Finalmente, en la tercera y última sección de este capítulo, realizamos algunos experimentos
 numéricos que comparan la eficacia de nuestros algoritmos recién desarrollados con la de
@@ -75,7 +75,7 @@ capa entera y continuamos con nuestra búsqueda.
 % el intervalo de factibilidad de $t_{i+1}$. Siguiendo con este razonamiento, encontramos que una
 % elección de $t_i$ afecta a su vez los intervalos de factibilidad de $t_{i+1}, \ldots, t_{n-1}$. En
 % la Sección \ref{subsec:complex} discutiremos cómo es que esta ``cadena'' acota la complejidad
-% algorítmica del Algoritmo \ref{algo:fin:dioph}.
+% algorítmica del algoritmo \ref{algo:fin:dioph}.
 
 Ahora bien, en esta primera parte de la sección nos encargamos de calcular una cota superior para el
 número de capas enteras que debemos analizar de manera que garanticemos la existencia de un punto
@@ -1031,7 +1031,7 @@ se encargan de obtener estas soluciones enteras no negativas que tanto buscamos.
 estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
 
 % En la segunda parte de esta sección discutimos de manera un tanto informal la complejidad
-% algorítmica del Algoritmo \ref{algo:fin:dioph}. Por lo tanto, también discutimos, así como lo
+% algorítmica del algoritmo \ref{algo:fin:dioph}. Por lo tanto, también discutimos, así como lo
 % hicimos en el capítulo \ref{chap:inf}, sobre la complejidad del problema \eqref{theory:formulation}
 % en el caso especial de que $\vec{q} > \vec{0}$.
 
@@ -1147,61 +1147,7 @@ estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
 	que queríamos demostrar.
 \end{proof}
 
-Observemos que la elección del parámetro libre $t$ en el intervalo de factiblidad $I$ definido en la
-línea \ref{alg:fin:feas} del Algoritmo \ref{algo:fin:helper} es similar a la elección del
-subproblema $S_i$ de optimización definido en la línea \ref{p1c9:alg:BB_loop} del Algoritmo
-\ref{algo:bb}. La diferencia radica en que, como todos los puntos enteros sobre la $k$-ésima capa
-entera tienen el mismo nivel de utilidad $k$, no es necesario desarrollar políticas de poda así como
-lo hicimos en el Ejemplo \ref{ex:ilp} en la Sección \ref{sec:prerreq}. De cierta manera, la única
-política de poda posible es la de infactibilidad por no respetar la no negatividad de un punto
-entero.
-
-\begin{theorem}
-	\label{th:fin:dioph:correct}
-	El algoritmo \ref{algo:fin:dioph} es correcto.
-\end{theorem}
-\begin{proof}
-	A causa del teorema \ref{th:fin:helper:correct} basta verificar que el algoritmo termina y no
-	devuelve \NIL. Además, obtenemos la maximalidad de $k$ debido a la manera en la que iniciamos el
-	ciclo en la línea \ref{alg:fin:loop}. Tenemos $0 \leq \eta$ por hipótesis y observemos que
-	$\vec{0}$ es la única solución entera no negativa de la ecuación lineal diofantina
-	$\vec{q}^T\vec{x} = 0$. De esta manera, si la ecuación $\vec{q}^T\vec{x} = k$ no tiene solución
-	para $0 < k \leq \eta$, entonces el algoritmo devuelve $\vec{0}$ debido al teorema
-	\ref{th:fin:helper:correct}.
-\end{proof}
-
-Sabemos, en realidad, por el lema \ref{lemma:tau} que el parámetro $k$ definido en la línea
-\ref{alg:fin:loop} descenderá hasta 0 si y solo si el parámetro $\tau$ definido en \eqref{eq:tau}
-es nulo. No obstante, la demostración del teorema \ref{th:fin:dioph:correct} deviene más simple
-cuando en el Algoritmo \ref{algo:fin:dioph} dejamos que $k$ se encuentre en $[0, \eta]$ en vez de
-$[\tau, \eta]$. Esta modificación, sin embargo, no afecta en lo más mínimo la correctud o la
-complejidad del algoritmo.
-
-Siguiendo la misma directriz, vale la pena mencionar lo siguiente con respecto al Algoritmo
-\ref{algo:fin:helper}. Varios lenguajes de programación, tales como Python, cuentan con un límite en
-las llamadas de recursión que el usuario puede realizar\footnote{
-	En la computadora del autor, por ejemplo, el valor predeterminado de este límite es 3000, y por
-	lo tanto, solamente podría el autor resolver problemas con dimensión $n \leq 3000$.
-}. Si bien este límite puede modificarse, aumenta la posibilidad de encontranos con un
-desbordamiento de pila, pues este algoritmo no está expresado en forma de recursión
-terminal\footnote{
-	Véase \url{https://en.wikipedia.org/wiki/Tail_call}.
-}.
-
-Además, este algoritmo, por ejemplo, no minimiza el número de llamadas para calcular el máximo común
-divisor en la línea \ref{alg:fin:g}. En efecto, supongamos que un intervalo de factibilidad $I$
-definido en la línea \ref{alg:fin:feas} induce a que $\vec{x}^{\texttt{tail}}$ sea \NIL~ para todo
-$t \in I$. Entonces estaríamos haciendo $|I|$ llamadas recursivas a \texttt{NonNegativeIntSolFin} en
-la línea \ref{alg:fin:subeq} con el mismo vector $\vec{q}^{\texttt{tail}}$ y, por lo tanto,
-estaríamos calculando $|I|$ veces la misma $g$ en la línea \ref{alg:fin:g}. Lo mismo ocurre con el
-cálculo de los coeficientes de Bézout $x'$ y $\omega'$ en la línea \ref{alg:fin:bez2}.
-
-A pesar de los puntos anteriores, el autor decidió escribir el Algoritmo \ref{algo:fin:helper} de
-esa manera debido a que se simplificaba de manera significativa la demostración del teorema
-\ref{th:fin:helper:correct}. Sin embargo, el autor realizó una implementación equivalente más
-eficiente a través de ciclos para obtener los resultados de la siguiente sección.
-
-\begin{algorithm}[ht]
+\begin{algorithm}[Ht]
 	\LinesNumbered
 	\SetKwProg{Fn}{Fn}{\string:}{}
 	\SetKwFunction{Bezout}{Bezout}
@@ -1239,8 +1185,8 @@ eficiente a través de ciclos para obtener los resultados de la siguiente secci�
 			$\vec{q}^{\texttt{tail}} \leftarrow (q_{i + 1} / g \vcentcolon 1 \leq i \leq n - 1)$\;
 			\label{alg:fin:qt}
 			\While{$I \neq \emptyset$}{
-				elegir $t \in I$\;
-				$\omega \leftarrow k\omega' - tq_1$\;
+				elegir $t \in I$\; \label{alg:fin:t}
+				$\omega \leftarrow k\omega' - tq_1$\; \label{alg:fin:k}
 				$\vec{x}^{\texttt{tail}} \leftarrow$ \NonNegativeIntSol{$\vec{q}^{\texttt{tail}}$,
 					\label{alg:xtail}
 				$\omega$}\; \label{alg:fin:subeq}
@@ -1260,6 +1206,56 @@ eficiente a través de ciclos para obtener los resultados de la siguiente secci�
 	\caption{\texttt{NonNegativeIntSolFin}}
 	\label{algo:fin:helper}
 \end{algorithm}
+
+Observemos que la elección del parámetro libre $t$ en el intervalo de factiblidad $I$ definido en la
+línea \ref{alg:fin:feas} del algoritmo \ref{algo:fin:helper} es similar a la elección del
+subproblema $S_i$ de optimización definido en la línea \ref{p1c9:alg:BB_loop} del algoritmo
+\ref{algo:bb}. La diferencia radica en que, como todos los puntos enteros sobre la $k$-ésima capa
+entera tienen el mismo nivel de utilidad $k$, no es necesario desarrollar políticas de poda así como
+lo hicimos en el Ejemplo \ref{ex:ilp} en la Sección \ref{sec:prerreq}. De cierta manera, la única
+política de poda posible es la de infactibilidad por no respetar la no negatividad de un punto
+entero.
+
+\begin{theorem}
+	\label{th:fin:dioph:correct}
+	El algoritmo \ref{algo:fin:dioph} es correcto.
+\end{theorem}
+\begin{proof}
+	A causa del teorema \ref{th:fin:helper:correct} basta verificar que el algoritmo termina y no
+	devuelve \NIL. Además, obtenemos la maximalidad de $k$ debido a la manera en la que iniciamos el
+	ciclo en la línea \ref{alg:fin:loop}. Tenemos $0 \leq \eta$ por hipótesis y observemos que
+	$\vec{0}$ es la única solución entera no negativa de la ecuación lineal diofantina
+	$\vec{q}^T\vec{x} = 0$. De esta manera, si la ecuación $\vec{q}^T\vec{x} = k$ no tiene solución
+	para $0 < k \leq \eta$, entonces el algoritmo devuelve $\vec{0}$ debido al teorema
+	\ref{th:fin:helper:correct}.
+\end{proof}
+
+Sabemos, en realidad, por el lema \ref{lemma:tau} que el parámetro $k$ definido en la línea
+\ref{alg:fin:loop} descenderá hasta 0 si y solo si el parámetro $\tau$ definido en \eqref{eq:tau}
+es nulo. No obstante, la demostración del teorema \ref{th:fin:dioph:correct} deviene más simple
+cuando en el algoritmo \ref{algo:fin:dioph} dejamos que $k$ se encuentre en $[0, \eta]$ en vez de
+$[\tau, \eta]$. Esta modificación, sin embargo, no afecta en lo más mínimo la correctud o la
+complejidad del algoritmo.
+
+Siguiendo la misma directriz, vale la pena mencionar lo siguiente con respecto al algoritmo
+\ref{algo:fin:helper}. Varios lenguajes de programación, tales como Python, cuentan con un límite en
+las llamadas de recursión que el usuario puede realizar Si bien este límite puede modificarse,
+aumenta la posibilidad de encontranos con un desbordamiento de pila, pues este algoritmo no está
+expresado en forma de recursión terminal\footnote{Véase \url{https://en.wikipedia.org/wiki/Tail_call}.}.
+
+Además, este algoritmo, por ejemplo, no minimiza el número de llamadas para calcular el máximo común
+divisor en la línea \ref{alg:fin:g}. En efecto, supongamos que un intervalo de factibilidad $I$
+definido en la línea \ref{alg:fin:feas} induce a que $\vec{x}^{\texttt{tail}}$ sea \NIL~ para todo
+$t \in I$. Entonces estaríamos haciendo $|I|$ llamadas recursivas a \texttt{NonNegativeIntSolFin} en
+la línea \ref{alg:fin:subeq} con el mismo vector $\vec{q}^{\texttt{tail}}$ y, por lo tanto,
+estaríamos calculando $|I|$ veces la misma $g$ en la línea \ref{alg:fin:g}. Lo mismo ocurre con el
+cálculo de los coeficientes de Bézout $x'$ y $\omega'$ en la línea \ref{alg:fin:bez2}.
+
+A pesar de los puntos anteriores, el autor decidió escribir el algoritmo \ref{algo:fin:helper} de
+esa manera debido a que se simplificaba de manera significativa la demostración del teorema
+\ref{th:fin:helper:correct}. Sin embargo, el autor realizó una implementación equivalente más
+eficiente a través de ciclos para obtener los resultados de la siguiente sección.
+
 \begin{algorithm}[ht]
 	\LinesNumbered
 	\SetKwProg{Fn}{Fn}{\string:}{}
@@ -1286,125 +1282,227 @@ eficiente a través de ciclos para obtener los resultados de la siguiente secci�
 	\caption{\texttt{Dioph}}
 	\label{algo:fin:dioph}
 \end{algorithm}
-% Con respecto a la complejidad algorítmica de analizar capas enteras podemos decir lo siguiente.
-% Supongamos que deseamos encontrar todas las soluciones de (\ref{theory:formulation}). Definamos
-% \begin{equation}
-% 	\label{phase-1:def:feasible-layer}
-% 	P_k \coloneq H_{\vec{q}, k\norm{\vec{q}}^{-2}} \cap \Z_{\geq \vec{0}}^n
-% 	=
-% 	\lbrace \vec{x} \in \Z^n \vcentcolon \vec{q}^T\vec{x} = k, \vec{x} \geq \vec{0}
-% 	\rbrace,
-% \end{equation}
-% y sea $T(n)$ el tiempo requerido para encontrar todos los puntos en $P_k$ o determinar que este
-% conjunto es vacío. Es razonable suponer que $T(n)$ es exponencial en $n$. En efecto, cada par
-% $(x_i, \omega_{i + 1})$ genera un intervalo de factibilidad $[t_i^{\min},
-% t_i^{\max}]$. Este intervalo ciertamente depende de las elecciones previas de $t_1, \ldots,
-% t_{i - 1}$, aunque suprimimos esta dependencia en la notación para tener mayor claridad. Para
-% encontrar todos los puntos en $P_k$, el algoritmo recorre todas las posibilidades:
-% \begin{equation}
-% 	\label{phase-1:complexity:bounds}
-% 	\prod_{i=1}^{\kappa_1} \min_{t_1, \ldots, t_{i-1}} \lbrace t_i^{\max} -
-% 	t_i^{\min} \rbrace
-% 	\leq T(n) \leq
-% 	\prod_{i=1}^{\kappa_2} \max_{t_1, \ldots, t_{i-1}} \lbrace t_i^{\max} -
-% 	t_i^{\min} \rbrace,
-% \end{equation}
-% donde $1 \leq \kappa_1 \leq n$ es el entero más grande que asegura que  $\min_{t_1, \ldots,
-% t_{i - 1}}\lbrace t_i^{\max} - t_i^{\min} \rbrace$ sea positivo para todo $i \in
-% \lbrace 1, \ldots, \kappa_1 \rbrace$. Definimos $\kappa_2$ de manera análoga. Se cumple que
-% $\kappa_1 \leq \kappa_2$. Sean $\ell_{\min}, \ell_{\max}$ las longitudes del intervalo de
-% factibilidad más pequeño y del más grande en todos los niveles, respectivamente. Es decir, definimos
-% \begin{align}
-% 	\ell_{\min} &\coloneq \min_{1 \leq i \leq \kappa_1} \left\lbrace \min_{t_1, \ldots,
-% 	t_{i - 1}} \lbrace t_i^{\max} - t_i^{\min} \rbrace \right\rbrace,
-% 	\\
-% 			\ell_{\max} &\coloneq \max_{1 \leq i \leq \kappa_2} \left\lbrace \max_{t_1,
-% 			\ldots, t_{i - 1}} \lbrace t_i^{\max} - t_i^{\max} \rbrace
-% 		\right\rbrace.
-% \end{align}
-% Si $P_k$ es vacío, se sigue que no existe ningún intervalo factible en el nivel $n$, lo que implica
-% que $\kappa_2 < n$. En caso contrario, el algoritmo recorre hasta el último nivel, por lo que $\kappa_1
-% = \kappa_2 = n$. De (\ref{phase-1:complexity:bounds}), obtenemos
-% \begin{equation}
-% 	\ell_{\min}^{n} \leq T(n) \leq \ell_{\max}^{n}.
-% \end{equation}
-% En el peor de los casos, nuestro algoritmo recorre todas las capas enteras parametrizadas por
-% $\lbrace k, k - 1, \ldots, \tau\rbrace$. Se sigue que
-% \begin{align}
-% 	\label{phase-1:time}
-% 	\text{Tiempo de ejecución}
-% 	= \mathcal{O}((k - \tau) \cdot T(n))
-% 	= \mathcal{O}(c^{n}),
-% \end{align}
-% para alguna $c > 1$.
-% 
-% Ahora bien, este razonamiento aplica a la modificación de nuestro objetivo en donde decidimos buscar
-% todas las soluciones posibles. En realidad solo nos interesa encontrar un punto óptimo, por lo que
-% podemos concluir que una cota superior para la complejidad de nuestro algoritmo es
-% (\ref{phase-1:time}). Asímismo, en la práctica encontramos que la diferencia $k - \tau$ es crucial
-% para determinar cuántas capas enteras recorre nuestro algoritmo en el peor de los casos.
-% 
-% Hemos mostrado anteriormente que para $u$ suficientemente grande es suficiente con recorrer una
-% capa. En caso de que $u$ no sea suficientemente grande, observaremos en el análisis de resultados
-% cómo se distribuye el número de capas enteras que en realidad se visitan.
 
 \section{Experimentos numéricos}
+\noindent
+Hemos mencionado que el algoritmo \ref{algo:fin:helper} fue escrito de esa manera para demostrar la
+correctud de nuestro método. El autor optó por realizar una implementación equivalente en ciclos
+debido al límite suave en las llamadas de recursión que permite Python. Este límite es de 3,000
+llamadas recursivas en la máquina donde se realizaron los experimentos. Esto significa que, de
+manera predeterminada, solamente podríamos resolver problemas de dimensión $n \leq 3,000$. No
+obstante, en la subsección \ref{subsec:exp:fin:n} realizamos experimentos con problemas de dimensión
+$n \leq 250,000$.
+
+Vimos en la sección pasada que este algoritmo calcula repetidamente los mismos
+máximos común divisores $g$ y los mismos coeficientes de Bézout $x', \omega'$. Puesto que estos
+números dependen exclusivamente del vector $\vec{q}$, podemos calcularlos en una fase de
+preprocesamiento antes de llamar \texttt{NonNegativeIntSolFin}. Luego, esta rutina accede a ellos
+por medio de referencias.
+
+La implementación por ciclos usa una pila de estados $(i, b_1, b_2, k)$, donde $i$ indica el nivel o
+la variable $t_i$ que debemos escoger; el resto de los parámetros están definidos en el algoritmo
+\ref{algo:fin:helper}. La elección de $t_i$ ciertamente es la más importante, pues determina el
+intervalo de factibilidad $I = [b_1, b_2]$ en el siguiente nivel $i + 1$. Existen, \textit{a
+priori}, dos estrategias que podemos adoptar para este tipo de elecciones.
+
+Por un lado, se encuentra la opción $t_i \leftarrow b_1$ o $t_i \leftarrow b_2$ para todo nivel
+$i$. Si, en tal nivel $i$, el intervalo de factibilidad es vacío, entonces retrocedemos
+en la pila y hacemos la sustitución $t_i \leftarrow t_i + 1$ o $t_i \leftarrow t_i - 1$ siempre que
+$t_i$ se encuentre dentro del intervalo de factibilidad $[b_1, b_2]$. Así también, actualizamos nuestra
+variable $x_i$ como lo hacemos en el algoritmo \ref{algo:fin:helper} y repetimos el proceso hasta
+obtener una solución $\vec{x}$ entera no negativa.
+
+Por el otro lado, podemos construir un árbol de la siguiente manera: en el nivel $i$
+escogemos el punto medio $t_i \leftarrow \floor{(b_1 + b_2)/2}$, luego creamos los nodos adyacentes
+\begin{equation}
+	\label{exp:subp}
+	\begin{cases}
+		N_{i0} \leftarrow (i, t_i + 1, b_2, k) & \text{si}~t_i + 1 \leq b_2, \\
+		N_{i1} \leftarrow (i, b_1, t_i - 1, k) & \text{si}~t_i - 1 \geq b_1,
+	\end{cases}
+\end{equation}
+que representan subproblemas posiblemente a resolver en el mismo nivel. Ahora bien, dada esta
+elección del punto medio $t_i$, construimos el problema para el siguiente nivel $i + 1$ con los
+nuevos parámetros calculados en las líneas \ref{alg:fin:k}, \ref{alg:fin:b11} y \ref{alg:fin:b21},
+en este orden. Repetimos este procedimiento hasta obtener una solución $\vec{x}$ entera no negativa.
+Puesto que resolvemos el subproblema del siguiente nivel antes que los de los nodos adyacentes,
+realizamos una búsqueda \textit{depht-first-search}.
+
+El autor encontró en los experimentos preliminares que la segunda estrategia es mucho más eficaz. En
+los experimentos de la subsección \ref{subsec:exp:fin:n}, la primera estrategia tenía tiempos de
+terminación aproximadamente equivalentes a los de Ramificación y Acotamiento. Para los experimentos
+de la subsección \ref{subsec:exp:fin:rhs}, ambas estrategias tenían tiempos de terminación
+significativamente menores que Ramificación y Acotamiento. Por ello, el autor decidió realizar el
+análisis de resultados usando la estrategia del árbol.
+
+Observemos de  \eqref{exp:subp} que el orden en el que agregamos estos
+subproblemas determina si visitamos primero el lado izquierdo del árbol o el lado derecho. El autor
+realizó los experimentos con ambas posibilidades. Así pues, llamaremos \texttt{dioph\_left} a la
+implementación que recorre primero el lado izquierdo y definimos análogamente \texttt{dioph\_right}.
+
+Con respecto a los resultados obtenidos en ambas subsecciones \ref{subsec:exp:fin:n} y
+\ref{subsec:exp:fin:rhs}, mencionamos que cada observación de tiempo de cada método representa el
+promedio de 20 corridas. Para cada observación realizamos 2 corridas preliminares a fin
+de evitar sesgos en el tiempo por cuestión de temperatura en la computadora, o por cargar cosas a la
+memoria, o por compilación al momento de crear archivos \texttt{.pyc}, etcétera. En total, cada
+observación es el resultado de haber corrido el mismo experimento 22 veces.
+
+Así también, por cuestiones de tiempo, cada proceso tenía un tiempo límite de 300 segundos para
+terminar de correr. De esta manera, decimos que el método no encontró una solución en caso de que
+más de 10 observaciones sobrepasaran este límite. Además, comparamos los valores objetivo de nuestra
+implementación con los de Ramificación y Acotamiento y en ningún momento
+encontramos que estos fueran distintos. Finalmente, el autor menciona que su implementación se
+encuentra libre en GitHub\footnote{TODO: LINK} así como los tiempos de terminación de cada método
+junto con archivos de registro que certifican estos tiempos.
+
+
+\subsection{Experimentos en la dimensión}
+\label{subsec:exp:fin:n}
+\noindent
+Para obtener resultados informativos en cuanto varía la dimensión del problema
+\eqref{theory:formulation}, debemos ser cuidadosos para evitar tener soluciones triviales. A lo
+largo de este análisis suponemos sin pérdida de generalidad que el presupuesto $u$ del lado derecho
+de \eqref{theory:constraint:budget} es un entero.
+
+En primer lugar, observemos de $\eqref{eq:dioph}$ que si alguna entrada del vector coprimo $\vec{q}$
+es tal que $q_j = 1$ , entonces obtenemos la solución trivial
+\begin{equation*}
+	x_i^* \coloneq \begin{cases}
+		u & i = j, \\
+		0 & i \neq j.
+	\end{cases}
+\end{equation*}
+Esto se vuelve aún más trivial para nuestro método cuando ordenamos las entradas de $\vec{q}$ de
+manera ascendente. En términos del vector objetivo $\vec{p}$, esto se traduce a que no existe una
+entrada $p_i$ tal que todas las entradas que le sigan sean múltiplo de $p_i$. De caso contrario,
+tendremos $g_{i + 1} = p_i$ y por lo tanto $q_i = 1$.
+
+En segundo lugar, es posible mostrar que todo problema \eqref{theory:formulation} tiene una
+reducción al problema binario
+\begin{equation*}
+	\max_{\vec{x} \in \braces{0, 1}^{n_b}} \braces{ \vec{\hat{p}}^T\vec{x} \vcentcolon \vec{\hat{p}}^T\vec{x} \leq
+	u},
+\end{equation*}
+para alguna $\vec{\hat{p}} \in \Z^{n_b}$ que puede ser obtenida de $\vec{p}$ (ver \cite{martello}).
+Observemos que si $u \geq \sum_{i=1}^{n_b}\hat{p}_i$, entonces obtenemos la solución trivial
+$\vec{x} = \vec{e} \in \Z^{n_b}$. Puesto que existen \textit{solvers} que implícitamente reducen
+problemas como \eqref{theory:formulation} a su forma binaria (el ejemplo más famoso es
+\texttt{KnapsackSolver} de Google OR-Tools), debemos ser cuidadosos con introducir este tipo de
+trivialidades. Afortunadamente, una forma de evitar esta situación es exigir que el lado derecho de
+\eqref{theory:constraint:budget} satisfaga $u < \sum_{i=1}^{n}p_i$.
+
+En tercer lugar, tenemos que si el vector $\vec{p}$ contiene entradas repetidas, entonces podemos
+reducir trivialmente la dimensión del problema \eqref{theory:formulation}. En efecto, si $p_j =
+p_\ell$, encontramos que
+\begin{equation*}
+	\sum_{i = 1}^{n}p_ix_i = \sum_{\substack{i = 1 \\ i \neq \ell}}^{n}p_iz_i,
+\end{equation*}
+donde $\vec{z} \in \Z^{n-1}$ está definida como
+\begin{equation*}
+	z_i \coloneq \begin{cases}
+		x_j + x_\ell, & i \in \braces{j, \ell}, \\
+		x_i, & \text{e.o.c.},
+	\end{cases}
+\end{equation*}
+y el problema \eqref{theory:formulation} es equivalente a
+\begin{equation*}
+	\max_{\vec{z} \in \Z^{n-1}} \braces{\vec{\hat{p}}^T\vec{z} \vcentcolon \vec{\hat{p}}^T\vec{z} \leq u,
+	\vec{z} \geq \vec{0}},
+\end{equation*}
+donde $\vec{\hat{p}} \in \R^{n-1}$ resulta de remover del vector $\vec{p}$ su $\ell$-ésima entrada.
+
+Así pues, sea $n$ la dimensión del problema. Dejamos que $\vec{p} \in \Z^n$ sea un vector aleatorio
+tomado de una distribución uniforme discreta sobre $[10, 10n)^n$. Al calcular el vector coprimo
+$\vec{q}$ checamos que $q_i \neq 1$ para todo $1 \leq i \leq n$. De caso contrario, calculamos otro
+vector aleatorio $\vec{p}$. Finalmente, escogemos el lado derecho de la restricción
+\eqref{theory:constraint:budget} de manera que
+\begin{equation*}
+	u \coloneq \begin{cases}
+		0.5\sum_{i=1}^{n}p_i & n \leq 20,000, \\
+		0.1\sum_{i=1}^{n}p_i & n > 20,000,
+	\end{cases}
+\end{equation*}
+para evitar obtener un problema trivial de acuerdo a la reducción binaria.
+
+La tabla \ref{table:fin:mt:times} muestra los tiempos de terminación de los métodos utilizados para
+realizar cada experimento. Así también, la tabla \ref{table:fin:mt:times} muestra los coeficientes
+de variación por experimento por método. Comparando rápidamente las cifras, observamos que ambas de
+nuestras implementaciones son significativamente más rápidas y estables que las de Ramificación y
+Acotamiento en cualesquiera de sus dos configuraciones.
+
+Una de las hipótesis por las que el autor cree que \texttt{dioph\_left} presenta resultados aún más
+rápidos que su contraparte \texttt{dioph\_right} es la que sigue. Puesto que estamos generando
+vectores aleatorios con dimensiones grandes, la probabilidad de que las últimas $n - i$ entradas
+tengan factores en común es pequeña. Por lo tanto, obtenemos $g_{i+1} = 1$. Recordando que los
+coeficientes de Bézout $x_i', \omega_{i+1}'$ satisfacen \eqref{dummy:eq:bez-eq}, encontramos que
+$(x_i', \omega_{i + 1}') = (0, 1)$ y también debe ser el caso que $\frac{q_i}{\prod_{j=1}^ig_j} =
+1$. Sustituyendo en \eqref{eq:recurrence} tenemos
+\begin{equation*}
+	\begin{cases}
+		x_i = t_i, \\
+		\omega_{i + 1} = \omega_i - t_i.
+	\end{cases}
+\end{equation*}
+De esta manera, nuestro método \texttt{dioph\_left} recorre primero soluciones pequeñas en magnitud
+comparadas a las obtenidas por \texttt{dioph\_right}. Es decir, el primero es menos voraz que el
+segundo. Ciertamente podemos obtener equivalencias entre estos dos métodos al imponer un orden
+ascendente o descendente sobre $\vec{q}$.
 
 \begin{table}[h]
 	\centering
 	\begin{tabular}{rccc} \toprule
-		$n$ & R\&A simple & R\&A configurado & dioph \\ \midrule
+		$n$ & R\&A simple & R\&A configurado & \texttt{dioph\_right} \\ \midrule
 		50     & 0.020 (0.012) & 0.023 (0.017) & 0.000 (0.000) \\
 		100    & 0.013 (0.002) & 0.010 (0.001) & 0.001 (0.000) \\
 		200    & 0.056 (0.009) & 0.023 (0.004) & 0.001 (0.000) \\
 		500    & 0.127 (0.021) & 0.127 (0.019) & 0.005 (0.000) \\ \midrule
 		1,000   & 0.049 (0.008) & 0.109 (0.016) & 0.013 (0.000) \\
 		2,000   & 0.142 (0.021) & 0.135 (0.022) & 0.043 (0.000) \\
-		5,000   & 1.616 (0.252) & 1.666 (0.196) & 0.263 (0.001) \\
-		10,000  & 2.137 (0.442) & 2.124 (0.333) & 1.164 (0.001) \\ \midrule
-		20,000  & 7.817 (0.596) & 7.682 (0.339) & 4.983 (0.007) \\
-		30,000  & 19.786 (2.852) & 19.192 (1.176) & 11.545 (0.013) \\
+		5,000   & 1.616 (0.252) & 1.666 (0.196) & 0.265 (0.001) \\
+		10,000  & 2.137 (0.442) & 2.124 (0.333) & 1.164 (0.002) \\ \midrule
+		20,000  & 7.817 (0.596) & 7.682 (0.339) & 4.991 (0.008) \\
+		30,000  & 19.786 (2.852) & 19.192 (1.176) & 11.553 (0.013) \\
 		40,000  & 24.317 (0.163) & 24.334 (0.193) & 20.994 (0.082) \\
 		50,000  & 38.907 (0.203) & 38.940 (0.179) & 33.451 (0.042) \\ \midrule
 		60,000  & 51.915 (0.600) & 51.962 (0.526) & 48.545 (0.052) \\
-		70,000  & 80.847 (1.025) & 81.033 (1.259) & 66.263 (0.035) \\
-		80,000  & 116.751 (0.838) & 116.618 (0.932) & 87.636 (0.045) \\
-		90,000  & 141.288 (1.655) & 141.683 (2.102) & 111.475 (0.087) \\ \midrule
-		100,000 & 170.992 (1.988) & 170.397 (1.750) & 139.564 (0.045) \\
+		70,000  & 80.847 (1.025) & 81.033 (1.259) & 66.345 (0.101) \\
+		80,000  & 116.751 (0.838) & 116.618 (0.932) & 87.726 (0.117) \\
+		90,000  & 141.288 (1.655) & 141.683 (2.102) & 111.553 (0.116) \\ \midrule
+		100,000 & 170.992 (1.988) & 170.397 (1.750) & 139.652 (0.159) \\
 		250,000 & - & - & - \\ \bottomrule
 	\end{tabular}
-	\caption{Promedio de tiempos de terminación en segundos del problema \eqref{theory:formulation}
-		con $\vec{p} \in \Z^n$ y $p_i$ tomado de una distribución uniforme sobre $[10, 10n)$, con el
-		lado derecho de \eqref{theory:constraint:budget} igual a $0.5\sum p_i$ si  $n \leq 20,000$ e
-		igual a $0.1\sum p_i$ en otro caso. El promedio es de 20 corridas y la desviación estándar está
-		en paréntesis.}
+	\caption{Tiempos en segundos de terminación promedio de cada método con una muestra de 20
+	observaciones por experimento por método. La desviación estándar se encuentra entre paréntesis.}
 	\label{table:fin:mt:times}
 \end{table}
 
 \begin{table}
 	\centering
 	\begin{tabular}{rccc} \toprule
-		$n$ & R\&A simple & R\&A configurado & dioph \\ \midrule
-		50       & 0.601 & 0.741 & 0.017 \\
-		100      & 0.157 & 0.107 & 0.007 \\
-		200      & 0.159 & 0.179 & 0.003 \\
-		500      & 0.168 & 0.155 & 0.002 \\ \midrule
-		1,000     & 0.170 & 0.145 & 0.001 \\
+		$n$ & R\&A simple & R\&A configurado & \texttt{dioph\_right} \\ \midrule
+		50       & 0.601 & 0.741 & 0.029 \\
+		100      & 0.157 & 0.107 & 0.009 \\
+		200      & 0.159 & 0.179 & 0.005 \\
+		500      & 0.168 & 0.155 & 0.004 \\ \midrule
+		1,000     & 0.170 & 0.145 & 0.002 \\
 		2,000     & 0.150 & 0.164 & 0.001 \\
-		5,000     & 0.158 & 0.119 & 0.004 \\
-		10,000    & 0.209 & 0.159 & 0.001 \\ \midrule
-		20,000    & 0.077 & 0.045 & 0.001 \\
+		5,000     & 0.158 & 0.119 & 0.003 \\
+		10,000    & 0.209 & 0.159 & 0.002 \\ \midrule
+		20,000    & 0.077 & 0.045 & 0.002 \\
 		30,000    & 0.146 & 0.062 & 0.001 \\
 		40,000    & 0.007 & 0.008 & 0.004 \\
 		50,000    & 0.005 & 0.005 & 0.001 \\ \midrule
 		60,000    & 0.012 & 0.010 & 0.001 \\
-		70,000    & 0.013 & 0.016 & 0.001 \\
+		70,000    & 0.013 & 0.016 & 0.002 \\
 		80,000    & 0.007 & 0.008 & 0.001 \\
 		90,000    & 0.012 & 0.015 & 0.001 \\ \midrule
-		100,000   & 0.012 & 0.010 & 0.000 \\
+		100,000   & 0.012 & 0.010 & 0.001 \\
 		250,000 & - & - & - \\ \bottomrule
 	\end{tabular}
 	\caption{Coeficientes de variación en los tiempos de terminación de acuerdo a la tabla
 	\ref{table:fin:mt:times}.}
 	\label{table:fin:mt:cv}
 \end{table}
+
+\subsection{Experimentos en el presupuesto}
+\label{subsec:exp:fin:rhs}

@@ -251,7 +251,7 @@ Por el teorema \ref{theory:th:feasibility}, se sigue que $\vec{x}^*$ es la soluc
 En la práctica es mejor usar la relación de recurrencia (\ref{eq:recurrence}) y ``construir'' las
 entradas $x_i$ al mismo tiempo que definimos $t_i$ de manera que satisfaga (\ref{eq:param-lb}) y
 (\ref{eq:feasible-param:collapsed}). Si procedemos de esta forma no tenemos que encontrar primero
-$\vec{\nu}$ y $M$, determinar $\vec{t}$ y luego recuperar $\vec{x}$. El Algoritmo \ref{algo:inf}
+$\vec{\nu}$ y $M$, determinar $\vec{t}$ y luego recuperar $\vec{x}$. El algoritmo \ref{algo:inf}
 muestra este procedimiento constructivo.
 
 \begin{algorithm}[ht]
@@ -293,15 +293,15 @@ muestra este procedimiento constructivo.
 	\label{algo:inf}
 \end{algorithm}
 
-En el Algoritmo \ref{algo:inf} supusimos la existencia de una subrutina \texttt{Bezout} que, como su
+En el algoritmo \ref{algo:inf} supusimos la existencia de una subrutina \texttt{Bezout} que, como su
 nombre lo indica, calcula los coeficientes de Bézout entre dos enteros. Es la creencia del autor
 que no es necesario escribir la subrutina en esta tesis, pero reitera, así como lo hizo en la Sección
-\ref{section:number-theory}, que estos coeficientes se pueden calcular por medio del Algoritmo
+\ref{section:number-theory}, que estos coeficientes se pueden calcular por medio del algoritmo
 Extendido de Euclides.
 
 \begin{lemma}
 	\label{lemma:alg:inf:correct}
-	El Algoritmo \ref{algo:inf} es correcto.
+	El algoritmo \ref{algo:inf} es correcto.
 \end{lemma}
 \begin{proof}
 	Basta observar que el algoritmo sigue la construcción recursiva de la Sección
@@ -385,9 +385,9 @@ Extendido de Euclides.
 	% Finalmente, 
 \end{proof}
 
-El Algoritmo \ref{algo:inf:ext} extiende el Algoritmo \ref{algo:inf}. Solamente construimos un
+El algoritmo \ref{algo:inf:ext} extiende el algoritmo \ref{algo:inf}. Solamente construimos un
 vector $\tvec{q}$ a partir del vector coprimo $\vec{q}$ de manera que se satisfagan las
-hipótesis del Algoritmo \ref{algo:inf}. Esta construcción sigue la misma lógica con la que
+hipótesis del algoritmo \ref{algo:inf}. Esta construcción sigue la misma lógica con la que
 justificamos los supuestos $q_i \neq 0$ y $q_{n-1} < 0 < q_n$ antes de presentar el lema
 \ref{lemma:t-existence}.
 
@@ -395,7 +395,7 @@ Al igual que en el algoritmo anterior, suponemos la existencia de las subrutinas
 \texttt{switch}, las cuales determinan la dimensión de un vector $\vec{q}$ y permutan sus entradas,
 respectivamente. Ambas subrutinas son estándar en la literatura y por lo tanto diremos que son
 correctos sin proveer alguna demostración. Así también, la subrutina \texttt{NonNegativeIntSol} es
-el Algoritmo \ref{algo:inf}, el cual es correcto a causa del lema \ref{lemma:alg:inf:correct}.
+el algoritmo \ref{algo:inf}, el cual es correcto a causa del lema \ref{lemma:alg:inf:correct}.
 
 \begin{algorithm}[ht]
 	\LinesNumbered
@@ -441,10 +441,10 @@ el Algoritmo \ref{algo:inf}, el cual es correcto a causa del lema \ref{lemma:alg
 
 \begin{theorem}
 	\label{th:alg:inf}
-	El Algoritmo \ref{algo:inf:ext} es correcto.
+	El algoritmo \ref{algo:inf:ext} es correcto.
 \end{theorem}
 \begin{proof}
-	Primero mostramos que el vector $\tvec{q}$ satisface las hipótesis del Algoritmo
+	Primero mostramos que el vector $\tvec{q}$ satisface las hipótesis del algoritmo
 	\ref{algo:inf}. Por definición, en la línea \ref{alg:def:inf:tilde-q}, tenemos que ninguna
 	entrada de $\tvec{q}$ es nula.
 
@@ -458,7 +458,7 @@ el Algoritmo \ref{algo:inf}, el cual es correcto a causa del lema \ref{lemma:alg
 	\eqref{alg:subr:switch3}, de manera que obtenemos $\tilde{q}_{m-1} < 0$.
 
 	Con los tres puntos anteriores, encontramos que el vector $\tvec{q}$ satisface las
-	hipótesis del Algoritmo \ref{algo:inf} y por lo tanto el vector $\tvec{x}$ es no negativo
+	hipótesis del algoritmo \ref{algo:inf} y por lo tanto el vector $\tvec{x}$ es no negativo
 	y satisface la ecuación lineal diofantina $\tvec{q}^T\tvec{x} = \eta$, debido al
 	lema \ref{lemma:alg:inf:correct}.
 
@@ -472,7 +472,7 @@ el Algoritmo \ref{algo:inf}, el cual es correcto a causa del lema \ref{lemma:alg
 		= \sum_{i = 1}^{m}\tilde{q}_i\tilde{x}_i
 		= \eta,
 	\end{equation*}
-	por lo que concluimos que el Algoritmo \ref{algo:inf:ext} es correcto.
+	por lo que concluimos que el algoritmo \ref{algo:inf:ext} es correcto.
 \end{proof}
 
 \begin{theorem}
@@ -485,7 +485,7 @@ el Algoritmo \ref{algo:inf}, el cual es correcto a causa del lema \ref{lemma:alg
 	Como $\vec{q}$ es el múltiplo coprimo de $\vec{p}$, existe un escalar $m \in \R$ tal que
 	$\vec{p} = m\vec{q}$. Supongamos, sin pérdida de generalidad, que $m$ es positivo. Recuperemos
 	$\eta$ del lema \ref{phase-1:lemma:eta}. Por hipótesis, una entrada de $\vec{q}$ es negativa, y
-	entonces este vector satisface las condiciones del Algoritmo \ref{algo:inf:ext}. Por el teorema
+	entonces este vector satisface las condiciones del algoritmo \ref{algo:inf:ext}. Por el teorema
 	\ref{th:alg:inf} podemos encontrar, a partir de resolver solo una ecuación lineal diofantina, un
 	vector entero no negativo $\vec{x}$ que satisface $\vec{q}^T\vec{x} = \eta$. Observemos que
 	\begin{equation*}
@@ -495,19 +495,5 @@ el Algoritmo \ref{algo:inf}, el cual es correcto a causa del lema \ref{lemma:alg
 	\eqref{theory:formulation}, sino que también es un punto óptimo.
 \end{proof}
 
-A partir del teorema anterior, podemos discutir informalmente sobre la complejidad algorítmica del
-problema \eqref{theory:formulation} en el caso especial que una entrada $q_i$ sea negativa. Sea
-$T(\vec{v})$ el número de pasos necesarios para calcular el máximo común divisor de las entradas de
-un vector entero $\vec{v}$. Como los coeficientes de Bézout entre dos enteros $a, b$ se determinan a
-partir del Algortimo Extendido de Euclides, sabemos que el número de pasos para calcularlos es un
-múltiplo entero de $T(a, b)$. 
-
-\section{Análisis de resultados}
-\noindent
-Una consecuencia del teorema \ref{infinite:th:complexity} es que la complejidad algoritmítica del
-problema (\ref{theory:formulation}) es lineal en la dimensión $n$ siempre y cuando $q_i < 0$
-para alguna $i \in \lbrace 2, \ldots, n\rbrace$. En esta sección describimos un algoritmo cuyo
-tiempo de terminación es $\mathcal{O}(n)$. A través de los resultados obtenidos previamente, somos
-capaces de mostrar que nuestro algoritmo es correcto. Finalmente, implementamos nuestro algoritmo en
-el lenguaje de programación Python y comparamos sus tiempos de terminación con los de la
-implementación de Ramificación y Acotamiento en la librería PuLP. 
+\section{Experimentos numéricos}
+\label{sec:inf:exp}
