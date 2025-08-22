@@ -1239,6 +1239,18 @@ Sustituyendo estas definiciones en \eqref{eq:x:i} y \eqref{eq:x:last} encontramo
 	\vec{x} = k\vec{\nu} + M\vec{t}.
 \end{equation}
 
+\begin{observation}
+	Si $q_n = 0$, entonces puede ser que $M$ no esté bien definida. Por ejemplo, si
+	$q_n = q_{n-1} = 0$, encontramos que
+	\begin{equation*}
+		g_{n-1} \coloneq \gcd{\frac{q_{n-1}}{\prod_{j=1}^{n-2}g_j},
+		\frac{q_n}{\prod_{j=1}^{n-2}g_j}} = \gcd{0, 0}.
+	\end{equation*}
+	Pero el máximo común divisor de dos números no está bien definido si ambos
+	son cero. Esto implica que la entrada $M_{n-2, n-2} \coloneq g_{n-1}$ no
+	está bien definida.
+\end{observation}
+
 En la subsección \ref{subsec:dioph-eq} mencionamos a lo largo de la construcción de soluciones que
 los coeficientes de Bézout $\omega_i', x_i'$ están asociados a términos exclusivamente dependientes
 de $\vec{q}$, por lo que no dependen de la elección $\vec{x} \in \Z$. Se sigue de
@@ -1476,18 +1488,13 @@ entera, mientras que $\vec{x}_h$ se desliza sobre esta capa. Esta idea de descom
 espacio a partir de soluciones particulares y homogéneas de una ecuación no es novedosa,
 pues es sumamente frecuente hacerlo para espacios vectoriales.
 
-Observemos que si $q_n = 0$, es válido permutar las entradas de $\vec{q}$ de manera que el vector
-permutado $\tvec{q}$ cumpla el supuesto $\tilde{q}_n \neq 0$. Podemos preguntarnos cómo se
-relacionan las imágenes de las matrices $M$ y $\tilde{M}$ de estos dos vectores. Pero si
-$q_n = 0$, entonces puede ser que $M$ no esté bien definida\footnote{
-	Por ejemplo, si $q_n = q_{n-1} = 0$, encontramos que
-	\begin{equation*}
-		g_{n-1} \coloneq \gcd{\frac{q_{n-1}}{\prod_{j=1}^{n-2}g_j},
-		\frac{q_n}{\prod_{j=1}^{n-2}g_j}} = \gcd{0, 0}.
-	\end{equation*}
-	Pero el máximo común divisor de dos números no está bien definido si ambos son cero. Esto
-	implica que la entrada $M_{n-2, n-2} \coloneq g_{n-1}$ no está bien definida.
-}. Requerimos de un supuesto más fuerte para responder la pregunta.
+Observemos que si $q_n = 0$, es válido permutar las entradas de $\vec{q}$ de
+manera que el vector permutado $\tvec{q}$ cumpla el supuesto $\tilde{q}_n \neq
+0$. Podemos preguntarnos cómo se relacionan las imágenes de las matrices $M$ y
+$\tilde{M}$ de estos dos vectores. Pero si $q_n = 0$, entonces puede ser que
+$M$ no esté bien definida. Requerimos de un supuesto más fuerte para responder
+la pregunta.
+
 \begin{corollary}
 	\label{cor:iso3}
 	Sea $\vec{q}$ un vector coprimo y sea $\tvec{q}$ un vector con las entradas de $\vec{q}$
@@ -1516,7 +1523,7 @@ $q_n = 0$, entonces puede ser que $M$ no esté bien definida\footnote{
 			0 & 1 & 0 \\
 		\end{pmatrix},
 	\end{equation*}
-	de donde obtenemos $\tvec{q} = (1, -2, 1)^T$. Tenemos
+	de donde obtenemos $\tvec{q} = (1, -2, 1)^T$. Calculamos de \eqref{eq:mat-T} que
 	\begin{equation*}
 		M = \begin{pmatrix}
 			1 & 0 \\

@@ -2,12 +2,12 @@
 \noindent
 En este último capítulo construimos un método que permite resolver programas lineales enteros
 generales. Mostramos que la complejidad exponencial de este tipo de programas se reduce a resolver
-sistemas de ecuaciones lineales en los enteros. Además, encontramos una formulación alternativa a la
-manera tradicional de introducir programas lineales enteros que simplifica el árbol de subproblemas
-generado por el algoritmo de Ramificación y Acotamiento, lo cual podría resultar en mejores tiempos de
-terminación.
+sistemas de desigualdades lineales en los enteros. Además, encontramos una formulación alternativa a
+la manera tradicional de introducir programas lineales enteros que simplifica el árbol de
+subproblemas generado por el algoritmo de Ramificación y Acotamiento, lo cual podría resultar en
+mejores tiempos de terminación.
 
-En la exposición de este capítulo dependemos en gran medida de la forma normal de Hermite y de
+En la exposición de este capítulo dependemos en gran medida de las formas normales de Hermite y de
 Smith, las cuales son tratadas extensivamente en \cite{alex} y \cite{morris}. El estilo de nuestra
 discusión es menos formal aunque no por ello menos rigurosa.
 
@@ -108,9 +108,9 @@ ineficientemente cuando el vector objetivo es ortogonal a una de sus restriccion
 en los problemas \eqref{theory:formulation} y \eqref{formulation:multiple} que el vector objetivo
 $\vec{q}$ es ortogonal a las restricciones presupuestarias \eqref{theory:constraint:budget} y
 \eqref{formulation:multiple:constraint:budget}. Esto también es cierto para el problema
-equivalente \eqref{formulation:lattice}, pues el vector objetivo $k\vec{e}_1$ es ortogonal a la
-restricción \eqref{lattice:c-layer}. A pesar de lo anterior, el problema equivalente induce a que
-las políticas de poda sean más eficientes.
+equivalente \eqref{formulation:lattice}, pues el vector objetivo $k\vec{e}_1 \in \Z^n$ es ortogonal
+a la restricción \eqref{lattice:c-layer}. A pesar de lo anterior, este problema equivalente induce a
+que las políticas de poda sean más eficientes.
 \begin{theorem}
 	\label{th:bbspeed}
 	Sea $(\optr{k}, \optr{\vec{t}})$ el óptimo del problema relajado de \eqref{formulation:lattice}
@@ -139,7 +139,7 @@ Con esto en mente, introducimos el subproblema de \eqref{formulation:lattice} co
 \begin{subequations}
 	\label{subformulation:lattice}
 	\begin{align}
-		\max_{k \in \Z, \tvec{y} \in \Z^m}
+		\max_{k \in \Z, \tvec{y} \in \Z^n}
 			& k, \\
 		\text{s.a.} \quad
 		k &\leq \eta, \\
@@ -222,7 +222,7 @@ En el capítulo 2 de \cite{morris} también se introduce la forma normal de Smit
 obtenemos dos matrices unimodulares $S \in \Z^{n \times n}$ y $T \in \Z^{(2n - m - 1) \times (2n - m
 -1)}$ que satisfacen
 \begin{equation*}
-	S[M, -U_{n-m}]T = D \in \Z^{n \times (2n - m - 1)},
+	S[M \mid -U_{n-m}]T = D \in \Z^{n \times (2n - m - 1)},
 \end{equation*}
 donde $D$ es una matriz diagonal cuyas $n$ primeras entradas son distintas de cero y las restantes
 $n - m - 1$ son cero. Si multiplicamos $S$ por la izquierda en ambos lados de la ecuación
@@ -238,7 +238,7 @@ solución en los enteros, lo que implica que la elección de $k^*$ fue la incorr
 soluciones enteras a este subproblema. De ser este el caso, redefinimos nuestro conjunto de
 factibilidad $\mathcal{F}$ (ver \eqref{eq:feas-set}) como $\mathcal{F} \leftarrow \mathcal{F}
 \setminus \braces{k^*}$. Si $\mathcal{F}$ ahora es vacío, entonces \eqref{formulation:lattice} es
-infactible, y en caso contrario escogemos el nuevo elemento de maximal de $\mathcal{F}$ y repetimos el proceso.
+infactible, y en caso contrario escogemos el nuevo elemento maximal de $\mathcal{F}$ y repetimos el proceso.
 
 Supongamos, pues, que $d_i \mid (SU_m\tvec{y}_{m})_i$ para todo $i \in \lbrace 1, \ldots,
 n\rbrace$, por lo que obtenemos $n$ soluciones enteras $\vec{r} \in \Z^n$ y $n - m - 1$ variables
@@ -248,7 +248,7 @@ libres $\vec{s} \in \Z^{n-m-1}$:
 	=
 	\begin{pmatrix} \vec{r} \\ \vec{s} \end{pmatrix}.
 \end{equation*}
-Por lo tanto, nuestro vector $\vec{t}$ es una función lineal de $\vec{s}$, es decir, $\vec{t} =
+Por lo tanto, nuestro vector $\vec{t}$ es una función afina de $\vec{s}$, es decir, $\vec{t} =
 \vec{t}(\vec{s})$. En términos del problema original \eqref{formulation:multiple}, hemos encontrado,
 hasta este punto, los vectores $\vec{x}(\vec{s}) \coloneq k^*\vec{\nu} + M\vec{t}(\vec{s})$ que
 maximizan la utilidad y que satisfacen todas las restricciones excepto, posiblemente, las de no
@@ -275,7 +275,7 @@ Entonces, la única deducción posible es que el problema de determinar si el co
 es vacío, o cuántos elementos tiene, o cuáles son los elementos que contiene, son todos problemas
 difíciles de resolver. Esta complejidad se reduce drásticamente en dos casos especiales.
 
-En primer lugar, si $m = n - 1$, entonces no hay parámetros libres. De manera gráfica, el politopo
+En primer lugar, si $m = n - 1$, entonces no hay parámetros libres. De manera gráfica, el poliedro
 factible resultante es un semirrayo o un segmento de línea. Al momento de escoger la $k^*$-ésima
 capa entera, estamos agregando la ecuación $k = k^*$, con lo que obtenemos un sistema lineal entero
 de $n$ ecuaciones con $n$ incógnitas, y entonces la solución es única. Resta verificar que esta
@@ -388,7 +388,7 @@ Python\footnote{
 	más grande, con lo que tenemos $k^* = 11$. Siguiendo con el mismo procedimiento, encontramos
 	ahora que $\vec{z} = (16, -24)$. En este caso, la diagonal de $D$ sí divide, elemento a elemento,
 	las entradas de $\vec{z}$, y entonces $\vec{r} = (16, -3)$. Puesto que $n - m - 1 = 0$, no hay
-	variables libres. Tenemos
+	variables libres. Tenemos de \eqref{eq:sum}:
 	\begin{equation*}
 		\begin{pmatrix} \vec{t} \\ \tvec{y}_{n-m} \end{pmatrix} = T
 		\begin{pmatrix} 16 \\ -3 \end{pmatrix} = \begin{pmatrix} 1 \\ -3 \end{pmatrix},
@@ -553,7 +553,7 @@ cuántas capas enteras debemos recorrer para que el método delineado por el pse
 \eqref{algo:multiple} termine. Observemos que, en este caso, existe la posibilidad de que $P \neq
 \emptyset$ pero $P \cap \Z^n = \emptyset$. Sin realizar modificaciones grandes al pseudocódigo
 \eqref{algo:multiple}, encontramos que, o bien termina con una solución $\vec{x}^*$ del problema
-\eqref{formulation:last}, o bien muestra en $\eta - \tau + 1$ pasos que este problema es infactible.
+\eqref{formulation:last}, o bien certifica en $\eta - \tau + 1$ pasos que este problema es infactible.
 
 Cabe mencionar que en la subsección \eqref{subsec:lp} indicamos que existen diversos algoritmos
 capaces de resolver rápidamente problemas lineales del estilo \eqref{eq:last:bounds}. Así pues, la
