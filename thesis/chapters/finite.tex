@@ -1291,7 +1291,7 @@ debido al límite suave en las llamadas de recursión que permite Python. Este l
 llamadas recursivas en la máquina donde se realizaron los experimentos. Esto significa que, de
 manera predeterminada, solamente podríamos resolver problemas de dimensión $n \leq 3,000$. No
 obstante, en la subsección \ref{subsec:exp:fin:n} realizamos experimentos con problemas de dimensión
-$n \leq 250,000$.
+$n \leq 150,000$.
 
 Vimos en la sección pasada que este algoritmo calcula repetidamente los mismos
 máximos común divisores $g$ y los mismos coeficientes de Bézout $x', \omega'$. Puesto que estos
@@ -1326,7 +1326,7 @@ elección del punto medio $t_i$, construimos el problema para el siguiente nivel
 nuevos parámetros calculados en las líneas \ref{alg:fin:k}, \ref{alg:fin:b11} y \ref{alg:fin:b21},
 en este orden. Repetimos este procedimiento hasta obtener una solución $\vec{x}$ entera no negativa.
 Puesto que resolvemos el subproblema del siguiente nivel antes que los de los nodos adyacentes,
-realizamos una búsqueda \textit{depht-first-search}.
+realizamos una búsqueda \textit{depth-first-search}.
 
 El autor encontró en los experimentos preliminares que la segunda estrategia es mucho más eficaz. En
 los experimentos de la subsección \ref{subsec:exp:fin:n}, la primera estrategia tenía tiempos de
@@ -1340,6 +1340,14 @@ subproblemas determina si visitamos primero el lado izquierdo del árbol o el la
 realizó los experimentos con ambas posibilidades. Así pues, llamaremos \texttt{dioph\_left} a la
 implementación que recorre primero el lado izquierdo y definimos análogamente \texttt{dioph\_right}.
 
+Al igual que en la sección \ref{sec:inf:exp}, usamos el COIN-OR Branch-and-Cut (CBC) \textit{solver}
+por medio de la interfaz de PuLP implementada en Python. También utilizamos dos configuraciones
+distintas de Ramificación y Acotamiento. La primera (R\&A simple) es la implementación más cercana a
+una implementación ``pura'' de Ramificación y Acotamiento y prohíbe todo tipo de cortes. La segunda
+(R\&A config) permite agregar cortes de mochila, los cuales son específicamente diseñados para este
+tipo de problemas. Ambas configuraciones corren en un hilo y en un procesador para permitir
+comparaciones justas con nuestro método.
+
 Con respecto a los resultados obtenidos en ambas subsecciones \ref{subsec:exp:fin:n} y
 \ref{subsec:exp:fin:rhs}, mencionamos que cada observación de tiempo de cada método representa el
 promedio de 20 corridas. Para cada observación realizamos 2 corridas preliminares a fin
@@ -1351,10 +1359,15 @@ Así también, por cuestiones de tiempo, cada proceso tenía un tiempo límite d
 terminar de correr. De esta manera, decimos que el método no encontró una solución en caso de que
 más de 10 observaciones sobrepasaran este límite. Además, comparamos los valores objetivo de nuestra
 implementación con los de Ramificación y Acotamiento y en ningún momento
-encontramos que estos fueran distintos. Finalmente, el autor menciona que su implementación se
+encontramos que estos fueran distintos. Además, el autor menciona que su implementación se
 encuentra libre en GitHub\footnote{TODO: LINK} así como los tiempos de terminación de cada método
 junto con archivos de registro que certifican estos tiempos.
 
+Finalmente, al igual que en la sección \ref{sec:inf:exp}, los experimentos se realizaron en una
+computadora portátil Dell XPS 15 equipada con un procesador Intel Core i7-8750H (6 núcleos físicos
+y 12 hilos, frecuencia base de 2.20 GHz y frecuencia máxima de 4.10 GHz). El sistema cuenta con 12
+CPU lógicos disponibles y una memoria RAM de 32 GB. Todos los cálculos fueron ejecutados bajo la
+arquitectura x86-64. El sistema operativo usado fue Fedora Linux 42 (Server Edition).
 
 \subsection{Experimentos en la dimensión}
 \label{subsec:exp:fin:n}
@@ -1450,26 +1463,26 @@ ascendente o descendente sobre $\vec{q}$.
 
 \begin{table}[h]
 	\centering
-	\begin{tabular}{rccc} \toprule
-		$n$ & R\&A simple & R\&A configurado & \texttt{dioph\_right} \\ \midrule
-		50     & 0.020 (0.012) & 0.023 (0.017) & 0.000 (0.000) \\
-		100    & 0.013 (0.002) & 0.010 (0.001) & 0.001 (0.000) \\
-		200    & 0.056 (0.009) & 0.023 (0.004) & 0.001 (0.000) \\
-		500    & 0.127 (0.021) & 0.127 (0.019) & 0.005 (0.000) \\ \midrule
-		1,000   & 0.049 (0.008) & 0.109 (0.016) & 0.013 (0.000) \\
-		2,000   & 0.142 (0.021) & 0.135 (0.022) & 0.043 (0.000) \\
-		5,000   & 1.616 (0.252) & 1.666 (0.196) & 0.265 (0.001) \\
-		10,000  & 2.137 (0.442) & 2.124 (0.333) & 1.164 (0.002) \\ \midrule
-		20,000  & 7.817 (0.596) & 7.682 (0.339) & 4.991 (0.008) \\
-		30,000  & 19.786 (2.852) & 19.192 (1.176) & 11.553 (0.013) \\
-		40,000  & 24.317 (0.163) & 24.334 (0.193) & 20.994 (0.082) \\
-		50,000  & 38.907 (0.203) & 38.940 (0.179) & 33.451 (0.042) \\ \midrule
-		60,000  & 51.915 (0.600) & 51.962 (0.526) & 48.545 (0.052) \\
-		70,000  & 80.847 (1.025) & 81.033 (1.259) & 66.345 (0.101) \\
-		80,000  & 116.751 (0.838) & 116.618 (0.932) & 87.726 (0.117) \\
-		90,000  & 141.288 (1.655) & 141.683 (2.102) & 111.553 (0.116) \\ \midrule
-		100,000 & 170.992 (1.988) & 170.397 (1.750) & 139.652 (0.159) \\
-		250,000 & - & - & - \\ \bottomrule
+	\begin{tabular}{rcccc} \toprule
+		$n$ & R\&A simple & R\&A configurado & \texttt{dioph\_right} & \texttt{dioph\_left} \\ \midrule
+		50     & 0.020 (0.012) & 0.023 (0.017) & 0.000 (0.000) & 0.000 (0.000)\\
+		100    & 0.013 (0.002) & 0.010 (0.001) & 0.001 (0.000) & 0.001 (0.000)\\
+		200    & 0.056 (0.009) & 0.023 (0.004) & 0.001 (0.000) & 0.001 (0.000)\\
+		500    & 0.127 (0.021) & 0.127 (0.019) & 0.005 (0.000) & 0.005 (0.000)\\ \midrule
+		1,000   & 0.049 (0.008) & 0.109 (0.016) & 0.013 (0.000) & 0.013 (0.000)\\
+		2,000   & 0.142 (0.021) & 0.135 (0.022) & 0.043 (0.000) & 0.042 (0.000)\\
+		5,000   & 1.616 (0.252) & 1.666 (0.196) & 0.265 (0.001) & 0.245 (0.001)\\
+		10,000  & 2.137 (0.442) & 2.124 (0.333) & 1.164 (0.002) & 1.063 (0.003)\\ \midrule
+		20,000  & 7.817 (0.596) & 7.682 (0.339) & 4.991 (0.008) & 4.595 (0.007)\\
+		30,000  & 19.786 (2.852) & 19.192 (1.176) & 11.553 (0.013) & 10.743 (0.016)\\
+		40,000  & 24.317 (0.163) & 24.334 (0.193) & 20.994 (0.082) & 19.471 (0.023)\\
+		50,000  & 38.907 (0.203) & 38.940 (0.179) & 33.451 (0.042) & 30.887 (0.026)\\ \midrule
+		60,000  & 51.915 (0.600) & 51.962 (0.526) & 48.545 (0.052) & 45.072 (0.048)\\
+		70,000  & 80.847 (1.025) & 81.033 (1.259) & 66.345 (0.101) & 61.885 (0.036)\\
+		80,000  & 116.751 (0.838) & 116.618 (0.932) & 87.726 (0.117) & 81.418 (0.057)\\
+		90,000  & 141.288 (1.655) & 141.683 (2.102) & 111.553 (0.116) & 103.962 (0.035)\\ \midrule
+		100,000 & 170.992 (1.988) & 170.397 (1.750) & 139.652 (0.159) & 129.440 (0.047)\\
+		150,000 & - & - & - & 299.154 (0.129) \\ \bottomrule
 	\end{tabular}
 	\caption{Tiempos en segundos de terminación promedio de cada método con una muestra de 20
 	observaciones por experimento por método. La desviación estándar se encuentra entre paréntesis.}
@@ -1478,26 +1491,26 @@ ascendente o descendente sobre $\vec{q}$.
 
 \begin{table}
 	\centering
-	\begin{tabular}{rccc} \toprule
-		$n$ & R\&A simple & R\&A configurado & \texttt{dioph\_right} \\ \midrule
-		50       & 0.601 & 0.741 & 0.029 \\
-		100      & 0.157 & 0.107 & 0.009 \\
-		200      & 0.159 & 0.179 & 0.005 \\
-		500      & 0.168 & 0.155 & 0.004 \\ \midrule
-		1,000     & 0.170 & 0.145 & 0.002 \\
-		2,000     & 0.150 & 0.164 & 0.001 \\
-		5,000     & 0.158 & 0.119 & 0.003 \\
-		10,000    & 0.209 & 0.159 & 0.002 \\ \midrule
-		20,000    & 0.077 & 0.045 & 0.002 \\
-		30,000    & 0.146 & 0.062 & 0.001 \\
-		40,000    & 0.007 & 0.008 & 0.004 \\
-		50,000    & 0.005 & 0.005 & 0.001 \\ \midrule
-		60,000    & 0.012 & 0.010 & 0.001 \\
-		70,000    & 0.013 & 0.016 & 0.002 \\
-		80,000    & 0.007 & 0.008 & 0.001 \\
-		90,000    & 0.012 & 0.015 & 0.001 \\ \midrule
-		100,000   & 0.012 & 0.010 & 0.001 \\
-		250,000 & - & - & - \\ \bottomrule
+	\begin{tabular}{rcccc} \toprule
+		$n$ & R\&A simple & R\&A configurado & \texttt{dioph\_right} & \texttt{dioph\_left} \\ \midrule
+		50       & 0.601 & 0.741 & 0.029 & 0.018 \\
+		100      & 0.157 & 0.107 & 0.009 & 0.008 \\
+		200      & 0.159 & 0.179 & 0.005 & 0.004 \\
+		500      & 0.168 & 0.155 & 0.004 & 0.003 \\ \midrule
+		1,000     & 0.170 & 0.145 & 0.002 & 0.001 \\
+		2,000     & 0.150 & 0.164 & 0.001 & 0.001 \\
+		5,000     & 0.158 & 0.119 & 0.003 & 0.004 \\
+		10,000    & 0.209 & 0.159 & 0.002 & 0.003 \\ \midrule
+		20,000    & 0.077 & 0.045 & 0.002 & 0.001 \\
+		30,000    & 0.146 & 0.062 & 0.001 & 0.002 \\
+		40,000    & 0.007 & 0.008 & 0.004 & 0.001 \\
+		50,000    & 0.005 & 0.005 & 0.001 & 0.001 \\ \midrule
+		60,000    & 0.012 & 0.010 & 0.001 & 0.001 \\
+		70,000    & 0.013 & 0.016 & 0.002 & 0.001 \\
+		80,000    & 0.007 & 0.008 & 0.001 & 0.001 \\
+		90,000    & 0.012 & 0.015 & 0.001 & 0.000 \\ \midrule
+		100,000   & 0.012 & 0.010 & 0.001 & 0.000 \\
+		150,000 & - & - & - & 0.000 \\ \bottomrule
 	\end{tabular}
 	\caption{Coeficientes de variación en los tiempos de terminación de acuerdo a la tabla
 	\ref{table:fin:mt:times}.}

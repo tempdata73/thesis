@@ -1,43 +1,61 @@
 \chapter{Múltiples restricciones}
 \noindent
-En esta sección hacemos un análisis extensivo sobre lo resulta de agregar más restricciones al
-problema (\ref{theory:formulation}). Sea $\vec{p} \in \R^n$ esencialmente entero y consideremos su
-múltiplo coprimo $\vec{q} \in \Z^n$. Sea $A \in \Q^{m \times n}$ una matriz racional con renglones
-linealmente independientes y sea $\vec{b} \in \Q^m$ un vector. Consideremos el problema
+En este último capítulo construimos un método que permite resolver programas lineales enteros
+generales. Mostramos que la complejidad exponencial de este tipo de programas se reduce a resolver
+sistemas de ecuaciones lineales en los enteros. Además, encontramos una formulación alternativa a la
+manera tradicional de introducir programas lineales enteros que simplifica el árbol de subproblemas
+generado por el algoritmo de Ramificación y Acotamiento, lo cual podría resultar en mejores tiempos de
+terminación.
+
+En la exposición de este capítulo dependemos en gran medida de la forma normal de Hermite y de
+Smith, las cuales son tratadas extensivamente en \cite{alex} y \cite{morris}. El estilo de nuestra
+discusión es menos formal aunque no por ello menos rigurosa.
+
+Sea $\vec{p} \in \R^n$ esencialmente entero y sea $\vec{q} \in \Z^n$, de manera que $\vec{p} =
+m\vec{q}$ para algún escalar $m > 0$. Vimos en la subsección \ref{subsec:dioph-eq} que el problema
+\eqref{theory:formulation} es equivalente a
+\begin{equation*}
+	\max_{\vec{x} \in \Z^n}
+	\braces{\vec{q}^T\vec{x} \colon \vec{q}^T\vec{x} \in \braces{0, \ldots, \eta}, \vec{x}
+	\geq \vec{0}},
+\end{equation*}
+donde $\eta \in \Z$ está definida en el lema \ref{phase-1:lemma:eta}. Por ello, introducimos el
+problema con múltiples restricciones \eqref{formulation:multiple} en términos del vector $\vec{q}$ y
+el parámetro $\eta$ en vez del vector $\vec{p}$ y el lado derecho $u$ de
+\eqref{theory:constraint:budget}. Así pues, sea $A \in \Q^{m \times n}$ una matriz racional con
+renglones linealmente independientes y sea $\vec{b} \in \Q^m$ un vector. Consideremos el problema
 \begin{subequations}
 	\label{formulation:multiple}
 	\begin{align}
 		\max_{\vec{x} \in \Z^n} \quad
 			& \vec{q}^T\vec{x}, \label{formulation:multiple:objective} \\
 		\text{s.a.} \quad
-			& \vec{q}^T\vec{x} \leq u, \label{formulation:multiple:constraint:budget} \\
+			& \vec{q}^T\vec{x} \leq \eta, \label{formulation:multiple:constraint:budget} \\
 			& A\vec{x} = \vec{b}, \label{formulation:multiple:constraints} \\
 			& \vec{x} \geq \vec{0}. \nonumber
 	\end{align}
 \end{subequations}
-Ciertamente, la solución no se encuentra necesariamente en la $\eta$-ésima capa entera. Por ejemplo,
-si dejamos que $A \coloneq \vec{q}^T$ y $b \coloneq u - m$, la solución se encontrará en la
-$\xi$-ésima capa entera, donde
-\begin{equation*}
-	\xi \coloneq \left\lfloor \frac{u}{m} - 1 \right\rfloor < \eta.
-\end{equation*}
-No obstante, si el problema (\ref{formulation:multiple}) es factible, sabemos que la solución se
-encontrará en alguna capa entera con parámetro $k \in \lbrace \eta, \eta - 1, \ldots \rbrace$, pues
-todavía contamos con una restricción presupuestaria que se debe satisfacer.
+
 \begin{observation}
-	Recordemos del teorema \ref{theory:th:feasibility} que, si tenemos solamente la restricción
-	presupuestaria, entonces la utilidad máxima es $\eta$ si $q_i < 0$ para alguna $i \in
-	\lbrace 2, \ldots, n - 1\rbrace$. Al igual que en el caso finito, ahora no somos capaces de
-	saber inmediatamente en qué capa entera se encuentra nuestra solución.
+	En contraste con el primer caso del teorema \ref{theory:th:feasibility}, no podemos asegurar que
+	la solución se encuentre sobre la $\eta$-ésima capa entera $\qlayer{q}{\eta}$ aún cuando
+	$\vec{q}$ tenga una entrada negativa. En efecto, si $A = \vec{q}^T$ y $\vec{b} = \eta - 1$, la
+	restricción \eqref{formulation:multiple:constraint:budget} se vuelve redundante y obtenemos un
+	problema similar a \eqref{theory:formulation}. En caso de que $\vec{q}$ tenga al menos una
+	entrada negativa, el primer caso del teorema \ref{theory:th:feasibility} nos indica que el
+	problema es factible y que la solución se encuentra en la $(\eta - 1)$-ésima capa entera.
 \end{observation}
 
-Ahora bien, en el contexto del problema (\ref{formulation:multiple}), el parámetro $k \in \Z$ se
-encarga de maximizar la utilidad (\ref{formulation:multiple:objective}), así como de respetar el
-presupuesto (\ref{formulation:multiple:constraint:budget}) a través de $k \leq \eta$. Similarmente,
-el vector $\vec{t} \in \Z^{n-1}$ se encarga de respetar las otras restricciones
-(\ref{formulation:multiple:constraints}).
+Supongamos que el problema \eqref{formulation:multiple} es factible. Debido a la restricción
+presupuestaria \eqref{formulation:multiple:constraint:budget}, sabemos que la solución se encuentra
+en alguna capa entera $\qlayer{q}{k}$ con parámetro entero $k \leq \eta$. Esto motiva el siguiente
+resultado.
+
 \begin{theorem}
-	El problema (\ref{formulation:multiple}) es equivalente al problema de maximización
+	\label{th:multeq}
+	Sea $M \in \Z^{n \times (n - 1)}$ la matriz definida en \eqref{eq:mat-T} y $\vec{\nu} \in \Z^n$
+	el vector definido en \eqref{eq:vec-omega}. Entones el problema \eqref{formulation:multiple} es
+	equivalente al problema
 	\begin{subequations}
 		\label{formulation:lattice}
 		\begin{align}
@@ -45,151 +63,184 @@ el vector $\vec{t} \in \Z^{n-1}$ se encarga de respetar las otras restricciones
 				& k, \\
 			\text{s.a.} \quad
 				& k \leq \eta, \label{lattice:c-layer} \\
-				& AM\vec{t} = kA\vec{\nu} - \vec{b}, \label{lattice:constraints} \\
+				& AM\vec{t} = \vec{b} - kA\vec{\nu}, \label{lattice:constraints} \\
 				& M\vec{t} \geq -k\vec{\nu}.
 		\end{align}
 	\end{subequations}
 \end{theorem}
 \begin{proof}
-	Por el teorema \ref{th:lattice}, sabemos que la transformación lineal
+	Por el teorema \ref{th:lattice} y la discusión que le sucede, sabemos que la transformación
+	lineal
 	\begin{align*}
 		(k, \vec{t}) &\mapsto \vec{x} \coloneq k\vec{\nu} + M\vec{t}
 	\end{align*}
-	es un isomorfismo entre las redes $\Z \oplus \Z^{n - 1}$ y $\Z^n$. Así, tenemos
+	es un isomorfismo entre las redes $\Lambda_p \oplus \Lambda_h$ definidas en \eqref{eq:dec} y
+	$\Z^n$. Así, tenemos
 	\begin{align*}
 		A\vec{x} = \vec{b} &\iff AM\vec{t} = \vec{b} - kA\vec{\nu}, \\
 		\vec{x} \geq \vec{0} &\iff M\vec{t} \geq -k\vec{\nu},
 	\end{align*}
 	y por lo tanto basta mostrar que si un vector es factible para un problema, entonces satisface
-	la correspondiente restricción presupuestaria del otro problema. Para ello, es de utilidad
-	recordar que $\eta$ parametriza la primera capa entera que satisface el presupuesto.
+	la correspondiente restricción presupuestaria \eqref{formulation:multiple:constraint:budget} o
+	\eqref{lattice:c-layer} del otro problema.
 
-	Sea $\vec{x} \in \Z^n$ un vector factible de (\ref{formulation:multiple}) Como $\vec{x}$ es
-	entero, entonces se debe cumplir $\vec{q}^T\vec{x} \leq \eta$. Ahora bien, existe $(k, \vec{t})
-	\in \Z^n$ que satisface $\vec{x} = k\vec{\nu} + M\vec{t}$. Por el lema \ref{lemma:iso1} y el
-	corolario \ref{lemma:iso2} encontramos que
+	Sea $\vec{x} \in \Z^n$ un vector factible de \eqref{formulation:multiple}, entonces existe $(k,
+	\vec{t}) \in \Z^n$ que satisface $\vec{x} = k\vec{\nu} + M\vec{t}$. Por los lemas \ref{lemma:iso1}
+	y \ref{lemma:iso2} encontramos que
 	\begin{equation*}
 		k = \vec{q}^T\vec{x} \leq \eta,
 	\end{equation*}
 	y entonces $(k, \vec{t})$ es factible. Como $\vec{x}$ fue arbitrario, se sigue que la solución
 	del problema (\ref{formulation:multiple}) es una cota inferior del problema
-	(\ref{formulation:lattice}). La demostración de que la solución de (\ref{formulation:lattice})
-	es una cota inferior de (\ref{formulation:multiple}) es análoga.
+	\eqref{formulation:lattice}. La demostración de que la solución de \eqref{formulation:lattice}
+	es una cota inferior de \eqref{formulation:multiple} es análoga usando el mismo isomorfismo.
 
-	Finalmente, supongamos que $(k, \vec{t}) \in \Z^n$ es solución de (\ref{formulation:lattice}).
-	Si existe $\hat{\vec{x}}$ factible para (\ref{formulation:multiple}) con utilidad
-	$\vec{q}^T\hat{\vec{x}} = \hat{k}$ estrictamente mayor, entonces consideramos $(\hat{k},
-	\hat{\vec{t}})$ tal que $\hat{\vec{x}} = \hat{k}\vec{\nu} + M\hat{\vec{t}}$. Este vector
-	también es factible con utilidad $k < \hat{k} \leq \eta$, y entonces $(k, \vec{t})$ no era la
-	solución de (\ref{formulation:lattice}). Obtenemos una contradicción.
+	Finalmente, supongamos que $(k, \vec{t}) \in \Z^n$ es solución de \eqref{formulation:lattice}.
+	Si existe $\tvec{x}$ factible para \eqref{formulation:multiple} con utilidad $\vec{q}^T\tvec{x}
+	= \tilde{k}$ estrictamente mayor, entonces consideramos ($\tilde{k}, \tvec{t})$ tal que
+	$\tvec{x} = \tilde{k}\vec{\nu} + M\tvec{t}$. Este vector también es factible con utilidad $k <
+	\tilde{k} \leq \eta$, y entonces $(k, \vec{t})$ no era la solución de
+	\eqref{formulation:lattice}. Obtenemos una contradicción.
 \end{proof}
 
-\begin{observation}
-	El vector objetivo todavía es ortogonal a la restricción presupuestaria. No obstante, es más
-	fácil de manejar en caso de usar cortes como en Ramificación y Acotamiento. Si $k^*$ no es
-	entero en la solución al problema relajado, la única manera de ramificar es con el nuevo corte
-	$k \leq \lfloor k^* \rfloor$, pues el otro corte $k \geq \lceil k^* \rceil$ generará un
-	subproblema infactible. Evidentemente, en la sección de análisis de resultados haremos
-	comparaciones de tiempo en los tiempos de terminación entre esta formulación y la original.
-\end{observation}
+Al inicio de esta tesis mencionamos que las políticas de poda de Ramificación y Acotamiento operan
+ineficientemente cuando el vector objetivo es ortogonal a una de sus restricciones. Observemos
+en los problemas \eqref{theory:formulation} y \eqref{formulation:multiple} que el vector objetivo
+$\vec{q}$ es ortogonal a las restricciones presupuestarias \eqref{theory:constraint:budget} y
+\eqref{formulation:multiple:constraint:budget}. Esto también es cierto para el problema
+equivalente \eqref{formulation:lattice}, pues el vector objetivo $k\vec{e}_1$ es ortogonal a la
+restricción \eqref{lattice:c-layer}. A pesar de lo anterior, el problema equivalente induce a que
+las políticas de poda sean más eficientes.
+\begin{theorem}
+	\label{th:bbspeed}
+	Sea $(\optr{k}, \optr{\vec{t}})$ el óptimo del problema relajado de \eqref{formulation:lattice}
+	y supongamos que $\optr{k}$ no es entero. Entonces el subproblema generado al añadir la
+	restricción $k \geq \ceil{\optr{k}}$ es infactible.
+\end{theorem}
+\begin{proof}
+	Supongamos que el subproblema es factible. Puesto que $\optr{k}$ no es entero, existe $\tau \in
+	\Z$ tal que $\tau - 1 < \optr{k} < \tau$. Al añadir la restricción $k \geq \ceil{\optr{k}} =
+	\tau$ al problema \eqref{formulation:lattice}, encontramos que el valor óptimo de este
+	subproblema es estrictamente mayor que $\optr{k}$. Pero esto es una contradicción ya que en
+	problemas de maximización el valor óptimo de un problema es una cota superior del valor óptimo
+	de cualesquiera de sus subproblemas.
+\end{proof}
+Debido a este teorema, siempre es mejor priorizar ramificaciones en $\optr{k}$ puesto que nos
+deshacemos de manera inmediata subproblemas infactibles.
 
-La formulación del problema equivalente en el teorema anterior resulta ser más interesante. Podemos
-desacoplar esta nueva formulación de manera que obtengamos un problema de maximización y otro de
-factibilidad. Supongamos, sin pérdida de generalidad, que las entradas de $A$ y $\vec{b}$ son
-enteras. Como los renglones de $A$ son linealmente independientes, de \cite{alex} sabemos que tiene
-una única factorización de Hermite. Es decir, existe una matriz $U \in \Z^{n \times n}$ unimodular
+A continuación desacoplamos el problema \eqref{formulation:lattice} en un subproblema de
+maximización y en otro de factibilidad. Supongamos, sin pérdida de generalidad, que las entradas de
+$A$ y $\vec{b}$ son enteras. En el capítulo 2 de \cite{morris} es introducida la forma normal de
+Hermite de la matriz $A$, la cual afirma que existe una matriz unimodular $U \in \Z^{n \times n}$
 que satisface $AU = [H, \vec{0}]$, donde $H \in \Z^{m \times m}$ es triangular inferior y no
 singular.
 
-Consideremos el subproblema de maximización
+Con esto en mente, introducimos el subproblema de \eqref{formulation:lattice} como
 \begin{subequations}
 	\label{subformulation:lattice}
 	\begin{align}
-		\max_{k \in \Z}
-			& ~ k, \\
+		\max_{k \in \Z, \tvec{y} \in \Z^m}
+			& k, \\
 		\text{s.a.} \quad
 		k &\leq \eta, \\
-			A\tvec{y} &= kA\vec{\nu} - \vec{b},
+			A\tvec{y} &= \vec{b} - kA\vec{\nu},
 	\end{align}
 \end{subequations}
 donde 
-\begin{equation*}
+\begin{equation}
+	\label{eq:tvecy}
 	\tvec{y} \coloneq U \begin{pmatrix} \tvec{y}_m \\ \tvec{y}_{n-m} \end{pmatrix}
 	= U_m\tvec{y}_m + U_{n-m}\tvec{y}_{n-m} \in \Z^n,
-\end{equation*}
-con $\tvec{y}_m \in \Z^m$ y $\tvec{y}_{n-m} \in \Z^{n-m}$. Así también, $U_m$ y
-$U_{n-m}$ denotan las primeras $m$ columnas y últimas $n - m$ columnas de $U$, respectivamente.
+\end{equation}
+con $\tvec{y}_m \in \Z^m$ y $\tvec{y}_{n-m} \in \Z^{n-m}$. Denotamos por $U_m$ y
+$U_{n-m}$ las primeras $m$ columnas y últimas $n - m$ columnas de $U$, respectivamente.
 Observemos que para toda $k \in \Z$ se cumple
 \begin{equation}
-	AU \begin{pmatrix} \inv{H}\left(kA\vec{\nu} - \vec{b}\right) \\ \tvec{y}_{n-m} \end{pmatrix}
+	AU \begin{pmatrix} \inv{H}\left(\vec{b} - kA\vec{\nu}\right) \\ \tvec{y}_{n-m} \end{pmatrix}
 	=
-	[H, \vec{0}] \begin{pmatrix} \inv{H}\left(kA\vec{\nu} - \vec{b}\right) \\ \tvec{y}_{n-m} \end{pmatrix}
-	= kA\vec{\nu} - \vec{b},
+	[H, \vec{0}] \begin{pmatrix} \inv{H}\left(\vec{b} - kA\vec{\nu}\right) \\ \tvec{y}_{n-m} \end{pmatrix}
+	= \vec{b} - kA\vec{\nu},
 \end{equation}
-lo cual sugiere definir $\tvec{y}_m \coloneq \inv{H}(\vec{b} - kA\vec{w})$. No obstante,
-también debemos asegurarnos que este vector sea entero. Observemos que $\tvec{y}_{n-m}$ queda
-libre, así que en realidad este subproblema tiene dimensión $m + 1$. Definimos el conjunto de
+lo cual sugiere definir
+\begin{equation}
+	\label{eq:ym}
+	\tvec{y}_m \coloneq \inv{H}(\vec{b} - kA\vec{\nu}).
+\end{equation}
+No obstante, debemos asegurarnos que este vector sea entero. Observemos que $\tvec{y}_{n-m}$ es un
+vector libre, así que en realidad este subproblema tiene dimensión $m + 1$. Definimos el conjunto de
 factibilidad
 \begin{equation}
 	\label{eq:feas-set}
-	F \coloneq \lbrace k \in \Z \vcentcolon \inv{H}\left(kA\vec{\nu} - \vec{b}\right) \in \Z^m \rbrace
-	\cap \lbrace k \in \Z \vcentcolon k \leq \eta \rbrace.
+	\mathcal{F} \coloneq \braces{
+		k \in \Z \colon \inv{H}\left(\vec{b} - kA\vec{\nu}\right) \in \Z^m, k \leq \eta
+	}
 \end{equation}
-\begin{observation}
-	Para que $F$ sea no vacío, debe existir $k \in \Z$ tal que $\det(H) \mid (k\vec{a}_j^T
-	\vec{\nu} - b_j)$ para todo $j \in \lbrace 1, \ldots, m \rbrace$, donde $\vec{a}^T_j$
-	denota el $j$-ésimo vector renglón de $A$. Es decir, una condición suficiente y necesaria para
-	la no vacuidad de $F$ es
-	\begin{equation*}
-		\det(H) \mid \gcd{k\vec{a}_1^T\vec{\nu} - b_1, \ldots, k\vec{a}_m^T\vec{\nu} - b_m}.
-	\end{equation*}
-	Ahora bien, $H$ es triangular inferior e invertible, por lo que $\det(H) \neq 0$ es el producto
-	de los elementos $h_1, \ldots, h_m$ en su diagonal. Entonces $h_j \mid \det(H)$ para todo $j \in
-	\lbrace 1, \ldots m \rbrace$ y una condición necesaria para la no vacuidad de $F$ es
-	\begin{equation*}
-		\lcm{h_1, \ldots, h_m} \mid \gcd{k\vec{a}_1^T\vec{\nu} - b_1, \ldots, k\vec{a}_m^T\vec{\nu} - b_m}.
-	\end{equation*}
-\end{observation}
 
-Si $F$ es vacío, deducimos que este subproblema es infactible y por lo tanto
-(\ref{formulation:lattice}) también lo es. Supongamos, pues, que $F \neq \emptyset$. No es difícil
-observar que $F$ tiene un elemento maximal $k^*$ y que este elemento es la solución al subproblema
-(\ref{subformulation:lattice}). Luego, dada esta solución $k^* \in \Z$, buscamos resolver el
-subproblema de factibilidad
+Puesto que $H \in \Z^{m \times m}$ es no singular, para cada $k \in \Z$, existe una única solución
+$\tvec{y}_m \in \R^m$ del sistema de ecuaciones $H\tvec{y}_m = \vec{b} - kA\vec{\nu}$. Como, además, $H$
+es triangular inferior, podemos resolver rápidamente este sistema de ecuaciones y verificar si, para
+cada $k \in \Z$, la correspondiente solución $\tvec{y}_m$ es entera o no.
+
+% \begin{observation}
+% 	Para que $F$ sea no vacío, debe existir $k \in \Z$ tal que $\det(H) \mid (k\vec{a}_j^T
+% 	\vec{\nu} - b_j)$ para todo $j \in \lbrace 1, \ldots, m \rbrace$, donde $\vec{a}^T_j$
+% 	denota el $j$-ésimo vector renglón de $A$. Es decir, una condición suficiente y necesaria para
+% 	la no vacuidad de $F$ es
+% 	\begin{equation*}
+% 		\det(H) \mid \gcd{k\vec{a}_1^T\vec{\nu} - b_1, \ldots, k\vec{a}_m^T\vec{\nu} - b_m}.
+% 	\end{equation*}
+% 	Ahora bien, $H$ es triangular inferior e invertible, por lo que $\det(H) \neq 0$ es el producto
+% 	de los elementos $h_1, \ldots, h_m$ en su diagonal. Entonces $h_j \mid \det(H)$ para todo $j \in
+% 	\lbrace 1, \ldots m \rbrace$ y una condición necesaria para la no vacuidad de $F$ es
+% 	\begin{equation*}
+% 		\lcm{h_1, \ldots, h_m} \mid \gcd{k\vec{a}_1^T\vec{\nu} - b_1, \ldots, k\vec{a}_m^T\vec{\nu} - b_m}.
+% 	\end{equation*}
+% \end{observation}
+
+Si $\mathcal{F}$ es vacío, deducimos que el subproblema \eqref{subformulation:lattice} es infactible
+y por lo tanto \eqref{formulation:lattice} también lo es. Supongamos, pues, que $\mathcal{F} \neq
+\emptyset$. No es difícil observar que $\mathcal{F}$ tiene un elemento maximal $k^*$ y que este
+elemento es la solución al subproblema \eqref{subformulation:lattice}. Luego, dada esta solución
+$k^* \in \Z$, buscamos resolver el subproblema de \eqref{formulation:lattice}
 \begin{subequations}
 	\label{subformulation:feasibility}
 	\begin{align}
-		M\vec{t} &= \tvec{y}, \\
-		M\vec{t} &\geq -k^*\vec{\nu}.
+		M\vec{t} &= \tvec{y}, \label{subf:feas:eq} \\
+		M\vec{t} &\geq -k^*\vec{\nu}. \label{subf:feas:ineq}
 	\end{align}
 \end{subequations}
-Observemos que tenemos un sistema de $n$ ecuaciones lineales con $2n - m - 1$ incógnitas, por lo que
-tendremos que lidiar con $n - m - 1$ parámetros libres:
+Tenemos un sistema de $n$ ecuaciones lineales con $2n - m - 1$ incógnitas, por lo que tendremos que
+lidiar con $n - m - 1$ variables libres. En efecto, sustituyendo \eqref{eq:tvecy} en
+\eqref{subf:feas:eq}, obtenemos
 \begin{align}
 	\label{eq:feasibility-eqs}
-	M\vec{t} = \tvec{y} = U_m\tvec{y}_m + U_{n-m}\tvec{y}_{n-m}
-   \iff [M, -U_{n-m}] \begin{pmatrix} \vec{t} \\ \tvec{y}_{n-m} \end{pmatrix} = U_m\tvec{y}_m.
+	M\vec{t} = \tvec{y} &= U_m\tvec{y}_m + U_{n-m}\tvec{y}_{n-m} \nonumber \\
+   &\iff [M \mid -U_{n-m}] \begin{pmatrix} \vec{t} \\ \tvec{y}_{n-m} \end{pmatrix} = U_m\tvec{y}_m.
 \end{align}
-Si consideramos ahora la forma normal de Smith de esta matriz por bloques, obtenemos dos matrices
-unimodulares $S \in \Z^{n \times n}$ y $T \in \Z^{(2n - m - 1) \times (2n - m -1)}$ que satisfacen
+
+En el capítulo 2 de \cite{morris} también se introduce la forma normal de Smith, de la cual
+obtenemos dos matrices unimodulares $S \in \Z^{n \times n}$ y $T \in \Z^{(2n - m - 1) \times (2n - m
+-1)}$ que satisfacen
 \begin{equation*}
 	S[M, -U_{n-m}]T = D \in \Z^{n \times (2n - m - 1)},
 \end{equation*}
 donde $D$ es una matriz diagonal cuyas $n$ primeras entradas son distintas de cero y las restantes
 $n - m - 1$ son cero. Si multiplicamos $S$ por la izquierda en ambos lados de la ecuación
 (\ref{eq:feasibility-eqs}), tenemos
-\begin{equation*}
+\begin{equation}
+	\label{eq:sum}
 	D\inv{T}\begin{pmatrix} \vec{t} \\ \tvec{y}_{n-m} \end{pmatrix}
 	= SU_m\tvec{y}_{m}.
-\end{equation*}
+\end{equation}
 Si $d_i$ no divide a $(SU_m\tvec{y}_{m})_i$ para alguna $i \in \lbrace 1, \ldots, n \rbrace$,
-encontramos que la primera ecuación del subproblema (\ref{subformulation:feasibility}) no tiene
+encontramos que la primera ecuación del subproblema \eqref{subformulation:feasibility} no tiene
 solución en los enteros, lo que implica que la elección de $k^*$ fue la incorrecta para asegurar
-soluciones enteras a este subproblema. De ser este el caso, redefinimos $F \leftarrow F \setminus
-\lbrace k^* \rbrace$. Si $F$ ahora es vacío, entonces (\ref{formulation:lattice}) es
-infactible, de caso contrario escogemos el nuevo elemento de maximal de $F$ y repetimos el proceso.
+soluciones enteras a este subproblema. De ser este el caso, redefinimos nuestro conjunto de
+factibilidad $\mathcal{F}$ (ver \eqref{eq:feas-set}) como $\mathcal{F} \leftarrow \mathcal{F}
+\setminus \braces{k^*}$. Si $\mathcal{F}$ ahora es vacío, entonces \eqref{formulation:lattice} es
+infactible, y en caso contrario escogemos el nuevo elemento de maximal de $\mathcal{F}$ y repetimos el proceso.
 
-Supongamos, pues que $d_i \mid (SU_m\tvec{y}_{m})_i$ para todo $i \in \lbrace 1, \ldots,
+Supongamos, pues, que $d_i \mid (SU_m\tvec{y}_{m})_i$ para todo $i \in \lbrace 1, \ldots,
 n\rbrace$, por lo que obtenemos $n$ soluciones enteras $\vec{r} \in \Z^n$ y $n - m - 1$ variables
 libres $\vec{s} \in \Z^{n-m-1}$:
 \begin{equation*}
@@ -198,44 +249,102 @@ libres $\vec{s} \in \Z^{n-m-1}$:
 	\begin{pmatrix} \vec{r} \\ \vec{s} \end{pmatrix}.
 \end{equation*}
 Por lo tanto, nuestro vector $\vec{t}$ es una función lineal de $\vec{s}$, es decir, $\vec{t} =
-\vec{t}(\vec{s})$. Hasta este punto el proceso no ha sido complicado, pues nos hemos encargado de
-resolver sistemas de ecuaciones lineales diofantinas. En términos del problema original
-(\ref{formulation:multiple}), hemos encontrado los vectores $\vec{x}(\vec{s}) \coloneq
-k^*\vec{\nu} + M\vec{t}(\vec{s})$ que maximizan la utilidad y que satisfacen todas las
-restricciones excepto, posiblemente, las de no negatividad.
+\vec{t}(\vec{s})$. En términos del problema original \eqref{formulation:multiple}, hemos encontrado,
+hasta este punto, los vectores $\vec{x}(\vec{s}) \coloneq k^*\vec{\nu} + M\vec{t}(\vec{s})$ que
+maximizan la utilidad y que satisfacen todas las restricciones excepto, posiblemente, las de no
+negatividad.
 
-La dificultad entra en juego cuando queremos determinar el vector de variables libres $\vec{s} \in
-\Z^{n-m-1}$ que hagan que $\vec{t}(\vec{s})$ satisfaga la desigualdad en el subproblema
-(\ref{subformulation:feasibility}). Debilitando más esta condición, nos gustaría determinar si el
-conjunto
+Consideremos el conjunto de vectores $\vec{s} \in \Z^{n-m-1}$ que inducen a que $\vec{t}(\vec{s})$
+satisfaga \eqref{subf:feas:ineq}:
 \begin{equation*}
-	\lbrace \vec{s} \in \Z^{n-m-1} \vcentcolon M\vec{t}(\vec{s}) \geq -k^*\vec{\nu} \rbrace
+	\mathcal{S} \coloneq \lbrace \vec{s} \in \Z^{n-m-1} \vcentcolon M\vec{t}(\vec{s}) \geq -k^*\vec{\nu} \rbrace
 \end{equation*}
-es vacío o no. En esta versión debilitada no nos interesa saber qué elementos contiene o tan
-siquiera cuántos elementos contiene. Es sabido que los programas enteros tales como
-(\ref{formulation:multiple}) o (\ref{formulation:lattice}) son problemas difíciles de resolver, en
-el sentido de que no es conocido si se pueden resolver en tiempo polinomial. A lo largo de este
-capítulo, no obstante, hemos resuelto todos los problemas en tiempo polinomial\footnote{En
-	\cite{alex} se muestra que calcular el máximo común divisor, resolver ecuaciones lineales
-	diofantinas, y calcular las factorizaciones tanto de Hermite como de Smith son operaciones
-	acotadas por tiempo polinomial.}.
-La única deducción posible, entonces, es que el problema de determinar las variables $\vec{s}$, o
-bien de determinar cuántas hay, o bien de determinar su existencia, son todos problemas difíciles de
-resolver.
+Por un lado, es sabido que los programas enteros tales como \eqref{formulation:multiple} o
+\eqref{formulation:lattice} son problemas difíciles de resolver, a excepción de cuando la matriz de
+restricciones $A \in \Z^{m \times n}$ es totalmente unimodular. De manera superficial, decimos que
+un problema es difícil de resolver si no es conocida la existencia de un algoritmo con complejidad
+polinomial que lo pueda resolver.
 
-A pesar de lo anterior, hay dos casos donde la dificultad se reduce drásticamente. El caso menos
-interesante es cuando $m = n - 1$, de manera que no hay parámetros libres. Esto se debe a que el
-politopo factible resultante es un semirrayo o un segmento de línea. Al momento de escoger la
-$k^*$-ésima capa entera, estamos agregando la ecuación $k^* = k$, con lo que obtenemos un sistema
-lineal entero de $n$ ecuaciones con $n$ incógnitas, y entonces la solución es única. Basta entonces
-verificar que este único vector $\vec{t}$ satisface la desigualdad en el subproblema
-(\ref{subformulation:feasibility}). El caso un poco más interesante se obtiene cuando $m = n - 2$.
-De esta manera obtenemos un solo parámetro, con lo que podemos determinar rápidamente la existencia
-o inexistencia de un intervalo de factibilidad.
+Por el otro lado, a lo largo de este capítulo hemos resuelto todos los problemas en tiempo
+polinomial. En efecto, obtener $M$ y $\vec{\nu}$ de \eqref{eq:mat-T} y \eqref{eq:vec-omega} se
+reduce a multiplicar números y calcular coeficientes de Bézout, al igual que máximos común
+divisores. En \cite{alex} y \cite{morris} se muestra que realizar este tipo de cálculos, así como de
+obtener las formas normales de Hermite y de Smith, son problemas acotados en tiempo polinomial.
 
+Entonces, la única deducción posible es que el problema de determinar si el conjunto $\mathcal{S}$
+es vacío, o cuántos elementos tiene, o cuáles son los elementos que contiene, son todos problemas
+difíciles de resolver. Esta complejidad se reduce drásticamente en dos casos especiales.
+
+En primer lugar, si $m = n - 1$, entonces no hay parámetros libres. De manera gráfica, el politopo
+factible resultante es un semirrayo o un segmento de línea. Al momento de escoger la $k^*$-ésima
+capa entera, estamos agregando la ecuación $k = k^*$, con lo que obtenemos un sistema lineal entero
+de $n$ ecuaciones con $n$ incógnitas, y entonces la solución es única. Resta verificar que esta
+solución es entera y satisface \eqref{subf:feas:ineq}. Este caso se ilustra en el ejemplo
+\ref{ex:two-var}.
+
+En segundo lugar, si $m = n - 2$, obtenemos un solo parámetro libre $s \in \Z$, con lo que podemos
+determinar rápidamente la existencia o inexistencia de un conjunto de factibilidad en $s$ que induce
+a que $\vec{t}(s)$ satisfaga \eqref{subf:feas:ineq}. Este caso se ilustra en el ejemplo
+\ref{ex:three-var}.
+
+A modo de resumen, mostramos en el pseudocódigo \ref{algo:multiple} la forma de resolver problemas
+del tipo \eqref{formulation:lattice}. Por el teorema \ref{th:multeq}, este método también resuelve
+problemas del tipo \eqref{formulation:multiple}. Después de presentar los ejemplos \ref{ex:two-var}
+y \ref{ex:three-var}, mostramos una manera con la cual podemos deshacernos del ciclo infinito en la
+línea \ref{algo:mult:infloop}.
+
+\renewcommand{\algorithmcfname}{Pseudocódigo}
+\begin{algorithm}[ht]
+	\LinesNumbered
+	\KwData{
+		Vector coprimo $\vec{q} \in \Z^n$, $\eta \in \Z$, $A \in \Z^{m \times n}$ y $\vec{b} \in
+		\Z^m$.
+		}
+	\KwResult{
+		Solución óptima $\vec{x}^*$ de \eqref{formulation:multiple}.
+	}
+	\Begin{
+		Calcular $M$ y $\vec{\nu}$ de \eqref{eq:mat-T} y \eqref{eq:vec-omega}\;
+		Obtener $U$ y $H$ de la forma normal de Hermite de $A$\;
+		Particionar $U$ en $U_m$ y $U_{n-m}$ tal que $[U_m \mid U_{n-m}] = U$\;
+		Obtener $S$ y $T$ de la forma normal de Smith de $[M \mid -U_{n-m}]$\;
+
+		$k \leftarrow \eta$\;
+		\While{$1 + 1 = 2$\label{algo:mult:infloop}}{
+			Obtener $\tvec{y}_m$ de $H\tvec{y}_m = \vec{b} - kA\vec{\nu}$\;
+			\If{$\tvec{y}_m \in \Z^m$}{
+				ir al paso \ref{algo:mult:z}\;
+			}
+			$k \leftarrow k - 1$\; \label{algo:multiple:k}
+		}
+		$\vec{z} \leftarrow SU_m\tvec{y}_m$\; \label{algo:mult:z}
+		$\vec{r} \leftarrow \vec{0}_n$\;
+		\For{$i \leftarrow 1$ \KwTo $n$}{
+			\If{$D_{ii} \nmid z_i$}{
+				ir al paso \ref{algo:multiple:k}\;
+			}
+			$r_i \leftarrow z_i / D_{ii}$\;
+		}
+		$(\vec{t}(\vec{s}), \tvec{y}_{n-m}(\vec{s})) \leftarrow T(\vec{r}, \vec{s})^T$\; \label{algo:mult:free}
+		\If{existe $\vec{s}$ tal que $M\vec{t}(\vec{s}) \geq -k\vec{\nu}$\label{algo:mult:hard}}{
+			$\vec{x}^* \leftarrow k\vec{\nu} + M\vec{t}(\vec{s})$\;
+			\Return{$\vec{x}^*$}\;
+		}
+		ir al paso \ref{algo:multiple:k}\;
+	}
+	\caption{}
+	\label{algo:multiple}
+\end{algorithm}
+\renewcommand{\algorithmcfname}{Algoritmo}
+
+A fin de obtener las formas normales de Hermite y de Smith de la matriz de restricciones $A \in
+\Z^{m \times n}$ de los siguiente ejemplos, el autor utilizó la librería \texttt{hsnf} de
+Python\footnote{
+	Véase \url{https://hsnf.readthedocs.io/en/latest/index.html}.
+}.
 \begin{example}
 	\label{ex:two-var}
-	Consideremos el problema con $n = 2$ variables y $m = 1$ restricciones
+	Consideremos el problema con $n = 2$ variables y $m = 1$ restricciones de igualdad
 	\begin{align*}
 		\max
 			~& x - y, \\
@@ -244,63 +353,69 @@ o inexistencia de un intervalo de factibilidad.
 			& 3x + 5y = 25, \\
 			& x, y \geq 0.
 	\end{align*}
+
 	En este caso tenemos $A = (3, 5), \vec{b} = 25$, y también $\vec{q} = (1, -1)^T$, al igual que
-	$\eta = 12$. De (\ref{eq:vec-omega}) y (\ref{eq:mat-T}) obtenemos
+	$\eta = 12$. De \eqref{eq:vec-omega} y \eqref{eq:mat-T} calculamos
 	\begin{equation*}
-		\vec{\nu} = \begin{pmatrix} 1 \\ 0 \end{pmatrix},
+		\vec{\nu} = \begin{pmatrix} 1 \\ 0 \end{pmatrix},\quad
 		M = \begin{pmatrix} -1 \\ -1 \end{pmatrix}.
 	\end{equation*}
 	De la forma normal de Hermite de $A$ tenemos
 	\begin{equation*}
-		H = 1, U = \begin{pmatrix} 2 & -5 \\ -1 & 3 \end{pmatrix},
+		H = 1,\quad U = \begin{pmatrix} 2 & -5 \\ -1 & 3 \end{pmatrix},
 	\end{equation*}
-	y de la forma normal de Smith de $[M, -U_m]$,
+	y de la forma normal de Smith de $[M \mid -U_{n-m}]$,
 	\begin{equation*}
-		S = \begin{pmatrix} -1 & 0 \\ 1 & -1 \end{pmatrix},
-		D = \begin{pmatrix} 1 & 0 \\ 0 & 8 \end{pmatrix},
+		S = \begin{pmatrix} -1 & 0 \\ 1 & -1 \end{pmatrix},\quad
+		D = \begin{pmatrix} 1 & 0 \\ 0 & 8 \end{pmatrix},\quad
 		T = \begin{pmatrix} 1 & 5 \\ 0 & 1 \end{pmatrix}. 
 	\end{equation*}
 
 	Como $H = 1$, se sigue que $\inv{H} (\vec{b} - kA\vec{\nu}) = 25 - 3k$ es entero para todo $k
-	\in \Z$. Así, el conjunto factible $F$ (c.f. \ref{eq:feas-set}) está dado por
+	\in \Z$. Así, el conjunto factible $\mathcal{F}$ definido en \ref{eq:feas-set} está dado por
 	\begin{equation*}
-		F = \Z \cap \lbrace k \in \Z \vcentcolon k \leq 12 \rbrace
+		\mathcal{F} 
 		= \lbrace k \in \Z \vcentcolon k \leq \eta = 12 \rbrace.
 	\end{equation*}
-	Entonces escogemos $k^* = 12$ por ser el elemento maximal de $F$. Así, encontramos
+	Entonces escogemos $k^* = 12$ por ser el elemento maximal de $\mathcal{F}$. Luego,
 	\begin{equation*}
-		SU_m\tvec{y}_m = SU_m \left(\inv{H} (\vec{b} - k^*A\vec{\nu})\right)
-		= \begin{pmatrix} 22 \\ 33 \end{pmatrix}
+		\vec{z} \coloneq SU_m\tvec{y}_m = SU_m \left(\inv{H} (\vec{b} - k^*A\vec{\nu})\right)
+		= \begin{pmatrix} 22 \\ -33 \end{pmatrix}.
 	\end{equation*}
-	Observemos que la segunda entrada de $SU_m\tvec{y}_m$ no es divisible por $D_{22} = 8$.
-	Así, el subproblema (\ref{subformulation:feasibility}) no es factible para la elección de $k^*$
-	previa. Escogemos el segundo elemento de $F$ más grande, con lo que tenemos $k^* \leftarrow 11$.
-	En este caso obtenemos $SU_m\tvec{y}_m = (-16, -24)^T$, por lo que sí hay soluciones
-	enteras. Luego, se debe satisfacer,
+
+	Observemos que $D_{22} \nmid z_2$, y entonces el subproblema \eqref{subformulation:feasibility}
+	no es factible para la elección de $k^* = 12$. Escogemos el segundo elemento de $\mathcal{F}$
+	más grande, con lo que tenemos $k^* = 11$. Siguiendo con el mismo procedimiento, encontramos
+	ahora que $\vec{z} = (16, -24)$. En este caso, la diagonal de $D$ sí divide, elemento a elemento,
+	las entradas de $\vec{z}$, y entonces $\vec{r} = (16, -3)$. Puesto que $n - m - 1 = 0$, no hay
+	variables libres. Tenemos
 	\begin{equation*}
-		\inv{T} \begin{pmatrix} \vec{t} \\ \tvec{y}_{n-m} \end{pmatrix} =
-		\begin{pmatrix} 16 \\ 24 \end{pmatrix},
+		\begin{pmatrix} \vec{t} \\ \tvec{y}_{n-m} \end{pmatrix} = T
+		\begin{pmatrix} 16 \\ -3 \end{pmatrix} = \begin{pmatrix} 1 \\ -3 \end{pmatrix},
 	\end{equation*}
-	de donde se sigue que $(\vec{t}, \tvec{y}_{n-m}) = (1, 3)$. Verificamos factibilidad:
+	y verificamos que se satisfaga \eqref{subf:feas:ineq}:
 	\begin{equation*}
 		M\vec{t} + k^*\vec{\nu}
 		= 1 \begin{pmatrix} -1 \\ -1 \end{pmatrix} + 11 \begin{pmatrix} 1 \\ 0 \end{pmatrix}
 		= \begin{pmatrix} 10 \\ -1 \end{pmatrix} \not \geq \vec{0}.
 	\end{equation*}
-	Ahora la elección de $k^*$ dio un punto entero pero con una entrada negativa. Seguimos este
-	procedimiento hasta llegar a $k^* \leftarrow 3$. En este caso obtenemos $(\vec{t},
-	\tvec{y}_{n-m}) = (-2, -6)^T$, de donde
+	Ahora la elección de $k^* = 11$ dio un punto entero pero con una entrada negativa. Es decir, el
+	subproblema \eqref{subformulation:feasibility} es infactible dada esta elección.
+
+	Repetimos este procedimiento hasta llegar a $k^* = 3$. En este caso encontramos que $(\vec{t},
+	\tvec{y}_{n-m}) = (-2, 6)^T$. Por lo tanto,
 	\begin{equation*}
 		M\vec{t} + k^*\vec{\nu}
 		= -2 \begin{pmatrix} -1 \\ -1 \end{pmatrix} + 3 \begin{pmatrix} 1 \\ 0 \end{pmatrix}
 		= \begin{pmatrix} 5 \\ 2 \end{pmatrix} \geq \vec{0}.
 	\end{equation*}
-	Concluimos diciendo que $(k^*, \vec{t}) \coloneq (3, -2)$ es el óptimo del programa
-	(\ref{formulation:lattice}) y entonces $(x, y) = (5, 2)$ es el óptimo de
-	(\ref{formulation:multiple}).
+	Luego, $(k^*, \vec{t}) \coloneq (3, -2)$ es el óptimo del programa
+	\eqref{formulation:lattice}. Por el teorema \ref{th:multeq}, concluimos que $(x^*, y^*) = (5,
+	2)$ es el óptimo de \eqref{formulation:multiple}.
 \end{example}
 \begin{example}
-	Ahora consideremos el problema con $n = 3$ variables y $m = 1$ restricciones
+	\label{ex:three-var}
+	Ahora consideremos el problema con $n = 3$ variables y $m = 1$ restricciones de igualdad
 	\begin{align*}
 		\max
 			~& x - y + 2z, \\
@@ -309,28 +424,29 @@ o inexistencia de un intervalo de factibilidad.
 			& 3x + 4y - z = 15 \\
 			& x, y, z \geq 0.
 	\end{align*}
+
 	En este caso tenemos $A = (3, 4, -1), \vec{b} = 15$, y también $\vec{q} = (1, -1, 2)^T$, al igual que
-	$\eta = 10$. De (\ref{eq:vec-omega}) y (\ref{eq:mat-T}) obtenemos
+	$\eta = 10$. De \eqref{eq:vec-omega} y \eqref{eq:mat-T} calculamos
 	\begin{equation*}
-		\vec{\nu} = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix},
+		\vec{\nu} = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix},\quad
 		M = \begin{pmatrix} 1 & 0 \\ -1 & 2 \\ -1 & 1 \end{pmatrix}.
 	\end{equation*}
 	De la forma normal de Hermite de $A$ tenemos
 	\begin{equation*}
-		H = 1, U = \begin{pmatrix} 0 & 0 & 1 \\ 0 & 1 & 0 \\ -1 & 4 & 3 \end{pmatrix},
+		H = 1,\quad U = \begin{pmatrix} 0 & 0 & 1 \\ 0 & 1 & 0 \\ -1 & 4 & 3 \end{pmatrix},
 	\end{equation*}
-	y de la forma normal de Smith de $[M, -U_m]$,
+	y de la forma normal de Smith de $[M \mid -U_{n-m}]$,
 	\begin{equation*}
 		S = \begin{pmatrix}
 			1 & 0 & 0 \\
 			-1 & -1 & 0 \\
 			3 & 4 & -1
-		\end{pmatrix},
+		\end{pmatrix},\quad
 		D = \begin{pmatrix}
 			1 & 0 & 0 & 0 \\
 			0 & 1 & 0 & 0 \\
 			0 & 0 & 7 & 0
-		\end{pmatrix},
+		\end{pmatrix},\quad
 		T = \begin{pmatrix}
 			1 & 0 & 0 & 1 \\
 			0 & 0 & 1 & 0 \\
@@ -338,9 +454,14 @@ o inexistencia de un intervalo de factibilidad.
 			0 & 0 & 0 & 1
 		\end{pmatrix}.
 	\end{equation*}
-	Nuevamente, observemos que $H = 1$ y por lo tanto $F = \lbrace k \in \Z \vcentcolon k \leq 10
-	\rbrace$. Seguimos exactamente el mismo procedimiento que en el Ejemplo \ref{ex:two-var} hasta
-	llegar a $k^* \leftarrow 5$. Encontramos que se satisface
+	Puesto que $H = 1$, tenemos de \eqref{eq:feas-set} que el conjunto factible es
+	\begin{equation*}
+		\mathcal{F} = \braces{k \in \Z \vcentcolon k \leq \eta = 10}.
+	\end{equation*}
+
+	Ahora bien, seguimos exactamente el mismo procedimiento que en el ejemplo \ref{ex:two-var} hasta
+	llegar a $k^* = 5$. Llegando a la línea \ref{algo:mult:free} del pseudocódigo
+	\ref{algo:multiple}, encontramos que
 	\begin{equation*}
 		\inv{T} \begin{pmatrix} \vec{t} \\ \tvec{y}_{n-m} \end{pmatrix}
 		=
@@ -351,13 +472,15 @@ o inexistencia de un intervalo de factibilidad.
 		s \begin{pmatrix} 1 \\ 0 \\ -1 \\ 1 \end{pmatrix},
 	\end{equation*}
 	donde $s \in \Z$ es la única variable libre. En este caso podemos determinar rápidamente un
-	intervalo de existencia: tenemos $M\vec{t} \geq -k^*\vec{\nu}$ si y solo si
+	intervalo de existencia: tenemos $M\vec{t}(s) \geq -k^*\vec{\nu}$ si y solo si
 	\begin{equation*}
 		s\begin{pmatrix} 1 \\ 0 \\ -1 \end{pmatrix} \geq
 		\begin{pmatrix} -5 \\ 0 \\ 0 \end{pmatrix},
 	\end{equation*}
-	de donde se sigue inmediatamente que $s \in \lbrace -5, -4, \ldots, 0 \rbrace$. Sustituyendo en
-	$\vec{t}$ y transformando a $\vec{x}$, encontramos que
+	de donde se sigue inmediatamente que $s \in \lbrace -5, -4, \ldots, 0 \rbrace$. Sustituyendo
+	cada posible valor de $s$ en $\vec{t}(s)$ y transformando a $\vec{x}^*(s) = k^*\vec{\nu} +
+	M\vec{t}(s)$,
+	encontramos que
 	\begin{equation*}
 		\left\lbrace
 			\begin{pmatrix} 0 \\ 5 \\ 5 \end{pmatrix},
@@ -368,74 +491,98 @@ o inexistencia de un intervalo de factibilidad.
 			\begin{pmatrix} 5 \\ 0 \\ 0 \end{pmatrix}
 		\right\rbrace
 	\end{equation*}
-	son las seis soluciones del problema. Todas alcanzan un nivel de utilidad $k^* = 5$.
+	son las seis soluciones del problema \eqref{formulation:multiple}. Ciertamente, todas alcanzan
+	un nivel de utilidad $k^* = 5$.
 \end{example}
 
-Si el programa (\ref{formulation:multiple}) es factible, entonces el programa
-(\ref{formulation:lattice}) también lo es. A partir de nuestro procedimiento, eventualmente
-encontraremos un par $(k^*, \vec{t}^*)$ que resuelva tanto el subproblema de maximización
-(\ref{subformulation:lattice}) como el de factibilidad (\ref{subformulation:feasibility}).
+Si el problema \eqref{formulation:multiple} es factible, por la equivalencia del teorema
+\ref{th:multeq}, existe $k^* \in \Z$ que es el valor óptimo del problema
+\eqref{formulation:lattice}, así que eventualmente saldremos del ciclo infito de la línea
+\ref{algo:mult:infloop}. En caso de que el problema \eqref{formulation:multiple} sea infactible,
+nada asegura, por el momento, que salgamos de este ciclo infinito. A continuación veremos cómo
+arreglar este problema, y en el proceso seremos capaces de eliminar la restricción presupuestaria
+\eqref{formulation:multiple:constraint:budget}. Por lo tanto, en esta última parte, podremos
+encontrar soluciones a programas lineales enteros generales.
 
-Ahora bien, son dos las maneras en las que nuestro problema sea infactible. Puede que nuestro
-conjunto de factibilidad $F$ sea vacío y por lo tanto el sistema de ecuaciones lineales
-(\ref{formulation:multiple:constraints}) sea inconsistente. O bien, puede ser que $F$ tenga
-cardinalidad infinita pero para ninguno de sus elementos se satisfaga el subproblema de
-factibilidad.
-
-% TODO: mostrar una imagen.
-Esto último puede ocurrir cuando el sistema de ecuaciones siempre tiene solución pero todas ellas
-son negativas. En efecto, si en el Ejemplo \ref{ex:two-var} reemplazamos el lado derecho de la
-igualdad $\vec{b} = 25$ por $\vec{b} = -4$, nos encontramos en aquella situación.
-
-En conclusión, para asegurar terminación en tiempo finito, cualquier algoritmo basado en este método debe
-asegurarse primero que el conjunto de factibilidad $F$ tiene un número finito de puntos. Este caso
-lo estudiamos en la siguiente sección.
-
-\subsection{Eliminando la restricción presupuestaria}
-\noindent
-Consideremos ahora el problema
+Sea $A \in \Z^{m \times n}$ una matriz con renglones linealmente independientes y sea $\vec{b} \in
+\Z^m$ un vector. Definamos el poliedro
+\begin{equation*}
+	P \coloneq \braces{ \vec{x} \in \R^n \vcentcolon A\vec{x} = \vec{b}, \vec{x} \geq \vec{0} }.
+\end{equation*}
+Sea $\vec{q} \in \Z^n$ un vector coprimo y consideremos ambos problemas de maximización y
+minimización sobre este poliedro
+\begin{equation}
+	\label{eq:last:bounds}
+	\ell^* \coloneq \min_{\vec{x} \in P}\braces{\vec{q}^T\vec{x}},\quad
+	u^* \coloneq \max_{\vec{x} \in P}\braces{\vec{q}^T\vec{x}},
+\end{equation}
+y definamos
+\begin{equation}
+	\tau \coloneq \ceil{\ell^*},\quad \eta \coloneq \floor{u^*}.
+\end{equation}
+Observemos de \eqref{eq:last:bounds} que siempre se cumple que $\tau \leq \eta$. Ciertamente, las
+restricción $\tau \leq \vec{q}^T\vec{x} \leq \eta$ es válida para el programa lineal entero $\max_{P
+\cap \Z^n} \braces{\vec{q}^T\vec{x}}$ y, por lo tanto, este problema es equivalente a 
 \begin{subequations}
 	\label{formulation:last}
 	\begin{align}
 		\max_{\vec{x} \in \Z^n} \quad
 			& \vec{q}^T\vec{x}, \label{formulation:last:objective} \\
 		\text{s.a.} \quad
+			& \tau \leq \vec{q}^T\vec{x} \leq \eta, \\
 			& A\vec{x} = \vec{b}, \label{formulation:last:constraints} \\
 			& \vec{x} \geq \vec{0}, \nonumber
 	\end{align}
 \end{subequations}
-Evidentemente, si su programa relajado tiene un valor objetivo $u^*$ finito, podemos agregar la
-restricción presupuestaria $\vec{q}^T\vec{x} \leq u^*$ a este problema de manera válida. Entonces
-podemos suponer sin pérdida de generalidad que este programa es equivalente a
-(\ref{formulation:multiple}) siempre que su valor objetivo sea finito. Consecuentemente, podemos
-utilizar las herramientas desarrolladas en la sección pasada para resolver este problema entero.
 
-Es más, supongamos que el politopo asociado al problema relajado es acotado y no vacío. Entonces
-tanto el problema de maximización como de minimización tienen valores objetivos finitos. Llamemos a
-estos valores $\ell^*$ y $u^*$, respectivamente. Ahora la restricción
-\begin{equation*}
-	\ell^* \leq \vec{q}^T\vec{x} \leq u^*
-\end{equation*}
-es válida para el problema (\ref{formulation:last}). De la misma manera que $\eta$ parametriza la
-primera capa entera que satisface el presupuesto, podemos definir análogamente la última capa que
-satisface el presupuesto. Usando el mismo razonamiento que en el lema \ref{phase-1:lemma:eta},
-encontramos que esta capa está parametrizada por $\tau \coloneq \lceil \ell^*/m \rceil$ si $m$ es
-positiva. Así pues, al definir nuestro conjunto de factibilidad $F$ como
-\begin{equation*}
-	F \coloneq \lbrace k \in \Z \vcentcolon \inv{H}\left(kA\vec{\nu} - \vec{b}\right) \in \Z^m \rbrace
-	\cap \lbrace k \in \Z \vcentcolon \tau \leq k \leq \eta \rbrace,
-\end{equation*}
-podemos replicar las mismas técnicas que en la sección pasada. Pero además, $F$ es un conjunto
-finito y por lo tanto tenemos terminación en tiempo finito para este caso. Es decir, cualquier
-algoritmo basado en los métodos desarrollados en la sección pasada podrá decidir en tiempo finito si
-el problema es factible o no. En caso de que sí lo sea entonces terminará con la solución óptima.
+En primer lugar, si $\eta = \infty$, entonces el problema relajado es no acotado y no tiene sentido
+usar el pseudocódigo \eqref{algo:multiple} para buscar una solución de este problema. Esta estrategia
+es de igual manera usada por todo \textit{solver} de código libre o comercial antes de tan siquiera
+buscar una solución.
 
-Existen varios algoritmos para resolver el problema relajado de (\ref{formulation:last}) en su
-versión general. Es cierto que el método del simplex es el más utilizado, a pesar de tener una
-complejidad algorítmica no acotada polinomialmente. También es cierto que existen métodos
-polinomiales para resolver este problema, tales como el método elipsoidal o el algoritmo de
-Karmarkar. Pero más interesante es el hecho de que ya existen cotas superiores para ciertas
-instancias de estos problemas, por ejemplo, en el caso del Problema de la Mochila, \cite{martello}
-provee una cota superior razonable, y ciertamente el valor de 0 es una cota inferior justa. Mucho
-hablaremos de este problema en el Capítulo 3. No obstante, el autor considera prudente dedicar el
-siguiente capítulo para el caso infinito.
+En segundo lugar, si $\tau = -\infty$ y $\eta < \infty$, entonces el problema
+\eqref{formulation:last} es factible y representa exactamente el mismo problema que
+\eqref{formulation:multiple}. En este caso, como lo hemos discutido, siempre saldremos del ciclo
+infinito en la línea \ref{algo:mult:infloop}, por lo que el método delineado por el pseudocódigo
+\eqref{algo:multiple} eventualmente terminará con una solución de este problema.
+
+Finalmente, si $-\infty < \tau \leq \eta < \infty$ nos encontramos en la situación ideal. Esto
+se debe a que podemos reemplazar el ciclo en la línea \ref{algo:mult:infloop} por algo del estilo
+``\texttt{para} $k \leftarrow \eta$ \texttt{a} $\tau$ \texttt{hacer}...''. Es decir, sabemos exactamente
+cuántas capas enteras debemos recorrer para que el método delineado por el pseudocódigo
+\eqref{algo:multiple} termine. Observemos que, en este caso, existe la posibilidad de que $P \neq
+\emptyset$ pero $P \cap \Z^n = \emptyset$. Sin realizar modificaciones grandes al pseudocódigo
+\eqref{algo:multiple}, encontramos que, o bien termina con una solución $\vec{x}^*$ del problema
+\eqref{formulation:last}, o bien muestra en $\eta - \tau + 1$ pasos que este problema es infactible.
+
+Cabe mencionar que en la subsección \eqref{subsec:lp} indicamos que existen diversos algoritmos
+capaces de resolver rápidamente problemas lineales del estilo \eqref{eq:last:bounds}. Así pues, la
+parte de calcular los valores $\tau$ y $\eta$ puede ser considerada como una parte de
+preprocesamiento. Recordemos que el método de Ramificación y Acotamiento, en el peor de los casos,
+necesita resolver un número exponencial de problemas relajados de \eqref{formulation:last}. Nuestro
+método, en cambio, solo necesita resolver, en el peor de los casos, dos problemas relajados.
+
+A modo de conclusión, al autor le gustaría mencionar que futuras líneas de investigación podrían
+estar concentradas en resolver el problema de la línea \ref{algo:mult:hard}. Esto se reduce a
+investigar sistemas de desigualdades lineales en los enteros. Existen tres posibilidades para estas
+investigaciones con respecto al vector de variables libres $\vec{s} \in \Z^{n-m-1}$:
+\begin{enumerate}
+	\item Decidir la existencia de este vector: si bien no podríamos obtener la solución entera
+		$\vec{x}^*$, sí podríamos concluir que $k^*$ es el valor óptimo de
+		\eqref{formulation:lattice} y, por el lema \ref{lemma:iso1} así como del teorema
+		\ref{th:multeq}, también es el valor óptimo de \eqref{formulation:multiple}.
+	\item En caso de tener existencia, determinar el número de estos vectores: además de saber que
+		$k^*$ es el valor óptimo de \eqref{formulation:multiple}, también conoceríamos el número de
+		soluciones que tiene este problema.
+	\item En caso de tener existencia, calcular todos estos vectores: además de saber que $k^*$ es
+		el óptimo de \eqref{formulation:multiple} y de conocer cuántas soluciones tiene este
+		problema, conoceríamos también cuáles son esas soluciones.
+\end{enumerate}
+
+Otra posible futura línea de investigación, más aplicada pero no por ello menos interesante, es
+desarrollar las consecuencias del teorema \ref{th:bbspeed}. Es una creencia del autor que los
+tiempos de terminación de Ramificación y Acotamiento usando la formulación equivalente
+\eqref{formulation:lattice} serán menores que usando la formulación tradicional
+\eqref{formulation:multiple}. Para lograr esto, necesitaremos calcular rápida y eficientemente la
+matriz $M \in \Z^{n \times (n - 1)}$ y el vector $\vec{\nu} \in \Z^n$ definidos en \eqref{eq:mat-T}
+y \eqref{eq:vec-omega}, respectivamente.
