@@ -1367,7 +1367,7 @@ y 12 hilos, frecuencia base de 2.20 GHz y frecuencia máxima de 4.10 GHz). El si
 CPU lógicos disponibles y una memoria RAM de 32 GiB. Todos los cálculos fueron ejecutados bajo la
 arquitectura x86-64. El sistema operativo usado fue Fedora Linux 42 (Server Edition).
 
-\subsection{Formulación dinámica}
+\subsection{Una formulación dinámica}
 \noindent
 Evidentemente, el método de Ramificación y Acotamiento no es el único para encontrar
 soluciones a programas lineales enteros. Como lo mencionamos al inicio de este capítulo, el problema
@@ -1387,7 +1387,7 @@ considerando que el lado derecho de \eqref{theory:constraint:budget} es $\hat{u}
 suposición de este capítulo tenemos que $\vec{q} > \vec{0}$ y entonces $\hat{u} \leq u$. Suponiendo,
 además, que el problema es factible, tenemos del teorema \ref{theory:th:infeasibility} que $0 \leq
 \hat{u}$.
-De esta manera, obtenemos las siguiente formulación dinámica:
+De esta manera, obtenemos la siguiente formulación dinámica:
 \begin{align*}
 	f_1(\hat{u}) &= \floor{\hat{u}/q_1}q_1, \\
 	f_m(\hat{u}) &= \max_{k \in \Z} \braces{
@@ -1466,7 +1466,7 @@ y el problema \eqref{theory:formulation} es equivalente a
 donde $\vec{\hat{p}} \in \R^{n-1}$ resulta de remover del vector $\vec{p}$ su $\ell$-ésima entrada.
 
 Así pues, sea $n$ la dimensión del problema. Dejamos que $\vec{p} \in \Z^n$ sea un vector aleatorio
-tomado de una distribución uniforme discreta sobre $[10, 10n)^n$. Al calcular el vector coprimo
+tomado de una distribución uniforme discreta sobre $[10, 5n)^n$. Al calcular el vector coprimo
 $\vec{q}$ checamos que $q_i \neq 1$ para todo $1 \leq i \leq n$. De caso contrario, calculamos otro
 vector aleatorio $\vec{p}$. Finalmente, escogemos el lado derecho de la restricción
 \eqref{theory:constraint:budget} de manera que
@@ -1484,25 +1484,7 @@ de variación por experimento por método. Comparando rápidamente las cifras, o
 nuestras implementaciones son significativamente más rápidas y estables que las de Ramificación y
 Acotamiento en cualesquiera de sus dos configuraciones.
 
-Una de las hipótesis por las que el autor cree que \texttt{dioph\_left} presenta resultados aún más
-rápidos que su contraparte \texttt{dioph\_right} es la que sigue. Puesto que estamos generando
-vectores aleatorios con dimensiones grandes, la probabilidad de que las últimas $n - i$ entradas
-tengan factores en común es pequeña. Por lo tanto, obtenemos $g_{i+1} = 1$. Recordando que los
-coeficientes de Bézout $x_i', \omega_{i+1}'$ satisfacen \eqref{dummy:eq:bez-eq}, encontramos que
-$(x_i', \omega_{i + 1}') = (0, 1)$ y también debe ser el caso que $\frac{q_i}{\prod_{j=1}^ig_j} =
-1$. Sustituyendo en \eqref{eq:recurrence} tenemos
-\begin{equation*}
-	\begin{cases}
-		x_i = t_i, \\
-		\omega_{i + 1} = \omega_i - t_i.
-	\end{cases}
-\end{equation*}
-De esta manera, nuestro método \texttt{dioph\_left} recorre primero soluciones pequeñas en magnitud
-comparadas a las obtenidas por \texttt{dioph\_right}. Es decir, el primero es menos voraz que el
-segundo. Ciertamente podemos obtener equivalencias entre estos dos métodos al imponer un orden
-ascendente o descendente sobre $\vec{q}$.
-
-\begin{table}[h]
+\begin{table}[H]
 	\centering
 	\begin{tabular}{rccc} \toprule
 		$n$ & R\&A & \texttt{dioph\_right} & \texttt{dioph\_left} \\ \midrule
@@ -1530,7 +1512,7 @@ ascendente o descendente sobre $\vec{q}$.
 	\label{table:fin:mt:times}
 \end{table}
 
-\begin{table}
+\begin{table}[H]
 	\centering
 	\begin{tabular}{rccc} \toprule
 		$n$ & R\&A & \texttt{dioph\_right} & \texttt{dioph\_left} \\ \midrule
@@ -1557,6 +1539,26 @@ ascendente o descendente sobre $\vec{q}$.
 	\ref{table:fin:mt:times}.}
 	\label{table:fin:mt:cv}
 \end{table}
+
+
+Una de las hipótesis por las que el autor cree que \texttt{dioph\_left} presenta resultados aún más
+rápidos que su contraparte \texttt{dioph\_right} es la que sigue. Puesto que estamos generando
+vectores aleatorios con dimensiones grandes, la probabilidad de que las últimas $n - i$ entradas
+tengan factores en común es pequeña. Por lo tanto, obtenemos $g_{i+1} = 1$. Recordando que los
+coeficientes de Bézout $x_i', \omega_{i+1}'$ satisfacen \eqref{dummy:eq:bez-eq}, encontramos que
+$(x_i', \omega_{i + 1}') = (0, 1)$ y también debe ser el caso que $\frac{q_i}{\prod_{j=1}^ig_j} =
+1$. Sustituyendo en \eqref{eq:recurrence} tenemos
+\begin{equation*}
+	\begin{cases}
+		x_i = t_i, \\
+		\omega_{i + 1} = \omega_i - t_i.
+	\end{cases}
+\end{equation*}
+De esta manera, nuestro método \texttt{dioph\_left} recorre primero soluciones pequeñas en magnitud
+comparadas a las obtenidas por \texttt{dioph\_right}. Es decir, el primero es menos voraz que el
+segundo. Ciertamente podemos obtener equivalencias entre estos dos métodos al imponer un orden
+ascendente o descendente sobre $\vec{q}$.
+
 
 \subsection{Experimentos en el presupuesto}
 \label{subsec:exp:fin:rhs}
@@ -1587,8 +1589,7 @@ Tomamos $N = 128$ observaciones de este tipo y medimos los tiempos de terminaci�
 
   \caption{Tiempos de terminación promedio de los distintos métodos cuando varía el presupuesto.
   \textit{Arriba}: Resultados tomando en cuenta Ramificación y Acotamiento (R\&A), así como la
-	implementación dinámica. \textit{Abajo}: \textit{Zoom} en milisegundos de los métodos
-diofantinos.}
+	implementación dinámica. \textit{Abajo}: \textit{Zoom} en los métodos diofantinos.}
   \label{fig:exp:fin:rhs}
 \end{figure}
 
@@ -1600,24 +1601,18 @@ diofantinos.}
 	\label{fig:exp:fin:rhs:cv}
 \end{figure}
 
-Nuevamente, los métodos diofantinos dominaron tanto en tiempo. Aún más, el método
-\texttt{dioph\_left} es, de acuerdo a la figura \ref{fig:exp:fin:rhs:cv}, significativamente más
-estable que su contraparte \texttt{dioph\_right}. Esto parece confirmar la suposición del autor que
-el lado izquierdo del árbol generado por estos métodos tiende a concentrar un gran número de
-posibles soluciones. En cambio, el lado derecho del árbol tiene soluciones ``extremas'' donde la
-gran mayoría de entradas de el vector solución $\vec{x}$ son nulas y un pequeño número de ellas son
-grandes en magnitud.
-
-Así también, destaca la inestabilidad del método de Ramificación y Acotamiento. Una hipótesis del
-autor es que esta inestabilidad es causada por la constante transferencia de datos entre los módulos
-del problema relajado y la generación de cortes (ver figura \ref{p1c11:fig:MIP_solver_flowchart}).
-Por ello, el autor decidió correr el mismo experimento tomando en cuenta una implementación ``pura''
-de Ramificación y Acotamiento, la cual prohíbe la generación de cortes.
+Destaca la inestabilidad del método de Ramificación y Acotamiento. Una hipótesis del autor es que
+esta inestabilidad es causada por la constante transferencia de datos entre los módulos del problema
+relajado y la generación de cortes (ver figura \ref{p1c11:fig:MIP_solver_flowchart}). Por ello, el
+autor decidió correr el mismo experimento tomando en cuenta una implementación ``pura'' de
+Ramificación y Acotamiento, la cual prohíbe la generación de cortes.
 
 Si bien los tiempos de terminación son similares y por lo tanto no tiene sentido mostrarlos, sí hay
 un cambio significativo en la estabilidad de este nuevo método. En la figura
 \ref{fig:exp:fin:rhs:cv-wbb} es claro que la mediana de los coeficientes de variación es
-aproximadamente un tercio en la implementación pura. Esto claramente confirma nuestra sospecha.
+aproximadamente un tercio en la implementación pura. Es decir, en el 50\% de los $N = 128$
+experimentos que realizamos, los tiempos de terminación están tres veces más concentrados alrededor
+de la media en la implementación pura que en la implementación que permite generar cortes.
 
 \begin{figure}[hbtp]
 	\centering

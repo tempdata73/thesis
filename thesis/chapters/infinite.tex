@@ -497,3 +497,96 @@ el algoritmo \ref{algo:inf}, el cual es correcto a causa del lema \ref{lemma:alg
 
 \section{Experimentos numéricos}
 \label{sec:inf:exp}
+\noindent
+Puesto a la simpleza de este capítulo que corresponde al primer caso del teorema
+\ref{theory:th:feasibility}, el objetivo de esta subsección busca exhibir la dependencia implícita
+que tiene Ramificación y Acotamiento con respecto a la magnitud del lado derecho de sus
+desigualdades. Es común escuchar que la complejidad de este algoritmo depende exclusivamente de la
+dimensión del problema así como de su número de desigualdades. Esto no es cierto y nos encargaremos
+de mostrarlo en esta sección que se divide en tres pequeñas partes.
+
+En primer lugar, determinamos la complejidad algorítmica del algoritmo \ref{algo:inf:ext}. En
+segundo lugar, enseñamos por qué el método de R\&A también depende de la magnitud del lado derecho
+de sus desigualdades y desarollamos las consecuencias que se desprenden de esto. En tercer lugar,
+diseñamos un experimento numérico que ilustre esta dependencia de Ramificación y Acotamiento.
+
+\subsection{Análisis de nuestro método}
+\label{subsec:inf:complex}
+\noindent
+Primero analizamos el algoritmo \ref{algo:inf}. Para $1 \leq i \leq n - 2$, se sigue de la línea
+\ref{alg:def:inf:g} que calculamos una vez el máximo común divisor de $n - (i + 1) + 1 = n - i$
+números. Vimos en la subsección \ref{section:number-theory} que el máximo común divisor puede ser
+definido de manera inductiva, por lo que calcular el máximo común divisor entre $n - i$ números es
+equivalente a calcular $n - i$ veces el máximo común divisor entre dos números. Por lo tanto,
+calculamos
+\begin{equation*}
+	\sum_{i=1}^{n-2}n - i = n(n - 2) - \frac{(n-2)(n-1)}{2} = \frac{(n-2)(n+1)}{2}
+\end{equation*}
+veces el máximo común divisor entre dos números.
+
+Además, tenemos de las líneas \ref{alg:def:inf:bez} y \ref{alg:def:inf:lastw} que realizamos $n - 1$
+llamadas a la subrutina \texttt{Bezout}. Pero habíamos mencionado que los coeficientes de Bézout se
+pueden calcular usando el Algoritmo Extendido de Euclides, sin embargo, la complejidad de este es un
+múltiplo constante de la complejidad del Algoritmo de Euclides, el cual calcula el máximo común
+divisor entre dos métodos. Así pues, comparando estas aproximadamente $n$ llamadas a \texttt{Bezout}
+con el cálculo de aproximadamente $n^2$ máximo común divisor entre dos números, podemos ignorar, en
+términos de complejidad, las llamadas a la subrutina \texttt{Bezout}.
+
+Es posible mostrar que la complejidad de calcular el máximo común divisor entre dos enteros $a \leq
+b$ es $\mathcal{O}(\log_2 b)$. Por lo tanto, la complejidad del algoritmo \ref{algo:inf} es
+\begin{equation*}
+	\mathcal{O}(n^2\log_2\norm{\vec{q}}_\infty) = \mathcal{O}(n^2),
+\end{equation*}
+puesto que nuestro vector coprimo $\vec{q}$ es constante.
+
+Las subrutinas \texttt{length} y \texttt{switch} tienen complejidad constante. Además, recorremos el
+vector $\vec{q}$ en el ciclo \ref{alg:inf:loop} una sola vez así como el vector $\tvec{x}$ en el
+ciclo \ref{alg:inf:loop2}. Entonces el algoritmo \ref{algo:inf:ext} también tiene complejidad
+cuadrática.
+
+\subsection{Intuición de la dependencia con el presupuesto}
+\label{subsec:inf:int}
+
+
+\subsection{Análisis de resultados}
+\label{subsec:inf:res}
+\noindent
+
+Con respecto a los resultados obtenidos en ambas subsecciones \ref{subsec:exp:fin:n} y
+\ref{subsec:exp:fin:rhs}, mencionamos que cada observación de tiempo de cada método representa el
+promedio de 20 corridas. Para cada observación realizamos 2 corridas preliminares a fin
+de evitar sesgos en el tiempo por cuestión de temperatura en la computadora, o por cargar cosas a la
+memoria, o por compilación al momento de crear archivos \texttt{.pyc}, etcétera. En total, cada
+observación es el resultado de haber corrido el mismo experimento 22 veces.
+
+Así también, por cuestiones de tiempo, cada proceso tenía un tiempo límite de 300 segundos para
+terminar de correr. De esta manera, decimos que el método no encontró una solución en caso de que
+más de 10 observaciones sobrepasaran este límite. Además, comparamos los valores objetivo de nuestra
+implementación con los de Ramificación y Acotamiento y en ningún momento
+encontramos que estos fueran distintos. El autor menciona que su implementación se
+encuentra libre en GitHub\footnote{TODO: LINK} así como los tiempos de terminación de cada método
+junto con archivos de registro que certifican estos tiempos.
+
+Finalmente, al igual que en la sección \ref{sec:inf:exp}, los experimentos se realizaron en una
+computadora portátil Dell XPS 15 equipada con un procesador Intel Core i7-8750H (6 núcleos físicos
+y 12 hilos, frecuencia base de 2.20 GHz y frecuencia máxima de 4.10 GHz). El sistema cuenta con 12
+CPU lógicos disponibles y una memoria RAM de 32 GiB. Todos los cálculos fueron ejecutados bajo la
+arquitectura x86-64. El sistema operativo usado fue Fedora Linux 42 (Server Edition).
+
+\begin{figure}[hbtp]
+  \centering
+  \begin{subfigure}{0.80\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/digits-bb_full.pdf}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.80\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/digits-dioph.pdf}
+  \end{subfigure}
+
+  \caption{Tiempos de terminación promedio de los distintos métodos cuando varía el presupuesto.
+  \textit{Arriba}: Resultados tomando en cuenta Ramificación y Acotamiento (R\&A), así como la
+	implementación dinámica. \textit{Abajo}: \textit{Zoom} en los métodos diofantinos.}
+  \label{fig:exp:inf:rhs}
+\end{figure}
