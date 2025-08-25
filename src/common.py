@@ -24,12 +24,13 @@ def solve_pulp(p, rhs, **kwargs):
     prob += lp.lpDot(p, x), "objective"
     prob += lp.lpDot(p, x) <= rhs, "constraint"
 
-    @repeat()
+    # @repeat()
     def solve_pulp():
         prob.solve(lp.PULP_CBC_CMD(**kwargs))
         return np.array([lp.value(var) for var in x])
 
-    x, (mu, sigma) = solve_pulp()
+    # x, (mu, sigma) = solve_pulp()
+    x = solve_pulp()
 
     # pulp does not provide a default method to determine
     # whether an instance was stopped due to a timeout
@@ -40,7 +41,7 @@ def solve_pulp(p, rhs, **kwargs):
     if timed_out:
         logging.warn("solver execution timed out")
 
-    return x, (mu, sigma), timed_out
+    return x # , (mu, sigma), timed_out
 
 
 def stats_dioph_as_rhs_increases(solver, q, m, rhs):

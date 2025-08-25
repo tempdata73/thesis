@@ -269,14 +269,14 @@ muestra este procedimiento constructivo.
 		\Begin{
 			$\vec{x} \leftarrow \vec{0}$\;
 			$\omega_1 \leftarrow \eta$\;
-			\For{$i \leftarrow 1$ \KwTo $n - 2$}{
+			\For{$i \leftarrow 1$ \KwTo $n - 2$\label{alg:def:inf:loop}}{
 				$g_{i+1} \leftarrow \gcd{q_{i+1}, \ldots, q_n}$\; \label{alg:def:inf:g}
 				$x_i', \omega_{i+1}' \leftarrow$ \Bezout{$q_i$, $g_{i+1}$}\; \label{alg:def:inf:bez}
 				$t_i \leftarrow \ceil{-\omega_i x_i' / g_{i+1}}$\; \label{alg:def:inf:t}
 				$x_i \leftarrow \omega_i x_i' + g_{i+1}t_i$\; \label{alg:def:inf:x}
 				$\omega_{i+1} \leftarrow \omega_i \omega_{i+1}' - q_i t_i$\; \label{alg:def:inf:w}
-				\For{$j \leftarrow i$ \KwTo $n - 1$}{
-					$q_{j+1} \leftarrow q_{j+1}/g_{i+1}$\; \label{alg:def:inf:q}
+				\For{$j \leftarrow i + 1$ \KwTo $n$}{
+					$q_{j} \leftarrow q_{j}/g_{i+1}$\; \label{alg:def:inf:q}
 				}
 			}
 
@@ -498,80 +498,257 @@ el algoritmo \ref{algo:inf}, el cual es correcto a causa del lema \ref{lemma:alg
 \section{Experimentos numéricos}
 \label{sec:inf:exp}
 \noindent
-Puesto a la simpleza de este capítulo que corresponde al primer caso del teorema
-\ref{theory:th:feasibility}, el objetivo de esta subsección busca exhibir la dependencia implícita
-que tiene Ramificación y Acotamiento con respecto a la magnitud del lado derecho de sus
-desigualdades. Es común escuchar que la complejidad de este algoritmo depende exclusivamente de la
-dimensión del problema así como de su número de desigualdades. Esto no es cierto y nos encargaremos
-de mostrarlo en esta sección que se divide en tres pequeñas partes.
+En esta subsección exponemos la dependencia implícita que tiene Ramificación y Acotamiento (R\&A)
+con la precisión numérica que usamos para especificar el vector objetivo en programas lineales
+enteros. Por lo tanto, no es cierto que estos programas dependan exclusivamente de su dimensión y de
+su número de restricciones, como se escucha normalmente.
 
 En primer lugar, determinamos la complejidad algorítmica del algoritmo \ref{algo:inf:ext}. En
-segundo lugar, enseñamos por qué el método de R\&A también depende de la magnitud del lado derecho
-de sus desigualdades y desarollamos las consecuencias que se desprenden de esto. En tercer lugar,
-diseñamos un experimento numérico que ilustre esta dependencia de Ramificación y Acotamiento.
+segundo lugar, enseñamos por qué el método de R\&A también depende del número de decimales usados
+para especificar las entradas del vector objetivo. En tercer lugar, diseñamos un experimento
+numérico que ilustre esta dependencia.
 
 \subsection{Análisis de nuestro método}
 \label{subsec:inf:complex}
 \noindent
-Primero analizamos el algoritmo \ref{algo:inf}. Para $1 \leq i \leq n - 2$, se sigue de la línea
-\ref{alg:def:inf:g} que calculamos una vez el máximo común divisor de $n - (i + 1) + 1 = n - i$
-números. Vimos en la subsección \ref{section:number-theory} que el máximo común divisor puede ser
-definido de manera inductiva, por lo que calcular el máximo común divisor entre $n - i$ números es
-equivalente a calcular $n - i$ veces el máximo común divisor entre dos números. Por lo tanto,
-calculamos
-\begin{equation*}
+En ambos algoritmos \ref{algo:inf} y \ref{algo:inf:ext} suponemos que el costo de realizar
+operaciones aritméticas es constante. Primero analizamos el algoritmo \ref{algo:inf}. Tenemos de los
+ciclos en las líneas \ref{alg:def:inf:q} y \ref{alg:def:inf:loop} que realizamos
+\begin{equation}
+	\label{eq:nummult}
 	\sum_{i=1}^{n-2}n - i = n(n - 2) - \frac{(n-2)(n-1)}{2} = \frac{(n-2)(n+1)}{2}
-\end{equation*}
+\end{equation}
+divisiones para actualizar el vector $\vec{q}$. También realizamos en la línea
+\ref{alg:def:inf:loop} un número de multiplicaciones proporcional a $n$, pero comparado con el orden
+cuadrático del número de divisiones, podemos ignorarlo.
+
+Luego, para $1 \leq i \leq n - 2$, se sigue de la línea \ref{alg:def:inf:g} que calculamos una vez
+el máximo común divisor de $n - (i + 1) + 1 = n - i$ números. Vimos en la subsección
+\ref{section:number-theory} que el máximo común divisor puede ser definido de manera inductiva.
+Entonces calcular el máximo común divisor entre $n - i$ números es equivalente a calcular $n - i$
+veces el máximo común divisor entre dos números. Por lo tanto, calculamos
+\begin{equation}
+	\label{eq:numgcd}
+	\sum_{i=1}^{n-2}n - i = n(n - 2) - \frac{(n-2)(n-1)}{2} = \frac{(n-2)(n+1)}{2}
+\end{equation}
 veces el máximo común divisor entre dos números.
 
 Además, tenemos de las líneas \ref{alg:def:inf:bez} y \ref{alg:def:inf:lastw} que realizamos $n - 1$
 llamadas a la subrutina \texttt{Bezout}. Pero habíamos mencionado que los coeficientes de Bézout se
-pueden calcular usando el Algoritmo Extendido de Euclides, sin embargo, la complejidad de este es un
+pueden calcular usando el Algoritmo Extendido de Euclides. Sin embargo, la complejidad de este es un
 múltiplo constante de la complejidad del Algoritmo de Euclides, el cual calcula el máximo común
 divisor entre dos métodos. Así pues, comparando estas aproximadamente $n$ llamadas a \texttt{Bezout}
-con el cálculo de aproximadamente $n^2$ máximo común divisor entre dos números, podemos ignorar, en
-términos de complejidad, las llamadas a la subrutina \texttt{Bezout}.
+con el cálculo de aproximadamente $n^2$ máximos común divisores entre dos números, podemos ignorar las
+llamadas a la subrutina \texttt{Bezout}.
 
 Es posible mostrar que la complejidad de calcular el máximo común divisor entre dos enteros $a \leq
-b$ es $\mathcal{O}(\log_2 b)$. Por lo tanto, la complejidad del algoritmo \ref{algo:inf} es
+b$ es $\mathcal{O}(\log_2 b)$. De esta manera, tenemos de \eqref{eq:nummult} y \eqref{eq:numgcd} que
+la complejidad del algoritmo \ref{algo:inf} es
 \begin{equation*}
-	\mathcal{O}(n^2\log_2\norm{\vec{q}}_\infty) = \mathcal{O}(n^2),
+	\mathcal{O}(n^2\log_2\norm{\vec{q}}_\infty) + \mathcal{O}(n^2) =
+	\mathcal{O}(n^2),
 \end{equation*}
 puesto que nuestro vector coprimo $\vec{q}$ es constante.
 
-Las subrutinas \texttt{length} y \texttt{switch} tienen complejidad constante. Además, recorremos el
-vector $\vec{q}$ en el ciclo \ref{alg:inf:loop} una sola vez así como el vector $\tvec{x}$ en el
-ciclo \ref{alg:inf:loop2}. Entonces el algoritmo \ref{algo:inf:ext} también tiene complejidad
-cuadrática.
+Ahora bien, del algoritmo \ref{algo:inf:ext} tenemos que las subrutinas \texttt{length} y
+\texttt{switch} tienen complejidad constante. Además, recorremos el vector $\vec{q}$ en el ciclo
+\ref{alg:inf:loop} una sola vez así como el vector $\tvec{x}$ en el ciclo \ref{alg:inf:loop2}.
+Entonces este algoritmo también tiene complejidad cuadrática.
 
-\subsection{Intuición de la dependencia con el presupuesto}
+Finalmente, mencionamos que el número de operaciones de estos dos algoritmos dependen exclusivamente de la
+dimensión $n$ y no del lado derecho $\eta$ de la ecuación $\vec{q}^T\vec{x} = \eta$. Es decir, la
+complejidad de estos algoritmos con respecto a $\eta$ es constante. Los resultados numéricos en la
+subsección \ref{subsec:inf:res} confirman esto.
+
+\subsection{Dependencia de R\&A con el número de decimales}
 \label{subsec:inf:int}
+\noindent
+Primero ilustramos a través de un ejemplo que el árbol generado por R\&A correspondiente a instancias de
+\eqref{theory:formulation} tiene profundidad infinita en algunos casos. Luego mostramos que, aún
+cuando esta profundidad sea finita, el número de decimales utilizados para expresar el vector
+objetivo de \eqref{theory:formulation} afecta exponencialmente en la dimensión los tiempos de
+terminación de este método.
 
+\begin{example}
+	\label{ex:inf}
+	Consideremos el programa lineal entero
+	\begin{equation*}
+		\max_{(x, y) \in \Z^2}\braces{x - y \vcentcolon x - y \leq 0.3, x \geq 0, y \geq 0}.
+	\end{equation*}
+	En la figura \ref{fig:infrec} se muestra el poliedro asociado a su problema relajado $S_0$.
+	Encontramos que su solución es $(0.3, 0)$. Puesto que $0.3$ no
+	es entero, ramificamos sobre esta variable y generamos dos subproblemas $S_{00}$ y $S_{01}$ con
+	las restricciones añadidas $x \leq 0$ y $x \geq 1$, respectivamente. La solución de $S_{00}$
+	es $(0, 0)$ y podamos por integralidad.
+
+	Ahora bien, la solución de $S_{01}$ es $(1, 0.7)$ y como $0.7$ no es entero, generamos $S_{010}$
+	y $S_{011}$ con las restricciones añadidas $y \leq 0$ y $y \geq 1$. Encontramos que el poliedro
+	de $S_{010}$ es vacío, así que podamos por infactibilidad.
+
+	En la figura \ref{fig:infrec} se muestra el poliedro asociado a $S_{011}$. Observemos que este poliedro es
+	una traslación del asociado a $S_0$. Consecuentemente, hay un comportamiento
+	periódico en cuanto a la ramificación y solución de estos problemas: resolver $S_{011}$ se
+	reduce a resolver $S_0$, pero el primero es un subproblema del segundo. Siguiendo este
+	razonamiento, encontramos que R\&A genera la cadena de subproblemas autosimilares
+	\begin{equation*}
+		S_0, S_{011}, S_{01111}, S_{0111111}, \ldots
+	\end{equation*}
+	y este método jamás terminará con una solución.
+\end{example}
+
+\begin{figure}
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\begin{tikzpicture}[scale=0.7]
+			\begin{axis}[
+			  axis lines=middle,
+			  xmin=0, xmax=1.2,
+			  ymin=0, ymax=1.2,
+			  xlabel={$x$}, ylabel={$y$},
+			  clip=false
+			]
+				\addplot [name path=top, draw=none, domain=0:1.2] {1.2};
+				\addplot [name path=lower, draw=none, samples=200, domain=0:1.2]
+				  {max(x-0.3, 0)};
+				\addplot [blue!25] fill between[of=top and lower];
+				\addplot [blue, thick, domain=0.3:1.2] {x - 0.3};
+				\addplot [blue, thick, domain=0:0.3] {0};
+				\node at (axis cs:0.5,0.7) {\Large $S_{0}$};
+			\end{axis}
+		\end{tikzpicture}
+	\end{minipage}
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\begin{tikzpicture}[scale=0.7, >= stealth]
+			\begin{axis}[
+			  axis lines=middle,
+			  xmin=1, xmax=2.2,
+			  ymin=1, ymax=2.2,
+			  xlabel={$x$}, ylabel={$y$},
+			  clip=false
+			]
+				\addplot [name path=top, draw=none, domain=1:2.2] {2.2};
+				\addplot [name path=lower, draw=none, samples=200, domain=1:2.2]
+				  {1 + max(x-1.3, 0)};
+				\addplot [blue!25] fill between[of=top and lower];
+				\addplot [blue, thick, domain=1.3:2.2] {x - 0.3};
+				\addplot [blue, thick, domain=1:1.3] {1};
+				\node at (axis cs:1.5,1.7) {\Large $S_{011}$};
+			\end{axis}
+		\end{tikzpicture}
+	\end{minipage}
+	\caption{\textit{Izquierda}: Poliedro asociado al problema relajado del ejemplo \ref{ex:inf}.
+	\textit{Derecha}: Poliedro asociado a un subproblema de $S_0$.}
+	\label{fig:infrec}
+\end{figure}
+
+El autor sospecha que el fenómeno presentado en el ejemplo \ref{ex:inf} ocurre en todas las
+instancias de \eqref{theory:formulation} cuando $\vec{p}$ es esencialmente entero. En particular,
+para problemas de este tipo exite una colección de subproblemas homotéticos entre sí. Además, si el
+vector coprimo $\vec{q}$ de $\vec{p}$ tiene una entrada negativa, entonces esta colección es
+infinita. Por cuestiones de longitud de esta tesis, no investigamos más en este respecto.
+
+Para que una implementación pura de Ramificación y Acotamiento termine en tiempo finito al resolver
+una de estas instancias, debe ser el caso que el valor óptimo del problema relajado de
+\eqref{theory:formulation} sea el mismo que el de su programa entero. Es decir, tenemos terminación
+finita si y solo si el hiperplano definido por
+	$\braces{\vec{x} \in \R^n \vcentcolon \vec{p}^T\vec{x} = u}$
+contiene un punto entero, donde $u$ es el lado derecho de \eqref{theory:constraint:budget}. Por el
+teorema \ref{phase-1:th:cover}, hay terminación finita si y solo si este hiperplano en realidad es
+una capa entera $\qlayer{q}{k}$ con parámetro $k \in \Z$.
+
+Aún cuando podamos asegurar terminación finita, los puntos enteros sobre la $k$-ésima capa entera
+pueden tener distancias muy grandes entre sí. Por los lemas \ref{lemma:iso1} y \ref{lemma:iso2}
+somos capaces de medir estas distancias. Consideremos el vector $\vec{\nu}$ definido en
+\eqref{eq:vec-omega} y la matriz $M$ definida en \eqref{eq:mat-T}, entonces dos puntos $\vec{x}_1$ y
+$\vec{x}_2$ son adyacentes en la dirección $1 \leq i \leq n - 1$ si
+\begin{align*}
+	\vec{x}_1 &\coloneq k\vec{\nu} + M\vec{t}, \\
+	\vec{x}_2 &\coloneq k\vec{\nu} + M(\vec{t} \pm \vec{e}_i),
+\end{align*}
+para alguna $\vec{t} \in \Z^{n-1}$. Luego, la distancia entre estos dos puntos es
+$\norm{M\vec{e}_i}$.
+
+No obstante, implementaciones puras de R\&A generan cortes del estilo $x_j \geq \ceil{x_j^*}$, donde
+$\vec{x}^*$ es la solución a un subproblema. Para instancias autosimilares como la presentada en el
+ejemplo \ref{ex:inf}, esto último implica que $|x_j^{**} - x_j^*| \leq 1$, donde $\vec{x}^{**}$ es
+la solución al nuevo subproblema. Combinando este punto con el anterior, encontramos que los cortes
+generados por implementaciones puras de R\&A son ineficientes, y lo son más a medida que las normas
+de las columnas de $M$ aumentan.
+
+Luego, el número de decimales utilizados para expresar las entradas del vector objetivo $\vec{p}$ del problema
+\eqref{theory:formulation} afecta la eficiencia de estos cortes. En efecto, si usamos
+un decimal más para especificar las entradas de $\vec{p}$, entonces su vector coprimo $\vec{q}$ se
+multiplica aproximadamente por 10. De \eqref{eq:mat-T} tenemos que las entradas de $M$ se
+multiplican aproximadamente por 10 y, por lo tanto, $\norm{M\vec{e}_i}$ es $10^{n/2}$ veces mayor.
+Es decir, los cortes de R\&A se vuelven aproximadamente $10^{n/2}$ más ineficientes.
+
+Es cierto que, en la práctica, no existen implementaciones puras de R\&A. Más bien, existe un
+ecosistema de módulos que combinan R\&A con otro tipo de generación de cortes, con la manera de
+elegir subproblemas, con métodos de presolución, con heurísticas, etcétera (ver figura
+\ref{p1c11:fig:MIP_solver_flowchart}). Estas técnicas evitan, en primer lugar, que se genere un
+árbol de profunidad infinita y, en segundo lugar, encuentran soluciones eficientemente.
+
+A pesar de lo anterior, en la siguiente subsección mostramos que la obtención de soluciones de
+\eqref{theory:formulation} todavía es lenta cuando una entrada del vector coprimo $\vec{q}$ del
+vector objetivo $\vec{p}$ es negativa.
 
 \subsection{Análisis de resultados}
 \label{subsec:inf:res}
 \noindent
+En primer lugar, detallamos la manera en la que medimos los resultados de nuestro experimento
+numérico. En segundo lugar, explicamos y justificamos el diseño del experimento. En tercer lugar,
+mostramos y analizamos los resultados obtenidos.
 
-Con respecto a los resultados obtenidos en ambas subsecciones \ref{subsec:exp:fin:n} y
-\ref{subsec:exp:fin:rhs}, mencionamos que cada observación de tiempo de cada método representa el
-promedio de 20 corridas. Para cada observación realizamos 2 corridas preliminares a fin
-de evitar sesgos en el tiempo por cuestión de temperatura en la computadora, o por cargar cosas a la
-memoria, o por compilación al momento de crear archivos \texttt{.pyc}, etcétera. En total, cada
-observación es el resultado de haber corrido el mismo experimento 22 veces.
+Para realizar nuestro experimentos con R\&A, usamos el COIN-OR Branch-and-Cut (CBC) \textit{solver}
+por medio de la interfaz de PuLP implementada en Python. La configuración usada permite métodos de
+presolución, cortes de mochila y de Gomory-Chvátal. Prohibimos el uso de múltiples hilos a fin de
+garantizar una comparación justa con nuestro método.
 
-Así también, por cuestiones de tiempo, cada proceso tenía un tiempo límite de 300 segundos para
-terminar de correr. De esta manera, decimos que el método no encontró una solución en caso de que
-más de 10 observaciones sobrepasaran este límite. Además, comparamos los valores objetivo de nuestra
-implementación con los de Ramificación y Acotamiento y en ningún momento
-encontramos que estos fueran distintos. El autor menciona que su implementación se
-encuentra libre en GitHub\footnote{TODO: LINK} así como los tiempos de terminación de cada método
-junto con archivos de registro que certifican estos tiempos.
+Cada observación de tiempo de cada método representa el promedio de 20 corridas. Para cada
+observación realizamos 2 corridas preliminares a fin de evitar sesgos en el tiempo por cuestión de
+temperatura en la computadora, o por cargar cosas a la memoria, o por compilación al momento de
+crear archivos \texttt{.pyc}, etcétera. En total, cada observación es el resultado de haber corrido
+el mismo experimento 22 veces.
 
-Finalmente, al igual que en la sección \ref{sec:inf:exp}, los experimentos se realizaron en una
-computadora portátil Dell XPS 15 equipada con un procesador Intel Core i7-8750H (6 núcleos físicos
-y 12 hilos, frecuencia base de 2.20 GHz y frecuencia máxima de 4.10 GHz). El sistema cuenta con 12
-CPU lógicos disponibles y una memoria RAM de 32 GiB. Todos los cálculos fueron ejecutados bajo la
-arquitectura x86-64. El sistema operativo usado fue Fedora Linux 42 (Server Edition).
+Por cuestiones de tiempo, cada proceso tenía un tiempo límite de 300 segundos para terminar de
+correr. De esta manera, decimos que el método no encontró una solución en caso de que más de 10
+observaciones sobrepasaran este límite. Además, comparamos los valores objetivo de nuestra
+implementación con los de Ramificación y Acotamiento y en ningún momento encontramos que estos
+fueran distintos. El autor menciona que su implementación se encuentra libre en
+GitHub\footnote{TODO: LINK} así como los tiempos de terminación de cada método junto con archivos de
+registro que certifican estos tiempos.
+
+Finalmente, los experimentos fueron realizados en una computadora portátil Dell XPS 15 equipada con
+un procesador Intel Core i7-8750H (6 núcleos físicos y 12 hilos, frecuencia base de 2.20 GHz y
+frecuencia máxima de 4.10 GHz). El sistema cuenta con 12 CPU lógicos disponibles y una memoria RAM
+de 32 GiB. Todos los cálculos fueron ejecutados bajo la arquitectura x86-64. El sistema operativo
+usado fue Fedora Linux 42 (Server Edition).
+
+Ahora bien, debido a que Ramificación y Acotamiento es sensible ante la precisión numérica,
+generamos instancias de \eqref{theory:formulation} con dimensión $n = 4$. Este experimento tiene por
+objetivo mostrar que los tiempos de terminación de R\&A son lentos y aumentan significativamente
+cuando utilizamos más cifras decimales para especificar el vector objetivo $\vec{p}$ de
+\eqref{theory:formulation}.
+
+Así pues, generamos un vector $\vec{p}_3$ tomado de una distribución uniforme discreta sobre el
+intervalo $[9000, 10000)^n$. A este vector inicial lo dividimos por 1000, de manera que sea un
+vector racional con tres cifras decimales. Escogimos aleatoriamente 2 de estas $n = 4$ entradas y
+las multiplicamos por $-1$, con lo que aseguramos que el vector coprimo $\vec{q}_3$ asociado a
+$\vec{p}_3$ tenga al menos una entrada negativa.
+
+Luego, muestreamos $n = 4$ observaciones de una distribución uniforme discreta sobre $[0, 10)$ y le
+concatenamos a cada entrada de $\vec{p}_3$ una de estas observaciones, por lo que obtenemos un
+vector racional $\vec{p}_4$ con cuatro cifras decimales. Repetimos una vez más el procedimiento
+anterior pero usando $\vec{p}_4$ para generar el vector racional $\vec{p}_5$ con cinco cifras
+decimales. Evidentemente, los vectores coprimos $\vec{q}_4$ y $\vec{q}_5$ asociados respectivamente
+a $\vec{p}_4$ y $\vec{p}_5$ tienen entradas negativas en los mismo lugares que $\vec{q}_3$.
+
+En último lugar, para obtener el lado derecho de \eqref{theory:constraint:budget}, calculamos $N = 128$
+puntos enteros espaciados logarítmicamente en el intervalo $[10^3, 10^7)$. En la figura
+\ref{fig:exp:inf:rhs} se muestran los tiempos de terminación promedio de las 20 corridas. Las
+rupturas de continuidad en las líneas son causadas porque R\&A no encontró una solución antes del
+límite de 300 segundos.
 
 \begin{figure}[hbtp]
   \centering
@@ -585,8 +762,38 @@ arquitectura x86-64. El sistema operativo usado fue Fedora Linux 42 (Server Edit
     \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/digits-dioph.pdf}
   \end{subfigure}
 
-  \caption{Tiempos de terminación promedio de los distintos métodos cuando varía el presupuesto.
-  \textit{Arriba}: Resultados tomando en cuenta Ramificación y Acotamiento (R\&A), así como la
-	implementación dinámica. \textit{Abajo}: \textit{Zoom} en los métodos diofantinos.}
+  \caption{Tiempos de terminación promedio cuando varía el presupuesto y el
+			número de digitos. \textit{Arriba}: Resultados en segundos de R\&A. \textit{Abajo}:
+			Resultados en milisegundos de nuestro método \texttt{dioph}.}
   \label{fig:exp:inf:rhs}
+\end{figure}
+
+Por los resultados obtenidos en las dos subsecciones anteriores, no sorprende que el algoritmo
+\ref{algo:inf} tenga mejores tiempos de terminación que R\&A, y que no se vea afectado por la
+precisión numérica del vector objetivo $\vec{p}$. Esto solo muestra que los tiempos de terminación
+de R\&A son lentos para instancias de \eqref{theory:formulation}.
+
+En realidad, nos interesa mostrar la inestabilidad numérica de R\&A a medida que la precisión del
+vector objetivo $\vec{p}$ aumenta. Para ello, fijamos una de las $N = 128$ instancias y dividimos el
+tiempo de terminación usando $\vec{p}_4$ entre el correspondiente tiempo usando $\vec{p}_3$; si
+R\&A no encontró una solución en cualesquiera de los dos problemas, nos deshacemos de este
+dato. Realizamos el mismo procedimiento entre $\vec{p}_5$ y $\vec{p}_4$.
+
+Denominamos como multiplicadores a las razones anteriores, pues representan el factor de aumento en
+los tiempos de terminación de R\&A cuando utilizamos una cifra decimal extra. La figura
+\ref{fig:exp:inf:hist} muestra la distribución de estos multiplicadores. En el 60\% de los casos, el
+multiplicador es al menos 10. Es decir, una cifra decimal extra en $\vec{p}$ provoca, en la mayoría
+de los casos, que el tiempo de terminación en R\&A sea al menos diez veces mayor.
+
+De acuerdo a la subsección anterior, deberíamos esperar que la gran mayoría de los multiplicadores
+se concentren alrededor de $10^{n/2} = 100$. No obstante, solamente el 20\% de estos lo hace. El
+autor hipotetiza que esto es causado por el uso de heurísticas en nuestra implementación de R\&A.
+% TODO: contar cuántas instancias encontraron una solución gracias a las heurísticas.
+% TODO: mostrar la distribución usando un solver sin heurísticas.
+
+\begin{figure}[hbtp]
+	\centering
+    \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/mult-hist-cum.pdf}
+	\caption{Distribución de multiplicadores}
+	\label{fig:exp:inf:hist}
 \end{figure}
