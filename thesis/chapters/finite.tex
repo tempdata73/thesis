@@ -1284,20 +1284,32 @@ eficiente a través de ciclos para obtener los resultados de la siguiente secci�
 \end{algorithm}
 
 \section{Experimentos numéricos}
+\label{sec:fin:ex}
 \noindent
-Hemos mencionado que el algoritmo \ref{algo:fin:helper} fue escrito de esa manera para demostrar la
-correctud de nuestro método. El autor optó por realizar una implementación equivalente en ciclos
-debido al límite suave en las llamadas de recursión que permite Python. Este límite es de 3,000
-llamadas recursivas en la máquina donde se realizaron los experimentos. Esto significa que, de
-manera predeterminada, solamente podríamos resolver problemas de dimensión $n \leq 3,000$. No
-obstante, en la subsección \ref{subsec:exp:fin:n} realizamos experimentos con problemas de dimensión
-$n \leq 150,000$.
+En esta sección medimos la eficiencia y estabilidad del algoritmo \ref{algo:fin:dioph}. Discutimos
+detalles de implementación del método \ref{algo:fin:helper}. Introducimos una formulación dinámica
+(FD) capaz de resolver instancias de \eqref{theory:formulation} cuando $\vec{q} > \vec{0}$, de
+manera que obtenemos otro punto de comparación para nuestro algoritmo además de Ramificación y
+Acotamiento (R\&A). Finalmente, explicamos y realizamos nuestro experimentos numéricos.
 
-Vimos en la sección pasada que este algoritmo calcula repetidamente los mismos
-máximos común divisores $g$ y los mismos coeficientes de Bézout $x', \omega'$. Puesto que estos
-números dependen exclusivamente del vector $\vec{q}$, podemos calcularlos en una fase de
-preprocesamiento antes de llamar \texttt{NonNegativeIntSolFin}. Luego, esta rutina accede a ellos
-por medio de referencias.
+Cabe mencionar que utilizamos el mismo equipo así como la misma configuración de R\&A que se detalla
+en la sección \ref{subsec:inf:complex} para la realización de estos experimentos.
+
+\subsection{Detalles de implementación}
+\label{subsec:fin:details}
+\noindent
+Mencionamos en la sección pasada que el algoritmo \ref{algo:fin:helper} fue escrito de esa manera para demostrar la
+correctud de nuestro método. El autor optó por realizar una implementación equivalente en ciclos
+debido al límite suave en las llamadas de recursión que permite Python. Este límite es de 3000
+llamadas recursivas en la máquina donde se realizaron los experimentos. Esto significa que, de
+manera predeterminada, solamente podríamos resolver problemas de dimensión $n \leq 3000$. No
+obstante, en la subsección \ref{subsec:exp:fin:n} realizamos experimentos con problemas de dimensión
+$n \leq 150000$.
+
+Vimos que este algoritmo calcula repetidamente los mismos máximos común divisores $g$ y los mismos
+coeficientes de Bézout $x', \omega'$. Puesto que estos números dependen exclusivamente del vector
+$\vec{q}$, decidimos calcularlos en una fase de preprocesamiento antes de llamar
+\texttt{NonNegativeIntSolFin}. Luego, esta rutina accede a ellos por medio de referencias.
 
 La implementación por ciclos usa una pila de estados $(i, b_1, b_2, k)$, donde $i$ indica el nivel o
 la variable $t_i$ que debemos escoger; el resto de los parámetros están definidos en el algoritmo
@@ -1313,7 +1325,7 @@ variable $x_i$ como lo hacemos en el algoritmo \ref{algo:fin:helper} y repetimos
 obtener una solución $\vec{x}$ entera no negativa.
 
 Por el otro lado, podemos construir un árbol de la siguiente manera: en el nivel $i$
-escogemos el punto medio $t_i \leftarrow \floor{(b_1 + b_2)/2}$, luego creamos los nodos adyacentes
+escogemos el punto medio $t_i \leftarrow \floor{(b_1 + b_2)/2}$ y creamos los nodos adyacentes
 \begin{equation}
 	\label{exp:subp}
 	\begin{cases}
@@ -1325,98 +1337,86 @@ que representan subproblemas posiblemente a resolver en el mismo nivel. Ahora bi
 elección del punto medio $t_i$, construimos el problema para el siguiente nivel $i + 1$ con los
 nuevos parámetros calculados en las líneas \ref{alg:fin:k}, \ref{alg:fin:b11} y \ref{alg:fin:b21},
 en este orden. Repetimos este procedimiento hasta obtener una solución $\vec{x}$ entera no negativa.
-Puesto que resolvemos el subproblema del siguiente nivel antes que los de los nodos adyacentes,
-realizamos una búsqueda \textit{depth-first-search}.
+Puesto que resolvemos el subproblema del siguiente nivel antes que los del mismo nivel con los nodos
+adyacentes, realizamos una búsqueda en profundidad.
 
 El autor encontró en los experimentos preliminares que la segunda estrategia es mucho más eficaz. En
 los experimentos de la subsección \ref{subsec:exp:fin:n}, la primera estrategia tenía tiempos de
-terminación aproximadamente equivalentes a los de Ramificación y Acotamiento. Para los experimentos
+terminación aproximadamente equivalentes a los de R\&A. Para los experimentos
 de la subsección \ref{subsec:exp:fin:rhs}, ambas estrategias tenían tiempos de terminación
-significativamente menores que Ramificación y Acotamiento. Por ello, el autor decidió realizar el
+significativamente menores que R\&A. Por ello, el autor decidió realizar el
 análisis de resultados usando la estrategia del árbol.
 
-Observemos de  \eqref{exp:subp} que el orden en el que agregamos estos
-subproblemas determina si visitamos primero el lado izquierdo del árbol o el lado derecho. El autor
-realizó los experimentos con ambas posibilidades. Así pues, llamaremos \texttt{dioph\_left} a la
-implementación que recorre primero el lado izquierdo y definimos análogamente \texttt{dioph\_right}.
-
-Al igual que en la sección \ref{sec:inf:exp}, usamos el COIN-OR Branch-and-Cut (CBC) \textit{solver}
-por medio de la interfaz de PuLP implementada en Python. Configuramos Ramificación y Acotamiento de
-manera que realice cortes de mochila y de Gomory-Chvátal y prohiba otros tipos de cortes
-predeterminados por CBC. Así también, esta configuración corre solamente en un hilo para permitir
-configuraciones justas con nuestro método.
-
-Con respecto a los resultados obtenidos en ambas subsecciones \ref{subsec:exp:fin:n} y
-\ref{subsec:exp:fin:rhs}, mencionamos que cada observación de tiempo de cada método representa el
-promedio de 20 corridas. Para cada observación realizamos 2 corridas preliminares a fin
-de evitar sesgos en el tiempo por cuestión de temperatura en la computadora, o por cargar cosas a la
-memoria, o por compilación al momento de crear archivos \texttt{.pyc}, etcétera. En total, cada
-observación es el resultado de haber corrido el mismo experimento 22 veces.
-
-Así también, por cuestiones de tiempo, cada proceso tenía un tiempo límite de 300 segundos para
-terminar de correr. De esta manera, decimos que el método no encontró una solución en caso de que
-más de 10 observaciones sobrepasaran este límite. Además, comparamos los valores objetivo de nuestra
-implementación con los de Ramificación y Acotamiento y en ningún momento
-encontramos que estos fueran distintos. El autor menciona que su implementación se
-encuentra libre en GitHub\footnote{TODO: LINK} así como los tiempos de terminación de cada método
-junto con archivos de registro que certifican estos tiempos.
-
-Finalmente, al igual que en la sección \ref{sec:inf:exp}, los experimentos se realizaron en una
-computadora portátil Dell XPS 15 equipada con un procesador Intel Core i7-8750H (6 núcleos físicos
-y 12 hilos, frecuencia base de 2.20 GHz y frecuencia máxima de 4.10 GHz). El sistema cuenta con 12
-CPU lógicos disponibles y una memoria RAM de 32 GiB. Todos los cálculos fueron ejecutados bajo la
-arquitectura x86-64. El sistema operativo usado fue Fedora Linux 42 (Server Edition).
+Observemos de  \eqref{exp:subp} que el orden en el que agregamos estos subproblemas determina si
+visitamos primero el lado izquierdo o el lado derecho del árbol. El autor realizó los experimentos
+con ambas posibilidades. Así pues, llamaremos \texttt{dioph\_left} a la implementación que recorre
+primero el lado izquierdo y definimos análogamente \texttt{dioph\_right}.
 
 \subsection{Una formulación dinámica}
+\label{subsec:fin:dp}
 \noindent
-Evidentemente, el método de Ramificación y Acotamiento no es el único para encontrar
+El método de Ramificación y Acotamiento no es el único para encontrar
 soluciones a programas lineales enteros. Como lo mencionamos al inicio de este capítulo, el problema
 \eqref{theory:formulation} es una instancia particular del Problema de la Mochila. Por la
-prevalencia de este problema en la industria, se han diseñado múltiples algoritmos dedicados que
-intentan resolverlo, o al menos encontrar soluciones aproximadas.
+prevalencia de este problema en la industria, se han diseñado múltiples algoritmos que
+intentan resolverlo.
 
-El libro \cite{martello} está dedicado completamente a hacer una exposición de los métodos más
+El libro \cite{martello} está dedicado a realizar una exposición de los métodos más
 conocidos para resolver el Problema de la Mochila. A fin de ser más completos en nuestra exposición,
-el autor decidió implementar uno de estos métodos, de los cuales el conceptualmente más sencillo es
-la formulación dinámica. Supondremos en lo que resta de esta sección que el lado
-derecho de \eqref{theory:constraint:budget} es entero.
+el autor decidió adaptar una formulación dinámica (FD) que permite resolver instancias de
+\eqref{theory:formulation}.
 
-Así pues, dejemos que $f_m(\hat{u})$ denote el valor óptimo del subproblema de
-\eqref{theory:formulation} cuando se deben escoger las primeras $m$ entradas de $\vec{x} \geq{0}$
-considerando que el lado derecho de \eqref{theory:constraint:budget} es $\hat{u}$. Por
-suposición de este capítulo tenemos que $\vec{q} > \vec{0}$ y entonces $\hat{u} \leq u$. Suponiendo,
-además, que el problema es factible, tenemos del teorema \ref{theory:th:infeasibility} que $0 \leq
-\hat{u}$.
-De esta manera, obtenemos la siguiente formulación dinámica:
-\begin{align*}
-	f_1(\hat{u}) &= \floor{\hat{u}/q_1}q_1, \\
-	f_m(\hat{u}) &= \max_{k \in \Z} \braces{
-		f_{m-1}(\hat{u} - k q_m) + k q_m \vcentcolon 0 \leq k \leq \floor{\hat{u}/q_m}
-	}.
-\end{align*}
-Donde nosotros queremos evaluar $f_n(u)$ para obtener el valor óptimo del problema
-\eqref{theory:formulation}. De acuerdo a \cite{martello}, la complejidad de determinar este valor es
-cuadrática en el lado derecho de \eqref{theory:formulation}. Puesto que llevaremos estos valores a
-un extremo en la subsección \ref{subsec:exp:fin:rhs}, el autor prefirió implementar la formulación
-dinámica menos intuitiva pero que es lineal con respecto a $u$:
+Supondremos en lo que resta de esta sección que el vector objetivo $\vec{p}$ de \eqref{theory:formulation} es
+entero y tiene entradas estrictamente positivas. Así también, supondremos que el lado derecho $u$ de
+\eqref{theory:constraint:budget} es entero. Como queremos que nuestro problema sea factible, del
+teorema \ref{theory:th:infeasibility} tenemos que $u \geq 0$.
+
+El problema \eqref{theory:formulation} tiene subestructura óptima. En efecto, podemos partir
+$\vec{p}$ como
+$(p_1, \tvec{p})$ y calcular la solución $\tvec{x}$ del subproblema de
+\eqref{theory:formulation} con $\tvec{p}$. Observemos que
+\begin{equation*}
+	\vec{p}^T\vec{x} \leq u \iff p_1x_1 + \tvec{p}^T\tvec{x} \leq u \iff x_1 \leq
+	\frac{\hat{u}}{p_1},
+\end{equation*}
+donde $\hat{u} \coloneq u - \tvec{p}^T\tvec{x}$. Como deseamos maximizar
+$\vec{p}^T\vec{x}$ y $p_1 > 0$, debe ser el caso que $x_1 = \floor{\hat{u}/p_1}$. Es posible mostrar
+por contradicción que el vector $(x, \tvec{x})$ es la solución del problema y por lo tanto
+\eqref{theory:formulation} tiene subestructura óptima.
+
+Sea $f_m(\hat{u})$ el valor óptimo del subproblema de \eqref{theory:formulation} cuando el
+lado derecho de \eqref{theory:constraint:budget} es $\hat{u}$ y se escogieron todas menos las
+primeras $m$ entradas del vector solución $\vec{x}$. Como $\vec{p} > \vec{0}$, no es difícil ver que $0 \leq
+\hat{u} \leq u$. Entonces tenemos
 \begin{subequations}
 	\begin{align}
 		\label{formulation:dp}
-		f_1(\hat{u}) &= \floor{\hat{u}/q_1}q_1, \\
+		f_1(\hat{u}) &= \floor{\hat{u}/p_1}p_1, \\
 		f_m(\hat{u}) &= \begin{cases}
-			f_{m-1}(\hat{u}), & \hat{u} \leq q_m - 1, \\
-			\max\braces{f_{m - 1}(\hat{u}), f_{m}(\hat{u} - q_m) + q_m}, & q_m \leq \hat{u} \leq u.
+			f_{m-1}(\hat{u}), & \hat{u} \leq p_m - 1, \\
+			\max\braces{f_{m - 1}(\hat{u}), f_{m}(\hat{u} - p_m) + p_m}, & p_m \leq \hat{u} \leq u.
+			\label{dp:rec}
 		\end{cases}
 	\end{align}
 \end{subequations}
+La ecuación \eqref{dp:rec} se explica de la siguiente manera. Si el presupuesto $\hat{u}$ es menor
+que el ``precio'' $p_m$, entonces no podemos costearnos una unidad adicional de $x_m$. En caso de que sí
+podamos costearla, comparamos la utilidad de adquirirla pero disminuir nuestro
+presupuesto $\hat{u}$ en $p_m$, contra la utilidad de no adquirirla pero dejar nuestro presupuesto
+igual.
+
+Finalmente, para obtener el valor óptimo de \eqref{theory:formulation}, debemos calcular $f_n(u)$.
+Puesto que tenemos $n$ subproblemas que resolver y para cada subproblema debemos realizar, en el
+peor de los casos, $u$ comparaciones, se sigue que el costo de calcular $f_n(u)$ es $\mathcal{O}(nu)$.
+No obstante, ambos R\&A y los métodos diofantinos (\texttt{dioph\_left} y
+\texttt{dioph\_right}) terminan con la solución óptima, así que la implementación realizada por el
+autor de esta FD incluye una manera de construir la solución, a pesar del costo adicional en eficiencia.
 
 \subsection{Experimentos en la dimensión}
 \label{subsec:exp:fin:n}
 \noindent
 Para obtener resultados informativos en cuanto varía la dimensión del problema
-\eqref{theory:formulation}, debemos ser cuidadosos para evitar tener soluciones triviales. A lo
-largo de este análisis suponemos sin pérdida de generalidad que el presupuesto $u$ del lado derecho
-de \eqref{theory:constraint:budget} es un entero.
+\eqref{theory:formulation}, debemos ser cuidadosos para evitar tener soluciones triviales.
 
 En primer lugar, observemos de $\eqref{eq:dioph}$ que si alguna entrada del vector coprimo $\vec{q}$
 es tal que $q_j = 1$ , entonces obtenemos la solución trivial
@@ -1427,7 +1427,7 @@ es tal que $q_j = 1$ , entonces obtenemos la solución trivial
 	\end{cases}
 \end{equation*}
 Esto se vuelve aún más trivial para nuestro método cuando ordenamos las entradas de $\vec{q}$ de
-manera ascendente. En términos del vector objetivo $\vec{p}$, esto se traduce a que no existe una
+manera ascendente. En términos del vector objetivo $\vec{p}$, esto se traduce a que no debe existir una
 entrada $p_i$ tal que todas las entradas que le sigan sean múltiplo de $p_i$. De caso contrario,
 tendremos $g_{i + 1} = p_i$ y por lo tanto $q_i = 1$.
 
@@ -1466,10 +1466,11 @@ y el problema \eqref{theory:formulation} es equivalente a
 donde $\vec{\hat{p}} \in \R^{n-1}$ resulta de remover del vector $\vec{p}$ su $\ell$-ésima entrada.
 
 Así pues, sea $n$ la dimensión del problema. Dejamos que $\vec{p} \in \Z^n$ sea un vector aleatorio
-tomado de una distribución uniforme discreta sobre $[10, 5n)^n$. Al calcular el vector coprimo
-$\vec{q}$ checamos que $q_i \neq 1$ para todo $1 \leq i \leq n$. De caso contrario, calculamos otro
-vector aleatorio $\vec{p}$. Finalmente, escogemos el lado derecho de la restricción
-\eqref{theory:constraint:budget} de manera que
+tomado de una distribución uniforme discreta sobre $[10, 5n)^n$. El hecho de que el soporte de la
+distribución dependa de la dimensión reduce la probabilidad de que $\vec{p}$ tenga entradas
+repetidas. Al calcular el vector coprimo $\vec{q}$ checamos que $q_i \neq 1$ para todo $1 \leq i
+\leq n$. De caso contrario, calculamos otro vector aleatorio $\vec{p}$. Finalmente, escogemos el
+lado derecho de la restricción \eqref{theory:constraint:budget} de manera que
 \begin{equation*}
 	u \coloneq \begin{cases}
 		0.5\sum_{i=1}^{n}p_i & n \leq 20,000, \\
@@ -1478,68 +1479,117 @@ vector aleatorio $\vec{p}$. Finalmente, escogemos el lado derecho de la restricc
 \end{equation*}
 para evitar obtener un problema trivial de acuerdo a la reducción binaria.
 
-La tabla \ref{table:fin:mt:times} muestra los tiempos de terminación de los métodos utilizados para
-realizar cada experimento. Así también, la tabla \ref{table:fin:mt:times} muestra los coeficientes
-de variación por experimento por método. Comparando rápidamente las cifras, observamos que ambas de
-nuestras implementaciones son significativamente más rápidas y estables que las de Ramificación y
-Acotamiento en cualesquiera de sus dos configuraciones.
+La tabla \ref{table:fin:mt:times} muestra los tiempos promedios de terminación así como las
+desviaciones estándar de los métodos utilizados para realizar cada experimento. La tabla
+\ref{table:fin:mt:cv} muestra los coeficientes de variación de estos tiempos. Un coeficientes de
+variación mide, en proporción, qué tan concentrados están los tiempos alrededor de su media, y se
+calcula como $\sigma / \mu$, donde $\mu$ y $\sigma$ son la media y desviación estándar de los tiempos
+medidos, respectivamente. Las casillas vacías indican que el método no encontró una solución para el
+problema correspondiente en menos de los 300 segundos de tolerancia.
 
-\begin{table}[H]
+De manera más inmediata, tenemos que los métodos diofantinos son significativamente más rápidos.
+Además, los tiempos de terminación de los métodos diofantinos así como de FD están altamente
+concentrados alrededor de la media, por lo que son estables. En efecto, los coeficientes de
+variación de los métodos diofantinos estuvieron, en la gran mayoría de los casos, por
+debajo de 0.5\%, mientras que los de FD estuvieron por debajo de 1\%. En contraste, solo la mitad de
+los coeficientes de variación de R\&A estuvo por debajo del 1\%.
+
+A pesar de que FD sea, en términos prácticos, igual de estable que los métodos diofantinos, no
+debemos olvidar que FD no encontró una solución en el 61\% de los experimentos realizados.
+
+\begin{table}[ht]
 	\centering
-	\begin{tabular}{rccc} \toprule
-		$n$ & R\&A & \texttt{dioph\_right} & \texttt{dioph\_left} \\ \midrule
-		50     & 0.023 (0.017) & 0.000 (0.000) & 0.000 (0.000)\\
-		100    & 0.010 (0.001) & 0.001 (0.000) & 0.001 (0.000)\\
-		200    & 0.023 (0.004) & 0.001 (0.000) & 0.001 (0.000)\\
-		500    & 0.127 (0.019) & 0.005 (0.000) & 0.005 (0.000)\\ \midrule
-		1,000   & 0.109 (0.016) & 0.013 (0.000) & 0.013 (0.000)\\
-		2,000   & 0.135 (0.022) & 0.043 (0.000) & 0.042 (0.000)\\
-		5,000   & 1.666 (0.196) & 0.265 (0.001) & 0.245 (0.001)\\
-		10,000  & 2.124 (0.333) & 1.164 (0.002) & 1.063 (0.003)\\ \midrule
-		20,000  & 7.682 (0.339) & 4.991 (0.008) & 4.595 (0.007)\\
-		30,000  &  19.192 (1.176) & 11.553 (0.013) & 10.743 (0.016)\\
-		40,000  &  24.334 (0.193) & 20.994 (0.082) & 19.471 (0.023)\\
-		50,000  &  38.940 (0.179) & 33.451 (0.042) & 30.887 (0.026)\\ \midrule
-		60,000  &  51.962 (0.526) & 48.545 (0.052) & 45.072 (0.048)\\
-		70,000  &  81.033 (1.259) & 66.345 (0.101) & 61.885 (0.036)\\
-		80,000  & 116.618 (0.932) & 87.726 (0.117) & 81.418 (0.057)\\
-		90,000  & 141.683 (2.102) & 111.553 (0.116) & 103.962 (0.035)\\ \midrule
-		100,000 & 170.397 (1.750) & 139.652 (0.159) & 129.440 (0.047)\\
-		150,000 & - & - & 299.154 (0.129) \\ \bottomrule
-	\end{tabular}
-	\caption{Tiempos en segundos de terminación promedio de cada método con una muestra de 20
-	observaciones por experimento por método. La desviación estándar se encuentra entre paréntesis.}
+	\sisetup{round-precision=2}
+
+	\begin{subtable}{\linewidth}
+	\caption{Tamaños pequeños (ms).}
+	\setlength{\tabcolsep}{3pt}\renewcommand{\arraystretch}{1.1}
+	\begin{tabularx}{\linewidth}{@{}r *{4}{S[table-format=3.2]@{\,}l}@{}}
+		\toprule
+		{$n$}
+		& \multicolumn{2}{c}{FD}
+		& \multicolumn{2}{c}{R\&A}
+		& \multicolumn{2}{c}{\texttt{dioph\_left}}
+		& \multicolumn{2}{c}{\texttt{dioph\_right}} \\
+		\midrule
+		~~~~~50    & 0.157   & (±0.01)   & 23.287  & (±17.05) & 0.309 & (±0.01) & 0.310 & (±0.01) \\
+		~~~~100   & 1.142   & (±0.02)   & 9.565   & (±1.01)  & 0.642 & (±0.01) & 0.657 & (±0.01) \\
+		~~~~200   & 8.981   & (±0.04)   & 23.011  & (±4.06)  & 1.418 & (±0.01) & 1.441 & (±0.01) \\
+		~~~~500   & 142.680 & (±0.46)   & 126.824 & (±19.39) & 4.533 & (±0.01) & 4.669 & (±0.02) \\
+		\bottomrule
+	\end{tabularx}
+	\end{subtable}
+
+	\medskip
+
+	\begin{subtable}{\linewidth}
+	\centering
+	\caption{Tamaños grandes (s).}
+	\setlength{\tabcolsep}{3pt}\renewcommand{\arraystretch}{1.1}
+	\begin{tabularx}{\linewidth}{@{}r *{4}{S[table-format=3.3]@{\,}l}@{}}
+		\toprule
+		{$n$}
+		& \multicolumn{2}{c}{FD}
+		& \multicolumn{2}{c}{R\&A}
+		& \multicolumn{2}{c}{\texttt{dioph\_left}}
+		& \multicolumn{2}{c}{\texttt{dioph\_right}} \\
+		\midrule
+		1000     & 1.270   & (±0.1)   & 0.109   & (±0.02) & 0.013   & (±0.00) & 0.013   & (±0.00) \\
+		2000     & 10.368  & (±0.02)  & 0.135   & (±0.02) & 0.042   & (±0.00) & 0.043   & (±0.00) \\
+		5000     & 160.562 & (±0.39)  & 1.666   & (±0.20) & 0.245   & (±0.00) & 0.265   & (±0.00) \\ \midrule
+		10000    &         &          & 2.124   & (±0.33) & 1.063   & (±0.00) & 1.164   & (±0.00) \\
+		20000    &         &          & 7.682   & (±0.34) & 4.595   & (±0.01) & 4.991   & (±0.01) \\
+		30000    &         &          & 19.192  & (±1.18) & 10.743  & (±0.02) & 11.553  & (±0.01) \\
+		40000    &         &          & 24.334  & (±0.19) & 19.471  & (±0.02) & 20.994  & (±0.08) \\
+		50000    &         &          & 38.940  & (±0.18) & 30.887  & (±0.03) & 33.451  & (±0.04) \\
+		60000    &         &          & 51.962  & (±0.53) & 45.072  & (±0.05) & 48.545  & (±0.05) \\
+		70000    &         &          & 81.033  & (±1.26) & 61.885  & (±0.04) & 66.345  & (±0.10) \\
+		80000    &         &          & 116.618 & (±0.93) & 81.418  & (±0.06) & 87.726  & (±0.12) \\
+		90000    &         &          & 141.683 & (±2.10) & 103.962 & (±0.04) & 111.553 & (±0.12) \\ \midrule
+		100000   &         &          & 170.397 & (±1.75) & 129.440 & (±0.05) & 139.652 & (±0.16) \\
+		150000   &         &          &         &          & 299.154 & (±0.13) &         &          \\
+		\bottomrule
+	\end{tabularx}
+	\end{subtable}
+	\caption{Tiempos de terminación promedio de los distintos métodos cuando varía la dimensión.
+			La desviación estándar se encuentra entre paréntesis.}
 	\label{table:fin:mt:times}
 \end{table}
 
-\begin{table}[H]
+\begin{table}[hbtp]
 	\centering
-	\begin{tabular}{rccc} \toprule
-		$n$ & R\&A & \texttt{dioph\_right} & \texttt{dioph\_left} \\ \midrule
-		50       &  0.741 & 0.029 & 0.018 \\
-		100      &  0.107 & 0.009 & 0.008 \\
-		200      &  0.179 & 0.005 & 0.004 \\
-		500      &  0.155 & 0.004 & 0.003 \\ \midrule
-		1,000     &  0.145 & 0.002 & 0.001 \\
-		2,000     &  0.164 & 0.001 & 0.001 \\
-		5,000     &  0.119 & 0.003 & 0.004 \\
-		10,000    &  0.159 & 0.002 & 0.003 \\ \midrule
-		20,000    &  0.045 & 0.002 & 0.001 \\
-		30,000    &  0.062 & 0.001 & 0.002 \\
-		40,000    &  0.008 & 0.004 & 0.001 \\
-		50,000    &  0.005 & 0.001 & 0.001 \\ \midrule
-		60,000    &  0.010 & 0.001 & 0.001 \\
-		70,000    &  0.016 & 0.002 & 0.001 \\
-		80,000    &  0.008 & 0.001 & 0.001 \\
-		90,000    &  0.015 & 0.001 & 0.000 \\ \midrule
-		100,000   &  0.010 & 0.001 & 0.000 \\
-		150,000 & - & - & 0.000 \\ \bottomrule
+	\sisetup{round-precision=3}
+	\setlength{\tabcolsep}{3pt}\renewcommand{\arraystretch}{1.1}
+	\begin{tabular}{r S S S S}
+		\toprule
+		{$n$}
+		& {FD}
+		& {R\&A}
+		& {\texttt{dioph\_left}}
+		& {\texttt{dioph\_right}} \\ \midrule
+		50      & 0.091 & 0.741 & 0.019 & 0.029 \\
+		100     & 0.020 & 0.107 & 0.008 & 0.009 \\
+		200     & 0.005 & 0.179 & 0.004 & 0.005 \\
+		500     & 0.003 & 0.155 & 0.003 & 0.004 \\ \midrule
+		1,000   & 0.005 & 0.145 & 0.001 & 0.002 \\
+		2,000   & 0.002 & 0.164 & 0.001 & 0.001 \\
+		5,000   & 0.002 & 0.119 & 0.004 & 0.003 \\ \midrule
+		10,000  &      & 0.159 & 0.003 & 0.002 \\
+		20,000  &      & 0.045 & 0.001 & 0.002 \\
+		30,000  &      & 0.062 & 0.002 & 0.001 \\
+		40,000  &      & 0.008 & 0.001 & 0.004 \\
+		50,000  &      & 0.005 & 0.001 & 0.001 \\
+		60,000  &      & 0.010 & 0.001 & 0.001 \\
+		70,000  &      & 0.016 & 0.001 & 0.002 \\
+		80,000  &      & 0.008 & 0.001 & 0.001 \\
+		90,000  &      & 0.015 & 0.000 & 0.001 \\ \midrule
+		100,000 &      & 0.010 & 0.000 & 0.001 \\
+		150,000 &      &       & 0.000 &       \\ \bottomrule
 	\end{tabular}
 	\caption{Coeficientes de variación en los tiempos de terminación de acuerdo a la tabla
 	\ref{table:fin:mt:times}.}
 	\label{table:fin:mt:cv}
 \end{table}
-
 
 Una de las hipótesis por las que el autor cree que \texttt{dioph\_left} presenta resultados aún más
 rápidos que su contraparte \texttt{dioph\_right} es la que sigue. Puesto que estamos generando
@@ -1565,32 +1615,22 @@ ascendente o descendente sobre $\vec{q}$.
 \noindent
 Recordemos que nos referimos al lado derecho $u$ de la desigualdad \eqref{theory:constraint:budget}
 como el presupuesto del problema \eqref{theory:formulation}. Tomamos las mismas precauciones que en
-la subsección pasada para evitar encontrarnos con soluciones triviales.
+la subsección pasada para evitar soluciones triviales.
 
 En este caso, fijamos la dimensión en $n = 1,000$ y dejamos que el vector esencialmente entero
 $\vec{p} \in \Z^n$ sea un vector aleatorio tomado de una distribución uniforme discreta sobre el
-intervalo $[10, 10,000)^n$. Luego, dejamos que el presupuesto $u \in \Z$ varíe uniformemente sobre el
-intervalo $[.01S, S)$, donde $S \coloneq \sum_{i=1}^np_i$.
-Tomamos $N = 128$ observaciones de este tipo y medimos los tiempos de terminación promedio sobre las
-20 corridas. La figura \ref{fig:exp:fin:rhs} muestra estos tiempos de terminación, mientras que la figura
-\ref{fig:exp:fin:rhs:cv} muestra la distribución de sus coeficientes de variación.
+intervalo $[10, 10,000)^n$. Luego, tomamos $N = 128$ puntos enteros equidistantes sobre el intervalo
+$[.01S, S)$, donde $S \coloneq \sum_{i=1}^np_i$. y medimos los tiempos de terminación promedio sobre
+las 20 corridas. La figura \ref{fig:exp:fin:rhs:zoom} muestra estos tiempos de terminación, mientras que
+la figura \ref{fig:exp:fin:rhs:cv} muestra la distribución de sus coeficientes de variación.
 
 \begin{figure}[hbtp]
-  \centering
-  \begin{subfigure}{0.80\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/fin/rhs/times.pdf}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}{0.80\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/fin/rhs/times-nobb.pdf}
-  \end{subfigure}
-
-  \caption{Tiempos de terminación promedio de los distintos métodos cuando varía el presupuesto.
-  \textit{Arriba}: Resultados tomando en cuenta Ramificación y Acotamiento (R\&A), así como la
-	implementación dinámica. \textit{Abajo}: \textit{Zoom} en los métodos diofantinos.}
-  \label{fig:exp:fin:rhs}
+	\centering
+	\includegraphics[width=0.9\linewidth]{/home/tempdata/repos/thesis/static/fin/rhs/times-macro.pdf}
+	\caption{Tiempos de terminación promedio de los distintos métodos cuando varía el presupuesto.
+		Para observar mejor los tiempos, eliminamos el método más lento y hacemos \textit{zoom} a la
+		imagen.}
+	\label{fig:exp:fin:rhs:zoom}
 \end{figure}
 
 \begin{figure}[hbtp]
@@ -1601,18 +1641,45 @@ Tomamos $N = 128$ observaciones de este tipo y medimos los tiempos de terminaci�
 	\label{fig:exp:fin:rhs:cv}
 \end{figure}
 
-Destaca la inestabilidad del método de Ramificación y Acotamiento. Una hipótesis del autor es que
-esta inestabilidad es causada por la constante transferencia de datos entre los módulos del problema
-relajado y la generación de cortes (ver figura \ref{p1c11:fig:MIP_solver_flowchart}). Por ello, el
-autor decidió correr el mismo experimento tomando en cuenta una implementación ``pura'' de
-Ramificación y Acotamiento, la cual prohíbe la generación de cortes.
+Como mostramos en la subsección \ref{subsec:fin:dp}, se ilustra gráficamente que los tiempos de
+terminación de FD crecen linealmente con respecto al presupuesto. Aún así, destaca el hecho de que
+FD resultó ser más consistente en sus tiempos de terminación que los otros tres métodos. Ambos FD y
+\texttt{dioph\_right} tuvieron coeficientes de variación menor que 2.5\%, al igual que
+\texttt{dioph\_left} con excepción de dos experimentos anómalos.
 
-Si bien los tiempos de terminación son similares y por lo tanto no tiene sentido mostrarlos, sí hay
-un cambio significativo en la estabilidad de este nuevo método. En la figura
-\ref{fig:exp:fin:rhs:cv-wbb} es claro que la mediana de los coeficientes de variación es
-aproximadamente un tercio en la implementación pura. Es decir, en el 50\% de los $N = 128$
-experimentos que realizamos, los tiempos de terminación están tres veces más concentrados alrededor
-de la media en la implementación pura que en la implementación que permite generar cortes.
+En ambos R\&A métodos diofantinos hay presencia de un comportamiento oscilatorio. El autor
+está seguro que esto ocurre cuando el presupuesto $u$ es múltiplo de una de las entradas de $\vec{p}$
+(para R\&A) o de $\vec{q}$ (para los métodos diofantinos). En estos casos el problema es trivial,
+pues si $p_j \mid u$, entonces R\&A encuentra inmediatamente la solución óptima
+\begin{equation*}
+	x_i \coloneq \begin{cases}
+		\floor{u / p_i} & i = j, \\
+		0 & \text{e.o.c.},
+	\end{cases}
+\end{equation*}
+y similarmente para los métodos diofantinos. Si bien esta situación fue previsible en el diseño del
+experimento, deshacernos de estas observaciones ocultaría el comportamiento lineal de FD con respecto 
+al presupuesto $u$. Esto, a su vez, debilitaría nuestro argumento sobre la complejidad de FD en la
+subsección \ref{subsec:fin:dp}.
+
+Destaca la inestabilidad del método de R\&A. Una hipótesis del autor es que esto es causado por la
+constante transferencia de datos entre los módulos del problema relajado y la generación de cortes
+(ver figura \ref{p1c11:fig:MIP_solver_flowchart}) dentro del \textit{solver} CBC. Por ello, el autor
+decidió correr el mismo experimento tomando en cuenta una configuración de R\&A que prohíba la
+generación de cortes. Debido a la dimensión $n = 1{,}000$ del problema y al fenómeno expuesto en la
+sección \ref{sec:inf:exp}, no prohibimos el uso de heurísticas.
+
+El autor encontró que los tiempos de terminación son similares y por lo tanto no tiene sentido
+mostrarlos, pero sí hay un cambio significativo en la estabilidad de esta nueva configuración. La
+comparación de coeficientes de variación se muestra en la figura \ref{fig:exp:fin:rhs:cv-wbb}.
+
+Es claro que la mediana de los coeficientes de variación es aproximadamente un tercio en la
+implementación sin cortes. Es decir, en el 50\% de los $N = 128$ experimentos que realizamos, las
+distribuciones de los tiempos de terminación están tres veces más concentradas alrededor de su media
+en la configuración sin cortes que en la configuración original. Aún así, el rango de ambas
+distribuciones es la misma, lo que sugiere que en ningún momento la generación de cortes ayudó a
+encontrar más rápidamente las soluciones óptimas. En realidad, la generación de cortes provocó que
+Ramificación y Acotamiento se comportara erráticamente.
 
 \begin{figure}[hbtp]
 	\centering

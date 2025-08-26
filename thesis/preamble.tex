@@ -28,7 +28,14 @@
 \usepackage{cleveref}
 
 % tables
-\usepackage{booktabs}
+\usepackage{booktabs, tabularx, siunitx, subcaption}
+
+\sisetup{
+  round-mode=places,
+  group-separator = {\,},
+  table-number-alignment = center,
+  table-text-alignment = center
+}
 
 \usepackage[spanish,onelanguage,ruled,vlined,commentsnumbered,rightnl]{algorithm2e}
 % \RestyleAlgo{boxed}

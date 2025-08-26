@@ -642,6 +642,14 @@ terminación de este método.
 	\label{fig:infrec}
 \end{figure}
 
+\begin{observation}
+	Si el lado derecho hubiera sido $0$ en vez $0.3$, R\&A hubiera terminado inmediatamente con la
+	solución $(0, 0)$ al resolver el problema relajado. Es decir, un cambio de $0.3$ unidades en el
+	lado derecho de la única desigualdad provocó que el árbol generado por R\&A tuviera profundidad
+	unitaria a profundida infinita. Este único ejemplo muestra que R\&A no depende exclusivamente
+	del número de variables y desigualdades.
+\end{observation}
+
 El autor sospecha que el fenómeno presentado en el ejemplo \ref{ex:inf} ocurre en todas las
 instancias de \eqref{theory:formulation} cuando $\vec{p}$ es esencialmente entero. En particular,
 para problemas de este tipo exite una colección de subproblemas homotéticos entre sí. Además, si el
@@ -680,14 +688,14 @@ Luego, el número de decimales utilizados para expresar las entradas del vector 
 \eqref{theory:formulation} afecta la eficiencia de estos cortes. En efecto, si usamos
 un decimal más para especificar las entradas de $\vec{p}$, entonces su vector coprimo $\vec{q}$ se
 multiplica aproximadamente por 10. De \eqref{eq:mat-T} tenemos que las entradas de $M$ se
-multiplican aproximadamente por 10 y, por lo tanto, $\norm{M\vec{e}_i}$ es $10^{n/2}$ veces mayor.
-Es decir, los cortes de R\&A se vuelven aproximadamente $10^{n/2}$ más ineficientes.
+multiplican aproximadamente por 10 y, por lo tanto, $\norm{M\vec{e}_i}$ es $10^{n}$ veces mayor.
+Es decir, los cortes de R\&A se vuelven aproximadamente $10^{n}$ más ineficientes.
 
 Es cierto que, en la práctica, no existen implementaciones puras de R\&A. Más bien, existe un
 ecosistema de módulos que combinan R\&A con otro tipo de generación de cortes, con la manera de
 elegir subproblemas, con métodos de presolución, con heurísticas, etcétera (ver figura
 \ref{p1c11:fig:MIP_solver_flowchart}). Estas técnicas evitan, en primer lugar, que se genere un
-árbol de profunidad infinita y, en segundo lugar, encuentran soluciones eficientemente.
+árbol de profundidad infinita y, en segundo lugar, encuentran soluciones eficientemente.
 
 A pesar de lo anterior, en la siguiente subsección mostramos que la obtención de soluciones de
 \eqref{theory:formulation} todavía es lenta cuando una entrada del vector coprimo $\vec{q}$ del
@@ -780,16 +788,21 @@ R\&A no encontró una solución en cualesquiera de los dos problemas, nos deshac
 dato. Realizamos el mismo procedimiento entre $\vec{p}_5$ y $\vec{p}_4$.
 
 Denominamos como multiplicadores a las razones anteriores, pues representan el factor de aumento en
-los tiempos de terminación de R\&A cuando utilizamos una cifra decimal extra. La figura
-\ref{fig:exp:inf:hist} muestra la distribución de estos multiplicadores. En el 60\% de los casos, el
-multiplicador es al menos 10. Es decir, una cifra decimal extra en $\vec{p}$ provoca, en la mayoría
-de los casos, que el tiempo de terminación en R\&A sea al menos diez veces mayor.
+los tiempos de terminación de R\&A cuando utilizamos una cifra decimal adicional. La figura
+\ref{fig:exp:inf:hist} muestra la distribución de estos multiplicadores, donde recortamos los
+multiplicadores a un máximo de 100. En realidad, el multiplicador más grande fue aproximadamente 5422.
 
 De acuerdo a la subsección anterior, deberíamos esperar que la gran mayoría de los multiplicadores
-se concentren alrededor de $10^{n/2} = 100$. No obstante, solamente el 20\% de estos lo hace. El
-autor hipotetiza que esto es causado por el uso de heurísticas en nuestra implementación de R\&A.
-% TODO: contar cuántas instancias encontraron una solución gracias a las heurísticas.
-% TODO: mostrar la distribución usando un solver sin heurísticas.
+se concentren alrededor de $10^{n} = 10000$. No obstante, el 20\% de las observaciones tiene un
+multiplicador de $10^2 = 100$ o mayor. Después de un conteo en los archivos de registro generados
+por el \textit{solver} CBC, el autor descubrió que en \textbf{todos} los casos que R\&A encontró una
+solución fue a causa de una heurística y no por el método ``tradicional'' de ramificación. Por la
+dificultad del árbol que genera el problema \eqref{theory:formulation}, de acuerdo a la subsección
+anterior, esto parece ser razonable.
+
+Aún cuando las soluciones fueron obtenidas exclusivamente a través de heurísticas, en el 60\% de los
+casos el multiplicador es al menos 10. Es decir, una cifra decimal adicional en $\vec{p}$ provoca, en la
+mayoría de los casos, que el tiempo de terminación en R\&A sea al menos diez veces mayor.
 
 \begin{figure}[hbtp]
 	\centering
