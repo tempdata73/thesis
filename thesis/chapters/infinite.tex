@@ -503,10 +503,10 @@ con la precisión numérica que usamos para especificar el vector objetivo en pr
 enteros. Por lo tanto, no es cierto que estos programas dependan exclusivamente de su dimensión y de
 su número de restricciones, como se escucha normalmente.
 
-En primer lugar, determinamos la complejidad algorítmica del algoritmo \ref{algo:inf:ext}. En
-segundo lugar, enseñamos por qué el método de R\&A también depende del número de decimales usados
-para especificar las entradas del vector objetivo. En tercer lugar, diseñamos un experimento
-numérico que ilustre esta dependencia.
+En primer lugar, determinamos la complejidad algorítmica del algoritmo \ref{algo:inf:ext} y lo
+usamos como base de nuestras comparaciones. En segundo lugar, enseñamos por qué el método de R\&A
+también depende del número de decimales usados para especificar las entradas del vector objetivo. En
+tercer lugar, diseñamos un experimento numérico que ilustre esta dependencia.
 
 \subsection{Análisis de nuestro método}
 \label{subsec:inf:complex}
@@ -740,7 +740,7 @@ cuando utilizamos más cifras decimales para especificar el vector objetivo $\ve
 \eqref{theory:formulation}.
 
 Así pues, generamos un vector $\vec{p}_3$ tomado de una distribución uniforme discreta sobre el
-intervalo $[9000, 10000)^n$. A este vector inicial lo dividimos por 1000, de manera que sea un
+intervalo $[9{,}000, 10{,}000)^n$. A este vector inicial lo dividimos por 1{,}000, de manera que sea un
 vector racional con tres cifras decimales. Escogimos aleatoriamente 2 de estas $n = 4$ entradas y
 las multiplicamos por $-1$, con lo que aseguramos que el vector coprimo $\vec{q}_3$ asociado a
 $\vec{p}_3$ tenga al menos una entrada negativa.
@@ -789,14 +789,14 @@ dato. Realizamos el mismo procedimiento entre $\vec{p}_5$ y $\vec{p}_4$.
 
 Denominamos como multiplicadores a las razones anteriores, pues representan el factor de aumento en
 los tiempos de terminación de R\&A cuando utilizamos una cifra decimal adicional. La figura
-\ref{fig:exp:inf:hist} muestra la distribución de estos multiplicadores, donde recortamos los
-multiplicadores a un máximo de 100. En realidad, el multiplicador más grande fue aproximadamente 5422.
+\ref{fig:exp:inf:hist} muestra la distribución de estos multiplicadores, donde los recortamos a un
+máximo de 100. En realidad, el multiplicador más grande fue aproximadamente 5{,}422.
 
 De acuerdo a la subsección anterior, deberíamos esperar que la gran mayoría de los multiplicadores
-se concentren alrededor de $10^{n} = 10000$. No obstante, el 20\% de las observaciones tiene un
+se concentren alrededor de $10^{n} = 10{,}000$. No obstante, solo el 20\% de las observaciones tiene un
 multiplicador de $10^2 = 100$ o mayor. Después de un conteo en los archivos de registro generados
 por el \textit{solver} CBC, el autor descubrió que en \textbf{todos} los casos que R\&A encontró una
-solución fue a causa de una heurística y no por el método ``tradicional'' de ramificación. Por la
+solución fue a causa de una heurística y no por el método de ramificación. Por la
 dificultad del árbol que genera el problema \eqref{theory:formulation}, de acuerdo a la subsección
 anterior, esto parece ser razonable.
 
@@ -804,9 +804,15 @@ Aún cuando las soluciones fueron obtenidas exclusivamente a través de heuríst
 casos el multiplicador es al menos 10. Es decir, una cifra decimal adicional en $\vec{p}$ provoca, en la
 mayoría de los casos, que el tiempo de terminación en R\&A sea al menos diez veces mayor.
 
+El autor espera que lo realizado en estos experimentos numéricos muestre categóricamente que el
+método de Ramificación y Acotamiento no depende solo del número de variables o de desigualdades
+utilizadas. Así pues, con esto damos por concluido este capítulo y continuamos con nuestro
+desarrollo del segundo caso del teorema \ref{theory:th:feasibility}. Es decir, el siguiente capítulo
+analiza a profundidad el caso finito.
+
 \begin{figure}[hbtp]
 	\centering
     \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/mult-hist-cum.pdf}
-	\caption{Distribución de multiplicadores}
+	\caption{Distribución acumulada de los multiplicadores de tiempo.}
 	\label{fig:exp:inf:hist}
 \end{figure}

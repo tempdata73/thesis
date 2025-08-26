@@ -1147,7 +1147,7 @@ estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
 	que queríamos demostrar.
 \end{proof}
 
-\begin{algorithm}[Ht]
+\begin{algorithm}[hbtp]
 	\LinesNumbered
 	\SetKwProg{Fn}{Fn}{\string:}{}
 	\SetKwFunction{Bezout}{Bezout}
@@ -1300,11 +1300,11 @@ en la sección \ref{subsec:inf:complex} para la realización de estos experiment
 \noindent
 Mencionamos en la sección pasada que el algoritmo \ref{algo:fin:helper} fue escrito de esa manera para demostrar la
 correctud de nuestro método. El autor optó por realizar una implementación equivalente en ciclos
-debido al límite suave en las llamadas de recursión que permite Python. Este límite es de 3000
+debido al límite suave en las llamadas de recursión que permite Python. Este límite es de 3{,}000
 llamadas recursivas en la máquina donde se realizaron los experimentos. Esto significa que, de
-manera predeterminada, solamente podríamos resolver problemas de dimensión $n \leq 3000$. No
+manera predeterminada, solamente podríamos resolver problemas de dimensión $n \leq 3{,}000$. No
 obstante, en la subsección \ref{subsec:exp:fin:n} realizamos experimentos con problemas de dimensión
-$n \leq 150000$.
+$n \leq 150{,}000$.
 
 Vimos que este algoritmo calcula repetidamente los mismos máximos común divisores $g$ y los mismos
 coeficientes de Bézout $x', \omega'$. Puesto que estos números dependen exclusivamente del vector
@@ -1385,14 +1385,14 @@ por contradicción que el vector $(x, \tvec{x})$ es la solución del problema y 
 \eqref{theory:formulation} tiene subestructura óptima.
 
 Sea $f_m(\hat{u})$ el valor óptimo del subproblema de \eqref{theory:formulation} cuando el
-lado derecho de \eqref{theory:constraint:budget} es $\hat{u}$ y se escogieron todas menos las
+lado derecho de \eqref{theory:constraint:budget} es $\hat{u}$ y debemos escoger las
 primeras $m$ entradas del vector solución $\vec{x}$. Como $\vec{p} > \vec{0}$, no es difícil ver que $0 \leq
 \hat{u} \leq u$. Entonces tenemos
 \begin{subequations}
 	\begin{align}
 		\label{formulation:dp}
-		f_1(\hat{u}) &= \floor{\hat{u}/p_1}p_1, \\
-		f_m(\hat{u}) &= \begin{cases}
+		f_1(\hat{u}) &\coloneq \floor{\hat{u}/p_1}p_1, \\
+		f_m(\hat{u}) &\coloneq \begin{cases}
 			f_{m-1}(\hat{u}), & \hat{u} \leq p_m - 1, \\
 			\max\braces{f_{m - 1}(\hat{u}), f_{m}(\hat{u} - p_m) + p_m}, & p_m \leq \hat{u} \leq u.
 			\label{dp:rec}
@@ -1410,7 +1410,8 @@ Puesto que tenemos $n$ subproblemas que resolver y para cada subproblema debemos
 peor de los casos, $u$ comparaciones, se sigue que el costo de calcular $f_n(u)$ es $\mathcal{O}(nu)$.
 No obstante, ambos R\&A y los métodos diofantinos (\texttt{dioph\_left} y
 \texttt{dioph\_right}) terminan con la solución óptima, así que la implementación realizada por el
-autor de esta FD incluye una manera de construir la solución, a pesar del costo adicional en eficiencia.
+autor de esta formulación dinámica incluye una manera de construir la solución, a pesar del costo
+adicional en eficiencia, el cual es lineal en $u$.
 
 \subsection{Experimentos en la dimensión}
 \label{subsec:exp:fin:n}
@@ -1467,21 +1468,21 @@ donde $\vec{\hat{p}} \in \R^{n-1}$ resulta de remover del vector $\vec{p}$ su $\
 
 Así pues, sea $n$ la dimensión del problema. Dejamos que $\vec{p} \in \Z^n$ sea un vector aleatorio
 tomado de una distribución uniforme discreta sobre $[10, 5n)^n$. El hecho de que el soporte de la
-distribución dependa de la dimensión reduce la probabilidad de que $\vec{p}$ tenga entradas
+distribución dependa de la dimensión reduce a 2\% la probabilidad de que $\vec{p}$ tenga entradas
 repetidas. Al calcular el vector coprimo $\vec{q}$ checamos que $q_i \neq 1$ para todo $1 \leq i
 \leq n$. De caso contrario, calculamos otro vector aleatorio $\vec{p}$. Finalmente, escogemos el
 lado derecho de la restricción \eqref{theory:constraint:budget} de manera que
 \begin{equation*}
 	u \coloneq \begin{cases}
-		0.5\sum_{i=1}^{n}p_i & n \leq 20,000, \\
-		0.1\sum_{i=1}^{n}p_i & n > 20,000,
+		0.5\sum_{i=1}^{n}p_i & n \leq 20{,}000, \\
+		0.1\sum_{i=1}^{n}p_i & n > 20{,}000,
 	\end{cases}
 \end{equation*}
 para evitar obtener un problema trivial de acuerdo a la reducción binaria.
 
 La tabla \ref{table:fin:mt:times} muestra los tiempos promedios de terminación así como las
 desviaciones estándar de los métodos utilizados para realizar cada experimento. La tabla
-\ref{table:fin:mt:cv} muestra los coeficientes de variación de estos tiempos. Un coeficientes de
+\ref{table:fin:mt:cv} muestra los coeficientes de variación de estos tiempos. Un coeficiente de
 variación mide, en proporción, qué tan concentrados están los tiempos alrededor de su media, y se
 calcula como $\sigma / \mu$, donde $\mu$ y $\sigma$ son la media y desviación estándar de los tiempos
 medidos, respectivamente. Las casillas vacías indican que el método no encontró una solución para el
@@ -1534,20 +1535,20 @@ debemos olvidar que FD no encontró una solución en el 61\% de los experimentos
 		& \multicolumn{2}{c}{\texttt{dioph\_left}}
 		& \multicolumn{2}{c}{\texttt{dioph\_right}} \\
 		\midrule
-		1000     & 1.270   & (±0.1)   & 0.109   & (±0.02) & 0.013   & (±0.00) & 0.013   & (±0.00) \\
-		2000     & 10.368  & (±0.02)  & 0.135   & (±0.02) & 0.042   & (±0.00) & 0.043   & (±0.00) \\
-		5000     & 160.562 & (±0.39)  & 1.666   & (±0.20) & 0.245   & (±0.00) & 0.265   & (±0.00) \\ \midrule
-		10000    &         &          & 2.124   & (±0.33) & 1.063   & (±0.00) & 1.164   & (±0.00) \\
-		20000    &         &          & 7.682   & (±0.34) & 4.595   & (±0.01) & 4.991   & (±0.01) \\
-		30000    &         &          & 19.192  & (±1.18) & 10.743  & (±0.02) & 11.553  & (±0.01) \\
-		40000    &         &          & 24.334  & (±0.19) & 19.471  & (±0.02) & 20.994  & (±0.08) \\
-		50000    &         &          & 38.940  & (±0.18) & 30.887  & (±0.03) & 33.451  & (±0.04) \\
-		60000    &         &          & 51.962  & (±0.53) & 45.072  & (±0.05) & 48.545  & (±0.05) \\
-		70000    &         &          & 81.033  & (±1.26) & 61.885  & (±0.04) & 66.345  & (±0.10) \\
-		80000    &         &          & 116.618 & (±0.93) & 81.418  & (±0.06) & 87.726  & (±0.12) \\
-		90000    &         &          & 141.683 & (±2.10) & 103.962 & (±0.04) & 111.553 & (±0.12) \\ \midrule
-		100000   &         &          & 170.397 & (±1.75) & 129.440 & (±0.05) & 139.652 & (±0.16) \\
-		150000   &         &          &         &          & 299.154 & (±0.13) &         &          \\
+		1,000     & 1.270   & (±0.1)   & 0.109   & (±0.02) & 0.013   & (±0.00) & 0.013   & (±0.00) \\
+		2,000     & 10.368  & (±0.02)  & 0.135   & (±0.02) & 0.042   & (±0.00) & 0.043   & (±0.00) \\
+		5,000     & 160.562 & (±0.39)  & 1.666   & (±0.20) & 0.245   & (±0.00) & 0.265   & (±0.00) \\ \midrule
+		10,000    &         &          & 2.124   & (±0.33) & 1.063   & (±0.00) & 1.164   & (±0.00) \\
+		20,000    &         &          & 7.682   & (±0.34) & 4.595   & (±0.01) & 4.991   & (±0.01) \\
+		30,000    &         &          & 19.192  & (±1.18) & 10.743  & (±0.02) & 11.553  & (±0.01) \\
+		40,000    &         &          & 24.334  & (±0.19) & 19.471  & (±0.02) & 20.994  & (±0.08) \\
+		50,000    &         &          & 38.940  & (±0.18) & 30.887  & (±0.03) & 33.451  & (±0.04) \\
+		60,000    &         &          & 51.962  & (±0.53) & 45.072  & (±0.05) & 48.545  & (±0.05) \\
+		70,000    &         &          & 81.033  & (±1.26) & 61.885  & (±0.04) & 66.345  & (±0.10) \\
+		80,000    &         &          & 116.618 & (±0.93) & 81.418  & (±0.06) & 87.726  & (±0.12) \\
+		90,000    &         &          & 141.683 & (±2.10) & 103.962 & (±0.04) & 111.553 & (±0.12) \\ \midrule
+		100,000   &         &          & 170.397 & (±1.75) & 129.440 & (±0.05) & 139.652 & (±0.16) \\
+		150,000   &         &          &         &          & 299.154 & (±0.13) &         &          \\
 		\bottomrule
 	\end{tabularx}
 	\end{subtable}
@@ -1617,9 +1618,9 @@ Recordemos que nos referimos al lado derecho $u$ de la desigualdad \eqref{theory
 como el presupuesto del problema \eqref{theory:formulation}. Tomamos las mismas precauciones que en
 la subsección pasada para evitar soluciones triviales.
 
-En este caso, fijamos la dimensión en $n = 1,000$ y dejamos que el vector esencialmente entero
+En este caso, fijamos la dimensión en $n = 1{,}000$ y dejamos que el vector esencialmente entero
 $\vec{p} \in \Z^n$ sea un vector aleatorio tomado de una distribución uniforme discreta sobre el
-intervalo $[10, 10,000)^n$. Luego, tomamos $N = 128$ puntos enteros equidistantes sobre el intervalo
+intervalo $[10, 10{,}000)^n$. Luego, tomamos $N = 128$ puntos enteros equidistantes sobre el intervalo
 $[.01S, S)$, donde $S \coloneq \sum_{i=1}^np_i$. y medimos los tiempos de terminación promedio sobre
 las 20 corridas. La figura \ref{fig:exp:fin:rhs:zoom} muestra estos tiempos de terminación, mientras que
 la figura \ref{fig:exp:fin:rhs:cv} muestra la distribución de sus coeficientes de variación.
@@ -1647,27 +1648,30 @@ FD resultó ser más consistente en sus tiempos de terminación que los otros tr
 \texttt{dioph\_right} tuvieron coeficientes de variación menor que 2.5\%, al igual que
 \texttt{dioph\_left} con excepción de dos experimentos anómalos.
 
-En ambos R\&A métodos diofantinos hay presencia de un comportamiento oscilatorio. El autor
-está seguro que esto ocurre cuando el presupuesto $u$ es múltiplo de una de las entradas de $\vec{p}$
-(para R\&A) o de $\vec{q}$ (para los métodos diofantinos). En estos casos el problema es trivial,
-pues si $p_j \mid u$, entonces R\&A encuentra inmediatamente la solución óptima
+En ambos R\&A y los métodos diofantinos hay presencia de un comportamiento oscilatorio. El autor
+confirmó para los métodos diofantinos que esto coincide en la mayoría de los casos cuando el
+presupuesto $u$ es múltiplo de una de las entradas de $\vec{q}$. En estos casos el problema es
+trivial, pues si $q_j \mid u$, entonces uno de \texttt{dioph\_left} o \texttt{dioph\_right}
+encuentra inmediatamente la solución
 \begin{equation*}
 	x_i \coloneq \begin{cases}
-		\floor{u / p_i} & i = j, \\
-		0 & \text{e.o.c.},
+		\floor{u / q_i} & i = j, \\
+		0 & \text{e.o.c.}
 	\end{cases}
 \end{equation*}
-y similarmente para los métodos diofantinos. Si bien esta situación fue previsible en el diseño del
-experimento, deshacernos de estas observaciones ocultaría el comportamiento lineal de FD con respecto 
-al presupuesto $u$. Esto, a su vez, debilitaría nuestro argumento sobre la complejidad de FD en la
-subsección \ref{subsec:fin:dp}.
+En los casos que una entrada de $\vec{q}$ divide a $u$, el autor encontró que un repunte en
+\texttt{dioph\_left} coincide con una caída en \texttt{dioph\_right} y viceversa. Las excepciones
+más notables a este comportamiento fueron las dos observaciones anómalas en \texttt{dioph\_left}
+(ver figuras \ref{fig:exp:fin:rhs:zoom} y \ref{fig:exp:fin:rhs:cv}). En cambio, el comportamiento
+oscilatorio en R\&A no coincide con los casos en los que el presupuesto $u$ es múltiplo de alguna
+entrada de $\vec{p}$.
 
-Destaca la inestabilidad del método de R\&A. Una hipótesis del autor es que esto es causado por la
-constante transferencia de datos entre los módulos del problema relajado y la generación de cortes
-(ver figura \ref{p1c11:fig:MIP_solver_flowchart}) dentro del \textit{solver} CBC. Por ello, el autor
-decidió correr el mismo experimento tomando en cuenta una configuración de R\&A que prohíba la
-generación de cortes. Debido a la dimensión $n = 1{,}000$ del problema y al fenómeno expuesto en la
-sección \ref{sec:inf:exp}, no prohibimos el uso de heurísticas.
+Destaca la inestabilidad del método de R\&A. El autor hipotetizó que esto se debe a la constante
+sobrecarga computacional de transferir datos entre los módulos del problema relajado y la generación
+de cortes (ver figura \ref{p1c11:fig:MIP_solver_flowchart}) dentro del \textit{solver} CBC. Por
+ello, el autor decidió correr el mismo experimento tomando en cuenta una configuración de R\&A que
+prohíba la generación de cortes. Debido a la dimensión $n = 1{,}000$ del problema y al fenómeno
+expuesto en la sección \ref{sec:inf:exp}, no prohibimos el uso de heurísticas.
 
 El autor encontró que los tiempos de terminación son similares y por lo tanto no tiene sentido
 mostrarlos, pero sí hay un cambio significativo en la estabilidad de esta nueva configuración. La
@@ -1680,6 +1684,12 @@ en la configuración sin cortes que en la configuración original. Aún así, el
 distribuciones es la misma, lo que sugiere que en ningún momento la generación de cortes ayudó a
 encontrar más rápidamente las soluciones óptimas. En realidad, la generación de cortes provocó que
 Ramificación y Acotamiento se comportara erráticamente.
+
+En conclusión, el autor considera que el argumento a favor del uso de métodos diofantinos es fuerte.
+Mostramos en ambos experimentos de esta sección que los métodos diofantinos son más rápidos, más
+estables y significativamente más robustos ante cambios en la dimensión o en el presupuesto del
+problema \eqref{theory:formulation} que sus contrapartes FD o R\&A. El siguiente capítulo propone
+una extensión de estos métodos diofantinos para resolver programas lineales enteros generales.
 
 \begin{figure}[hbtp]
 	\centering
