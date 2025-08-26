@@ -41,7 +41,7 @@ def solve_pulp(p, rhs, **kwargs):
     if timed_out:
         logging.warn("solver execution timed out")
 
-    return x # , (mu, sigma), timed_out
+    return x  # , (mu, sigma), timed_out
 
 
 def stats_dioph_as_rhs_increases(solver, q, m, rhs):

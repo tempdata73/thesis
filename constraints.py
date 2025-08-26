@@ -96,7 +96,7 @@ def solve_feasibility_naive(c_p, A, b, u):
     h, w = lattice_projection(c_p)
 
     lhs = A @ h
-    rhs_1 = b 
+    rhs_1 = b
     rhs_2 = A @ w
 
     # build model and do initial solve
@@ -124,10 +124,9 @@ def solve_feasibility_naive(c_p, A, b, u):
             msg = "problem is infeasible"
             raise ValueError(msg)
 
-
     params = np.array([t_i.varValue for t_i in t])
     x = h @ params + k * w
-    return x 
+    return x
 
 
 def solve_feasibility_backtrack(c_p, A, b, u):
@@ -187,9 +186,7 @@ def solve_lattice(c_p, A, b, u, num_iter=50):
 
 
 def solve_pulp(p, A, b, u, num_iter=50):
-    x = [
-        pl.LpVariable(f"x_{i}", lowBound=0, cat="Integer") for i in range(len(p))
-    ]
+    x = [pl.LpVariable(f"x_{i}", lowBound=0, cat="Integer") for i in range(len(p))]
     prob = pl.LpProblem(sense=pl.LpMaximize)
     prob += pl.lpDot(p, x)
     prob += pl.lpDot(p, x) <= u
@@ -214,9 +211,6 @@ def solve_pulp(p, A, b, u, num_iter=50):
 
     res = np.array([pl.value(var) for var in x])
     return res, (mu_ns, std_ns)
-
-
-
 
 
 if __name__ == "__main__":
