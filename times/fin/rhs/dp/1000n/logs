@@ -1,0 +1,516 @@
+2025-08-24 07:17:40 - INFO - saving log info on times/fin/rhs/dp/1000n
+2025-08-24 07:17:40 - INFO - starting work
+2025-08-24 07:17:40 - INFO - on problem 1 of 128
+2025-08-24 07:17:40 - INFO - running ukp_dp 22 times
+2025-08-24 07:17:40 - INFO - ignoring first 2 runs
+2025-08-24 07:17:42 - INFO - took 40.9362 ± 0.1108 ms
+2025-08-24 07:17:42 - INFO - on problem 2 of 128
+2025-08-24 07:17:42 - INFO - running ukp_dp 22 times
+2025-08-24 07:17:42 - INFO - ignoring first 2 runs
+2025-08-24 07:17:44 - INFO - took 76.1505 ± 0.3022 ms
+2025-08-24 07:17:44 - INFO - on problem 3 of 128
+2025-08-24 07:17:44 - INFO - running ukp_dp 22 times
+2025-08-24 07:17:44 - INFO - ignoring first 2 runs
+2025-08-24 07:17:46 - INFO - took 111.5976 ± 0.5257 ms
+2025-08-24 07:17:46 - INFO - on problem 4 of 128
+2025-08-24 07:17:46 - INFO - running ukp_dp 22 times
+2025-08-24 07:17:46 - INFO - ignoring first 2 runs
+2025-08-24 07:17:49 - INFO - took 146.2410 ± 0.5776 ms
+2025-08-24 07:17:49 - INFO - on problem 5 of 128
+2025-08-24 07:17:49 - INFO - running ukp_dp 22 times
+2025-08-24 07:17:49 - INFO - ignoring first 2 runs
+2025-08-24 07:17:53 - INFO - took 181.2142 ± 0.5956 ms
+2025-08-24 07:17:53 - INFO - on problem 6 of 128
+2025-08-24 07:17:53 - INFO - running ukp_dp 22 times
+2025-08-24 07:17:53 - INFO - ignoring first 2 runs
+2025-08-24 07:17:58 - INFO - took 216.0147 ± 0.6641 ms
+2025-08-24 07:17:58 - INFO - on problem 7 of 128
+2025-08-24 07:17:58 - INFO - running ukp_dp 22 times
+2025-08-24 07:17:58 - INFO - ignoring first 2 runs
+2025-08-24 07:18:04 - INFO - took 251.8057 ± 0.5328 ms
+2025-08-24 07:18:04 - INFO - on problem 8 of 128
+2025-08-24 07:18:04 - INFO - running ukp_dp 22 times
+2025-08-24 07:18:04 - INFO - ignoring first 2 runs
+2025-08-24 07:18:10 - INFO - took 287.3600 ± 1.0033 ms
+2025-08-24 07:18:10 - INFO - on problem 9 of 128
+2025-08-24 07:18:10 - INFO - running ukp_dp 22 times
+2025-08-24 07:18:10 - INFO - ignoring first 2 runs
+2025-08-24 07:18:17 - INFO - took 323.0211 ± 1.4480 ms
+2025-08-24 07:18:17 - INFO - on problem 10 of 128
+2025-08-24 07:18:17 - INFO - running ukp_dp 22 times
+2025-08-24 07:18:17 - INFO - ignoring first 2 runs
+2025-08-24 07:18:25 - INFO - took 359.8256 ± 1.7300 ms
+2025-08-24 07:18:25 - INFO - on problem 11 of 128
+2025-08-24 07:18:25 - INFO - running ukp_dp 22 times
+2025-08-24 07:18:25 - INFO - ignoring first 2 runs
+2025-08-24 07:18:34 - INFO - took 397.9004 ± 1.5124 ms
+2025-08-24 07:18:34 - INFO - on problem 12 of 128
+2025-08-24 07:18:34 - INFO - running ukp_dp 22 times
+2025-08-24 07:18:34 - INFO - ignoring first 2 runs
+2025-08-24 07:18:43 - INFO - took 436.3437 ± 2.4129 ms
+2025-08-24 07:18:43 - INFO - on problem 13 of 128
+2025-08-24 07:18:43 - INFO - running ukp_dp 22 times
+2025-08-24 07:18:43 - INFO - ignoring first 2 runs
+2025-08-24 07:18:54 - INFO - took 475.6123 ± 2.2077 ms
+2025-08-24 07:18:54 - INFO - on problem 14 of 128
+2025-08-24 07:18:54 - INFO - running ukp_dp 22 times
+2025-08-24 07:18:54 - INFO - ignoring first 2 runs
+2025-08-24 07:19:05 - INFO - took 515.6091 ± 2.7780 ms
+2025-08-24 07:19:05 - INFO - on problem 15 of 128
+2025-08-24 07:19:05 - INFO - running ukp_dp 22 times
+2025-08-24 07:19:05 - INFO - ignoring first 2 runs
+2025-08-24 07:19:17 - INFO - took 554.8230 ± 1.8486 ms
+2025-08-24 07:19:17 - INFO - on problem 16 of 128
+2025-08-24 07:19:17 - INFO - running ukp_dp 22 times
+2025-08-24 07:19:17 - INFO - ignoring first 2 runs
+2025-08-24 07:19:30 - INFO - took 598.2639 ± 2.7679 ms
+2025-08-24 07:19:30 - INFO - on problem 17 of 128
+2025-08-24 07:19:30 - INFO - running ukp_dp 22 times
+2025-08-24 07:19:30 - INFO - ignoring first 2 runs
+2025-08-24 07:19:45 - INFO - took 642.8473 ± 1.9291 ms
+2025-08-24 07:19:45 - INFO - on problem 18 of 128
+2025-08-24 07:19:45 - INFO - running ukp_dp 22 times
+2025-08-24 07:19:45 - INFO - ignoring first 2 runs
+2025-08-24 07:20:00 - INFO - took 687.4274 ± 2.1785 ms
+2025-08-24 07:20:00 - INFO - on problem 19 of 128
+2025-08-24 07:20:00 - INFO - running ukp_dp 22 times
+2025-08-24 07:20:00 - INFO - ignoring first 2 runs
+2025-08-24 07:20:16 - INFO - took 731.8014 ± 2.5083 ms
+2025-08-24 07:20:16 - INFO - on problem 20 of 128
+2025-08-24 07:20:16 - INFO - running ukp_dp 22 times
+2025-08-24 07:20:16 - INFO - ignoring first 2 runs
+2025-08-24 07:20:33 - INFO - took 774.3337 ± 1.8131 ms
+2025-08-24 07:20:33 - INFO - on problem 21 of 128
+2025-08-24 07:20:33 - INFO - running ukp_dp 22 times
+2025-08-24 07:20:33 - INFO - ignoring first 2 runs
+2025-08-24 07:20:51 - INFO - took 820.6416 ± 2.7290 ms
+2025-08-24 07:20:51 - INFO - on problem 22 of 128
+2025-08-24 07:20:51 - INFO - running ukp_dp 22 times
+2025-08-24 07:20:51 - INFO - ignoring first 2 runs
+2025-08-24 07:21:10 - INFO - took 866.4069 ± 2.7429 ms
+2025-08-24 07:21:10 - INFO - on problem 23 of 128
+2025-08-24 07:21:10 - INFO - running ukp_dp 22 times
+2025-08-24 07:21:10 - INFO - ignoring first 2 runs
+2025-08-24 07:21:30 - INFO - took 910.9195 ± 1.7640 ms
+2025-08-24 07:21:30 - INFO - on problem 24 of 128
+2025-08-24 07:21:30 - INFO - running ukp_dp 22 times
+2025-08-24 07:21:30 - INFO - ignoring first 2 runs
+2025-08-24 07:21:51 - INFO - took 954.3414 ± 2.2412 ms
+2025-08-24 07:21:51 - INFO - on problem 25 of 128
+2025-08-24 07:21:51 - INFO - running ukp_dp 22 times
+2025-08-24 07:21:51 - INFO - ignoring first 2 runs
+2025-08-24 07:22:13 - INFO - took 1005.4789 ± 7.0168 ms
+2025-08-24 07:22:13 - INFO - on problem 26 of 128
+2025-08-24 07:22:13 - INFO - running ukp_dp 22 times
+2025-08-24 07:22:13 - INFO - ignoring first 2 runs
+2025-08-24 07:22:36 - INFO - took 1052.7755 ± 4.5499 ms
+2025-08-24 07:22:36 - INFO - on problem 27 of 128
+2025-08-24 07:22:36 - INFO - running ukp_dp 22 times
+2025-08-24 07:22:36 - INFO - ignoring first 2 runs
+2025-08-24 07:23:00 - INFO - took 1096.4456 ± 2.4069 ms
+2025-08-24 07:23:00 - INFO - on problem 28 of 128
+2025-08-24 07:23:00 - INFO - running ukp_dp 22 times
+2025-08-24 07:23:00 - INFO - ignoring first 2 runs
+2025-08-24 07:23:25 - INFO - took 1136.4182 ± 2.2638 ms
+2025-08-24 07:23:25 - INFO - on problem 29 of 128
+2025-08-24 07:23:25 - INFO - running ukp_dp 22 times
+2025-08-24 07:23:25 - INFO - ignoring first 2 runs
+2025-08-24 07:23:51 - INFO - took 1181.3612 ± 2.8988 ms
+2025-08-24 07:23:51 - INFO - on problem 30 of 128
+2025-08-24 07:23:51 - INFO - running ukp_dp 22 times
+2025-08-24 07:23:51 - INFO - ignoring first 2 runs
+2025-08-24 07:24:18 - INFO - took 1222.3792 ± 4.4611 ms
+2025-08-24 07:24:18 - INFO - on problem 31 of 128
+2025-08-24 07:24:18 - INFO - running ukp_dp 22 times
+2025-08-24 07:24:18 - INFO - ignoring first 2 runs
+2025-08-24 07:24:46 - INFO - took 1262.8795 ± 3.9687 ms
+2025-08-24 07:24:46 - INFO - on problem 32 of 128
+2025-08-24 07:24:46 - INFO - running ukp_dp 22 times
+2025-08-24 07:24:46 - INFO - ignoring first 2 runs
+2025-08-24 07:25:15 - INFO - took 1304.6467 ± 2.9375 ms
+2025-08-24 07:25:15 - INFO - on problem 33 of 128
+2025-08-24 07:25:15 - INFO - running ukp_dp 22 times
+2025-08-24 07:25:15 - INFO - ignoring first 2 runs
+2025-08-24 07:25:44 - INFO - took 1344.9887 ± 4.7364 ms
+2025-08-24 07:25:44 - INFO - on problem 34 of 128
+2025-08-24 07:25:44 - INFO - running ukp_dp 22 times
+2025-08-24 07:25:44 - INFO - ignoring first 2 runs
+2025-08-24 07:26:15 - INFO - took 1386.2913 ± 3.4601 ms
+2025-08-24 07:26:15 - INFO - on problem 35 of 128
+2025-08-24 07:26:15 - INFO - running ukp_dp 22 times
+2025-08-24 07:26:15 - INFO - ignoring first 2 runs
+2025-08-24 07:26:46 - INFO - took 1428.7143 ± 4.3386 ms
+2025-08-24 07:26:46 - INFO - on problem 36 of 128
+2025-08-24 07:26:46 - INFO - running ukp_dp 22 times
+2025-08-24 07:26:46 - INFO - ignoring first 2 runs
+2025-08-24 07:27:19 - INFO - took 1468.7413 ± 4.2625 ms
+2025-08-24 07:27:19 - INFO - on problem 37 of 128
+2025-08-24 07:27:19 - INFO - running ukp_dp 22 times
+2025-08-24 07:27:19 - INFO - ignoring first 2 runs
+2025-08-24 07:27:52 - INFO - took 1511.2614 ± 3.5568 ms
+2025-08-24 07:27:52 - INFO - on problem 38 of 128
+2025-08-24 07:27:52 - INFO - running ukp_dp 22 times
+2025-08-24 07:27:52 - INFO - ignoring first 2 runs
+2025-08-24 07:28:26 - INFO - took 1549.9738 ± 4.0835 ms
+2025-08-24 07:28:26 - INFO - on problem 39 of 128
+2025-08-24 07:28:26 - INFO - running ukp_dp 22 times
+2025-08-24 07:28:26 - INFO - ignoring first 2 runs
+2025-08-24 07:29:01 - INFO - took 1593.1140 ± 2.4431 ms
+2025-08-24 07:29:01 - INFO - on problem 40 of 128
+2025-08-24 07:29:01 - INFO - running ukp_dp 22 times
+2025-08-24 07:29:01 - INFO - ignoring first 2 runs
+2025-08-24 07:29:37 - INFO - took 1634.3776 ± 3.6128 ms
+2025-08-24 07:29:37 - INFO - on problem 41 of 128
+2025-08-24 07:29:37 - INFO - running ukp_dp 22 times
+2025-08-24 07:29:37 - INFO - ignoring first 2 runs
+2025-08-24 07:30:14 - INFO - took 1676.5074 ± 3.1278 ms
+2025-08-24 07:30:14 - INFO - on problem 42 of 128
+2025-08-24 07:30:14 - INFO - running ukp_dp 22 times
+2025-08-24 07:30:14 - INFO - ignoring first 2 runs
+2025-08-24 07:30:52 - INFO - took 1717.8820 ± 3.0464 ms
+2025-08-24 07:30:52 - INFO - on problem 43 of 128
+2025-08-24 07:30:52 - INFO - running ukp_dp 22 times
+2025-08-24 07:30:52 - INFO - ignoring first 2 runs
+2025-08-24 07:31:30 - INFO - took 1756.8733 ± 3.7987 ms
+2025-08-24 07:31:30 - INFO - on problem 44 of 128
+2025-08-24 07:31:30 - INFO - running ukp_dp 22 times
+2025-08-24 07:31:30 - INFO - ignoring first 2 runs
+2025-08-24 07:32:10 - INFO - took 1798.8932 ± 2.7895 ms
+2025-08-24 07:32:10 - INFO - on problem 45 of 128
+2025-08-24 07:32:10 - INFO - running ukp_dp 22 times
+2025-08-24 07:32:10 - INFO - ignoring first 2 runs
+2025-08-24 07:32:50 - INFO - took 1841.0297 ± 5.4907 ms
+2025-08-24 07:32:50 - INFO - on problem 46 of 128
+2025-08-24 07:32:50 - INFO - running ukp_dp 22 times
+2025-08-24 07:32:50 - INFO - ignoring first 2 runs
+2025-08-24 07:33:32 - INFO - took 1884.6467 ± 2.1687 ms
+2025-08-24 07:33:32 - INFO - on problem 47 of 128
+2025-08-24 07:33:32 - INFO - running ukp_dp 22 times
+2025-08-24 07:33:32 - INFO - ignoring first 2 runs
+2025-08-24 07:34:14 - INFO - took 1924.0731 ± 2.5647 ms
+2025-08-24 07:34:14 - INFO - on problem 48 of 128
+2025-08-24 07:34:14 - INFO - running ukp_dp 22 times
+2025-08-24 07:34:14 - INFO - ignoring first 2 runs
+2025-08-24 07:34:57 - INFO - took 1964.0043 ± 3.3141 ms
+2025-08-24 07:34:57 - INFO - on problem 49 of 128
+2025-08-24 07:34:57 - INFO - running ukp_dp 22 times
+2025-08-24 07:34:57 - INFO - ignoring first 2 runs
+2025-08-24 07:35:42 - INFO - took 2010.4090 ± 3.4699 ms
+2025-08-24 07:35:42 - INFO - on problem 50 of 128
+2025-08-24 07:35:42 - INFO - running ukp_dp 22 times
+2025-08-24 07:35:42 - INFO - ignoring first 2 runs
+2025-08-24 07:36:27 - INFO - took 2049.9838 ± 3.8598 ms
+2025-08-24 07:36:27 - INFO - on problem 51 of 128
+2025-08-24 07:36:27 - INFO - running ukp_dp 22 times
+2025-08-24 07:36:27 - INFO - ignoring first 2 runs
+2025-08-24 07:37:13 - INFO - took 2106.4410 ± 32.6898 ms
+2025-08-24 07:37:13 - INFO - on problem 52 of 128
+2025-08-24 07:37:13 - INFO - running ukp_dp 22 times
+2025-08-24 07:37:13 - INFO - ignoring first 2 runs
+2025-08-24 07:38:00 - INFO - took 2133.1884 ± 3.2009 ms
+2025-08-24 07:38:00 - INFO - on problem 53 of 128
+2025-08-24 07:38:00 - INFO - running ukp_dp 22 times
+2025-08-24 07:38:00 - INFO - ignoring first 2 runs
+2025-08-24 07:38:48 - INFO - took 2176.7219 ± 2.6411 ms
+2025-08-24 07:38:48 - INFO - on problem 54 of 128
+2025-08-24 07:38:48 - INFO - running ukp_dp 22 times
+2025-08-24 07:38:48 - INFO - ignoring first 2 runs
+2025-08-24 07:39:37 - INFO - took 2225.3980 ± 21.8309 ms
+2025-08-24 07:39:37 - INFO - on problem 55 of 128
+2025-08-24 07:39:37 - INFO - running ukp_dp 22 times
+2025-08-24 07:39:37 - INFO - ignoring first 2 runs
+2025-08-24 07:40:26 - INFO - took 2253.7867 ± 3.8941 ms
+2025-08-24 07:40:26 - INFO - on problem 56 of 128
+2025-08-24 07:40:26 - INFO - running ukp_dp 22 times
+2025-08-24 07:40:26 - INFO - ignoring first 2 runs
+2025-08-24 07:41:17 - INFO - took 2298.1363 ± 12.5905 ms
+2025-08-24 07:41:17 - INFO - on problem 57 of 128
+2025-08-24 07:41:17 - INFO - running ukp_dp 22 times
+2025-08-24 07:41:17 - INFO - ignoring first 2 runs
+2025-08-24 07:42:09 - INFO - took 2361.9691 ± 5.3731 ms
+2025-08-24 07:42:09 - INFO - on problem 58 of 128
+2025-08-24 07:42:09 - INFO - running ukp_dp 22 times
+2025-08-24 07:42:09 - INFO - ignoring first 2 runs
+2025-08-24 07:43:02 - INFO - took 2391.8589 ± 13.0167 ms
+2025-08-24 07:43:02 - INFO - on problem 59 of 128
+2025-08-24 07:43:02 - INFO - running ukp_dp 22 times
+2025-08-24 07:43:02 - INFO - ignoring first 2 runs
+2025-08-24 07:43:55 - INFO - took 2448.2994 ± 6.7987 ms
+2025-08-24 07:43:55 - INFO - on problem 60 of 128
+2025-08-24 07:43:55 - INFO - running ukp_dp 22 times
+2025-08-24 07:43:55 - INFO - ignoring first 2 runs
+2025-08-24 07:44:49 - INFO - took 2459.0854 ± 10.0282 ms
+2025-08-24 07:44:49 - INFO - on problem 61 of 128
+2025-08-24 07:44:49 - INFO - running ukp_dp 22 times
+2025-08-24 07:44:49 - INFO - ignoring first 2 runs
+2025-08-24 07:45:45 - INFO - took 2524.4614 ± 7.3409 ms
+2025-08-24 07:45:45 - INFO - on problem 62 of 128
+2025-08-24 07:45:45 - INFO - running ukp_dp 22 times
+2025-08-24 07:45:45 - INFO - ignoring first 2 runs
+2025-08-24 07:46:41 - INFO - took 2555.5450 ± 14.4256 ms
+2025-08-24 07:46:41 - INFO - on problem 63 of 128
+2025-08-24 07:46:41 - INFO - running ukp_dp 22 times
+2025-08-24 07:46:41 - INFO - ignoring first 2 runs
+2025-08-24 07:47:38 - INFO - took 2584.4004 ± 10.2935 ms
+2025-08-24 07:47:38 - INFO - on problem 64 of 128
+2025-08-24 07:47:38 - INFO - running ukp_dp 22 times
+2025-08-24 07:47:38 - INFO - ignoring first 2 runs
+2025-08-24 07:48:36 - INFO - took 2624.8096 ± 4.0080 ms
+2025-08-24 07:48:36 - INFO - on problem 65 of 128
+2025-08-24 07:48:36 - INFO - running ukp_dp 22 times
+2025-08-24 07:48:36 - INFO - ignoring first 2 runs
+2025-08-24 07:49:35 - INFO - took 2666.6402 ± 4.8024 ms
+2025-08-24 07:49:35 - INFO - on problem 66 of 128
+2025-08-24 07:49:35 - INFO - running ukp_dp 22 times
+2025-08-24 07:49:35 - INFO - ignoring first 2 runs
+2025-08-24 07:50:34 - INFO - took 2707.4073 ± 4.1199 ms
+2025-08-24 07:50:34 - INFO - on problem 67 of 128
+2025-08-24 07:50:34 - INFO - running ukp_dp 22 times
+2025-08-24 07:50:34 - INFO - ignoring first 2 runs
+2025-08-24 07:51:35 - INFO - took 2746.6539 ± 3.8775 ms
+2025-08-24 07:51:35 - INFO - on problem 68 of 128
+2025-08-24 07:51:35 - INFO - running ukp_dp 22 times
+2025-08-24 07:51:35 - INFO - ignoring first 2 runs
+2025-08-24 07:52:36 - INFO - took 2790.4797 ± 2.9127 ms
+2025-08-24 07:52:36 - INFO - on problem 69 of 128
+2025-08-24 07:52:36 - INFO - running ukp_dp 22 times
+2025-08-24 07:52:36 - INFO - ignoring first 2 runs
+2025-08-24 07:53:38 - INFO - took 2829.1500 ± 4.0313 ms
+2025-08-24 07:53:38 - INFO - on problem 70 of 128
+2025-08-24 07:53:38 - INFO - running ukp_dp 22 times
+2025-08-24 07:53:38 - INFO - ignoring first 2 runs
+2025-08-24 07:54:41 - INFO - took 2867.3529 ± 4.8276 ms
+2025-08-24 07:54:41 - INFO - on problem 71 of 128
+2025-08-24 07:54:41 - INFO - running ukp_dp 22 times
+2025-08-24 07:54:41 - INFO - ignoring first 2 runs
+2025-08-24 07:55:45 - INFO - took 2909.1766 ± 5.7778 ms
+2025-08-24 07:55:45 - INFO - on problem 72 of 128
+2025-08-24 07:55:45 - INFO - running ukp_dp 22 times
+2025-08-24 07:55:45 - INFO - ignoring first 2 runs
+2025-08-24 07:56:50 - INFO - took 2953.3966 ± 5.0845 ms
+2025-08-24 07:56:50 - INFO - on problem 73 of 128
+2025-08-24 07:56:50 - INFO - running ukp_dp 22 times
+2025-08-24 07:56:50 - INFO - ignoring first 2 runs
+2025-08-24 07:57:56 - INFO - took 2993.7393 ± 5.3188 ms
+2025-08-24 07:57:56 - INFO - on problem 74 of 128
+2025-08-24 07:57:56 - INFO - running ukp_dp 22 times
+2025-08-24 07:57:56 - INFO - ignoring first 2 runs
+2025-08-24 07:59:03 - INFO - took 3034.7233 ± 5.4804 ms
+2025-08-24 07:59:03 - INFO - on problem 75 of 128
+2025-08-24 07:59:03 - INFO - running ukp_dp 22 times
+2025-08-24 07:59:03 - INFO - ignoring first 2 runs
+2025-08-24 08:00:10 - INFO - took 3073.0736 ± 5.6733 ms
+2025-08-24 08:00:10 - INFO - on problem 76 of 128
+2025-08-24 08:00:10 - INFO - running ukp_dp 22 times
+2025-08-24 08:00:10 - INFO - ignoring first 2 runs
+2025-08-24 08:01:19 - INFO - took 3115.9092 ± 5.4640 ms
+2025-08-24 08:01:19 - INFO - on problem 77 of 128
+2025-08-24 08:01:19 - INFO - running ukp_dp 22 times
+2025-08-24 08:01:19 - INFO - ignoring first 2 runs
+2025-08-24 08:02:28 - INFO - took 3157.0542 ± 5.2168 ms
+2025-08-24 08:02:28 - INFO - on problem 78 of 128
+2025-08-24 08:02:28 - INFO - running ukp_dp 22 times
+2025-08-24 08:02:28 - INFO - ignoring first 2 runs
+2025-08-24 08:03:39 - INFO - took 3198.2859 ± 5.2894 ms
+2025-08-24 08:03:39 - INFO - on problem 79 of 128
+2025-08-24 08:03:39 - INFO - running ukp_dp 22 times
+2025-08-24 08:03:39 - INFO - ignoring first 2 runs
+2025-08-24 08:04:50 - INFO - took 3236.9739 ± 7.5709 ms
+2025-08-24 08:04:50 - INFO - on problem 80 of 128
+2025-08-24 08:04:50 - INFO - running ukp_dp 22 times
+2025-08-24 08:04:50 - INFO - ignoring first 2 runs
+2025-08-24 08:06:02 - INFO - took 3280.8008 ± 6.9342 ms
+2025-08-24 08:06:02 - INFO - on problem 81 of 128
+2025-08-24 08:06:02 - INFO - running ukp_dp 22 times
+2025-08-24 08:06:02 - INFO - ignoring first 2 runs
+2025-08-24 08:07:15 - INFO - took 3321.6047 ± 7.3174 ms
+2025-08-24 08:07:15 - INFO - on problem 82 of 128
+2025-08-24 08:07:15 - INFO - running ukp_dp 22 times
+2025-08-24 08:07:15 - INFO - ignoring first 2 runs
+2025-08-24 08:08:29 - INFO - took 3363.8393 ± 7.5733 ms
+2025-08-24 08:08:29 - INFO - on problem 83 of 128
+2025-08-24 08:08:29 - INFO - running ukp_dp 22 times
+2025-08-24 08:08:29 - INFO - ignoring first 2 runs
+2025-08-24 08:09:44 - INFO - took 3403.7549 ± 7.3782 ms
+2025-08-24 08:09:44 - INFO - on problem 84 of 128
+2025-08-24 08:09:44 - INFO - running ukp_dp 22 times
+2025-08-24 08:09:44 - INFO - ignoring first 2 runs
+2025-08-24 08:11:00 - INFO - took 3446.5426 ± 7.4781 ms
+2025-08-24 08:11:00 - INFO - on problem 85 of 128
+2025-08-24 08:11:00 - INFO - running ukp_dp 22 times
+2025-08-24 08:11:00 - INFO - ignoring first 2 runs
+2025-08-24 08:12:17 - INFO - took 3486.2618 ± 8.1498 ms
+2025-08-24 08:12:17 - INFO - on problem 86 of 128
+2025-08-24 08:12:17 - INFO - running ukp_dp 22 times
+2025-08-24 08:12:17 - INFO - ignoring first 2 runs
+2025-08-24 08:13:34 - INFO - took 3530.4652 ± 8.0452 ms
+2025-08-24 08:13:34 - INFO - on problem 87 of 128
+2025-08-24 08:13:34 - INFO - running ukp_dp 22 times
+2025-08-24 08:13:34 - INFO - ignoring first 2 runs
+2025-08-24 08:14:53 - INFO - took 3574.3717 ± 6.9321 ms
+2025-08-24 08:14:53 - INFO - on problem 88 of 128
+2025-08-24 08:14:53 - INFO - running ukp_dp 22 times
+2025-08-24 08:14:53 - INFO - ignoring first 2 runs
+2025-08-24 08:16:13 - INFO - took 3613.4004 ± 7.8623 ms
+2025-08-24 08:16:13 - INFO - on problem 89 of 128
+2025-08-24 08:16:13 - INFO - running ukp_dp 22 times
+2025-08-24 08:16:13 - INFO - ignoring first 2 runs
+2025-08-24 08:17:33 - INFO - took 3650.8030 ± 6.9125 ms
+2025-08-24 08:17:33 - INFO - on problem 90 of 128
+2025-08-24 08:17:33 - INFO - running ukp_dp 22 times
+2025-08-24 08:17:33 - INFO - ignoring first 2 runs
+2025-08-24 08:18:54 - INFO - took 3695.3647 ± 8.9575 ms
+2025-08-24 08:18:54 - INFO - on problem 91 of 128
+2025-08-24 08:18:54 - INFO - running ukp_dp 22 times
+2025-08-24 08:18:54 - INFO - ignoring first 2 runs
+2025-08-24 08:20:16 - INFO - took 3733.9095 ± 6.0419 ms
+2025-08-24 08:20:16 - INFO - on problem 92 of 128
+2025-08-24 08:20:16 - INFO - running ukp_dp 22 times
+2025-08-24 08:20:16 - INFO - ignoring first 2 runs
+2025-08-24 08:21:38 - INFO - took 3692.3719 ± 65.2458 ms
+2025-08-24 08:21:38 - INFO - on problem 93 of 128
+2025-08-24 08:21:38 - INFO - running ukp_dp 22 times
+2025-08-24 08:21:38 - INFO - ignoring first 2 runs
+2025-08-24 08:22:59 - INFO - took 3674.6837 ± 6.3068 ms
+2025-08-24 08:22:59 - INFO - on problem 94 of 128
+2025-08-24 08:22:59 - INFO - running ukp_dp 22 times
+2025-08-24 08:22:59 - INFO - ignoring first 2 runs
+2025-08-24 08:24:20 - INFO - took 3716.8842 ± 2.6622 ms
+2025-08-24 08:24:20 - INFO - on problem 95 of 128
+2025-08-24 08:24:20 - INFO - running ukp_dp 22 times
+2025-08-24 08:24:20 - INFO - ignoring first 2 runs
+2025-08-24 08:25:43 - INFO - took 3758.5896 ± 2.0097 ms
+2025-08-24 08:25:43 - INFO - on problem 96 of 128
+2025-08-24 08:25:43 - INFO - running ukp_dp 22 times
+2025-08-24 08:25:43 - INFO - ignoring first 2 runs
+2025-08-24 08:27:07 - INFO - took 3798.8019 ± 3.3576 ms
+2025-08-24 08:27:07 - INFO - on problem 97 of 128
+2025-08-24 08:27:07 - INFO - running ukp_dp 22 times
+2025-08-24 08:27:07 - INFO - ignoring first 2 runs
+2025-08-24 08:28:31 - INFO - took 3835.5920 ± 3.1292 ms
+2025-08-24 08:28:31 - INFO - on problem 98 of 128
+2025-08-24 08:28:31 - INFO - running ukp_dp 22 times
+2025-08-24 08:28:31 - INFO - ignoring first 2 runs
+2025-08-24 08:29:56 - INFO - took 3876.0652 ± 3.1145 ms
+2025-08-24 08:29:56 - INFO - on problem 99 of 128
+2025-08-24 08:29:56 - INFO - running ukp_dp 22 times
+2025-08-24 08:29:56 - INFO - ignoring first 2 runs
+2025-08-24 08:31:22 - INFO - took 3918.1081 ± 3.9707 ms
+2025-08-24 08:31:22 - INFO - on problem 100 of 128
+2025-08-24 08:31:22 - INFO - running ukp_dp 22 times
+2025-08-24 08:31:22 - INFO - ignoring first 2 runs
+2025-08-24 08:32:50 - INFO - took 3960.4940 ± 1.6438 ms
+2025-08-24 08:32:50 - INFO - on problem 101 of 128
+2025-08-24 08:32:50 - INFO - running ukp_dp 22 times
+2025-08-24 08:32:50 - INFO - ignoring first 2 runs
+2025-08-24 08:34:17 - INFO - took 3993.4527 ± 6.3589 ms
+2025-08-24 08:34:17 - INFO - on problem 102 of 128
+2025-08-24 08:34:17 - INFO - running ukp_dp 22 times
+2025-08-24 08:34:17 - INFO - ignoring first 2 runs
+2025-08-24 08:35:46 - INFO - took 4033.7785 ± 2.1975 ms
+2025-08-24 08:35:46 - INFO - on problem 103 of 128
+2025-08-24 08:35:46 - INFO - running ukp_dp 22 times
+2025-08-24 08:35:46 - INFO - ignoring first 2 runs
+2025-08-24 08:37:16 - INFO - took 4079.0247 ± 6.5130 ms
+2025-08-24 08:37:16 - INFO - on problem 104 of 128
+2025-08-24 08:37:16 - INFO - running ukp_dp 22 times
+2025-08-24 08:37:16 - INFO - ignoring first 2 runs
+2025-08-24 08:38:46 - INFO - took 4113.9831 ± 1.5507 ms
+2025-08-24 08:38:46 - INFO - on problem 105 of 128
+2025-08-24 08:38:46 - INFO - running ukp_dp 22 times
+2025-08-24 08:38:46 - INFO - ignoring first 2 runs
+2025-08-24 08:40:18 - INFO - took 4153.7579 ± 5.9648 ms
+2025-08-24 08:40:18 - INFO - on problem 106 of 128
+2025-08-24 08:40:18 - INFO - running ukp_dp 22 times
+2025-08-24 08:40:18 - INFO - ignoring first 2 runs
+2025-08-24 08:41:50 - INFO - took 4195.4817 ± 2.8040 ms
+2025-08-24 08:41:50 - INFO - on problem 107 of 128
+2025-08-24 08:41:50 - INFO - running ukp_dp 22 times
+2025-08-24 08:41:50 - INFO - ignoring first 2 runs
+2025-08-24 08:43:23 - INFO - took 4234.7132 ± 1.8767 ms
+2025-08-24 08:43:23 - INFO - on problem 108 of 128
+2025-08-24 08:43:23 - INFO - running ukp_dp 22 times
+2025-08-24 08:43:23 - INFO - ignoring first 2 runs
+2025-08-24 08:44:57 - INFO - took 4278.1991 ± 6.9896 ms
+2025-08-24 08:44:57 - INFO - on problem 109 of 128
+2025-08-24 08:44:57 - INFO - running ukp_dp 22 times
+2025-08-24 08:44:57 - INFO - ignoring first 2 runs
+2025-08-24 08:46:32 - INFO - took 4314.6279 ± 7.7691 ms
+2025-08-24 08:46:32 - INFO - on problem 110 of 128
+2025-08-24 08:46:32 - INFO - running ukp_dp 22 times
+2025-08-24 08:46:32 - INFO - ignoring first 2 runs
+2025-08-24 08:48:08 - INFO - took 4357.4969 ± 5.7524 ms
+2025-08-24 08:48:08 - INFO - on problem 111 of 128
+2025-08-24 08:48:08 - INFO - running ukp_dp 22 times
+2025-08-24 08:48:08 - INFO - ignoring first 2 runs
+2025-08-24 08:49:45 - INFO - took 4404.6060 ± 9.3353 ms
+2025-08-24 08:49:45 - INFO - on problem 112 of 128
+2025-08-24 08:49:45 - INFO - running ukp_dp 22 times
+2025-08-24 08:49:45 - INFO - ignoring first 2 runs
+2025-08-24 08:51:23 - INFO - took 4436.5667 ± 8.0902 ms
+2025-08-24 08:51:23 - INFO - on problem 113 of 128
+2025-08-24 08:51:23 - INFO - running ukp_dp 22 times
+2025-08-24 08:51:23 - INFO - ignoring first 2 runs
+2025-08-24 08:53:01 - INFO - took 4472.5886 ± 6.0916 ms
+2025-08-24 08:53:01 - INFO - on problem 114 of 128
+2025-08-24 08:53:01 - INFO - running ukp_dp 22 times
+2025-08-24 08:53:01 - INFO - ignoring first 2 runs
+2025-08-24 08:54:40 - INFO - took 4516.4031 ± 8.1199 ms
+2025-08-24 08:54:40 - INFO - on problem 115 of 128
+2025-08-24 08:54:40 - INFO - running ukp_dp 22 times
+2025-08-24 08:54:40 - INFO - ignoring first 2 runs
+2025-08-24 08:56:21 - INFO - took 4553.2918 ± 1.7109 ms
+2025-08-24 08:56:21 - INFO - on problem 116 of 128
+2025-08-24 08:56:21 - INFO - running ukp_dp 22 times
+2025-08-24 08:56:21 - INFO - ignoring first 2 runs
+2025-08-24 08:58:02 - INFO - took 4591.0881 ± 5.0243 ms
+2025-08-24 08:58:02 - INFO - on problem 117 of 128
+2025-08-24 08:58:02 - INFO - running ukp_dp 22 times
+2025-08-24 08:58:02 - INFO - ignoring first 2 runs
+2025-08-24 08:59:43 - INFO - took 4628.6382 ± 1.8831 ms
+2025-08-24 08:59:43 - INFO - on problem 118 of 128
+2025-08-24 08:59:43 - INFO - running ukp_dp 22 times
+2025-08-24 08:59:43 - INFO - ignoring first 2 runs
+2025-08-24 09:01:26 - INFO - took 4675.3141 ± 4.1507 ms
+2025-08-24 09:01:26 - INFO - on problem 119 of 128
+2025-08-24 09:01:26 - INFO - running ukp_dp 22 times
+2025-08-24 09:01:26 - INFO - ignoring first 2 runs
+2025-08-24 09:03:10 - INFO - took 4713.0836 ± 6.9016 ms
+2025-08-24 09:03:10 - INFO - on problem 120 of 128
+2025-08-24 09:03:10 - INFO - running ukp_dp 22 times
+2025-08-24 09:03:10 - INFO - ignoring first 2 runs
+2025-08-24 09:04:55 - INFO - took 4754.0719 ± 7.4228 ms
+2025-08-24 09:04:55 - INFO - on problem 121 of 128
+2025-08-24 09:04:55 - INFO - running ukp_dp 22 times
+2025-08-24 09:04:55 - INFO - ignoring first 2 runs
+2025-08-24 09:06:40 - INFO - took 4793.1866 ± 8.3096 ms
+2025-08-24 09:06:40 - INFO - on problem 122 of 128
+2025-08-24 09:06:40 - INFO - running ukp_dp 22 times
+2025-08-24 09:06:40 - INFO - ignoring first 2 runs
+2025-08-24 09:08:27 - INFO - took 4836.9961 ± 11.2311 ms
+2025-08-24 09:08:27 - INFO - on problem 123 of 128
+2025-08-24 09:08:27 - INFO - running ukp_dp 22 times
+2025-08-24 09:08:27 - INFO - ignoring first 2 runs
+2025-08-24 09:10:14 - INFO - took 4878.1737 ± 7.4430 ms
+2025-08-24 09:10:14 - INFO - on problem 124 of 128
+2025-08-24 09:10:14 - INFO - running ukp_dp 22 times
+2025-08-24 09:10:14 - INFO - ignoring first 2 runs
+2025-08-24 09:12:02 - INFO - took 4910.9515 ± 5.4190 ms
+2025-08-24 09:12:02 - INFO - on problem 125 of 128
+2025-08-24 09:12:02 - INFO - running ukp_dp 22 times
+2025-08-24 09:12:02 - INFO - ignoring first 2 runs
+2025-08-24 09:13:51 - INFO - took 4952.5758 ± 7.9001 ms
+2025-08-24 09:13:51 - INFO - on problem 126 of 128
+2025-08-24 09:13:51 - INFO - running ukp_dp 22 times
+2025-08-24 09:13:51 - INFO - ignoring first 2 runs
+2025-08-24 09:15:41 - INFO - took 4993.0421 ± 4.7379 ms
+2025-08-24 09:15:41 - INFO - on problem 127 of 128
+2025-08-24 09:15:41 - INFO - running ukp_dp 22 times
+2025-08-24 09:15:41 - INFO - ignoring first 2 runs
+2025-08-24 09:17:31 - INFO - took 5035.9654 ± 8.6486 ms
+2025-08-24 09:17:31 - INFO - on problem 128 of 128
+2025-08-24 09:17:31 - INFO - running ukp_dp 22 times
+2025-08-24 09:17:31 - INFO - ignoring first 2 runs
+2025-08-24 09:19:23 - INFO - took 5073.9195 ± 10.5788 ms
+2025-08-24 09:19:23 - INFO - finished work. saving stats info on times/fin/rhs/dp/1000n/stats.json
+2025-08-24 09:19:23 - INFO - done. terminating process

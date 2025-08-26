@@ -1,7 +1,6 @@
 # custom
 jl/*
 plots.local.py
-times/*
 
 # report sketch
 report/*
@@ -19,8 +18,6 @@ thesis/*
 
 # backups
 *.bkp/*
-
-logs/*
 
 
 # Byte-compiled / optimized / DLL files

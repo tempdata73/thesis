@@ -1,0 +1,517 @@
+2025-08-16 09:18:14 - INFO - saving log info on times/inf/rhs/bb_raw/4n-4d
+2025-08-16 09:18:14 - INFO - starting work
+2025-08-16 09:18:14 - INFO - created /tmp/logs/bb_raw to store temp solver log info
+2025-08-16 09:18:14 - INFO - on problem 1 of 128
+2025-08-16 09:18:14 - INFO - running solve_pulp 20 times
+2025-08-16 09:18:14 - INFO - running solve_pulp 22 times
+2025-08-16 09:19:29 - INFO - took 3372.6279 ± 186.7795 ms
+2025-08-16 09:19:29 - INFO - on problem 2 of 128
+2025-08-16 09:19:29 - INFO - running solve_pulp 20 times
+2025-08-16 09:19:29 - INFO - running solve_pulp 22 times
+2025-08-16 09:27:53 - INFO - took 22747.8860 ± 1398.6064 ms
+2025-08-16 09:27:53 - INFO - on problem 3 of 128
+2025-08-16 09:27:53 - INFO - running solve_pulp 20 times
+2025-08-16 09:27:53 - INFO - running solve_pulp 22 times
+2025-08-16 09:30:44 - INFO - took 7838.5678 ± 673.2886 ms
+2025-08-16 09:30:44 - INFO - on problem 4 of 128
+2025-08-16 09:30:44 - INFO - running solve_pulp 20 times
+2025-08-16 09:30:44 - INFO - running solve_pulp 22 times
+2025-08-16 09:31:13 - INFO - took 1323.0394 ± 168.8825 ms
+2025-08-16 09:31:13 - INFO - on problem 5 of 128
+2025-08-16 09:31:13 - INFO - running solve_pulp 20 times
+2025-08-16 09:31:13 - INFO - running solve_pulp 22 times
+2025-08-16 09:31:17 - INFO - took 183.8652 ± 31.1904 ms
+2025-08-16 09:31:17 - INFO - on problem 6 of 128
+2025-08-16 09:31:17 - INFO - running solve_pulp 20 times
+2025-08-16 09:31:17 - INFO - running solve_pulp 22 times
+2025-08-16 09:33:36 - INFO - took 6288.7517 ± 656.7745 ms
+2025-08-16 09:33:36 - INFO - on problem 7 of 128
+2025-08-16 09:33:36 - INFO - running solve_pulp 20 times
+2025-08-16 09:33:36 - INFO - running solve_pulp 22 times
+2025-08-16 09:34:47 - INFO - took 3197.0186 ± 278.2361 ms
+2025-08-16 09:34:47 - INFO - on problem 8 of 128
+2025-08-16 09:34:47 - INFO - running solve_pulp 20 times
+2025-08-16 09:34:47 - INFO - running solve_pulp 22 times
+2025-08-16 09:34:52 - INFO - took 208.0488 ± 38.4920 ms
+2025-08-16 09:34:52 - INFO - on problem 9 of 128
+2025-08-16 09:34:52 - INFO - running solve_pulp 20 times
+2025-08-16 09:34:52 - INFO - running solve_pulp 22 times
+2025-08-16 09:39:24 - INFO - took 12310.8022 ± 883.5744 ms
+2025-08-16 09:39:24 - INFO - on problem 10 of 128
+2025-08-16 09:39:24 - INFO - running solve_pulp 20 times
+2025-08-16 09:39:24 - INFO - running solve_pulp 22 times
+2025-08-16 09:39:31 - INFO - took 321.7390 ± 49.4118 ms
+2025-08-16 09:39:31 - INFO - on problem 11 of 128
+2025-08-16 09:39:31 - INFO - running solve_pulp 20 times
+2025-08-16 09:39:31 - INFO - running solve_pulp 22 times
+2025-08-16 09:39:33 - INFO - took 61.9034 ± 1.6538 ms
+2025-08-16 09:39:33 - INFO - on problem 12 of 128
+2025-08-16 09:39:33 - INFO - running solve_pulp 20 times
+2025-08-16 09:39:33 - INFO - running solve_pulp 22 times
+2025-08-16 09:40:53 - INFO - took 3662.2636 ± 489.4818 ms
+2025-08-16 09:40:53 - INFO - on problem 13 of 128
+2025-08-16 09:40:53 - INFO - running solve_pulp 20 times
+2025-08-16 09:40:53 - INFO - running solve_pulp 22 times
+2025-08-16 09:41:37 - INFO - took 2045.9663 ± 316.0000 ms
+2025-08-16 09:41:37 - INFO - on problem 14 of 128
+2025-08-16 09:41:37 - INFO - running solve_pulp 20 times
+2025-08-16 09:41:37 - INFO - running solve_pulp 22 times
+2025-08-16 09:45:00 - INFO - took 9224.7656 ± 861.4971 ms
+2025-08-16 09:45:00 - INFO - on problem 15 of 128
+2025-08-16 09:45:00 - INFO - running solve_pulp 20 times
+2025-08-16 09:45:00 - INFO - running solve_pulp 22 times
+2025-08-16 09:48:28 - INFO - took 9450.0213 ± 869.6613 ms
+2025-08-16 09:48:28 - INFO - on problem 16 of 128
+2025-08-16 09:48:28 - INFO - running solve_pulp 20 times
+2025-08-16 09:48:28 - INFO - running solve_pulp 22 times
+2025-08-16 09:52:42 - INFO - took 11665.4210 ± 1230.8551 ms
+2025-08-16 09:52:42 - INFO - on problem 17 of 128
+2025-08-16 09:52:42 - INFO - running solve_pulp 20 times
+2025-08-16 09:52:42 - INFO - running solve_pulp 22 times
+2025-08-16 09:57:59 - INFO - took 14254.6512 ± 1628.0876 ms
+2025-08-16 09:57:59 - INFO - on problem 18 of 128
+2025-08-16 09:57:59 - INFO - running solve_pulp 20 times
+2025-08-16 09:57:59 - INFO - running solve_pulp 22 times
+2025-08-16 09:59:50 - INFO - took 5069.3905 ± 717.7538 ms
+2025-08-16 09:59:50 - INFO - on problem 19 of 128
+2025-08-16 09:59:50 - INFO - running solve_pulp 20 times
+2025-08-16 09:59:50 - INFO - running solve_pulp 22 times
+2025-08-16 09:59:56 - INFO - took 296.4694 ± 12.3111 ms
+2025-08-16 09:59:56 - INFO - on problem 20 of 128
+2025-08-16 09:59:56 - INFO - running solve_pulp 20 times
+2025-08-16 09:59:56 - INFO - running solve_pulp 22 times
+2025-08-16 10:01:28 - INFO - took 4185.7580 ± 619.2008 ms
+2025-08-16 10:01:28 - INFO - on problem 21 of 128
+2025-08-16 10:01:28 - INFO - running solve_pulp 20 times
+2025-08-16 10:01:28 - INFO - running solve_pulp 22 times
+2025-08-16 10:04:03 - INFO - took 7068.6622 ± 976.7112 ms
+2025-08-16 10:04:03 - INFO - on problem 22 of 128
+2025-08-16 10:04:03 - INFO - running solve_pulp 20 times
+2025-08-16 10:04:03 - INFO - running solve_pulp 22 times
+2025-08-16 10:06:55 - INFO - took 7762.2374 ± 908.8146 ms
+2025-08-16 10:06:55 - INFO - on problem 23 of 128
+2025-08-16 10:06:55 - INFO - running solve_pulp 20 times
+2025-08-16 10:06:55 - INFO - running solve_pulp 22 times
+2025-08-16 10:07:12 - INFO - took 746.7205 ± 118.8891 ms
+2025-08-16 10:07:12 - INFO - on problem 24 of 128
+2025-08-16 10:07:12 - INFO - running solve_pulp 20 times
+2025-08-16 10:07:12 - INFO - running solve_pulp 22 times
+2025-08-16 10:07:30 - INFO - took 811.2419 ± 89.4705 ms
+2025-08-16 10:07:30 - INFO - on problem 25 of 128
+2025-08-16 10:07:30 - INFO - running solve_pulp 20 times
+2025-08-16 10:07:30 - INFO - running solve_pulp 22 times
+2025-08-16 10:09:06 - INFO - took 4385.5808 ± 479.0420 ms
+2025-08-16 10:09:06 - INFO - on problem 26 of 128
+2025-08-16 10:09:06 - INFO - running solve_pulp 20 times
+2025-08-16 10:09:06 - INFO - running solve_pulp 22 times
+2025-08-16 10:13:46 - INFO - took 12816.6002 ± 1440.7526 ms
+2025-08-16 10:13:46 - INFO - on problem 27 of 128
+2025-08-16 10:13:46 - INFO - running solve_pulp 20 times
+2025-08-16 10:13:46 - INFO - running solve_pulp 22 times
+2025-08-16 10:16:11 - INFO - took 6427.4947 ± 1030.5298 ms
+2025-08-16 10:16:11 - INFO - on problem 28 of 128
+2025-08-16 10:16:11 - INFO - running solve_pulp 20 times
+2025-08-16 10:16:11 - INFO - running solve_pulp 22 times
+2025-08-16 10:16:54 - INFO - took 2004.4221 ± 351.1300 ms
+2025-08-16 10:16:54 - INFO - on problem 29 of 128
+2025-08-16 10:16:54 - INFO - running solve_pulp 20 times
+2025-08-16 10:16:54 - INFO - running solve_pulp 22 times
+2025-08-16 10:28:44 - INFO - took 32399.8971 ± 2376.6703 ms
+2025-08-16 10:28:44 - INFO - on problem 30 of 128
+2025-08-16 10:28:44 - INFO - running solve_pulp 20 times
+2025-08-16 10:28:44 - INFO - running solve_pulp 22 times
+2025-08-16 10:33:30 - INFO - took 12920.2852 ± 1605.4186 ms
+2025-08-16 10:33:30 - INFO - on problem 31 of 128
+2025-08-16 10:33:30 - INFO - running solve_pulp 20 times
+2025-08-16 10:33:30 - INFO - running solve_pulp 22 times
+2025-08-16 10:34:56 - INFO - took 3929.3135 ± 635.9322 ms
+2025-08-16 10:34:56 - INFO - on problem 32 of 128
+2025-08-16 10:34:56 - INFO - running solve_pulp 20 times
+2025-08-16 10:34:56 - INFO - running solve_pulp 22 times
+2025-08-16 10:38:36 - INFO - took 10150.2804 ± 1186.4930 ms
+2025-08-16 10:38:36 - INFO - on problem 33 of 128
+2025-08-16 10:38:36 - INFO - running solve_pulp 20 times
+2025-08-16 10:38:36 - INFO - running solve_pulp 22 times
+2025-08-16 10:40:48 - INFO - took 6044.5511 ± 808.3131 ms
+2025-08-16 10:40:48 - INFO - on problem 34 of 128
+2025-08-16 10:40:48 - INFO - running solve_pulp 20 times
+2025-08-16 10:40:48 - INFO - running solve_pulp 22 times
+2025-08-16 10:40:54 - INFO - took 265.2376 ± 38.5023 ms
+2025-08-16 10:40:54 - INFO - on problem 35 of 128
+2025-08-16 10:40:54 - INFO - running solve_pulp 20 times
+2025-08-16 10:40:54 - INFO - running solve_pulp 22 times
+2025-08-16 10:46:34 - INFO - took 15251.7617 ± 1416.2354 ms
+2025-08-16 10:46:34 - INFO - on problem 36 of 128
+2025-08-16 10:46:34 - INFO - running solve_pulp 20 times
+2025-08-16 10:46:34 - INFO - running solve_pulp 22 times
+2025-08-16 10:47:07 - INFO - took 1519.5736 ± 244.3247 ms
+2025-08-16 10:47:07 - INFO - on problem 37 of 128
+2025-08-16 10:47:07 - INFO - running solve_pulp 20 times
+2025-08-16 10:47:07 - INFO - running solve_pulp 22 times
+2025-08-16 10:52:52 - INFO - took 15731.2913 ± 1075.1367 ms
+2025-08-16 10:52:52 - INFO - on problem 38 of 128
+2025-08-16 10:52:52 - INFO - running solve_pulp 20 times
+2025-08-16 10:52:52 - INFO - running solve_pulp 22 times
+2025-08-16 10:54:31 - INFO - took 4496.5753 ± 662.6611 ms
+2025-08-16 10:54:31 - INFO - on problem 39 of 128
+2025-08-16 10:54:31 - INFO - running solve_pulp 20 times
+2025-08-16 10:54:31 - INFO - running solve_pulp 22 times
+2025-08-16 10:57:18 - INFO - took 7629.1124 ± 1052.3385 ms
+2025-08-16 10:57:18 - INFO - on problem 40 of 128
+2025-08-16 10:57:18 - INFO - running solve_pulp 20 times
+2025-08-16 10:57:18 - INFO - running solve_pulp 22 times
+2025-08-16 10:58:32 - INFO - took 3442.4474 ± 565.5826 ms
+2025-08-16 10:58:32 - INFO - on problem 41 of 128
+2025-08-16 10:58:32 - INFO - running solve_pulp 20 times
+2025-08-16 10:58:32 - INFO - running solve_pulp 22 times
+2025-08-16 10:58:36 - INFO - took 170.9055 ± 26.7449 ms
+2025-08-16 10:58:36 - INFO - on problem 42 of 128
+2025-08-16 10:58:36 - INFO - running solve_pulp 20 times
+2025-08-16 10:58:36 - INFO - running solve_pulp 22 times
+2025-08-16 11:00:23 - INFO - took 4827.8357 ± 639.4261 ms
+2025-08-16 11:00:23 - INFO - on problem 43 of 128
+2025-08-16 11:00:23 - INFO - running solve_pulp 20 times
+2025-08-16 11:00:23 - INFO - running solve_pulp 22 times
+2025-08-16 11:03:53 - INFO - took 9488.7086 ± 1220.0453 ms
+2025-08-16 11:03:53 - INFO - on problem 44 of 128
+2025-08-16 11:03:53 - INFO - running solve_pulp 20 times
+2025-08-16 11:03:53 - INFO - running solve_pulp 22 times
+2025-08-16 11:07:03 - INFO - took 8700.5238 ± 822.5634 ms
+2025-08-16 11:07:03 - INFO - on problem 45 of 128
+2025-08-16 11:07:03 - INFO - running solve_pulp 20 times
+2025-08-16 11:07:03 - INFO - running solve_pulp 22 times
+2025-08-16 11:08:35 - INFO - took 4208.6795 ± 492.5474 ms
+2025-08-16 11:08:35 - INFO - on problem 46 of 128
+2025-08-16 11:08:35 - INFO - running solve_pulp 20 times
+2025-08-16 11:08:35 - INFO - running solve_pulp 22 times
+2025-08-16 11:11:06 - INFO - took 6878.0996 ± 1009.2964 ms
+2025-08-16 11:11:06 - INFO - on problem 47 of 128
+2025-08-16 11:11:06 - INFO - running solve_pulp 20 times
+2025-08-16 11:11:06 - INFO - running solve_pulp 22 times
+2025-08-16 11:12:16 - INFO - took 3174.0503 ± 509.8308 ms
+2025-08-16 11:12:16 - INFO - on problem 48 of 128
+2025-08-16 11:12:16 - INFO - running solve_pulp 20 times
+2025-08-16 11:12:16 - INFO - running solve_pulp 22 times
+2025-08-16 11:15:01 - INFO - took 7535.8267 ± 1087.0353 ms
+2025-08-16 11:15:01 - INFO - on problem 49 of 128
+2025-08-16 11:15:01 - INFO - running solve_pulp 20 times
+2025-08-16 11:15:01 - INFO - running solve_pulp 22 times
+2025-08-16 11:22:34 - INFO - took 20581.2898 ± 1771.4114 ms
+2025-08-16 11:22:34 - INFO - on problem 50 of 128
+2025-08-16 11:22:34 - INFO - running solve_pulp 20 times
+2025-08-16 11:22:34 - INFO - running solve_pulp 22 times
+2025-08-16 11:22:47 - INFO - took 605.4643 ± 121.8052 ms
+2025-08-16 11:22:47 - INFO - on problem 51 of 128
+2025-08-16 11:22:47 - INFO - running solve_pulp 20 times
+2025-08-16 11:22:47 - INFO - running solve_pulp 22 times
+2025-08-16 11:25:20 - INFO - took 6922.4814 ± 1256.8574 ms
+2025-08-16 11:25:20 - INFO - on problem 52 of 128
+2025-08-16 11:25:20 - INFO - running solve_pulp 20 times
+2025-08-16 11:25:20 - INFO - running solve_pulp 22 times
+2025-08-16 11:29:01 - INFO - took 9908.9726 ± 958.3050 ms
+2025-08-16 11:29:01 - INFO - on problem 53 of 128
+2025-08-16 11:29:01 - INFO - running solve_pulp 20 times
+2025-08-16 11:29:01 - INFO - running solve_pulp 22 times
+2025-08-16 11:35:47 - INFO - took 18655.2425 ± 1700.7210 ms
+2025-08-16 11:35:47 - INFO - on problem 54 of 128
+2025-08-16 11:35:47 - INFO - running solve_pulp 20 times
+2025-08-16 11:35:47 - INFO - running solve_pulp 22 times
+2025-08-16 11:37:05 - INFO - took 3551.6471 ± 440.8247 ms
+2025-08-16 11:37:05 - INFO - on problem 55 of 128
+2025-08-16 11:37:05 - INFO - running solve_pulp 20 times
+2025-08-16 11:37:05 - INFO - running solve_pulp 22 times
+2025-08-16 11:39:17 - INFO - took 6051.5940 ± 513.7577 ms
+2025-08-16 11:39:17 - INFO - on problem 56 of 128
+2025-08-16 11:39:17 - INFO - running solve_pulp 20 times
+2025-08-16 11:39:17 - INFO - running solve_pulp 22 times
+2025-08-16 11:42:33 - INFO - took 8916.8579 ± 958.7317 ms
+2025-08-16 11:42:33 - INFO - on problem 57 of 128
+2025-08-16 11:42:33 - INFO - running solve_pulp 20 times
+2025-08-16 11:42:33 - INFO - running solve_pulp 22 times
+2025-08-16 11:44:22 - INFO - took 5018.1190 ± 750.5715 ms
+2025-08-16 11:44:22 - INFO - on problem 58 of 128
+2025-08-16 11:44:22 - INFO - running solve_pulp 20 times
+2025-08-16 11:44:22 - INFO - running solve_pulp 22 times
+2025-08-16 11:48:58 - INFO - took 12580.6654 ± 1872.0650 ms
+2025-08-16 11:48:58 - INFO - on problem 59 of 128
+2025-08-16 11:48:58 - INFO - running solve_pulp 20 times
+2025-08-16 11:48:58 - INFO - running solve_pulp 22 times
+2025-08-16 11:49:14 - INFO - took 734.7013 ± 139.5360 ms
+2025-08-16 11:49:14 - INFO - on problem 60 of 128
+2025-08-16 11:49:14 - INFO - running solve_pulp 20 times
+2025-08-16 11:49:14 - INFO - running solve_pulp 22 times
+2025-08-16 11:59:54 - INFO - took 29121.4872 ± 1970.5715 ms
+2025-08-16 11:59:54 - INFO - on problem 61 of 128
+2025-08-16 11:59:54 - INFO - running solve_pulp 20 times
+2025-08-16 11:59:54 - INFO - running solve_pulp 22 times
+2025-08-16 12:02:35 - INFO - took 7354.4022 ± 867.0407 ms
+2025-08-16 12:02:35 - INFO - on problem 62 of 128
+2025-08-16 12:02:35 - INFO - running solve_pulp 20 times
+2025-08-16 12:02:35 - INFO - running solve_pulp 22 times
+2025-08-16 12:02:43 - INFO - took 385.5802 ± 16.8237 ms
+2025-08-16 12:02:43 - INFO - on problem 63 of 128
+2025-08-16 12:02:43 - INFO - running solve_pulp 20 times
+2025-08-16 12:02:43 - INFO - running solve_pulp 22 times
+2025-08-16 12:07:09 - INFO - took 12162.5565 ± 879.7399 ms
+2025-08-16 12:07:09 - INFO - on problem 64 of 128
+2025-08-16 12:07:09 - INFO - running solve_pulp 20 times
+2025-08-16 12:07:09 - INFO - running solve_pulp 22 times
+2025-08-16 12:12:53 - INFO - took 15582.1880 ± 1828.1047 ms
+2025-08-16 12:12:53 - INFO - on problem 65 of 128
+2025-08-16 12:12:53 - INFO - running solve_pulp 20 times
+2025-08-16 12:12:53 - INFO - running solve_pulp 22 times
+2025-08-16 12:18:23 - INFO - took 15052.7941 ± 1467.8641 ms
+2025-08-16 12:18:23 - INFO - on problem 66 of 128
+2025-08-16 12:18:23 - INFO - running solve_pulp 20 times
+2025-08-16 12:18:23 - INFO - running solve_pulp 22 times
+2025-08-16 12:18:40 - INFO - took 793.5837 ± 148.4449 ms
+2025-08-16 12:18:40 - INFO - on problem 67 of 128
+2025-08-16 12:18:40 - INFO - running solve_pulp 20 times
+2025-08-16 12:18:40 - INFO - running solve_pulp 22 times
+2025-08-16 12:22:06 - INFO - took 9393.9159 ± 1324.9111 ms
+2025-08-16 12:22:06 - INFO - on problem 68 of 128
+2025-08-16 12:22:06 - INFO - running solve_pulp 20 times
+2025-08-16 12:22:06 - INFO - running solve_pulp 22 times
+2025-08-16 12:29:46 - INFO - took 20792.3334 ± 1962.5013 ms
+2025-08-16 12:29:46 - INFO - on problem 69 of 128
+2025-08-16 12:29:46 - INFO - running solve_pulp 20 times
+2025-08-16 12:29:46 - INFO - running solve_pulp 22 times
+2025-08-16 12:31:35 - INFO - took 4914.1407 ± 849.8220 ms
+2025-08-16 12:31:35 - INFO - on problem 70 of 128
+2025-08-16 12:31:35 - INFO - running solve_pulp 20 times
+2025-08-16 12:31:35 - INFO - running solve_pulp 22 times
+2025-08-16 12:33:40 - INFO - took 5785.5993 ± 834.1599 ms
+2025-08-16 12:33:40 - INFO - on problem 71 of 128
+2025-08-16 12:33:40 - INFO - running solve_pulp 20 times
+2025-08-16 12:33:40 - INFO - running solve_pulp 22 times
+2025-08-16 12:33:41 - INFO - took 44.8210 ± 1.1357 ms
+2025-08-16 12:33:41 - INFO - on problem 72 of 128
+2025-08-16 12:33:41 - INFO - running solve_pulp 20 times
+2025-08-16 12:33:41 - INFO - running solve_pulp 22 times
+2025-08-16 13:25:49 - INFO - took 142628.9370 ± 3104.8176 ms
+2025-08-16 13:25:49 - INFO - on problem 73 of 128
+2025-08-16 13:25:49 - INFO - running solve_pulp 20 times
+2025-08-16 13:25:49 - INFO - running solve_pulp 22 times
+2025-08-16 13:26:33 - INFO - took 2016.9624 ± 343.0009 ms
+2025-08-16 13:26:33 - INFO - on problem 74 of 128
+2025-08-16 13:26:33 - INFO - running solve_pulp 20 times
+2025-08-16 13:26:33 - INFO - running solve_pulp 22 times
+2025-08-16 13:26:33 - INFO - took 21.6278 ± 0.3656 ms
+2025-08-16 13:26:33 - INFO - on problem 75 of 128
+2025-08-16 13:26:33 - INFO - running solve_pulp 20 times
+2025-08-16 13:26:33 - INFO - running solve_pulp 22 times
+2025-08-16 13:26:41 - INFO - took 357.0361 ± 46.2271 ms
+2025-08-16 13:26:41 - INFO - on problem 76 of 128
+2025-08-16 13:26:41 - INFO - running solve_pulp 20 times
+2025-08-16 13:26:41 - INFO - running solve_pulp 22 times
+2025-08-16 13:28:02 - INFO - took 3719.5083 ± 462.9022 ms
+2025-08-16 13:28:02 - INFO - on problem 77 of 128
+2025-08-16 13:28:02 - INFO - running solve_pulp 20 times
+2025-08-16 13:28:02 - INFO - running solve_pulp 22 times
+2025-08-16 13:32:54 - INFO - took 13257.0051 ± 920.8883 ms
+2025-08-16 13:32:54 - INFO - on problem 78 of 128
+2025-08-16 13:32:54 - INFO - running solve_pulp 20 times
+2025-08-16 13:32:54 - INFO - running solve_pulp 22 times
+2025-08-16 13:41:11 - INFO - took 22668.6928 ± 1359.8518 ms
+2025-08-16 13:41:11 - INFO - on problem 79 of 128
+2025-08-16 13:41:11 - INFO - running solve_pulp 20 times
+2025-08-16 13:41:11 - INFO - running solve_pulp 22 times
+2025-08-16 13:50:07 - INFO - took 24501.1639 ± 2242.6101 ms
+2025-08-16 13:50:07 - INFO - on problem 80 of 128
+2025-08-16 13:50:07 - INFO - running solve_pulp 20 times
+2025-08-16 13:50:07 - INFO - running solve_pulp 22 times
+2025-08-16 13:50:16 - INFO - took 409.3628 ± 44.9214 ms
+2025-08-16 13:50:16 - INFO - on problem 81 of 128
+2025-08-16 13:50:16 - INFO - running solve_pulp 20 times
+2025-08-16 13:50:16 - INFO - running solve_pulp 22 times
+2025-08-16 13:51:59 - INFO - took 4692.0601 ± 606.5431 ms
+2025-08-16 13:51:59 - INFO - on problem 82 of 128
+2025-08-16 13:51:59 - INFO - running solve_pulp 20 times
+2025-08-16 13:51:59 - INFO - running solve_pulp 22 times
+2025-08-16 13:53:29 - INFO - took 4111.4978 ± 353.3527 ms
+2025-08-16 13:53:29 - INFO - on problem 83 of 128
+2025-08-16 13:53:29 - INFO - running solve_pulp 20 times
+2025-08-16 13:53:29 - INFO - running solve_pulp 22 times
+2025-08-16 13:55:04 - INFO - took 4372.5046 ± 716.1422 ms
+2025-08-16 13:55:04 - INFO - on problem 84 of 128
+2025-08-16 13:55:04 - INFO - running solve_pulp 20 times
+2025-08-16 13:55:04 - INFO - running solve_pulp 22 times
+2025-08-16 13:58:06 - INFO - took 8268.8020 ± 751.0497 ms
+2025-08-16 13:58:06 - INFO - on problem 85 of 128
+2025-08-16 13:58:06 - INFO - running solve_pulp 20 times
+2025-08-16 13:58:06 - INFO - running solve_pulp 22 times
+2025-08-16 14:05:58 - INFO - took 21588.9582 ± 2368.9309 ms
+2025-08-16 14:05:58 - INFO - on problem 86 of 128
+2025-08-16 14:05:58 - INFO - running solve_pulp 20 times
+2025-08-16 14:05:58 - INFO - running solve_pulp 22 times
+2025-08-16 14:06:12 - INFO - took 666.9040 ± 121.5540 ms
+2025-08-16 14:06:12 - INFO - on problem 87 of 128
+2025-08-16 14:06:12 - INFO - running solve_pulp 20 times
+2025-08-16 14:06:12 - INFO - running solve_pulp 22 times
+2025-08-16 14:06:33 - INFO - took 960.2825 ± 153.1628 ms
+2025-08-16 14:06:33 - INFO - on problem 88 of 128
+2025-08-16 14:06:33 - INFO - running solve_pulp 20 times
+2025-08-16 14:06:33 - INFO - running solve_pulp 22 times
+2025-08-16 15:11:46 - INFO - took 178631.2352 ± 2892.3948 ms
+2025-08-16 15:11:46 - INFO - on problem 89 of 128
+2025-08-16 15:11:46 - INFO - running solve_pulp 20 times
+2025-08-16 15:11:46 - INFO - running solve_pulp 22 times
+2025-08-16 15:12:56 - INFO - took 3152.8453 ± 494.6871 ms
+2025-08-16 15:12:56 - INFO - on problem 90 of 128
+2025-08-16 15:12:56 - INFO - running solve_pulp 20 times
+2025-08-16 15:12:56 - INFO - running solve_pulp 22 times
+2025-08-16 15:51:14 - INFO - took 104266.4613 ± 3751.0507 ms
+2025-08-16 15:51:14 - INFO - on problem 91 of 128
+2025-08-16 15:51:14 - INFO - running solve_pulp 20 times
+2025-08-16 15:51:14 - INFO - running solve_pulp 22 times
+2025-08-16 15:55:47 - INFO - took 12538.1101 ± 1520.2137 ms
+2025-08-16 15:55:47 - INFO - on problem 92 of 128
+2025-08-16 15:55:47 - INFO - running solve_pulp 20 times
+2025-08-16 15:55:47 - INFO - running solve_pulp 22 times
+2025-08-16 15:57:35 - INFO - took 4918.7949 ± 505.2796 ms
+2025-08-16 15:57:35 - INFO - on problem 93 of 128
+2025-08-16 15:57:35 - INFO - running solve_pulp 20 times
+2025-08-16 15:57:35 - INFO - running solve_pulp 22 times
+2025-08-16 15:58:33 - INFO - took 2606.8574 ± 420.0292 ms
+2025-08-16 15:58:33 - INFO - on problem 94 of 128
+2025-08-16 15:58:33 - INFO - running solve_pulp 20 times
+2025-08-16 15:58:33 - INFO - running solve_pulp 22 times
+2025-08-16 15:59:22 - INFO - took 2243.4930 ± 336.0458 ms
+2025-08-16 15:59:22 - INFO - on problem 95 of 128
+2025-08-16 15:59:22 - INFO - running solve_pulp 20 times
+2025-08-16 15:59:22 - INFO - running solve_pulp 22 times
+2025-08-16 16:09:48 - INFO - took 28201.8393 ± 2340.7378 ms
+2025-08-16 16:09:48 - INFO - on problem 96 of 128
+2025-08-16 16:09:48 - INFO - running solve_pulp 20 times
+2025-08-16 16:09:48 - INFO - running solve_pulp 22 times
+2025-08-16 16:10:30 - INFO - took 1928.5094 ± 189.2232 ms
+2025-08-16 16:10:30 - INFO - on problem 97 of 128
+2025-08-16 16:10:30 - INFO - running solve_pulp 20 times
+2025-08-16 16:10:30 - INFO - running solve_pulp 22 times
+2025-08-16 16:11:29 - INFO - took 2710.4837 ± 275.3786 ms
+2025-08-16 16:11:29 - INFO - on problem 98 of 128
+2025-08-16 16:11:29 - INFO - running solve_pulp 20 times
+2025-08-16 16:11:29 - INFO - running solve_pulp 22 times
+2025-08-16 16:13:12 - INFO - took 4702.4735 ± 566.8111 ms
+2025-08-16 16:13:12 - INFO - on problem 99 of 128
+2025-08-16 16:13:12 - INFO - running solve_pulp 20 times
+2025-08-16 16:13:12 - INFO - running solve_pulp 22 times
+2025-08-16 16:15:42 - INFO - took 6729.9794 ± 444.6559 ms
+2025-08-16 16:15:42 - INFO - on problem 100 of 128
+2025-08-16 16:15:42 - INFO - running solve_pulp 20 times
+2025-08-16 16:15:42 - INFO - running solve_pulp 22 times
+2025-08-16 16:16:34 - INFO - took 2362.4145 ± 218.4888 ms
+2025-08-16 16:16:34 - INFO - on problem 101 of 128
+2025-08-16 16:16:34 - INFO - running solve_pulp 20 times
+2025-08-16 16:16:34 - INFO - running solve_pulp 22 times
+2025-08-16 16:18:35 - INFO - took 5525.3400 ± 308.9130 ms
+2025-08-16 16:18:35 - INFO - on problem 102 of 128
+2025-08-16 16:18:35 - INFO - running solve_pulp 20 times
+2025-08-16 16:18:35 - INFO - running solve_pulp 22 times
+2025-08-16 16:24:28 - INFO - took 15768.7432 ± 934.0414 ms
+2025-08-16 16:24:28 - INFO - on problem 103 of 128
+2025-08-16 16:24:28 - INFO - running solve_pulp 20 times
+2025-08-16 16:24:28 - INFO - running solve_pulp 22 times
+2025-08-16 16:25:34 - INFO - took 3044.0692 ± 492.8059 ms
+2025-08-16 16:25:34 - INFO - on problem 104 of 128
+2025-08-16 16:25:34 - INFO - running solve_pulp 20 times
+2025-08-16 16:25:34 - INFO - running solve_pulp 22 times
+2025-08-16 16:28:47 - INFO - took 8716.4434 ± 1023.3946 ms
+2025-08-16 16:28:47 - INFO - on problem 105 of 128
+2025-08-16 16:28:47 - INFO - running solve_pulp 20 times
+2025-08-16 16:28:47 - INFO - running solve_pulp 22 times
+2025-08-16 16:30:37 - INFO - took 5039.7088 ± 746.3433 ms
+2025-08-16 16:30:37 - INFO - on problem 106 of 128
+2025-08-16 16:30:37 - INFO - running solve_pulp 20 times
+2025-08-16 16:30:37 - INFO - running solve_pulp 22 times
+2025-08-16 16:30:49 - INFO - took 571.1630 ± 66.8939 ms
+2025-08-16 16:30:49 - INFO - on problem 107 of 128
+2025-08-16 16:30:49 - INFO - running solve_pulp 20 times
+2025-08-16 16:30:49 - INFO - running solve_pulp 22 times
+2025-08-16 16:31:50 - INFO - took 2749.2689 ± 311.0791 ms
+2025-08-16 16:31:50 - INFO - on problem 108 of 128
+2025-08-16 16:31:50 - INFO - running solve_pulp 20 times
+2025-08-16 16:31:50 - INFO - running solve_pulp 22 times
+2025-08-16 16:32:41 - INFO - took 2281.8550 ± 317.2696 ms
+2025-08-16 16:32:41 - INFO - on problem 109 of 128
+2025-08-16 16:32:41 - INFO - running solve_pulp 20 times
+2025-08-16 16:32:41 - INFO - running solve_pulp 22 times
+2025-08-16 16:58:40 - INFO - took 70695.5476 ± 3388.1714 ms
+2025-08-16 16:58:40 - INFO - on problem 110 of 128
+2025-08-16 16:58:40 - INFO - running solve_pulp 20 times
+2025-08-16 16:58:40 - INFO - running solve_pulp 22 times
+2025-08-16 16:58:44 - INFO - took 203.1208 ± 15.2476 ms
+2025-08-16 16:58:44 - INFO - on problem 111 of 128
+2025-08-16 16:58:44 - INFO - running solve_pulp 20 times
+2025-08-16 16:58:44 - INFO - running solve_pulp 22 times
+2025-08-16 16:59:22 - INFO - took 1710.1455 ± 73.7702 ms
+2025-08-16 16:59:22 - INFO - on problem 112 of 128
+2025-08-16 16:59:22 - INFO - running solve_pulp 20 times
+2025-08-16 16:59:22 - INFO - running solve_pulp 22 times
+2025-08-16 17:26:08 - INFO - took 73250.1488 ± 1810.8424 ms
+2025-08-16 17:26:08 - INFO - on problem 113 of 128
+2025-08-16 17:26:08 - INFO - running solve_pulp 20 times
+2025-08-16 17:26:08 - INFO - running solve_pulp 22 times
+2025-08-16 17:33:43 - INFO - took 20704.2796 ± 2050.3546 ms
+2025-08-16 17:33:43 - INFO - on problem 114 of 128
+2025-08-16 17:33:43 - INFO - running solve_pulp 20 times
+2025-08-16 17:33:43 - INFO - running solve_pulp 22 times
+2025-08-16 17:36:19 - INFO - took 7115.9217 ± 575.5159 ms
+2025-08-16 17:36:19 - INFO - on problem 115 of 128
+2025-08-16 17:36:19 - INFO - running solve_pulp 20 times
+2025-08-16 17:36:19 - INFO - running solve_pulp 22 times
+2025-08-16 17:37:27 - INFO - took 3108.5748 ± 176.0781 ms
+2025-08-16 17:37:27 - INFO - on problem 116 of 128
+2025-08-16 17:37:27 - INFO - running solve_pulp 20 times
+2025-08-16 17:37:27 - INFO - running solve_pulp 22 times
+2025-08-16 17:41:19 - INFO - took 10578.9638 ± 1071.1537 ms
+2025-08-16 17:41:19 - INFO - on problem 117 of 128
+2025-08-16 17:41:19 - INFO - running solve_pulp 20 times
+2025-08-16 17:41:19 - INFO - running solve_pulp 22 times
+2025-08-16 17:41:29 - INFO - took 479.0501 ± 48.1378 ms
+2025-08-16 17:41:29 - INFO - on problem 118 of 128
+2025-08-16 17:41:29 - INFO - running solve_pulp 20 times
+2025-08-16 17:41:29 - INFO - running solve_pulp 22 times
+2025-08-16 17:42:33 - INFO - took 2811.8843 ± 242.5174 ms
+2025-08-16 17:42:33 - INFO - on problem 119 of 128
+2025-08-16 17:42:33 - INFO - running solve_pulp 20 times
+2025-08-16 17:42:33 - INFO - running solve_pulp 22 times
+2025-08-16 17:56:12 - INFO - took 37304.0189 ± 1615.8473 ms
+2025-08-16 17:56:12 - INFO - on problem 120 of 128
+2025-08-16 17:56:12 - INFO - running solve_pulp 20 times
+2025-08-16 17:56:12 - INFO - running solve_pulp 22 times
+2025-08-16 17:56:25 - INFO - took 588.3521 ± 111.5892 ms
+2025-08-16 17:56:25 - INFO - on problem 121 of 128
+2025-08-16 17:56:25 - INFO - running solve_pulp 20 times
+2025-08-16 17:56:25 - INFO - running solve_pulp 22 times
+2025-08-16 17:58:30 - INFO - took 5690.5962 ± 430.0745 ms
+2025-08-16 17:58:30 - INFO - on problem 122 of 128
+2025-08-16 17:58:30 - INFO - running solve_pulp 20 times
+2025-08-16 17:58:30 - INFO - running solve_pulp 22 times
+2025-08-16 18:04:09 - INFO - took 15452.6286 ± 1495.9219 ms
+2025-08-16 18:04:09 - INFO - on problem 123 of 128
+2025-08-16 18:04:09 - INFO - running solve_pulp 20 times
+2025-08-16 18:04:09 - INFO - running solve_pulp 22 times
+2025-08-16 18:13:06 - INFO - took 24368.0712 ± 1096.3275 ms
+2025-08-16 18:13:06 - INFO - on problem 124 of 128
+2025-08-16 18:13:06 - INFO - running solve_pulp 20 times
+2025-08-16 18:13:06 - INFO - running solve_pulp 22 times
+2025-08-16 18:19:28 - INFO - took 17379.9055 ± 1308.9956 ms
+2025-08-16 18:19:28 - INFO - on problem 125 of 128
+2025-08-16 18:19:28 - INFO - running solve_pulp 20 times
+2025-08-16 18:19:28 - INFO - running solve_pulp 22 times
+2025-08-16 18:20:11 - INFO - took 1963.7857 ± 217.1885 ms
+2025-08-16 18:20:11 - INFO - on problem 126 of 128
+2025-08-16 18:20:11 - INFO - running solve_pulp 20 times
+2025-08-16 18:20:11 - INFO - running solve_pulp 22 times
+2025-08-16 18:21:50 - INFO - took 4504.7763 ± 685.4076 ms
+2025-08-16 18:21:50 - INFO - on problem 127 of 128
+2025-08-16 18:21:50 - INFO - running solve_pulp 20 times
+2025-08-16 18:21:50 - INFO - running solve_pulp 22 times
+2025-08-16 18:23:10 - INFO - took 3577.0925 ± 349.1836 ms
+2025-08-16 18:23:10 - INFO - on problem 128 of 128
+2025-08-16 18:23:10 - INFO - running solve_pulp 20 times
+2025-08-16 18:23:10 - INFO - running solve_pulp 22 times
+2025-08-16 18:25:13 - INFO - took 5606.0243 ± 527.4643 ms
+2025-08-16 18:25:13 - INFO - finished work. saving stats info on times/inf/rhs/bb_raw/4n-4d/stats.json
+2025-08-16 18:25:13 - INFO - done. terminating process

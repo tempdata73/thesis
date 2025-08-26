@@ -1,0 +1,644 @@
+2025-08-23 17:02:47 - INFO - saving log info on times/fin/rhs/dioph-right/1000n
+2025-08-23 17:02:47 - INFO - starting work
+2025-08-23 17:02:47 - INFO - on problem 1 of 128
+2025-08-23 17:02:47 - INFO - running dioph 22 times
+2025-08-23 17:02:47 - INFO - ignoring first 2 runs
+2025-08-23 17:02:50 - INFO - took 19.4155 ± 0.1686 ms
+2025-08-23 17:02:50 - INFO - searched through 1 layers
+2025-08-23 17:02:50 - INFO - on problem 2 of 128
+2025-08-23 17:02:50 - INFO - running dioph 22 times
+2025-08-23 17:02:50 - INFO - ignoring first 2 runs
+2025-08-23 17:02:51 - INFO - took 19.3708 ± 0.1587 ms
+2025-08-23 17:02:51 - INFO - searched through 1 layers
+2025-08-23 17:02:51 - INFO - on problem 3 of 128
+2025-08-23 17:02:51 - INFO - running dioph 22 times
+2025-08-23 17:02:51 - INFO - ignoring first 2 runs
+2025-08-23 17:02:51 - INFO - took 19.4536 ± 0.1460 ms
+2025-08-23 17:02:51 - INFO - searched through 1 layers
+2025-08-23 17:02:51 - INFO - on problem 4 of 128
+2025-08-23 17:02:51 - INFO - running dioph 22 times
+2025-08-23 17:02:51 - INFO - ignoring first 2 runs
+2025-08-23 17:02:52 - INFO - took 19.5500 ± 0.1014 ms
+2025-08-23 17:02:52 - INFO - searched through 1 layers
+2025-08-23 17:02:52 - INFO - on problem 5 of 128
+2025-08-23 17:02:52 - INFO - running dioph 22 times
+2025-08-23 17:02:52 - INFO - ignoring first 2 runs
+2025-08-23 17:02:52 - INFO - took 19.6957 ± 0.0998 ms
+2025-08-23 17:02:52 - INFO - searched through 1 layers
+2025-08-23 17:02:52 - INFO - on problem 6 of 128
+2025-08-23 17:02:52 - INFO - running dioph 22 times
+2025-08-23 17:02:52 - INFO - ignoring first 2 runs
+2025-08-23 17:02:53 - INFO - took 19.6946 ± 0.1150 ms
+2025-08-23 17:02:53 - INFO - searched through 1 layers
+2025-08-23 17:02:53 - INFO - on problem 7 of 128
+2025-08-23 17:02:53 - INFO - running dioph 22 times
+2025-08-23 17:02:53 - INFO - ignoring first 2 runs
+2025-08-23 17:02:53 - INFO - took 19.7716 ± 0.1551 ms
+2025-08-23 17:02:53 - INFO - searched through 1 layers
+2025-08-23 17:02:53 - INFO - on problem 8 of 128
+2025-08-23 17:02:53 - INFO - running dioph 22 times
+2025-08-23 17:02:53 - INFO - ignoring first 2 runs
+2025-08-23 17:02:53 - INFO - took 19.8301 ± 0.0883 ms
+2025-08-23 17:02:53 - INFO - searched through 1 layers
+2025-08-23 17:02:53 - INFO - on problem 9 of 128
+2025-08-23 17:02:53 - INFO - running dioph 22 times
+2025-08-23 17:02:53 - INFO - ignoring first 2 runs
+2025-08-23 17:02:54 - INFO - took 19.9093 ± 0.0483 ms
+2025-08-23 17:02:54 - INFO - searched through 1 layers
+2025-08-23 17:02:54 - INFO - on problem 10 of 128
+2025-08-23 17:02:54 - INFO - running dioph 22 times
+2025-08-23 17:02:54 - INFO - ignoring first 2 runs
+2025-08-23 17:02:54 - INFO - took 19.9937 ± 0.0969 ms
+2025-08-23 17:02:54 - INFO - searched through 1 layers
+2025-08-23 17:02:54 - INFO - on problem 11 of 128
+2025-08-23 17:02:54 - INFO - running dioph 22 times
+2025-08-23 17:02:54 - INFO - ignoring first 2 runs
+2025-08-23 17:02:55 - INFO - took 19.7002 ± 0.0600 ms
+2025-08-23 17:02:55 - INFO - searched through 1 layers
+2025-08-23 17:02:55 - INFO - on problem 12 of 128
+2025-08-23 17:02:55 - INFO - running dioph 22 times
+2025-08-23 17:02:55 - INFO - ignoring first 2 runs
+2025-08-23 17:02:55 - INFO - took 19.5357 ± 0.0925 ms
+2025-08-23 17:02:55 - INFO - searched through 1 layers
+2025-08-23 17:02:55 - INFO - on problem 13 of 128
+2025-08-23 17:02:55 - INFO - running dioph 22 times
+2025-08-23 17:02:55 - INFO - ignoring first 2 runs
+2025-08-23 17:02:56 - INFO - took 19.5377 ± 0.1008 ms
+2025-08-23 17:02:56 - INFO - searched through 1 layers
+2025-08-23 17:02:56 - INFO - on problem 14 of 128
+2025-08-23 17:02:56 - INFO - running dioph 22 times
+2025-08-23 17:02:56 - INFO - ignoring first 2 runs
+2025-08-23 17:02:56 - INFO - took 19.5705 ± 0.0557 ms
+2025-08-23 17:02:56 - INFO - searched through 1 layers
+2025-08-23 17:02:56 - INFO - on problem 15 of 128
+2025-08-23 17:02:56 - INFO - running dioph 22 times
+2025-08-23 17:02:56 - INFO - ignoring first 2 runs
+2025-08-23 17:02:56 - INFO - took 19.6466 ± 0.1237 ms
+2025-08-23 17:02:56 - INFO - searched through 1 layers
+2025-08-23 17:02:56 - INFO - on problem 16 of 128
+2025-08-23 17:02:56 - INFO - running dioph 22 times
+2025-08-23 17:02:56 - INFO - ignoring first 2 runs
+2025-08-23 17:02:57 - INFO - took 19.5978 ± 0.1026 ms
+2025-08-23 17:02:57 - INFO - searched through 1 layers
+2025-08-23 17:02:57 - INFO - on problem 17 of 128
+2025-08-23 17:02:57 - INFO - running dioph 22 times
+2025-08-23 17:02:57 - INFO - ignoring first 2 runs
+2025-08-23 17:02:57 - INFO - took 19.6401 ± 0.1398 ms
+2025-08-23 17:02:57 - INFO - searched through 1 layers
+2025-08-23 17:02:57 - INFO - on problem 18 of 128
+2025-08-23 17:02:57 - INFO - running dioph 22 times
+2025-08-23 17:02:57 - INFO - ignoring first 2 runs
+2025-08-23 17:02:58 - INFO - took 19.5369 ± 0.0831 ms
+2025-08-23 17:02:58 - INFO - searched through 1 layers
+2025-08-23 17:02:58 - INFO - on problem 19 of 128
+2025-08-23 17:02:58 - INFO - running dioph 22 times
+2025-08-23 17:02:58 - INFO - ignoring first 2 runs
+2025-08-23 17:02:58 - INFO - took 19.5855 ± 0.1153 ms
+2025-08-23 17:02:58 - INFO - searched through 1 layers
+2025-08-23 17:02:58 - INFO - on problem 20 of 128
+2025-08-23 17:02:58 - INFO - running dioph 22 times
+2025-08-23 17:02:58 - INFO - ignoring first 2 runs
+2025-08-23 17:02:59 - INFO - took 19.6120 ± 0.1000 ms
+2025-08-23 17:02:59 - INFO - searched through 1 layers
+2025-08-23 17:02:59 - INFO - on problem 21 of 128
+2025-08-23 17:02:59 - INFO - running dioph 22 times
+2025-08-23 17:02:59 - INFO - ignoring first 2 runs
+2025-08-23 17:02:59 - INFO - took 19.6213 ± 0.0756 ms
+2025-08-23 17:02:59 - INFO - searched through 1 layers
+2025-08-23 17:02:59 - INFO - on problem 22 of 128
+2025-08-23 17:02:59 - INFO - running dioph 22 times
+2025-08-23 17:02:59 - INFO - ignoring first 2 runs
+2025-08-23 17:03:00 - INFO - took 19.6803 ± 0.1226 ms
+2025-08-23 17:03:00 - INFO - searched through 1 layers
+2025-08-23 17:03:00 - INFO - on problem 23 of 128
+2025-08-23 17:03:00 - INFO - running dioph 22 times
+2025-08-23 17:03:00 - INFO - ignoring first 2 runs
+2025-08-23 17:03:00 - INFO - took 19.7149 ± 0.1444 ms
+2025-08-23 17:03:00 - INFO - searched through 1 layers
+2025-08-23 17:03:00 - INFO - on problem 24 of 128
+2025-08-23 17:03:00 - INFO - running dioph 22 times
+2025-08-23 17:03:00 - INFO - ignoring first 2 runs
+2025-08-23 17:03:00 - INFO - took 19.7106 ± 0.1089 ms
+2025-08-23 17:03:00 - INFO - searched through 1 layers
+2025-08-23 17:03:00 - INFO - on problem 25 of 128
+2025-08-23 17:03:00 - INFO - running dioph 22 times
+2025-08-23 17:03:00 - INFO - ignoring first 2 runs
+2025-08-23 17:03:01 - INFO - took 19.8289 ± 0.1692 ms
+2025-08-23 17:03:01 - INFO - searched through 1 layers
+2025-08-23 17:03:01 - INFO - on problem 26 of 128
+2025-08-23 17:03:01 - INFO - running dioph 22 times
+2025-08-23 17:03:01 - INFO - ignoring first 2 runs
+2025-08-23 17:03:01 - INFO - took 20.0091 ± 0.1871 ms
+2025-08-23 17:03:01 - INFO - searched through 1 layers
+2025-08-23 17:03:01 - INFO - on problem 27 of 128
+2025-08-23 17:03:01 - INFO - running dioph 22 times
+2025-08-23 17:03:01 - INFO - ignoring first 2 runs
+2025-08-23 17:03:02 - INFO - took 19.9015 ± 0.1602 ms
+2025-08-23 17:03:02 - INFO - searched through 1 layers
+2025-08-23 17:03:02 - INFO - on problem 28 of 128
+2025-08-23 17:03:02 - INFO - running dioph 22 times
+2025-08-23 17:03:02 - INFO - ignoring first 2 runs
+2025-08-23 17:03:02 - INFO - took 19.8188 ± 0.2233 ms
+2025-08-23 17:03:02 - INFO - searched through 1 layers
+2025-08-23 17:03:02 - INFO - on problem 29 of 128
+2025-08-23 17:03:02 - INFO - running dioph 22 times
+2025-08-23 17:03:02 - INFO - ignoring first 2 runs
+2025-08-23 17:03:03 - INFO - took 19.7954 ± 0.2290 ms
+2025-08-23 17:03:03 - INFO - searched through 1 layers
+2025-08-23 17:03:03 - INFO - on problem 30 of 128
+2025-08-23 17:03:03 - INFO - running dioph 22 times
+2025-08-23 17:03:03 - INFO - ignoring first 2 runs
+2025-08-23 17:03:03 - INFO - took 19.7413 ± 0.1781 ms
+2025-08-23 17:03:03 - INFO - searched through 1 layers
+2025-08-23 17:03:03 - INFO - on problem 31 of 128
+2025-08-23 17:03:03 - INFO - running dioph 22 times
+2025-08-23 17:03:03 - INFO - ignoring first 2 runs
+2025-08-23 17:03:03 - INFO - took 19.7782 ± 0.2042 ms
+2025-08-23 17:03:03 - INFO - searched through 1 layers
+2025-08-23 17:03:03 - INFO - on problem 32 of 128
+2025-08-23 17:03:03 - INFO - running dioph 22 times
+2025-08-23 17:03:03 - INFO - ignoring first 2 runs
+2025-08-23 17:03:04 - INFO - took 19.7364 ± 0.1782 ms
+2025-08-23 17:03:04 - INFO - searched through 1 layers
+2025-08-23 17:03:04 - INFO - on problem 33 of 128
+2025-08-23 17:03:04 - INFO - running dioph 22 times
+2025-08-23 17:03:04 - INFO - ignoring first 2 runs
+2025-08-23 17:03:04 - INFO - took 19.7227 ± 0.1790 ms
+2025-08-23 17:03:04 - INFO - searched through 1 layers
+2025-08-23 17:03:04 - INFO - on problem 34 of 128
+2025-08-23 17:03:04 - INFO - running dioph 22 times
+2025-08-23 17:03:04 - INFO - ignoring first 2 runs
+2025-08-23 17:03:05 - INFO - took 19.6779 ± 0.1905 ms
+2025-08-23 17:03:05 - INFO - searched through 1 layers
+2025-08-23 17:03:05 - INFO - on problem 35 of 128
+2025-08-23 17:03:05 - INFO - running dioph 22 times
+2025-08-23 17:03:05 - INFO - ignoring first 2 runs
+2025-08-23 17:03:05 - INFO - took 19.7080 ± 0.1597 ms
+2025-08-23 17:03:05 - INFO - searched through 1 layers
+2025-08-23 17:03:05 - INFO - on problem 36 of 128
+2025-08-23 17:03:05 - INFO - running dioph 22 times
+2025-08-23 17:03:05 - INFO - ignoring first 2 runs
+2025-08-23 17:03:06 - INFO - took 19.7650 ± 0.2313 ms
+2025-08-23 17:03:06 - INFO - searched through 1 layers
+2025-08-23 17:03:06 - INFO - on problem 37 of 128
+2025-08-23 17:03:06 - INFO - running dioph 22 times
+2025-08-23 17:03:06 - INFO - ignoring first 2 runs
+2025-08-23 17:03:06 - INFO - took 19.7495 ± 0.1903 ms
+2025-08-23 17:03:06 - INFO - searched through 1 layers
+2025-08-23 17:03:06 - INFO - on problem 38 of 128
+2025-08-23 17:03:06 - INFO - running dioph 22 times
+2025-08-23 17:03:06 - INFO - ignoring first 2 runs
+2025-08-23 17:03:06 - INFO - took 19.8972 ± 0.1826 ms
+2025-08-23 17:03:06 - INFO - searched through 1 layers
+2025-08-23 17:03:06 - INFO - on problem 39 of 128
+2025-08-23 17:03:06 - INFO - running dioph 22 times
+2025-08-23 17:03:06 - INFO - ignoring first 2 runs
+2025-08-23 17:03:07 - INFO - took 19.9066 ± 0.2023 ms
+2025-08-23 17:03:07 - INFO - searched through 1 layers
+2025-08-23 17:03:07 - INFO - on problem 40 of 128
+2025-08-23 17:03:07 - INFO - running dioph 22 times
+2025-08-23 17:03:07 - INFO - ignoring first 2 runs
+2025-08-23 17:03:07 - INFO - took 19.9325 ± 0.1507 ms
+2025-08-23 17:03:07 - INFO - searched through 1 layers
+2025-08-23 17:03:07 - INFO - on problem 41 of 128
+2025-08-23 17:03:07 - INFO - running dioph 22 times
+2025-08-23 17:03:07 - INFO - ignoring first 2 runs
+2025-08-23 17:03:08 - INFO - took 19.9044 ± 0.1579 ms
+2025-08-23 17:03:08 - INFO - searched through 1 layers
+2025-08-23 17:03:08 - INFO - on problem 42 of 128
+2025-08-23 17:03:08 - INFO - running dioph 22 times
+2025-08-23 17:03:08 - INFO - ignoring first 2 runs
+2025-08-23 17:03:08 - INFO - took 19.8303 ± 0.1826 ms
+2025-08-23 17:03:08 - INFO - searched through 1 layers
+2025-08-23 17:03:08 - INFO - on problem 43 of 128
+2025-08-23 17:03:08 - INFO - running dioph 22 times
+2025-08-23 17:03:08 - INFO - ignoring first 2 runs
+2025-08-23 17:03:09 - INFO - took 20.0196 ± 0.2200 ms
+2025-08-23 17:03:09 - INFO - searched through 1 layers
+2025-08-23 17:03:09 - INFO - on problem 44 of 128
+2025-08-23 17:03:09 - INFO - running dioph 22 times
+2025-08-23 17:03:09 - INFO - ignoring first 2 runs
+2025-08-23 17:03:09 - INFO - took 20.0446 ± 0.2186 ms
+2025-08-23 17:03:09 - INFO - searched through 1 layers
+2025-08-23 17:03:09 - INFO - on problem 45 of 128
+2025-08-23 17:03:09 - INFO - running dioph 22 times
+2025-08-23 17:03:09 - INFO - ignoring first 2 runs
+2025-08-23 17:03:10 - INFO - took 20.1049 ± 0.1972 ms
+2025-08-23 17:03:10 - INFO - searched through 1 layers
+2025-08-23 17:03:10 - INFO - on problem 46 of 128
+2025-08-23 17:03:10 - INFO - running dioph 22 times
+2025-08-23 17:03:10 - INFO - ignoring first 2 runs
+2025-08-23 17:03:10 - INFO - took 19.7544 ± 0.2199 ms
+2025-08-23 17:03:10 - INFO - searched through 1 layers
+2025-08-23 17:03:10 - INFO - on problem 47 of 128
+2025-08-23 17:03:10 - INFO - running dioph 22 times
+2025-08-23 17:03:10 - INFO - ignoring first 2 runs
+2025-08-23 17:03:10 - INFO - took 19.7561 ± 0.2230 ms
+2025-08-23 17:03:10 - INFO - searched through 1 layers
+2025-08-23 17:03:10 - INFO - on problem 48 of 128
+2025-08-23 17:03:10 - INFO - running dioph 22 times
+2025-08-23 17:03:10 - INFO - ignoring first 2 runs
+2025-08-23 17:03:11 - INFO - took 19.8340 ± 0.1775 ms
+2025-08-23 17:03:11 - INFO - searched through 1 layers
+2025-08-23 17:03:11 - INFO - on problem 49 of 128
+2025-08-23 17:03:11 - INFO - running dioph 22 times
+2025-08-23 17:03:11 - INFO - ignoring first 2 runs
+2025-08-23 17:03:11 - INFO - took 19.8601 ± 0.1997 ms
+2025-08-23 17:03:11 - INFO - searched through 1 layers
+2025-08-23 17:03:11 - INFO - on problem 50 of 128
+2025-08-23 17:03:11 - INFO - running dioph 22 times
+2025-08-23 17:03:11 - INFO - ignoring first 2 runs
+2025-08-23 17:03:12 - INFO - took 19.8588 ± 0.1856 ms
+2025-08-23 17:03:12 - INFO - searched through 1 layers
+2025-08-23 17:03:12 - INFO - on problem 51 of 128
+2025-08-23 17:03:12 - INFO - running dioph 22 times
+2025-08-23 17:03:12 - INFO - ignoring first 2 runs
+2025-08-23 17:03:12 - INFO - took 19.8196 ± 0.1798 ms
+2025-08-23 17:03:12 - INFO - searched through 1 layers
+2025-08-23 17:03:12 - INFO - on problem 52 of 128
+2025-08-23 17:03:12 - INFO - running dioph 22 times
+2025-08-23 17:03:12 - INFO - ignoring first 2 runs
+2025-08-23 17:03:13 - INFO - took 19.7512 ± 0.1752 ms
+2025-08-23 17:03:13 - INFO - searched through 1 layers
+2025-08-23 17:03:13 - INFO - on problem 53 of 128
+2025-08-23 17:03:13 - INFO - running dioph 22 times
+2025-08-23 17:03:13 - INFO - ignoring first 2 runs
+2025-08-23 17:03:13 - INFO - took 19.7465 ± 0.1958 ms
+2025-08-23 17:03:13 - INFO - searched through 1 layers
+2025-08-23 17:03:13 - INFO - on problem 54 of 128
+2025-08-23 17:03:13 - INFO - running dioph 22 times
+2025-08-23 17:03:13 - INFO - ignoring first 2 runs
+2025-08-23 17:03:13 - INFO - took 19.7910 ± 0.2048 ms
+2025-08-23 17:03:13 - INFO - searched through 1 layers
+2025-08-23 17:03:13 - INFO - on problem 55 of 128
+2025-08-23 17:03:13 - INFO - running dioph 22 times
+2025-08-23 17:03:13 - INFO - ignoring first 2 runs
+2025-08-23 17:03:14 - INFO - took 19.6214 ± 0.1226 ms
+2025-08-23 17:03:14 - INFO - searched through 1 layers
+2025-08-23 17:03:14 - INFO - on problem 56 of 128
+2025-08-23 17:03:14 - INFO - running dioph 22 times
+2025-08-23 17:03:14 - INFO - ignoring first 2 runs
+2025-08-23 17:03:14 - INFO - took 19.5787 ± 0.0929 ms
+2025-08-23 17:03:14 - INFO - searched through 1 layers
+2025-08-23 17:03:14 - INFO - on problem 57 of 128
+2025-08-23 17:03:14 - INFO - running dioph 22 times
+2025-08-23 17:03:14 - INFO - ignoring first 2 runs
+2025-08-23 17:03:15 - INFO - took 19.5544 ± 0.0979 ms
+2025-08-23 17:03:15 - INFO - searched through 1 layers
+2025-08-23 17:03:15 - INFO - on problem 58 of 128
+2025-08-23 17:03:15 - INFO - running dioph 22 times
+2025-08-23 17:03:15 - INFO - ignoring first 2 runs
+2025-08-23 17:03:15 - INFO - took 19.5941 ± 0.0900 ms
+2025-08-23 17:03:15 - INFO - searched through 1 layers
+2025-08-23 17:03:15 - INFO - on problem 59 of 128
+2025-08-23 17:03:15 - INFO - running dioph 22 times
+2025-08-23 17:03:15 - INFO - ignoring first 2 runs
+2025-08-23 17:03:16 - INFO - took 19.6458 ± 0.1063 ms
+2025-08-23 17:03:16 - INFO - searched through 1 layers
+2025-08-23 17:03:16 - INFO - on problem 60 of 128
+2025-08-23 17:03:16 - INFO - running dioph 22 times
+2025-08-23 17:03:16 - INFO - ignoring first 2 runs
+2025-08-23 17:03:16 - INFO - took 19.7056 ± 0.1912 ms
+2025-08-23 17:03:16 - INFO - searched through 1 layers
+2025-08-23 17:03:16 - INFO - on problem 61 of 128
+2025-08-23 17:03:16 - INFO - running dioph 22 times
+2025-08-23 17:03:16 - INFO - ignoring first 2 runs
+2025-08-23 17:03:17 - INFO - took 20.0575 ± 0.3867 ms
+2025-08-23 17:03:17 - INFO - searched through 1 layers
+2025-08-23 17:03:17 - INFO - on problem 62 of 128
+2025-08-23 17:03:17 - INFO - running dioph 22 times
+2025-08-23 17:03:17 - INFO - ignoring first 2 runs
+2025-08-23 17:03:17 - INFO - took 19.8400 ± 0.1525 ms
+2025-08-23 17:03:17 - INFO - searched through 1 layers
+2025-08-23 17:03:17 - INFO - on problem 63 of 128
+2025-08-23 17:03:17 - INFO - running dioph 22 times
+2025-08-23 17:03:17 - INFO - ignoring first 2 runs
+2025-08-23 17:03:17 - INFO - took 19.7083 ± 0.1577 ms
+2025-08-23 17:03:17 - INFO - searched through 1 layers
+2025-08-23 17:03:17 - INFO - on problem 64 of 128
+2025-08-23 17:03:17 - INFO - running dioph 22 times
+2025-08-23 17:03:17 - INFO - ignoring first 2 runs
+2025-08-23 17:03:18 - INFO - took 19.5440 ± 0.1664 ms
+2025-08-23 17:03:18 - INFO - searched through 1 layers
+2025-08-23 17:03:18 - INFO - on problem 65 of 128
+2025-08-23 17:03:18 - INFO - running dioph 22 times
+2025-08-23 17:03:18 - INFO - ignoring first 2 runs
+2025-08-23 17:03:18 - INFO - took 19.4804 ± 0.1246 ms
+2025-08-23 17:03:18 - INFO - searched through 1 layers
+2025-08-23 17:03:18 - INFO - on problem 66 of 128
+2025-08-23 17:03:18 - INFO - running dioph 22 times
+2025-08-23 17:03:18 - INFO - ignoring first 2 runs
+2025-08-23 17:03:19 - INFO - took 19.5063 ± 0.1593 ms
+2025-08-23 17:03:19 - INFO - searched through 1 layers
+2025-08-23 17:03:19 - INFO - on problem 67 of 128
+2025-08-23 17:03:19 - INFO - running dioph 22 times
+2025-08-23 17:03:19 - INFO - ignoring first 2 runs
+2025-08-23 17:03:19 - INFO - took 19.5607 ± 0.1075 ms
+2025-08-23 17:03:19 - INFO - searched through 1 layers
+2025-08-23 17:03:19 - INFO - on problem 68 of 128
+2025-08-23 17:03:19 - INFO - running dioph 22 times
+2025-08-23 17:03:19 - INFO - ignoring first 2 runs
+2025-08-23 17:03:20 - INFO - took 19.4737 ± 0.1606 ms
+2025-08-23 17:03:20 - INFO - searched through 1 layers
+2025-08-23 17:03:20 - INFO - on problem 69 of 128
+2025-08-23 17:03:20 - INFO - running dioph 22 times
+2025-08-23 17:03:20 - INFO - ignoring first 2 runs
+2025-08-23 17:03:20 - INFO - took 19.5180 ± 0.1637 ms
+2025-08-23 17:03:20 - INFO - searched through 1 layers
+2025-08-23 17:03:20 - INFO - on problem 70 of 128
+2025-08-23 17:03:20 - INFO - running dioph 22 times
+2025-08-23 17:03:20 - INFO - ignoring first 2 runs
+2025-08-23 17:03:20 - INFO - took 19.4691 ± 0.1454 ms
+2025-08-23 17:03:20 - INFO - searched through 1 layers
+2025-08-23 17:03:20 - INFO - on problem 71 of 128
+2025-08-23 17:03:20 - INFO - running dioph 22 times
+2025-08-23 17:03:20 - INFO - ignoring first 2 runs
+2025-08-23 17:03:21 - INFO - took 19.4747 ± 0.1526 ms
+2025-08-23 17:03:21 - INFO - searched through 1 layers
+2025-08-23 17:03:21 - INFO - on problem 72 of 128
+2025-08-23 17:03:21 - INFO - running dioph 22 times
+2025-08-23 17:03:21 - INFO - ignoring first 2 runs
+2025-08-23 17:03:21 - INFO - took 19.4757 ± 0.1681 ms
+2025-08-23 17:03:21 - INFO - searched through 1 layers
+2025-08-23 17:03:21 - INFO - on problem 73 of 128
+2025-08-23 17:03:21 - INFO - running dioph 22 times
+2025-08-23 17:03:21 - INFO - ignoring first 2 runs
+2025-08-23 17:03:22 - INFO - took 19.5178 ± 0.1202 ms
+2025-08-23 17:03:22 - INFO - searched through 1 layers
+2025-08-23 17:03:22 - INFO - on problem 74 of 128
+2025-08-23 17:03:22 - INFO - running dioph 22 times
+2025-08-23 17:03:22 - INFO - ignoring first 2 runs
+2025-08-23 17:03:22 - INFO - took 19.5995 ± 0.1385 ms
+2025-08-23 17:03:22 - INFO - searched through 1 layers
+2025-08-23 17:03:22 - INFO - on problem 75 of 128
+2025-08-23 17:03:22 - INFO - running dioph 22 times
+2025-08-23 17:03:22 - INFO - ignoring first 2 runs
+2025-08-23 17:03:23 - INFO - took 19.5368 ± 0.1730 ms
+2025-08-23 17:03:23 - INFO - searched through 1 layers
+2025-08-23 17:03:23 - INFO - on problem 76 of 128
+2025-08-23 17:03:23 - INFO - running dioph 22 times
+2025-08-23 17:03:23 - INFO - ignoring first 2 runs
+2025-08-23 17:03:23 - INFO - took 19.5316 ± 0.1861 ms
+2025-08-23 17:03:23 - INFO - searched through 1 layers
+2025-08-23 17:03:23 - INFO - on problem 77 of 128
+2025-08-23 17:03:23 - INFO - running dioph 22 times
+2025-08-23 17:03:23 - INFO - ignoring first 2 runs
+2025-08-23 17:03:23 - INFO - took 19.5281 ± 0.1739 ms
+2025-08-23 17:03:23 - INFO - searched through 1 layers
+2025-08-23 17:03:23 - INFO - on problem 78 of 128
+2025-08-23 17:03:23 - INFO - running dioph 22 times
+2025-08-23 17:03:23 - INFO - ignoring first 2 runs
+2025-08-23 17:03:24 - INFO - took 19.7731 ± 0.1870 ms
+2025-08-23 17:03:24 - INFO - searched through 1 layers
+2025-08-23 17:03:24 - INFO - on problem 79 of 128
+2025-08-23 17:03:24 - INFO - running dioph 22 times
+2025-08-23 17:03:24 - INFO - ignoring first 2 runs
+2025-08-23 17:03:24 - INFO - took 19.9158 ± 0.1692 ms
+2025-08-23 17:03:24 - INFO - searched through 1 layers
+2025-08-23 17:03:24 - INFO - on problem 80 of 128
+2025-08-23 17:03:24 - INFO - running dioph 22 times
+2025-08-23 17:03:24 - INFO - ignoring first 2 runs
+2025-08-23 17:03:25 - INFO - took 19.7573 ± 0.1906 ms
+2025-08-23 17:03:25 - INFO - searched through 1 layers
+2025-08-23 17:03:25 - INFO - on problem 81 of 128
+2025-08-23 17:03:25 - INFO - running dioph 22 times
+2025-08-23 17:03:25 - INFO - ignoring first 2 runs
+2025-08-23 17:03:25 - INFO - took 19.4244 ± 0.1661 ms
+2025-08-23 17:03:25 - INFO - searched through 1 layers
+2025-08-23 17:03:25 - INFO - on problem 82 of 128
+2025-08-23 17:03:25 - INFO - running dioph 22 times
+2025-08-23 17:03:25 - INFO - ignoring first 2 runs
+2025-08-23 17:03:26 - INFO - took 19.4925 ± 0.1973 ms
+2025-08-23 17:03:26 - INFO - searched through 1 layers
+2025-08-23 17:03:26 - INFO - on problem 83 of 128
+2025-08-23 17:03:26 - INFO - running dioph 22 times
+2025-08-23 17:03:26 - INFO - ignoring first 2 runs
+2025-08-23 17:03:26 - INFO - took 19.4215 ± 0.1450 ms
+2025-08-23 17:03:26 - INFO - searched through 1 layers
+2025-08-23 17:03:26 - INFO - on problem 84 of 128
+2025-08-23 17:03:26 - INFO - running dioph 22 times
+2025-08-23 17:03:26 - INFO - ignoring first 2 runs
+2025-08-23 17:03:26 - INFO - took 19.4635 ± 0.1584 ms
+2025-08-23 17:03:26 - INFO - searched through 1 layers
+2025-08-23 17:03:26 - INFO - on problem 85 of 128
+2025-08-23 17:03:26 - INFO - running dioph 22 times
+2025-08-23 17:03:26 - INFO - ignoring first 2 runs
+2025-08-23 17:03:27 - INFO - took 19.4458 ± 0.1823 ms
+2025-08-23 17:03:27 - INFO - searched through 1 layers
+2025-08-23 17:03:27 - INFO - on problem 86 of 128
+2025-08-23 17:03:27 - INFO - running dioph 22 times
+2025-08-23 17:03:27 - INFO - ignoring first 2 runs
+2025-08-23 17:03:27 - INFO - took 19.4324 ± 0.1224 ms
+2025-08-23 17:03:27 - INFO - searched through 1 layers
+2025-08-23 17:03:27 - INFO - on problem 87 of 128
+2025-08-23 17:03:27 - INFO - running dioph 22 times
+2025-08-23 17:03:27 - INFO - ignoring first 2 runs
+2025-08-23 17:03:28 - INFO - took 19.4357 ± 0.1971 ms
+2025-08-23 17:03:28 - INFO - searched through 1 layers
+2025-08-23 17:03:28 - INFO - on problem 88 of 128
+2025-08-23 17:03:28 - INFO - running dioph 22 times
+2025-08-23 17:03:28 - INFO - ignoring first 2 runs
+2025-08-23 17:03:28 - INFO - took 19.4054 ± 0.1883 ms
+2025-08-23 17:03:28 - INFO - searched through 1 layers
+2025-08-23 17:03:28 - INFO - on problem 89 of 128
+2025-08-23 17:03:28 - INFO - running dioph 22 times
+2025-08-23 17:03:28 - INFO - ignoring first 2 runs
+2025-08-23 17:03:29 - INFO - took 19.4560 ± 0.1893 ms
+2025-08-23 17:03:29 - INFO - searched through 1 layers
+2025-08-23 17:03:29 - INFO - on problem 90 of 128
+2025-08-23 17:03:29 - INFO - running dioph 22 times
+2025-08-23 17:03:29 - INFO - ignoring first 2 runs
+2025-08-23 17:03:29 - INFO - took 19.4908 ± 0.1461 ms
+2025-08-23 17:03:29 - INFO - searched through 1 layers
+2025-08-23 17:03:29 - INFO - on problem 91 of 128
+2025-08-23 17:03:29 - INFO - running dioph 22 times
+2025-08-23 17:03:29 - INFO - ignoring first 2 runs
+2025-08-23 17:03:29 - INFO - took 19.4839 ± 0.1498 ms
+2025-08-23 17:03:29 - INFO - searched through 1 layers
+2025-08-23 17:03:29 - INFO - on problem 92 of 128
+2025-08-23 17:03:29 - INFO - running dioph 22 times
+2025-08-23 17:03:29 - INFO - ignoring first 2 runs
+2025-08-23 17:03:30 - INFO - took 19.5221 ± 0.1496 ms
+2025-08-23 17:03:30 - INFO - searched through 1 layers
+2025-08-23 17:03:30 - INFO - on problem 93 of 128
+2025-08-23 17:03:30 - INFO - running dioph 22 times
+2025-08-23 17:03:30 - INFO - ignoring first 2 runs
+2025-08-23 17:03:30 - INFO - took 19.5741 ± 0.1429 ms
+2025-08-23 17:03:30 - INFO - searched through 1 layers
+2025-08-23 17:03:30 - INFO - on problem 94 of 128
+2025-08-23 17:03:30 - INFO - running dioph 22 times
+2025-08-23 17:03:30 - INFO - ignoring first 2 runs
+2025-08-23 17:03:31 - INFO - took 19.5343 ± 0.2178 ms
+2025-08-23 17:03:31 - INFO - searched through 1 layers
+2025-08-23 17:03:31 - INFO - on problem 95 of 128
+2025-08-23 17:03:31 - INFO - running dioph 22 times
+2025-08-23 17:03:31 - INFO - ignoring first 2 runs
+2025-08-23 17:03:31 - INFO - took 19.6267 ± 0.1640 ms
+2025-08-23 17:03:31 - INFO - searched through 1 layers
+2025-08-23 17:03:31 - INFO - on problem 96 of 128
+2025-08-23 17:03:31 - INFO - running dioph 22 times
+2025-08-23 17:03:31 - INFO - ignoring first 2 runs
+2025-08-23 17:03:32 - INFO - took 19.7655 ± 0.2097 ms
+2025-08-23 17:03:32 - INFO - searched through 1 layers
+2025-08-23 17:03:32 - INFO - on problem 97 of 128
+2025-08-23 17:03:32 - INFO - running dioph 22 times
+2025-08-23 17:03:32 - INFO - ignoring first 2 runs
+2025-08-23 17:03:32 - INFO - took 19.7204 ± 0.1593 ms
+2025-08-23 17:03:32 - INFO - searched through 1 layers
+2025-08-23 17:03:32 - INFO - on problem 98 of 128
+2025-08-23 17:03:32 - INFO - running dioph 22 times
+2025-08-23 17:03:32 - INFO - ignoring first 2 runs
+2025-08-23 17:03:32 - INFO - took 19.5270 ± 0.2005 ms
+2025-08-23 17:03:32 - INFO - searched through 1 layers
+2025-08-23 17:03:32 - INFO - on problem 99 of 128
+2025-08-23 17:03:32 - INFO - running dioph 22 times
+2025-08-23 17:03:32 - INFO - ignoring first 2 runs
+2025-08-23 17:03:33 - INFO - took 19.4093 ± 0.1936 ms
+2025-08-23 17:03:33 - INFO - searched through 1 layers
+2025-08-23 17:03:33 - INFO - on problem 100 of 128
+2025-08-23 17:03:33 - INFO - running dioph 22 times
+2025-08-23 17:03:33 - INFO - ignoring first 2 runs
+2025-08-23 17:03:33 - INFO - took 19.3606 ± 0.1733 ms
+2025-08-23 17:03:33 - INFO - searched through 1 layers
+2025-08-23 17:03:33 - INFO - on problem 101 of 128
+2025-08-23 17:03:33 - INFO - running dioph 22 times
+2025-08-23 17:03:33 - INFO - ignoring first 2 runs
+2025-08-23 17:03:34 - INFO - took 19.3770 ± 0.1272 ms
+2025-08-23 17:03:34 - INFO - searched through 1 layers
+2025-08-23 17:03:34 - INFO - on problem 102 of 128
+2025-08-23 17:03:34 - INFO - running dioph 22 times
+2025-08-23 17:03:34 - INFO - ignoring first 2 runs
+2025-08-23 17:03:34 - INFO - took 19.3626 ± 0.2019 ms
+2025-08-23 17:03:34 - INFO - searched through 1 layers
+2025-08-23 17:03:34 - INFO - on problem 103 of 128
+2025-08-23 17:03:34 - INFO - running dioph 22 times
+2025-08-23 17:03:34 - INFO - ignoring first 2 runs
+2025-08-23 17:03:35 - INFO - took 19.4224 ± 0.2107 ms
+2025-08-23 17:03:35 - INFO - searched through 1 layers
+2025-08-23 17:03:35 - INFO - on problem 104 of 128
+2025-08-23 17:03:35 - INFO - running dioph 22 times
+2025-08-23 17:03:35 - INFO - ignoring first 2 runs
+2025-08-23 17:03:35 - INFO - took 19.3904 ± 0.1747 ms
+2025-08-23 17:03:35 - INFO - searched through 1 layers
+2025-08-23 17:03:35 - INFO - on problem 105 of 128
+2025-08-23 17:03:35 - INFO - running dioph 22 times
+2025-08-23 17:03:35 - INFO - ignoring first 2 runs
+2025-08-23 17:03:35 - INFO - took 19.4547 ± 0.1924 ms
+2025-08-23 17:03:35 - INFO - searched through 1 layers
+2025-08-23 17:03:35 - INFO - on problem 106 of 128
+2025-08-23 17:03:35 - INFO - running dioph 22 times
+2025-08-23 17:03:35 - INFO - ignoring first 2 runs
+2025-08-23 17:03:36 - INFO - took 19.4137 ± 0.1736 ms
+2025-08-23 17:03:36 - INFO - searched through 1 layers
+2025-08-23 17:03:36 - INFO - on problem 107 of 128
+2025-08-23 17:03:36 - INFO - running dioph 22 times
+2025-08-23 17:03:36 - INFO - ignoring first 2 runs
+2025-08-23 17:03:36 - INFO - took 19.4316 ± 0.1613 ms
+2025-08-23 17:03:36 - INFO - searched through 1 layers
+2025-08-23 17:03:36 - INFO - on problem 108 of 128
+2025-08-23 17:03:36 - INFO - running dioph 22 times
+2025-08-23 17:03:36 - INFO - ignoring first 2 runs
+2025-08-23 17:03:37 - INFO - took 19.4835 ± 0.1327 ms
+2025-08-23 17:03:37 - INFO - searched through 1 layers
+2025-08-23 17:03:37 - INFO - on problem 109 of 128
+2025-08-23 17:03:37 - INFO - running dioph 22 times
+2025-08-23 17:03:37 - INFO - ignoring first 2 runs
+2025-08-23 17:03:37 - INFO - took 19.4024 ± 0.1677 ms
+2025-08-23 17:03:37 - INFO - searched through 1 layers
+2025-08-23 17:03:37 - INFO - on problem 110 of 128
+2025-08-23 17:03:37 - INFO - running dioph 22 times
+2025-08-23 17:03:37 - INFO - ignoring first 2 runs
+2025-08-23 17:03:38 - INFO - took 19.4328 ± 0.1573 ms
+2025-08-23 17:03:38 - INFO - searched through 1 layers
+2025-08-23 17:03:38 - INFO - on problem 111 of 128
+2025-08-23 17:03:38 - INFO - running dioph 22 times
+2025-08-23 17:03:38 - INFO - ignoring first 2 runs
+2025-08-23 17:03:38 - INFO - took 19.4533 ± 0.1482 ms
+2025-08-23 17:03:38 - INFO - searched through 1 layers
+2025-08-23 17:03:38 - INFO - on problem 112 of 128
+2025-08-23 17:03:38 - INFO - running dioph 22 times
+2025-08-23 17:03:38 - INFO - ignoring first 2 runs
+2025-08-23 17:03:38 - INFO - took 19.5369 ± 0.1482 ms
+2025-08-23 17:03:38 - INFO - searched through 1 layers
+2025-08-23 17:03:38 - INFO - on problem 113 of 128
+2025-08-23 17:03:38 - INFO - running dioph 22 times
+2025-08-23 17:03:38 - INFO - ignoring first 2 runs
+2025-08-23 17:03:39 - INFO - took 19.6789 ± 0.1937 ms
+2025-08-23 17:03:39 - INFO - searched through 1 layers
+2025-08-23 17:03:39 - INFO - on problem 114 of 128
+2025-08-23 17:03:39 - INFO - running dioph 22 times
+2025-08-23 17:03:39 - INFO - ignoring first 2 runs
+2025-08-23 17:03:39 - INFO - took 19.7184 ± 0.1983 ms
+2025-08-23 17:03:39 - INFO - searched through 1 layers
+2025-08-23 17:03:39 - INFO - on problem 115 of 128
+2025-08-23 17:03:39 - INFO - running dioph 22 times
+2025-08-23 17:03:39 - INFO - ignoring first 2 runs
+2025-08-23 17:03:40 - INFO - took 19.6500 ± 0.1855 ms
+2025-08-23 17:03:40 - INFO - searched through 1 layers
+2025-08-23 17:03:40 - INFO - on problem 116 of 128
+2025-08-23 17:03:40 - INFO - running dioph 22 times
+2025-08-23 17:03:40 - INFO - ignoring first 2 runs
+2025-08-23 17:03:40 - INFO - took 19.3667 ± 0.1802 ms
+2025-08-23 17:03:40 - INFO - searched through 1 layers
+2025-08-23 17:03:40 - INFO - on problem 117 of 128
+2025-08-23 17:03:40 - INFO - running dioph 22 times
+2025-08-23 17:03:40 - INFO - ignoring first 2 runs
+2025-08-23 17:03:41 - INFO - took 19.3729 ± 0.1393 ms
+2025-08-23 17:03:41 - INFO - searched through 1 layers
+2025-08-23 17:03:41 - INFO - on problem 118 of 128
+2025-08-23 17:03:41 - INFO - running dioph 22 times
+2025-08-23 17:03:41 - INFO - ignoring first 2 runs
+2025-08-23 17:03:41 - INFO - took 19.3576 ± 0.1547 ms
+2025-08-23 17:03:41 - INFO - searched through 1 layers
+2025-08-23 17:03:41 - INFO - on problem 119 of 128
+2025-08-23 17:03:41 - INFO - running dioph 22 times
+2025-08-23 17:03:41 - INFO - ignoring first 2 runs
+2025-08-23 17:03:41 - INFO - took 19.3525 ± 0.1633 ms
+2025-08-23 17:03:41 - INFO - searched through 1 layers
+2025-08-23 17:03:41 - INFO - on problem 120 of 128
+2025-08-23 17:03:41 - INFO - running dioph 22 times
+2025-08-23 17:03:41 - INFO - ignoring first 2 runs
+2025-08-23 17:03:42 - INFO - took 19.3529 ± 0.1629 ms
+2025-08-23 17:03:42 - INFO - searched through 1 layers
+2025-08-23 17:03:42 - INFO - on problem 121 of 128
+2025-08-23 17:03:42 - INFO - running dioph 22 times
+2025-08-23 17:03:42 - INFO - ignoring first 2 runs
+2025-08-23 17:03:42 - INFO - took 19.3738 ± 0.1684 ms
+2025-08-23 17:03:42 - INFO - searched through 1 layers
+2025-08-23 17:03:42 - INFO - on problem 122 of 128
+2025-08-23 17:03:42 - INFO - running dioph 22 times
+2025-08-23 17:03:42 - INFO - ignoring first 2 runs
+2025-08-23 17:03:43 - INFO - took 19.3479 ± 0.1759 ms
+2025-08-23 17:03:43 - INFO - searched through 1 layers
+2025-08-23 17:03:43 - INFO - on problem 123 of 128
+2025-08-23 17:03:43 - INFO - running dioph 22 times
+2025-08-23 17:03:43 - INFO - ignoring first 2 runs
+2025-08-23 17:03:43 - INFO - took 19.4050 ± 0.1637 ms
+2025-08-23 17:03:43 - INFO - searched through 1 layers
+2025-08-23 17:03:43 - INFO - on problem 124 of 128
+2025-08-23 17:03:43 - INFO - running dioph 22 times
+2025-08-23 17:03:43 - INFO - ignoring first 2 runs
+2025-08-23 17:03:44 - INFO - took 19.3221 ± 0.2207 ms
+2025-08-23 17:03:44 - INFO - searched through 1 layers
+2025-08-23 17:03:44 - INFO - on problem 125 of 128
+2025-08-23 17:03:44 - INFO - running dioph 22 times
+2025-08-23 17:03:44 - INFO - ignoring first 2 runs
+2025-08-23 17:03:44 - INFO - took 19.4350 ± 0.1453 ms
+2025-08-23 17:03:44 - INFO - searched through 1 layers
+2025-08-23 17:03:44 - INFO - on problem 126 of 128
+2025-08-23 17:03:44 - INFO - running dioph 22 times
+2025-08-23 17:03:44 - INFO - ignoring first 2 runs
+2025-08-23 17:03:44 - INFO - took 19.3854 ± 0.1869 ms
+2025-08-23 17:03:44 - INFO - searched through 1 layers
+2025-08-23 17:03:44 - INFO - on problem 127 of 128
+2025-08-23 17:03:44 - INFO - running dioph 22 times
+2025-08-23 17:03:44 - INFO - ignoring first 2 runs
+2025-08-23 17:03:45 - INFO - took 19.3705 ± 0.1694 ms
+2025-08-23 17:03:45 - INFO - searched through 1 layers
+2025-08-23 17:03:45 - INFO - on problem 128 of 128
+2025-08-23 17:03:45 - INFO - running dioph 22 times
+2025-08-23 17:03:45 - INFO - ignoring first 2 runs
+2025-08-23 17:03:45 - INFO - took 19.4687 ± 0.1580 ms
+2025-08-23 17:03:45 - INFO - searched through 1 layers
+2025-08-23 17:03:45 - INFO - finished work. saving stats info on times/fin/rhs/dioph-right/1000n/stats.json
+2025-08-23 17:03:45 - INFO - done. terminating process

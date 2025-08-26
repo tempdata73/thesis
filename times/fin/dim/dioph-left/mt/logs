@@ -1,0 +1,150 @@
+2025-08-19 13:53:16 - INFO - saving log info on times/fin/dim/dioph-left/mt
+2025-08-19 13:53:16 - INFO - starting work
+2025-08-19 13:53:16 - INFO - on problem 1 of 20
+2025-08-19 13:53:16 - INFO - running dioph 22 times
+2025-08-19 13:53:16 - INFO - ignoring first 2 runs
+2025-08-19 13:53:17 - INFO - took 0.3086 ± 0.0057 ms
+2025-08-19 13:53:17 - INFO - searched through 1 layers
+2025-08-19 13:53:17 - INFO - on problem 2 of 20
+2025-08-19 13:53:17 - INFO - running dioph 22 times
+2025-08-19 13:53:17 - INFO - ignoring first 2 runs
+2025-08-19 13:53:17 - INFO - took 0.6415 ± 0.0053 ms
+2025-08-19 13:53:17 - INFO - searched through 1 layers
+2025-08-19 13:53:17 - INFO - on problem 3 of 20
+2025-08-19 13:53:17 - INFO - running dioph 22 times
+2025-08-19 13:53:17 - INFO - ignoring first 2 runs
+2025-08-19 13:53:17 - INFO - took 1.4176 ± 0.0061 ms
+2025-08-19 13:53:17 - INFO - searched through 1 layers
+2025-08-19 13:53:17 - INFO - on problem 4 of 20
+2025-08-19 13:53:17 - INFO - running dioph 22 times
+2025-08-19 13:53:17 - INFO - ignoring first 2 runs
+2025-08-19 13:53:18 - INFO - took 4.5331 ± 0.0123 ms
+2025-08-19 13:53:18 - INFO - searched through 1 layers
+2025-08-19 13:53:18 - INFO - on problem 5 of 20
+2025-08-19 13:53:18 - INFO - running dioph 22 times
+2025-08-19 13:53:18 - INFO - ignoring first 2 runs
+2025-08-19 13:53:18 - INFO - took 12.8345 ± 0.0125 ms
+2025-08-19 13:53:18 - INFO - searched through 1 layers
+2025-08-19 13:53:18 - INFO - on problem 6 of 20
+2025-08-19 13:53:18 - INFO - running dioph 22 times
+2025-08-19 13:53:18 - INFO - ignoring first 2 runs
+2025-08-19 13:53:19 - INFO - took 41.8759 ± 0.0397 ms
+2025-08-19 13:53:19 - INFO - searched through 1 layers
+2025-08-19 13:53:19 - INFO - on problem 7 of 20
+2025-08-19 13:53:19 - INFO - running dioph 22 times
+2025-08-19 13:53:19 - INFO - ignoring first 2 runs
+2025-08-19 13:53:24 - INFO - took 244.6074 ± 0.9184 ms
+2025-08-19 13:53:24 - INFO - searched through 1 layers
+2025-08-19 13:53:24 - INFO - on problem 8 of 20
+2025-08-19 13:53:24 - INFO - running dioph 22 times
+2025-08-19 13:53:24 - INFO - ignoring first 2 runs
+2025-08-19 13:53:48 - INFO - took 1062.6508 ± 3.0614 ms
+2025-08-19 13:53:48 - INFO - searched through 1 layers
+2025-08-19 13:53:48 - INFO - on problem 9 of 20
+2025-08-19 13:53:48 - INFO - running dioph 22 times
+2025-08-19 13:53:48 - INFO - ignoring first 2 runs
+2025-08-19 13:55:29 - INFO - took 4595.2747 ± 6.6248 ms
+2025-08-19 13:55:29 - INFO - searched through 1 layers
+2025-08-19 13:55:29 - INFO - on problem 10 of 20
+2025-08-19 13:55:29 - INFO - running dioph 22 times
+2025-08-19 13:55:29 - INFO - ignoring first 2 runs
+2025-08-19 13:59:25 - INFO - took 10742.8370 ± 16.4390 ms
+2025-08-19 13:59:25 - INFO - searched through 1 layers
+2025-08-19 13:59:25 - INFO - on problem 11 of 20
+2025-08-19 13:59:25 - INFO - running dioph 22 times
+2025-08-19 13:59:25 - INFO - ignoring first 2 runs
+2025-08-19 14:06:34 - INFO - took 19470.7284 ± 23.0362 ms
+2025-08-19 14:06:34 - INFO - searched through 1 layers
+2025-08-19 14:06:34 - INFO - on problem 12 of 20
+2025-08-19 14:06:34 - INFO - running dioph 22 times
+2025-08-19 14:06:34 - INFO - ignoring first 2 runs
+2025-08-19 14:17:54 - INFO - took 30886.7468 ± 26.4039 ms
+2025-08-19 14:17:54 - INFO - searched through 1 layers
+2025-08-19 14:17:54 - INFO - on problem 13 of 20
+2025-08-19 14:17:54 - INFO - running dioph 22 times
+2025-08-19 14:17:54 - INFO - ignoring first 2 runs
+2025-08-19 14:34:25 - INFO - took 45072.3262 ± 47.5781 ms
+2025-08-19 14:34:25 - INFO - searched through 1 layers
+2025-08-19 14:34:25 - INFO - on problem 14 of 20
+2025-08-19 14:34:25 - INFO - running dioph 22 times
+2025-08-19 14:34:25 - INFO - ignoring first 2 runs
+2025-08-19 14:57:07 - INFO - took 61884.8788 ± 36.1802 ms
+2025-08-19 14:57:07 - INFO - searched through 1 layers
+2025-08-19 14:57:07 - INFO - on problem 15 of 20
+2025-08-19 14:57:07 - INFO - running dioph 22 times
+2025-08-19 14:57:07 - INFO - ignoring first 2 runs
+2025-08-19 15:26:58 - INFO - took 81418.1017 ± 57.3688 ms
+2025-08-19 15:26:58 - INFO - searched through 1 layers
+2025-08-19 15:26:58 - INFO - on problem 16 of 20
+2025-08-19 15:26:58 - INFO - running dioph 22 times
+2025-08-19 15:26:58 - INFO - ignoring first 2 runs
+2025-08-19 16:05:06 - INFO - took 103961.5905 ± 34.9021 ms
+2025-08-19 16:05:06 - INFO - searched through 1 layers
+2025-08-19 16:05:06 - INFO - on problem 17 of 20
+2025-08-19 16:05:06 - INFO - running dioph 22 times
+2025-08-19 16:05:06 - INFO - ignoring first 2 runs
+2025-08-19 16:52:34 - INFO - took 129440.1276 ± 47.1585 ms
+2025-08-19 16:52:34 - INFO - searched through 1 layers
+2025-08-19 16:52:34 - INFO - on problem 18 of 20
+2025-08-19 16:52:34 - INFO - running dioph 22 times
+2025-08-19 16:52:34 - INFO - ignoring first 2 runs
+2025-08-19 18:42:15 - INFO - took 299154.1517 ± 128.5212 ms
+2025-08-19 18:42:15 - INFO - searched through 1 layers
+2025-08-19 18:42:15 - INFO - on problem 19 of 20
+2025-08-19 18:42:15 - INFO - running dioph 22 times
+2025-08-19 18:42:15 - INFO - ignoring first 2 runs
+2025-08-19 18:51:17 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 19:00:19 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 19:09:22 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 19:18:24 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 19:27:27 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 19:36:30 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 19:45:33 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 19:54:35 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 20:03:38 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 20:12:41 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 20:21:43 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 20:30:46 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 20:39:49 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 20:48:51 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 20:57:54 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 21:06:56 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 21:15:59 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 21:25:02 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 21:34:05 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 21:43:07 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 21:52:09 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 22:01:11 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 22:01:11 - INFO - took 542603.8854 ± 256.5402 ms
+2025-08-19 22:01:11 - INFO - all functions evaluations timed out
+2025-08-19 22:01:11 - INFO - searched through 9994195563 layers
+2025-08-19 22:01:11 - INFO - on problem 20 of 20
+2025-08-19 22:01:11 - INFO - running dioph 22 times
+2025-08-19 22:01:11 - INFO - ignoring first 2 runs
+2025-08-19 22:15:30 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 22:29:48 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 22:44:05 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 22:58:22 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 23:12:39 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 23:26:55 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 23:41:12 - WARNING - alarm_handler: function execution timed out.
+2025-08-19 23:55:29 - WARNING - alarm_handler: function execution timed out.
+2025-08-20 00:09:46 - WARNING - alarm_handler: function execution timed out.
+2025-08-20 00:24:03 - WARNING - alarm_handler: function execution timed out.
+2025-08-20 00:38:20 - WARNING - alarm_handler: function execution timed out.
+2025-08-20 00:52:37 - WARNING - alarm_handler: function execution timed out.
+2025-08-20 01:06:53 - WARNING - alarm_handler: function execution timed out.
+2025-08-20 01:21:10 - WARNING - alarm_handler: function execution timed out.
+2025-08-20 01:35:27 - WARNING - alarm_handler: function execution timed out.
+2025-08-20 01:49:44 - WARNING - alarm_handler: function execution timed out.
+2025-08-20 02:04:01 - WARNING - alarm_handler: function execution timed out.
+2025-08-20 02:18:18 - WARNING - alarm_handler: function execution timed out.
+2025-08-20 02:32:35 - WARNING - alarm_handler: function execution timed out.
+2025-08-20 02:46:52 - WARNING - alarm_handler: function execution timed out.
+2025-08-20 03:01:09 - WARNING - alarm_handler: function execution timed out.
+2025-08-20 03:15:26 - WARNING - alarm_handler: function execution timed out.
+2025-08-20 03:15:26 - INFO - took 856889.7100 ± 192.3096 ms
+2025-08-20 03:15:26 - INFO - all functions evaluations timed out
+2025-08-20 03:15:26 - INFO - searched through 15613784727 layers
+2025-08-20 03:15:26 - INFO - finished work. saving stats info on times/fin/dim/dioph-left/mt/stats.json
+2025-08-20 03:15:26 - INFO - done. terminating process
