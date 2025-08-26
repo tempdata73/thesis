@@ -22,7 +22,7 @@ bb_full_options = {
     "msg": False,
     "presolve": True,
     "cuts": True,
-    "options": ["gomory on", "knapsack off", "probing off"],
+    "options": ["gomory on", "knapsack on", "probing off"],
     "threads": 1,
     "timeLimit": TIMEOUT,
     "logPath": "/tmp/logs",
