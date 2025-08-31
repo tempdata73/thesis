@@ -1,76 +1,95 @@
 \chapter{El caso infinito}
 \label{chap:inf}
-
-% TODO: resumen del capítulo
-
 \noindent
-Sea $\vec{p} \in \R^n \setminus \braces{\vec{0}}$ un vector esencialmente entero y recordemos de la
-definición \ref{theory:def:rational} que tiene un único múltiplo coprimo $\vec{q} \in \Z^n$. Es
-decir, existe un único escalar $m \in \R$ que satisface tres cosas: $\vec{p} = m\vec{q}$, las
-entradas $q_1, \ldots, q_n$ son coprimas, y la primera entrada no nula $q_i$ es positiva. Al igual
-que en el capítulo anterior, supondremos que $m$ es positivo. Equivalentemente, supondremos que la
-primera entrada no nula $p_i$ es positiva\footnote{ El autor hace recordar que esta es una cuestión
-	puramente de comodidad y no hay pérdida de generalidad. Cuando $m$ es negativo, los resultados
-se mantienen pero es necesario voltear las desigualdades y cambiar las funciones piso por las
-funciones techo, lo cual añadiría un número innecesario de casos a analizar.}.
+Sea $\vec{p} \in \R^n$ un vector esencialmente entero y recordemos de la definición
+\ref{theory:def:rational} que tiene un único múltiplo coprimo $\vec{q} \in \Z^n$. Es decir, existe
+un único escalar $m \in \R$ que satisface tres cosas: $\vec{p} = m\vec{q}$, las entradas $q_1,
+\ldots, q_n$ son coprimas, y la primera entrada no nula $q_i$ es positiva. Supondremos, sin pérdida
+de generalidad, que $m$ es positivo.
 
 Retomemos el entero $\eta \in \Z$ del lema \ref{phase-1:lemma:eta} que parametriza la primera capa
 entera que satisface el presupuesto \eqref{theory:constraint:budget}. A causa del teorema
-\ref{theory:th:feasibility} sabemos que si $q_i \leq 0$ para alguna $i \in \braces{1, \ldots, n}$,
-entonces la $\eta$-ésima capa entera contiene un número infinito de puntos factibles. A partir de
-esto último, somos capaces de resolver el automáticamente el problema de decisión de determinar si
-un escalar $u^* \in \R$ es el valor óptimo del programa (\ref{theory:formulation}).
+\ref{theory:th:feasibility}, sabemos que si $q_i < 0$ para alguna $i \in \braces{1, \ldots, n}$,
+entonces la $\eta$-ésima capa entera contiene un número infinito de puntos factibles.
+
 \begin{corollary}
 	\label{cor:inf:obj}
-	Supongamos que $q_i \leq 0$ para algún $i \in \braces{1, \ldots, n}$. Entonces el valor óptimo
-	del programa lineal entero (\ref{theory:formulation}) es $m\eta$. Además, si $m$ es positivo,
+	Supongamos que $q_i < 0$ para algún $i \in \braces{1, \ldots, n}$. Entonces el valor óptimo del
+	programa lineal entero (\ref{theory:formulation}) es $m\eta$. Además, si $m$ es positivo,
 	tenemos que $\eta$ es el múltiplo de $m$ más grande que satisface $m\eta \leq u$, donde $u$ es
 	el lado derecho de la restricción presupuestaria \eqref{theory:constraint:budget}.
 \end{corollary}
 \begin{proof}
-	Por el teorema \ref{theory:th:feasibility} sabemos que existen una infinidad de soluciones en la
-	$\eta$-ésima capa entera, así que sea $\vec{x}^*$ una de ellas. Entonces $\vec{q}^T\vec{x}^* =
-	\eta$, pero $\vec{p} = m\vec{q}$ por la definición \ref{theory:def:rational}, por lo que
-	obtenemos $\vec{p}^T\vec{x}^* = m\vec{q}^T\vec{x}^* = m\eta$.
+	Por hipótesis, una entrada de $\vec{q}$ es negativa. Del segundo caso del teorema
+	\ref{theory:th:feasibility} sabemos que existen una infinidad de soluciones en la $\eta$-ésima
+	capa entera, así que sea $\vec{x}^*$ una de ellas. Entonces $\vec{q}^T\vec{x}^* = \eta$, pero
+	$\vec{p} = m\vec{q}$ por la definición \ref{theory:def:rational}, por lo que obtenemos
+	$\vec{p}^T\vec{x}^* = m\vec{q}^T\vec{x}^* = m\eta$.
 
-	Ahora bien, si $m$ es positivo, por el lema \ref{phase-1:lemma:eta} tenemos que
-	$\eta = \lfloor u/m \rfloor$
-	. Supongamos que $\xi \in \Z$ satisface $m\xi \leq u$ y también $\lfloor
-	u/m \rfloor < \xi$. Luego,
+	Ahora bien, supongamos $m$ es positivo pero que $\eta$ no es el múltiplo más grande de $m$ que
+	satisface $m\eta \leq u$. Supongamos que $\xi \in \Z$ satisface $m\xi \leq u$ y también $\eta <
+	\xi$. Por el lema \ref{phase-1:lemma:eta} tenemos $\eta = \floor{u/m}$. Luego,
 	\begin{equation*}
-		m\left\lfloor \frac{u}{m} \right\rfloor < m\xi \leq u
+		m\eta = m\left\lfloor \frac{u}{m} \right\rfloor < m\xi \leq u
 		\implies \left\lfloor \frac{u}{m} \right\rfloor < \xi \leq \frac{u}{m},
 	\end{equation*}
-	pero esto contradice las propiedades de la función piso.
+	pero esto contradice las propiedades de la función piso. Finalmente, por hipótesis tenemos que
+	$m$ es positivo y por lo tanto $\eta$ debe ser el múltiplo más grande de $m$ que satisface
+	$m\eta \leq u$.
 \end{proof}
 
 \begin{observation}
 	Para ilustrar la conveniencia de restringir $m$ a que sea positivo, consideremos el caso cuando
-	$m < 0$. De una manera similar a la del lema \ref{phase-1:lemma:eta}, podemos demostrar que
-	$\eta \coloneq \lceil u/m \rceil$ parametriza también la primera capa entera que satisface el
-	presupuesto, pues ahora tenemos de la restricción \eqref{theory:constraint:budget} que
-	$\vec{p}^T\vec{x} \leq u$ si y solo si $\vec{q}^T\vec{x} \geq u/m$. Se sigue cumpliendo que el
-	valor óptimo del problema \eqref{theory:formulation} es $m\eta$. Sin embargo, $\eta$ ahora es el
-	múltiplo más chico de $m$ que satisface $m\eta \geq u$.
+	$m < 0$. Del lema \ref{phase-1:lemma:eta} tenemos que $\eta \coloneq \lceil u/m \rceil$
+	parametriza también la primera capa entera que satisface el presupuesto, pues ahora tenemos de
+	la restricción \eqref{theory:constraint:budget} que $\vec{p}^T\vec{x} \leq u$ si y solo si
+	$\vec{q}^T\vec{x} \geq u/m$. Se sigue cumpliendo que el valor óptimo del problema
+	\eqref{theory:formulation} es $m\eta$. Sin embargo, $\eta$ ahora es el múltiplo más pequeño de $m$
+	que satisface $m\eta \geq u$.
 \end{observation}
 
-Una vez resuelto el problema de decisión, podemos preguntarnos concretamente cómo obtener el punto
-óptimo. Por el teorema \ref{theory:th:feasibility} sabemos que debemos resolver la ecuación lineal
-diofantina $\vec{q}^T\vec{x} = \eta$. Del teorema \ref{th:lattice} sabemos que si $q_n \neq 0$,
-entonces existen $k \in \Z$ y $\vec{t} \in \Z^{n-1}$ tales que
+Puesto que somos capaces de decidir si un escalar $u^*$ es el valor óptimo del problema
+\eqref{theory:formulation}, nos preguntamos ahora cómo obtener la solución óptima.
+
+Por hipótesis de este capítulo, el vector coprimo $\vec{q}$ tiene al menos una entrada negativa. Del
+segundo caso del teorema \ref{theory:th:feasibility}, sabemos que las infinitas soluciones de
+\eqref{theory:formulation} se encuentran en la $\eta$-ésima capa entera. Luego, del lema
+\ref{theory:lemma:utility} tenemos que estas soluciones satisfacen la ecuación lineal diofantina
+$\vec{q}^T\vec{x} = \eta$.
+
+Supongamos, por el momento, que $\vec{q}$ no tiene entradas nulas. Podemos permutar las entradas de
+$\vec{q}$ sin afectar la el problema \eqref{theory:formulation}. En efecto, toda solución $\vec{x}
+\in \Z^n$ de \eqref{theory:formulation} es no negativa y satisface $\vec{q}^T\vec{x} = \eta$. Sea $P
+\in \Z^{n \times n}$ una matriz de permutación. Observemos que $\vec{x}$ es no negativo si y solo si
+$P\vec{x}$ es no negativo. Además,
 \begin{equation*}
-	\vec{x} = k\vec{\nu} + M\vec{t},
+	\eta = \vec{q}^T\vec{x} = \vec{q}^TP^TP\vec{x} = (P\vec{q})^T(P\vec{x}).
 \end{equation*}
-donde $\vec{\nu}$ y $M$ están definidas por \eqref{eq:vec-omega} y \eqref{eq:mat-T},
-respectivamente. De los lemas \ref{lemma:iso1} y \ref{lemma:iso2} sabemos que
-\begin{equation*}
-	\vec{q}^T\left(\eta\vec{\nu} + M\vec{t}\right) = \eta\vec{q}^T\vec{\nu} + \vec{q}^TM\vec{t} = \eta
-\end{equation*}
-para todo $\vec{t} \in \Z^{n-1}$. Así pues, debe ser el caso que $k = \eta$ y debemos encontrar
-condiciones suficientes en $\vec{t}$ para asegurar la no-negatividad de $\vec{x}$. En primer lugar,
-sabemos que para todo $i \in \braces{1, \ldots, n - 2}$, la entrada $t_i$ debe satisfacer
-\eqref{eq:param-lb}. En segundo lugar, recuperamos de \eqref{eq:last-solution} que las últimas dos
-soluciones de la ecuación $\vec{q}^T\vec{x} = \eta$ están dadas por
+Por lo que podemos encontrar una solución entera no negativa $\vec{x}$ de la ecuación lineal
+diofantina $(P\vec{q})^T\vec{x} = \eta$ y entonces $P\vec{x}$ es solución de
+\eqref{theory:formulation}.
+
+\begin{observation}
+	Si $\vec{q} \in \Z^n$ es un vector coprimo, entonces $P\vec{q}$ no necesariamente lo es, ya que
+	posiblemente $(P\vec{q})_1 < 0$. Esto no constituye un problema, pues la construcción de soluciones
+	en la sección \ref{subsec:dioph-eq} requiere que las entradas del vector sean coprimas y no hace
+	suposiciones sobre sus signos.
+\end{observation}
+
+En particular podemos suponer, sin pérdida de generalidad, que las entradas de  $\vec{q}$ satisfacen
+$q_{n-1} < 0 < q_n$. Como $\vec{q}$ no tiene entradas nulas, de la
+definición \ref{theory:def:rational} sabemos que $q_1$ es positivo y, por suposición de este capítulo,
+alguna entrada $q_j$ es negativa, así que podemos permutar estas entradas con las de $q_n$ y
+$q_{n-1}$, respectivamente.
+
+De la proposición \ref{prop:xint} sabemos que el conjunto de soluciones enteras de la ecuación
+lineal diofantina $\vec{q}^T\vec{x} = \eta$ es $\braces{\eta\vec{\nu} + M\vec{t} \vcentcolon \vec{t}
+\in \Z^{n-1}}$. Así pues, basta encontrar condiciones suficientes en $\vec{t}$ para asegurar la no
+negatividad de la solución $\vec{x} \coloneq \eta\vec{\nu} + M\vec{t}$.
+
+Para que las primeras $n - 2$ entradas de $\vec{x}$ sean no negativas, debe ser el caso que $t_i \in
+\Z$ satisfaga \eqref{eq:param-lb} para todo $1 \leq i \leq n - 2$. Recuperamos de
+\eqref{eq:last-solution} que las últimas dos entradas de $\vec{x}$ son
 \begin{equation*}
 	\begin{cases}
 		x_{n-1} = \omega_{n-1}x_{n-1}' + \frac{q_n}{\prod_{j=1}^{n-1}g_j}t_{n-1}, \\
@@ -79,188 +98,71 @@ soluciones de la ecuación $\vec{q}^T\vec{x} = \eta$ están dadas por
 \end{equation*}
 donde los enteros $g_i$ están definidos por \eqref{dummy:next-g} con $g_1 = 1$, $\omega_{n-1}$ está
 definida a través de la relación de recurrencia \eqref{eq:omega-recurrence} con condición inicial
-$\omega_1 = \eta$ (o bien a partir del lema \ref{eq:omega-formula} con $k = \eta$), y $x_{n-1}',
-x_n'$ son coeficientes de Bézout que satisfacen \eqref{eq:last-equation-bez}.
-
-En lo que se encuentra a continuación supondremos que ninguna entrada $q_i$ es nula. Esto no
-constituye problema alguno debido a un razonamiento similar al de la demostración del teorema
-\ref{theory:th:feasibility}. Definimos
-\begin{equation*}
-	I^\circ \coloneq \braces{i \colon q_i = 0},
-\end{equation*}
-y también definimos el vector $\tvec{q}$ cuyas entradas son las entradas no nulas de
-$\vec{q}$. A partir de lo que sigue vamos a determinar un vector entero no nulo $\tvec{x}$
-que satisfaga $\tvec{q}^T\tvec{x} = \eta$. Luego, encontramos que el vector $\vec{x}$
-dado por
-\begin{equation*}
-	x_i \coloneq
-	\begin{cases}
-		\tilde{x}_i, & i \not \in I^\circ, \\
-		0, & i \in I^\circ,
-	\end{cases}
-\end{equation*}
-es entero, no negativo, y también satisface $\vec{q}^T\vec{x} = \eta$. Así pues, la suposición de
-que $q_i \neq 0$ para todo $i \in \braces{1, \ldots, n}$ toma lugar sin pérdida de generalidad.
-
-Para que se satisfagan las condiciones de no negatividad de $x_{n-1}$ y de $x_n$, encontramos que
-$t_{n-1} \in \Z$ debe cumplir ciertas desigualdades según los signos de $q_{n-1}$ y de $q_n$.
-Definamos, por conveniencia,
+$\omega_1 = \eta$, y $x_{n-1}', x_n'$ son coeficientes de Bézout que satisfacen
+\eqref{eq:last-equation-bez}. Definamos, por conveniencia,
 \begin{equation}
 	\label{eq:lr-bounds}
 	b_1 \coloneq -\frac{\omega_{n-1}x_{n-1}'}{q_n} \cdot \prod_{j=1}^{n-1}g_j, \quad
 	b_2 \coloneq \frac{\omega_{n-1}x_{n}'}{q_{n-1}} \cdot \prod_{j=1}^{n-1}g_j.
 \end{equation}
-Entonces, para asegurar la no-negatividad de $x_{n - 1}$ y de $x_n$, debe ser el caso que
-\begin{equation}
-	\label{eq:feasible-param}
-	t_{n-1} \in 
-	\begin{cases}
-		\big[ \lceil \max\lbrace b_1 ,  b_2 \rbrace \rceil, \infty \big), &  q_{n-1} < 0 < q_n, \\[0.5em]
-		\big( -\infty, \lfloor \min\lbrace b_1, b_2\rbrace \rfloor \big], &  q_n < 0 < q_{n-1}, \\[0.5em]
-		\big[ \lceil b_2 \rceil, \lfloor b_1 \rfloor \big], &  q_{n-1}, q_n < 0, \\[0.5em]
-		\big[ \lceil b_1 \rceil, \lfloor b_2 \rfloor \big], &  0 < q_{n-1}, q_n.
-	\end{cases}
-\end{equation}
-
-Podemos emplear la misma estrategia de permutar las entradas de $q_i$ de manera que colapsemos estos
-cuatro casos distintos en uno solo. Como estamos en el caso infinito del teorema
-\ref{theory:th:feasibility}, naturalmente supondremos que $q_i < 0$ para alguna $i \in \braces{1,
-\ldots n}$. Así pues, podemos permutar esta $i$-ésima entrada de $\vec{q}$ con $q_{n-1}$, con lo que
-obtenemos $q_{n-1} < 0$. Luego, como $\vec{q}$ es el múltiplo coprimo de $\vec{p}$ y ninguna entrada
-de $\vec{q}$ es nula, se sigue de la definición \ref{theory:def:rational} que $q_1 > 0$. Así pues,
-podemos permutar la primera y última entrada de $\vec{q}$, de donde se sigue que $q_n > 0$.
-Juntándolo todo, obtenemos $q_{n-1} < 0 < q_n$. De esta manera, para asegurar la no negatividad de
-$x_{n-1}$ y $x_n$, basta con que se satisfaga el primer caso:
+Puesto que $q_{n-1} < 0 < q_n$, tenemos que las últimas dos entradas de $\vec{x}$ son no negativas
+si y solo si $t_{n-1} \in \Z$ satisface
 \begin{equation}
 	\label{eq:feasible-param:collapsed}
 	t_{n-1} \geq \ceil{\max\lbrace b_1, b_2 \rbrace}.
 \end{equation}
 
+El siguiente lema fortalece nuestros resultados al generalizarlo para todo lado derecho de
+\eqref{eq:dioph}.
 \begin{lemma}
 	\label{lemma:t-existence}
-	Sea $\vec{p} \in \R$ un vector cuyas entradas son todas distintas de cero, y sea $\vec{q} \in
-	\Z^n$ su múltiplo coprimo. Entonces existe un vector $\vec{t} \in \Z^{n-1}$ que satisface ambos
-	\eqref{eq:param-lb} y \eqref{eq:feasible-param}.
+	Sea $\vec{p} \in \R$ un vector esencialmente entero, y supongamos que su múltiplo coprimo
+	$\vec{q} \in \Z^n$ tiene entradas no nulas y al menos una de ellas es negativa. Entonces la
+	ecuación lineal diofantina \eqref{eq:dioph} tiene una infinidad de soluciones enteras no
+	negativas.
 \end{lemma}
 \begin{proof}
-	Por la discusión anterior, podemos suponer sin pérdida de generalidad que $q_{n-1} < 0 < q_n$,
-	así que basta mostrar la existencia de  $\vec{t} \in \Z^{n-1}$ que satisfaga \eqref{eq:param-lb} y
-	\eqref{eq:feasible-param:collapsed}. Si definimos
+	Supongamos, sin pérdida de generalidad, que $q_{n-1} < 0 < q_n$. Sea $\vec{t} \in \Z^{n-1}$ tal
+	que
 	\begin{equation*}
-		t_i \coloneq \begin{cases}
+		t_i \geq \begin{cases}
 			\ceil{-\frac{\omega_ix_i'}{g_{i + 1}}}, & i < n - 1, \\[0.5em]
 			\ceil{\max\lbrace b_1, b_2 \rbrace}, & i = n - 1,
 		\end{cases}
 	\end{equation*}
-	entonces se verifica automáticamente que estas condiciones se satisfacen.
+	y sea
+	\begin{equation*}
+		\vec{x} \coloneq k\vec{\nu} + M\vec{t},
+	\end{equation*}
+	donde recuperamos $\vec{\nu}$ y $M$ de \eqref{eq:vec-omega} y \eqref{eq:mat-T}, respectivamente.
+	De la proposición \ref{prop:xint}, así como de \eqref{eq:param-lb} y
+	\eqref{eq:feasible-param:collapsed}, se sigue que $\vec{x}$ es entero y no negativo. Finalmente,
+	de los lemas \ref{lemma:iso1} y \ref{lemma:iso2} encontramos que
+	\begin{equation*}
+		\vec{q}^T\vec{x} = k\vec{q}^T\vec{\nu} + \vec{q}^TM = k,
+	\end{equation*}
+	por lo que $\vec{x}$ es solución de \eqref{eq:dioph}.
 \end{proof}
 
-% \begin{lemma}
-% 	\label{lemma:t-existence}
-% 	Sea $\vec{p} \in \R$ un vector cuyas entradas son todas distintas de cero, y sea $\vec{q} \in
-% 	\Z^n$ su múltiplo coprimo. Entonces existe un vector $\vec{t} \in \Z^{n-1}$ que satisface ambos
-% 	\eqref{eq:param-lb} y \eqref{eq:feasible-param}.
-% \end{lemma}
-% \begin{proof}
-% 	Tenemos cuatro casos, pero observemos que los dos en donde $q_{n - 1}$ y $q_n$
-% 	tienen signo distinto no son difíciles: si $q_{n - 1} <0 < q_n$, entonces el vector
-% 	$\vec{t} \in \Z^{n-1}$ dado por
-% 	\begin{equation*}
-% 		t_i \coloneq \begin{cases}
-% 			\left\lceil -\frac{\omega_ix_i'}{g_{i + 1}} \right\rceil, & i < n - 1, \\[0.5em]
-% 			\lceil \max\lbrace b_1, b_2 \rbrace \rceil, & i = n - 1,
-% 		\end{cases}
-% 	\end{equation*}
-% 	satisface ambos (\ref{eq:param-lb}) y (\ref{eq:feasible-param}). El caso $q_n < 0 <
-% 	q_{n - 1}$ es completamente similar.
-% 
-% 	Consideremos el caso $q_{n - 1}, q_n < 0$. Como ninguna entrada de $\vec{p}$ es nula y el vector
-% 	$\vec{q}$ es su múltiplo coprimo, se sigue de la definición \ref{theory:def:rational} que $q_1 >
-% 	0$. Podemos entonces permutar las entradas $q_1$ y $q_{n}$ para regresar al primer caso.
-% 
-% 	Finalmente, consideremos el caso $0 < q_{n - 1}, q_n$. Queremos encontrar condiciones
-% 	suficientes para asegurar que el intervalo $[\ceil{b_1}, \floor{b_2}]$ esté bien definido, es
-% 	decir, para asegurar que $\floor{b_2} - \ceil{b_1} \geq 0$. Podemos suponer sin pérdida de
-% 	generalidad que $q_{n - 2} < 0$. En efecto, como $q_i < 0$ para alguna $i \in \braces{1, \ldots,
-% 	n - 2}$, somos capaces permutar las entradas $i$ y $n - 2$ de $\vec{q}$. Observemos que
-% 	\begin{align*}
-% 		b_2 - 1 &\leq \lfloor b_2 \rfloor \leq b_2, \\
-% 		b_1 &\leq \lceil b_1 \rceil \leq b_1 + 1.
-% 	\end{align*}
-% 	De donde obtenemos
-% 	\begin{equation*}
-% 		b_2 - b_1 - 2 \leq \lfloor b_2 \rfloor - \lceil b_1 \rceil \leq b_2 - b_1.
-% 	\end{equation*}
-% 	Así pues, para que el intervalo $[\lceil b_1 \rceil, \lfloor b_2 \rfloor]$ esté bien definido,
-% 	es suficiente con mostrar que existe un escalar $\omega_{n - 1}$ que satisfaga $b_2 - b_1 \geq
-% 	2$. De \eqref{eq:lr-bounds} tenemos
-% 	\begin{equation}
-% 		\label{proof:b-sub}
-% 		b_2 - b_1 = \omega_{n - 1}\prod_{j = 1}^{n-1}g_j \cdot
-% 			\left(\frac{x_{n-1}'}{q_n} + \frac{x_n'}{q_{n - 1}}\right)
-% 	\end{equation}
-% 	Pero $x_{n-1}'$ y $x_n'$ satisfacen \eqref{eq:last-equation-bez}, y entonces
-% 	\begin{equation*}
-% 		\frac{x_{n-1}'}{q_n} + \frac{x_n'}{q_{n - 1}} = \frac{1}{q_{n-1}q_n} \cdot \prod_{j =
-% 		1}^{n-1}g_j.
-% 	\end{equation*}
-% 	Sustituyendo en (\ref{proof:b-sub}),
-% 	\begin{equation*}
-% 		b_2 - b_1 = \frac{\omega_{n-1}}{q_{n-1}q_n} \cdot \prod_{j=1}^{n-1}g_j^2,
-% 	\end{equation*}
-% 	por lo que $b_2 - b_1 \geq 2$ si y solo si
-% 	\begin{equation}
-% 		\label{proof:omega-sub}
-% 		\omega_{n-1} \geq 2\frac{q_{n-1}q_n}{\prod_{j=1}^{n-1}g_j^2}.
-% 	\end{equation}
-% 	De (\ref{eq:recurrence}) sabemos que
-% 	\begin{equation*}
-% 		\omega_{n-1} = \omega_{n-2}\omega_{n-1}' -
-% 		\frac{q_{n-2}}{\prod_{j=1}^{n-2}g_j}t_{n-2}.
-% 	\end{equation*}
-% 	Sustituyendo en (\ref{proof:omega-sub}), usando el hecho de que $q_{n-2} < 0$ y despejando
-% 	$t_{n-2}$, encontramos que $\floor{b_2} - \ceil{b_1} \geq 0$ si
-% 	\begin{equation*}
-% 		t_{n-2} \geq \frac{\omega_{n-2}\omega_{n-1}'}{q_{n-2}}\cdot\prod_{j=1}^{n-2}g_j
-% 		- 2\frac{q_{n-1}q_n}{q_{n-2}g_{n-1}^2}\cdot
-% 		\prod_{j=1}^{n-2}g_j^{-1}
-% 	\end{equation*}
-% 	Llamemos $c$ al lado derecho de esta desigualdad. Así pues, definimos el vector
-% 	$\vec{t} \in \Z^{n-1}$ de manera que
-% 	\begin{equation*}
-% 		t_i \coloneq \begin{cases}
-% 			\left\lceil -\frac{\omega_ix_i'}{q_i} \right\rceil, & i < n - 2, \\[0.5em]
-% 			\left\lceil \max\left\lbrace -\frac{\omega_ix_i'}{q_i}, c \right\rbrace
-% 			\right\rceil, & i = n -2, \\[0.5em]
-% 			\lceil b_1 \rceil, & i = n - 1.
-% 		\end{cases}
-% 	\end{equation*}
-% 	Se verifica que $\vec{t}$ satisface ambos (\ref{eq:param-lb}) y (\ref{eq:feasible-param}).
-% \end{proof}
+En la práctica es mejor usar la relación de recurrencia \eqref{eq:recurrence} y ``construir'' las
+entradas $x_i$ al mismo tiempo que definimos $t_i$ de manera que satisfaga \eqref{eq:param-lb} y
+\eqref{eq:feasible-param:collapsed}. Si procedemos de esta forma no tenemos que encontrar primero
+$\vec{\nu}$ y $M$, determinar $\vec{t}$ y luego recuperar $\vec{x}$.
 
-En síntesis, por el lema \ref{lemma:t-existence} sabemos que existe un vector
-$\vec{t} \in \Z^{n-1}$ que satisface ambos (\ref{eq:param-lb}) y (\ref{eq:feasible-param}).
-Al definir $\vec{x}^* \coloneq \eta\vec{\nu} + M\vec{t}$, encontramos que $\vec{x}^*$ es entero y
-no negativo, y además por los lemas \ref{lemma:iso1} y \ref{lemma:iso2} encontramos que
-\begin{equation*}
-	\vec{q}^T\vec{x}^* = \eta\vec{q}^T\vec{\nu} + \vec{q}^TM\vec{t} = \eta.
-\end{equation*}
-Por el teorema \ref{theory:th:feasibility}, se sigue que $\vec{x}^*$ es la solución al problema
-\eqref{theory:formulation}.
-
-En la práctica es mejor usar la relación de recurrencia (\ref{eq:recurrence}) y ``construir'' las
-entradas $x_i$ al mismo tiempo que definimos $t_i$ de manera que satisfaga (\ref{eq:param-lb}) y
-(\ref{eq:feasible-param:collapsed}). Si procedemos de esta forma no tenemos que encontrar primero
-$\vec{\nu}$ y $M$, determinar $\vec{t}$ y luego recuperar $\vec{x}$. El algoritmo \ref{algo:inf}
-muestra este procedimiento constructivo.
+El algoritmo \ref{algo:inf} (pág.~\pageref{algo:inf}) mostrará aquel procedimiento constructivo.
+Para ello, suponemos la existencia de una subrutina \texttt{Bezout} que, como su nombre lo indica,
+calcula los coeficientes de Bézout entre dos enteros. El autor reitera, así como lo hizo en la
+sección \ref{section:number-theory}, que estos coeficientes se pueden calcular por medio del
+algoritmo extendido de Euclides.
 
 \begin{algorithm}[ht]
 	\LinesNumbered
+	\DontPrintSemicolon
 	\SetKwProg{Fn}{Fn}{\string:}{}
 	\SetKwFunction{Bezout}{Bezout}
 	\SetKwFunction{NonNegativeIntSol}{NonNegativeIntSolInf}
 		\KwData{\\
-			$\vec{q} \in \Z^n$ coprimo tal que $q_i \neq 0$ para todo $i \in \braces{1, \ldots, n}$ y $q_{n-1} < 0 < q_n$. \\
+			$\vec{q} \in \Z^n$ con entradas coprimas no nulas y tal que $q_{n-1} < 0 < q_n$. \\
 			$\eta \in \Z_{\geq 0}$.
 			}
 		\KwResult{\\
@@ -269,23 +171,29 @@ muestra este procedimiento constructivo.
 		\Begin{
 			$\vec{x} \leftarrow \vec{0}$\;
 			$\omega_1 \leftarrow \eta$\;
+			$p \leftarrow 1$\;
 			\For{$i \leftarrow 1$ \KwTo $n - 2$\label{alg:def:inf:loop}}{
-				$g_{i+1} \leftarrow \gcd{q_{i+1}, \ldots, q_n}$\; \label{alg:def:inf:g}
-				$x_i', \omega_{i+1}' \leftarrow$ \Bezout{$q_i$, $g_{i+1}$}\; \label{alg:def:inf:bez}
-				$t_i \leftarrow \ceil{-\omega_i x_i' / g_{i+1}}$\; \label{alg:def:inf:t}
+				$g_{i+1} \leftarrow \gcd{q_{i+1} / p, \ldots, q_n / p}$\quad\tcp*[h]{ecuación
+				\eqref{dummy:next-g}}\; \label{alg:def:inf:g}
+				$x_i', \omega_{i+1}' \leftarrow$ \Bezout{$q_i / p$, $g_{i+1}$}\; \label{alg:def:inf:bez}
+				$t_i \leftarrow \ceil{-\omega_i x_i' / g_{i+1}}$\quad\tcp*[h]{ecuación
+				\eqref{eq:param-lb}}\; \label{alg:def:inf:t}
+				\tcp*[h]{ecuación \eqref{eq:recurrence}}\;
 				$x_i \leftarrow \omega_i x_i' + g_{i+1}t_i$\; \label{alg:def:inf:x}
-				$\omega_{i+1} \leftarrow \omega_i \omega_{i+1}' - q_i t_i$\; \label{alg:def:inf:w}
-				\For{$j \leftarrow i + 1$ \KwTo $n$}{
-					$q_{j} \leftarrow q_{j}/g_{i+1}$\; \label{alg:def:inf:q}
-				}
+				$\omega_{i+1} \leftarrow \omega_i \omega_{i+1}' - q_i t_i / p$\; \label{alg:def:inf:w}
+				\tcp*[h]{actualizar producto}\;
+				$p \leftarrow pg_{i+1}$\;
 			}
 
-			$x_{n-1}', x_n' \leftarrow$ \Bezout{$q_{n-1}$, $q_n$}\; \label{alg:def:inf:lastw}
-			$b_1 \leftarrow -\omega_{n-1} x_{n-1}' / q_n$\;
-			$b_2 \leftarrow \omega_{n-1} x_n' / q_{n-1}$\;
-			$t_{n-1} \leftarrow \ceil{\max\lbrace b_1, b_2\rbrace}$\;
-			$x_{n-1} \leftarrow \omega_{n-1}x_{n-1}' + q_nt_{n-1}$\;
-			$x_{n} \leftarrow \omega_{n-1}x_{n}' - q_{n-1}t_{n-1}$\;
+			$x_{n-1}', x_n' \leftarrow$ \Bezout{$q_{n-1} / p$, $q_n / p$}\; \label{alg:def:inf:lastw}
+			\tcp*[h]{ecuación \eqref{eq:lr-bounds}}\;
+			$b_1 \leftarrow -\omega_{n-1} x_{n-1}' \cdot p/ q_n$\;
+			$b_2 \leftarrow \omega_{n-1} x_n' \cdot p/ q_{n-1}$\;
+			$t_{n-1} \leftarrow \ceil{\max\lbrace b_1, b_2\rbrace}$\quad\tcp*[h]{ecuación
+			\eqref{eq:feasible-param:collapsed}}\;
+			\tcp*[h]{ecuación \eqref{eq:last-solution}}\;
+			$x_{n-1} \leftarrow \omega_{n-1}x_{n-1}' + q_nt_{n-1} / p$\;
+			$x_{n} \leftarrow \omega_{n-1}x_{n}' - q_{n-1}t_{n-1} / p$\;
 
 			\Return{$\vec{x}$}\;
 		}
@@ -293,112 +201,46 @@ muestra este procedimiento constructivo.
 	\label{algo:inf}
 \end{algorithm}
 
-En el algoritmo \ref{algo:inf} supusimos la existencia de una subrutina \texttt{Bezout} que, como su
-nombre lo indica, calcula los coeficientes de Bézout entre dos enteros. Es la creencia del autor
-que no es necesario escribir la subrutina en esta tesis, pero reitera, así como lo hizo en la Sección
-\ref{section:number-theory}, que estos coeficientes se pueden calcular por medio del algoritmo
-Extendido de Euclides.
-
 \begin{lemma}
 	\label{lemma:alg:inf:correct}
 	El algoritmo \ref{algo:inf} es correcto.
 \end{lemma}
 \begin{proof}
-	Basta observar que el algoritmo sigue la construcción recursiva de la Sección
-	\ref{subsec:dioph-eq}, donde escogemos las variables libres $t_i$ como lo indica la demostración
-	del lema \ref{lemma:t-existence} para asegurar que $\vec{x}$ sea no negativo. El único punto de
-	aclaración lo hacemos con respecto a las redefiniciones en la línea \ref{alg:def:inf:q}.
-
-	Sea $\vec{q}'$ una copia del vector $\vec{q}$ antes de realizar cualquier modificación. No es
-	difícil ver, por medio de inducción y recordando $g_1 \coloneq \gcd{q_1', \ldots, q_n'} = 1$,
-	que
-	\begin{equation*}
-		q_i = \frac{q_i'}{\prod_{j=1}^{\min\lbrace i, n - 1\rbrace}g_j},
-	\end{equation*}
-	para todo $i \in \braces{1, \ldots, n}$. Luego, las definiciones en las líneas
-	\eqref{alg:def:inf:g}, \eqref{alg:def:inf:bez} y \eqref{alg:def:inf:lastw} son consistentes con
-	la construcción recursiva de la Sección \ref{subsec:dioph-eq}. Juntando esto con el lema
-	\ref{lemma:t-existence} encontramos que $\vec{x}$ es no negativo y satisface la ecuación lineal
-	diofantinca $\vec{q}^T\vec{x} = \eta$.
-
-	% Observemos que en este algoritmo
-	% seguimos la construcción recursiva de la Sección \ref{subsec:dioph-eq}. Mostramos esto
-	% inductivamente. Denotemos por $\vec{q}'$ al vector $\vec{q}$ antes de ser modificado por el
-	% algoritmo.
-
-	% % Sin embargo, parece que cambiamos la definición del máximo común divisor $g_{i+1}$ en la línea
-	% % \eqref{alg:def:inf:g} cuando la comparamos con \eqref{dummy:next-g}. Primero mostremos por
-	% % inducción que ambas definiciones son equivalentes.
-
-	% Cuando $i = 1$, tenemos $\vec{q} = \vec{q}'$. De la línea \ref{alg:def:inf:g}, obtenemos $g_2
-	% = \gcd{q_2, q_3, \ldots, q_n}$, pero recordemos que habíamos definido por conveniencia $g_1
-	% \coloneq \gcd{q_1', \ldots, q_n'} = 1$. Así pues, tenemos
-	% \begin{equation*}
-	% 	g_2 = \gcd{q_2, \ldots, q_n} = \gcd{q_2'/g_1, \ldots, q_n'/g_1},
-	% \end{equation*}
-	% pero esto es igual a la definición en \eqref{dummy:next-g}. De la línea \ref{alg:def:inf:bez}
-	% tenemos que $x_1'$ y $\omega_2'$ son los coeficientes de Bézout de $q_1 = q_1'$ y de $g_2$,
-	% respectivamente. De la línea \ref{alg:def:inf:w} tenemos
-	% \begin{equation*}
-	% 	\omega_2 = \omega_1\omega_2' - q_1t_1 = \omega_1\omega_2' - \frac{q_1'}{g_1}t_1,
-	% \end{equation*}
-	% por lo que $x_1$ y $\omega_2$ están definidos como \eqref{dummy:eq:first-step} y por lo tanto
-	% satisfacen \eqref{eq:dioph:first-step}. Además, $t_1$ satisface \eqref{eq:param-lb}, de donde
-	% encontramos que $x_1 \geq 0$.
-
-	% De las redefiniciones en la línea \ref{alg:def:inf:q} obtenemos, para todo $j \in \braces{2,
-	% \ldots, n - 1}$,
-	% \begin{equation*}
-	% 	q_j \leftarrow \frac{q_j}{g_2} = \frac{q_j'}{g_1 \cdot g_2}
-	% \end{equation*}
-
-	% Supongamos inductivamente que el algoritmo sigue la construcción recursiva de la Sección
-	% \ref{subsec:dioph-eq} para alguna $i$ tal que $i - 1 < n - 2$ y que $x_{i-1} \geq 0$. De la
-	% línea \ref{alg:def:inf:q} tenemos entonces
-	% \begin{equation*}
-	% 	q_j \leftarrow \frac{q_j}{g_i} = \frac{q_j'}{g_i \cdot \prod_{j=1}^{i-1} g_j}
-	% 	= \frac{q_j'}{\prod_{j=1}^{i}g_j},
-	% \end{equation*}
-	% para toda $j \in \braces{i, \ldots, n - 1}$. De la línea \ref{alg:def:inf:g} se sigue que
-	% \begin{equation*}
-	% 	g_{i+1} = \gcd{q_{i+1}, \ldots, q_n}
-	% 	=
-	% 	\gcd{
-	% 		\frac{q_{i+1}'}{\prod_{j=1}^{i}g_j},
-	% 		\ldots,
-	% 		\frac{q_{n}'}{\prod_{j=1}^{i}g_j}
-	% 	},
-	% \end{equation*}
-	% lo cual es equivalente a \eqref{dummy:next-g}. De la línea \ref{alg:def:inf:bez} tenemos que
-	% $x_{i}', \omega_{i + 1}'$ son los coeficientes de Bézout de $q_i =
-	% \frac{q_i'}{\prod_{j=1}^ig_j}$ y de $g_{i+1}$, respectivamente. De la línea
-	% \eqref{alg:def:inf:w} también tenemos
-	% \begin{equation*}
-	% 	\omega_{i+1} = \omega_i\omega_{i+1}' - q_it_i = \omega_i\omega_{i+1} -
-	% 	\frac{q_i'}{\prod_{j=1}^{i}g_j}t_i,
-	% \end{equation*}
-	% por lo que $x_i$ y $\omega_{i+1}$ están definidos como \eqref{eq:recurrence} y por lo tanto
-	% satisfacen \eqref{dummy:eq:simplified}. Observamos en la línea \ref{alg:def:inf:t} que $t_i$
-	% satisface \eqref{eq:param-lb} y por lo tanto $x_i \geq 0$. Así pues, el algoritmo sigue la
-	% construcción recursiva de la Sección \ref{subsec:dioph-eq} para todo $i \in \braces{1, \ldots, n
-	% - 2}$ y también $x_i$ es no negativo.
-	% Finalmente, 
+	Basta observar que el algoritmo sigue la construcción recursiva de la sección
+	\ref{subsec:dioph-eq}, donde escogemos las variables libres $t_i$ como lo indican
+	\eqref{eq:param-lb} y \eqref{eq:feasible-param:collapsed} para asegurar que $\vec{x} \in \Z^n$
+	sea no negativo.
 \end{proof}
 
-El algoritmo \ref{algo:inf:ext} extiende el algoritmo \ref{algo:inf}. Solamente construimos un
-vector $\tvec{q}$ a partir del vector coprimo $\vec{q}$ de manera que se satisfagan las
-hipótesis del algoritmo \ref{algo:inf}. Esta construcción sigue la misma lógica con la que
-justificamos los supuestos $q_i \neq 0$ y $q_{n-1} < 0 < q_n$ antes de presentar el lema
-\ref{lemma:t-existence}.
+Ahora bien, supongamos que $\vec{q}$ tiene entradas nulas. Sea
+\begin{equation*}
+	I^\circ \coloneq \braces{i \vcentcolon q_i = 0},
+\end{equation*}
+y también definamos el vector $\tvec{q}$ cuyas entradas son las entradas no nulas de $\vec{q}$.
+Supongamos que la penúltima entrada de $\tvec{q}$ es negativa y que su última entrada es positiva. A
+causa del lema anterior, el algoritmo \ref{algo:inf} encuentra un vector $\tvec{x}$ entero no
+negativo que satisface $\tvec{q}^T\tvec{x} = \eta$. Luego, encontramos que el vector $\vec{x}$ dado
+por
+\begin{equation*}
+	x_i \coloneq
+	\begin{cases}
+		\tilde{x}_i, & i \not \in I^\circ, \\
+		0, & i \in I^\circ,
+	\end{cases}
+\end{equation*}
+es entero, no negativo, y también satisface $\vec{q}^T\vec{x} = \eta$.
 
-Al igual que en el algoritmo anterior, suponemos la existencia de las subrutinas \texttt{length} y
-\texttt{switch}, las cuales determinan la dimensión de un vector $\vec{q}$ y permutan sus entradas,
-respectivamente. Ambas subrutinas son estándar en la literatura y por lo tanto diremos que son
-correctos sin proveer alguna demostración. Así también, la subrutina \texttt{NonNegativeIntSol} es
-el algoritmo \ref{algo:inf}, el cual es correcto a causa del lema \ref{lemma:alg:inf:correct}.
+El algoritmo \ref{algo:inf:ext} (pág.~\pageref{algo:inf:ext}) extiende el algoritmo \ref{algo:inf} en
+el sentido que incorpora esta forma de manejar las entradas nulas de $\vec{q}$. Además, modifica el
+vector $\tvec{q}$ de manera que aseguramos que su penúltima entrada es negativa y su última entrada
+es positiva, por lo que podemos deshacernos de este supuesto. Al igual que en el algoritmo anterior,
+suponemos la existencia de las subrutinas \texttt{length} y \texttt{switch}, las cuales determinan
+la dimensión de un vector $\vec{q}$ y permutan sus entradas, respectivamente. Ambas subrutinas son
+estándar en la literatura.
 
 \begin{algorithm}[ht]
 	\LinesNumbered
+	\DontPrintSemicolon
 	\SetKwProg{Fn}{Fn}{\string:}{}
 	\SetKwFunction{switch}{switch}
 	\SetKwFunction{NonNegativeIntSol}{NonNegativeIntSolInf}
@@ -406,7 +248,7 @@ el algoritmo \ref{algo:inf}, el cual es correcto a causa del lema \ref{lemma:alg
 	\SetKwFunction{length}{length}
 	\SetKwFunction{Dioph}{Dioph}
 		\KwData{\\
-			$\vec{q} \in \Z^n$ coprimo tal que $q_i < 0$ para alguna $i \in \braces{1, \ldots, n}$. \\
+			$\vec{q} \in \Z^n$ coprimo con al menos una entrada negativa. \\
 			$\eta \in \Z_{\geq 0}$.
 			}
 		\KwResult{\\
@@ -418,7 +260,7 @@ el algoritmo \ref{algo:inf}, el cual es correcto a causa del lema \ref{lemma:alg
 		\label{alg:def:inf:tilde-q}
 
 		$m \leftarrow$ \length{$\tvec{q}$}\; \label{alg:subr:length}
-		\switch{$\tvec{q}$, $1$, $m$}\; \label{alg:subr:switch1}
+		\switch{$\tvec{q}$, $1$, $m$}\quad\tcp*[h]{$\tvec{q}_m > 0$}\; \label{alg:subr:switch1}
 
 		\For{$i \leftarrow 1$ \KwTo $m - 1$}{ \label{alg:inf:loop}
 			\If{$\tilde{q}_i < 0$}{
@@ -426,8 +268,9 @@ el algoritmo \ref{algo:inf}, el cual es correcto a causa del lema \ref{lemma:alg
 				ir al paso \ref{alg:subr:switch3}\;
 			}
 		}
-		\switch{$\tvec{q}$, $j$, $m - 1$}\; \label{alg:subr:switch3}
-		$\tvec{x} \leftarrow$ \NonNegativeIntSol{$\tvec{q}$, $\eta$}\;
+		\switch{$\tvec{q}$, $j$, $m - 1$}\quad\tcp*[h]{$\tvec{q}_{m-1} < 0$}\; \label{alg:subr:switch3}
+		$\tvec{x} \leftarrow$ \NonNegativeIntSol{$\tvec{q}$, $\eta$}\quad\tcp*[h]{algoritmo
+		\ref{algo:inf}}\;
 		\switch{$\tvec{x}$, $j$, $m - 1$}\; \label{alg:subr:switch2}
 		\switch{$\tvec{x}$, $1$, $m$}\;
 
@@ -450,22 +293,21 @@ el algoritmo \ref{algo:inf}, el cual es correcto a causa del lema \ref{lemma:alg
 
 	Recordemos de la definición \ref{theory:def:rational} que, como $\vec{q}$ es el vector coprimo
 	de un vector esencialmente entero $\vec{p}$, su primera entrada no nula es positiva. Así, es
-	cierto que $\tilde{q}_1 > 0$. A partir de la permutación en la línea \ref{alg:subr:switch1}
+	cierto que $\tilde{q}_1 > 0$. A partir de la transposición en la línea \ref{alg:subr:switch1}
 	encontramos que $\tilde{q}_m > 0$.
 
-	Del ciclo en la línea \ref{alg:inf:loop} recuperamos un índice $j$ tal que $\tilde{q}_j < 0$ y
-	lo permutamos con la $(m - 1)$-ésima entrada de $\tvec{q}$ en la línea
-	\eqref{alg:subr:switch3}, de manera que obtenemos $\tilde{q}_{m-1} < 0$.
+	Del ciclo en la línea \ref{alg:inf:loop} recuperamos el primer índice $j$ tal que $\tilde{q}_j < 0$ y
+	lo transponemos con la $(m - 1)$-ésima entrada de $\tvec{q}$ en la línea
+	\ref{alg:subr:switch3}, de manera que obtenemos $\tilde{q}_{m-1} < 0$.
 
 	Con los tres puntos anteriores, encontramos que el vector $\tvec{q}$ satisface las
 	hipótesis del algoritmo \ref{algo:inf} y por lo tanto el vector $\tvec{x}$ es no negativo
-	y satisface la ecuación lineal diofantina $\tvec{q}^T\tvec{x} = \eta$, debido al
-	lema \ref{lemma:alg:inf:correct}.
+	y satisface la ecuación lineal diofantina $\tvec{q}^T\tvec{x} = \eta$.
 
-	Las siguientes dos líneas se encargan de invertir las permutaciones hechas previamente.
-	Finalmente, en el ciclo \eqref{alg:inf:loop2} insertamos en $\vec{x}$ las entradas $i$ de
-	$\tvec{x}$ donde $q_{\sigma_i} \neq 0$. En otro caso tenemos $x_i = 0$. Así pues, el
-	vector $\vec{x}$ es no negativo y también tenemos
+	Las siguientes dos líneas se encargan de invertir las transposiciones hechas previamente.
+	Finalmente, en el ciclo de la línea \ref{alg:inf:loop2} insertamos en $\vec{x}$ las entradas $i$
+	de $\tvec{x}$ donde $q_{\sigma_i} \neq 0$. En otro caso tenemos $x_i = 0$. Así pues, el vector
+	$\vec{x} \in \Z^n$ es no negativo y también satisface
 	\begin{equation*}
 		\vec{q}^T\vec{x} = \sum_{i = 1}^{n}q_ix_i
 		= \sum_{i = 1}^{m}q_{\sigma_i}x_{\sigma_i}
@@ -478,11 +320,12 @@ el algoritmo \ref{algo:inf}, el cual es correcto a causa del lema \ref{lemma:alg
 \begin{theorem}
 	\label{infinite:th:complexity}
 	Sea $\vec{p} \in \R^n$ un vector esencialmente entero tal que su múltiplo coprimo $\vec{q} \in
-	\Z^n$ tiene una entrada negativa. Entonces el problema \eqref{theory:formulation} se puede
-	resolver a través de encontrar la solución de una ecuación lineal diofantina en $n$ incógnitas.
+	\Z^n$ tiene al menos una entrada negativa. Entonces el problema \eqref{theory:formulation} se
+	puede resolver a través de encontrar la solución de una ecuación lineal diofantina en $n$
+	incógnitas.
 \end{theorem}
 \begin{proof}
-	Como $\vec{q}$ es el múltiplo coprimo de $\vec{p}$, existe un escalar $m \in \R$ tal que
+	Como $\vec{q}$ es el múltiplo coprimo de $\vec{p}$, existe un escalar $m$ tal que
 	$\vec{p} = m\vec{q}$. Supongamos, sin pérdida de generalidad, que $m$ es positivo. Recuperemos
 	$\eta$ del lema \ref{phase-1:lemma:eta}. Por hipótesis, una entrada de $\vec{q}$ es negativa, y
 	entonces este vector satisface las condiciones del algoritmo \ref{algo:inf:ext}. Por el teorema

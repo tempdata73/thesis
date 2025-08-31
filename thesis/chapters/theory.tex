@@ -650,7 +650,7 @@ esencialmente enteros asociados.
 \begin{lemma}
 	\label{theory:lemma:utility}
 	Sea $\vec{v} \in \R^n$ un vector esencialmente entero y sea $\vec{w}$ su múltiplo coprimo.
-	Entonces $\vec{q}^T\vec{x} = k$ para todo $\vec{x} \in \qlayer{w}{k}$.
+	Entonces $\vec{w}^T\vec{x} = k$ para todo $\vec{x} \in \qlayer{w}{k}$.
 \end{lemma}
 \begin{proof}
 	Sea $\vec{x} \in \qlayer{w}{k}$, por lo que existe un vector $\vec{w}^\perp$ ortogonal a
@@ -926,7 +926,7 @@ Como $q_1/g_1$ y $g_2$ son coprimos, encontramos que sus coeficientes de Bézout
 	\frac{q_1}{g_1}x_1 + g_2\omega_2 = 1.
 \end{equation*}
 Deducimos del teorema \ref{prerreq:th:construction} que las soluciones de la ecuación
-(\ref{eq:dioph:first-step}) están dadas por
+\eqref{eq:dioph:first-step} están dadas por
 \begin{equation}
 	\label{dummy:eq:first-step}
 	\begin{cases}
@@ -986,7 +986,7 @@ y entonces \eqref{eq:dioph:second-step:short} tiene una infinidad de soluciones 
 	\end{cases}
 \end{equation*}
 donde $t_2 \in \Z$ es una variable libre, y $x_2', \omega_3'$ son los coeficientes de Bézout
-asociados a $\frac{q_2}{g_2 \cdot g_2}$ y $g_3$, respectivamente.
+asociados a $\frac{q_2}{g_2 \cdot g_1}$ y $g_3$, respectivamente.
 
 De manera general, para $i \in \lbrace 1, \ldots, n - 2 \rbrace$, el $i$-ésimo paso de la recursión
 provee la ecuación
@@ -1233,11 +1233,18 @@ También definimos la matriz $M \in \Z^{n \times (n - 1)}$ a través de
 		0, &\quad \text{e.o.c.}
 	\end{cases}
 \end{equation}
-Sustituyendo estas definiciones en \eqref{eq:x:i} y \eqref{eq:x:last} encontramos que
-\begin{equation}
-	\label{eq:transf}
-	\vec{x} = k\vec{\nu} + M\vec{t}.
-\end{equation}
+Sustituyendo estas definiciones en \eqref{eq:x:i} y \eqref{eq:x:last} obtenemos la siguiente
+proposición.
+\begin{prop}
+	\label{prop:xint}
+	Sea $\vec{q} \in \Z^n$ un vector con entradas coprimas y última entrada no nula. Entonces todas
+	las soluciones enteras de la ecuación \eqref{eq:dioph} son de la forma
+	\begin{equation}
+		\label{eq:transf}
+		\vec{x} = k\vec{\nu} + M\vec{t},
+	\end{equation}
+	donde $\vec{t} \in \Z^{n-1}$.
+\end{prop}
 
 \begin{observation}
 	Si $q_n = 0$, entonces puede ser que $M$ no esté bien definida. Por ejemplo, si
