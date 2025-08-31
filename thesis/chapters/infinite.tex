@@ -22,9 +22,10 @@ entonces la $\eta$-ésima capa entera contiene un número infinito de puntos fac
 \begin{proof}
 	Por hipótesis, una entrada de $\vec{q}$ es negativa. Del segundo caso del teorema
 	\ref{theory:th:feasibility} sabemos que existen una infinidad de soluciones en la $\eta$-ésima
-	capa entera, así que sea $\vec{x}^*$ una de ellas. Entonces $\vec{q}^T\vec{x}^* = \eta$, pero
-	$\vec{p} = m\vec{q}$ por la definición \ref{theory:def:rational}, por lo que obtenemos
-	$\vec{p}^T\vec{x}^* = m\vec{q}^T\vec{x}^* = m\eta$.
+	capa entera, así que sea $\vec{x}^*$ una de ellas. Por el lema \ref{theory:lemma:utility} se
+	sigue que $\vec{q}^T\vec{x}^* = \eta$, pero $\vec{p} = m\vec{q}$ por la definición
+	\ref{theory:def:rational}, por lo que obtenemos $\vec{p}^T\vec{x}^* = m\vec{q}^T\vec{x}^* =
+	m\eta$.
 
 	Ahora bien, supongamos $m$ es positivo pero que $\eta$ no es el múltiplo más grande de $m$ que
 	satisface $m\eta \leq u$. Supongamos que $\xi \in \Z$ satisface $m\xi \leq u$ y también $\eta <
@@ -105,8 +106,8 @@ $\omega_1 = \eta$, y $x_{n-1}', x_n'$ son coeficientes de Bézout que satisfacen
 	b_1 \coloneq -\frac{\omega_{n-1}x_{n-1}'}{q_n} \cdot \prod_{j=1}^{n-1}g_j, \quad
 	b_2 \coloneq \frac{\omega_{n-1}x_{n}'}{q_{n-1}} \cdot \prod_{j=1}^{n-1}g_j.
 \end{equation}
-Puesto que $q_{n-1} < 0 < q_n$, tenemos que las últimas dos entradas de $\vec{x}$ son no negativas
-si y solo si $t_{n-1} \in \Z$ satisface
+Puesto que $q_{n-1} < 0 < q_n$, si despejamos $t_{n-1}$ de \eqref{eq:last-solution} encontramos que
+las últimas dos entradas de $\vec{x}$ son no negativas si y solo si $t_{n-1}$ satisface
 \begin{equation}
 	\label{eq:feasible-param:collapsed}
 	t_{n-1} \geq \ceil{\max\lbrace b_1, b_2 \rbrace}.
@@ -149,7 +150,7 @@ entradas $x_i$ al mismo tiempo que definimos $t_i$ de manera que satisfaga \eqre
 \eqref{eq:feasible-param:collapsed}. Si procedemos de esta forma no tenemos que encontrar primero
 $\vec{\nu}$ y $M$, determinar $\vec{t}$ y luego recuperar $\vec{x}$.
 
-El algoritmo \ref{algo:inf} (pág.~\pageref{algo:inf}) mostrará aquel procedimiento constructivo.
+El algoritmo \ref{algo:inf} (pág.~\pageref{algo:inf}) muestra aquel procedimiento constructivo.
 Para ello, suponemos la existencia de una subrutina \texttt{Bezout} que, como su nombre lo indica,
 calcula los coeficientes de Bézout entre dos enteros. El autor reitera, así como lo hizo en la
 sección \ref{section:number-theory}, que estos coeficientes se pueden calcular por medio del
@@ -291,7 +292,7 @@ estándar en la literatura.
 	\ref{algo:inf}. Por definición, en la línea \ref{alg:def:inf:tilde-q}, tenemos que ninguna
 	entrada de $\tvec{q}$ es nula.
 
-	Recordemos de la definición \ref{theory:def:rational} que, como $\vec{q}$ es el vector coprimo
+	Recordemos de la definición \ref{theory:def:rational} que, como $\vec{q}$ es el múltiplo coprimo
 	de un vector esencialmente entero $\vec{p}$, su primera entrada no nula es positiva. Así, es
 	cierto que $\tilde{q}_1 > 0$. A partir de la transposición en la línea \ref{alg:subr:switch1}
 	encontramos que $\tilde{q}_m > 0$.
@@ -355,15 +356,8 @@ tercer lugar, diseñamos un experimento numérico que ilustre esta dependencia.
 \label{subsec:inf:complex}
 \noindent
 En ambos algoritmos \ref{algo:inf} y \ref{algo:inf:ext} suponemos que el costo de realizar
-operaciones aritméticas es constante. Primero analizamos el algoritmo \ref{algo:inf}. Tenemos de los
-ciclos en las líneas \ref{alg:def:inf:q} y \ref{alg:def:inf:loop} que realizamos
-\begin{equation}
-	\label{eq:nummult}
-	\sum_{i=1}^{n-2}n - i = n(n - 2) - \frac{(n-2)(n-1)}{2} = \frac{(n-2)(n+1)}{2}
-\end{equation}
-divisiones para actualizar el vector $\vec{q}$. También realizamos en la línea
-\ref{alg:def:inf:loop} un número de multiplicaciones proporcional a $n$, pero comparado con el orden
-cuadrático del número de divisiones, podemos ignorarlo.
+operaciones aritméticas es constante. Primero analizamos el algoritmo \ref{algo:inf}. En el ciclo de
+la línea \ref{alg:def:inf:loop} realizamos $\mathcal{O}(n)$ multiplicaciones y divisiones.
 
 Luego, para $1 \leq i \leq n - 2$, se sigue de la línea \ref{alg:def:inf:g} que calculamos una vez
 el máximo común divisor de $n - (i + 1) + 1 = n - i$ números. Vimos en la subsección
@@ -378,20 +372,23 @@ veces el máximo común divisor entre dos números.
 
 Además, tenemos de las líneas \ref{alg:def:inf:bez} y \ref{alg:def:inf:lastw} que realizamos $n - 1$
 llamadas a la subrutina \texttt{Bezout}. Pero habíamos mencionado que los coeficientes de Bézout se
-pueden calcular usando el Algoritmo Extendido de Euclides. Sin embargo, la complejidad de este es un
-múltiplo constante de la complejidad del Algoritmo de Euclides, el cual calcula el máximo común
-divisor entre dos métodos. Así pues, comparando estas aproximadamente $n$ llamadas a \texttt{Bezout}
+pueden calcular usando el algoritmo extendido de Euclides. Sin embargo, la complejidad de este es un
+múltiplo constante de la complejidad del algoritmo de Euclides, el cual calcula el máximo común
+divisor entre dos números. Así pues, comparando estas aproximadamente $n$ llamadas a \texttt{Bezout}
 con el cálculo de aproximadamente $n^2$ máximos común divisores entre dos números, podemos ignorar las
 llamadas a la subrutina \texttt{Bezout}.
 
 Es posible mostrar que la complejidad de calcular el máximo común divisor entre dos enteros $a \leq
-b$ es $\mathcal{O}(\log_2 b)$. De esta manera, tenemos de \eqref{eq:nummult} y \eqref{eq:numgcd} que
-la complejidad del algoritmo \ref{algo:inf} es
+b$ es $\mathcal{O}(\log_2 b)$. De esta manera, tenemos de las $\mathcal{O}(n)$ multiplicaciones y
+divisiones, así como de \eqref{eq:numgcd} que la complejidad del algoritmo \ref{algo:inf} es
 \begin{equation*}
-	\mathcal{O}(n^2\log_2\norm{\vec{q}}_\infty) + \mathcal{O}(n^2) =
-	\mathcal{O}(n^2),
+	\mathcal{O}(n^2\log_2\norm{\vec{q}}_\infty) + \mathcal{O}(n) = \begin{cases}
+		\mathcal{O}(n) & \norm{\vec{q}}_\infty = 1, \\
+		\mathcal{O}(n^2) & \text{e.o.c.}
+	\end{cases}
 \end{equation*}
-puesto que nuestro vector coprimo $\vec{q}$ es constante.
+Puesto que, en general, el vector coprimo $\vec{q} \in \Z^n$ tiene entradas distintas de $0$, $1$ o
+$-1$, diremos que la complejidad del algoritmo \ref{algo:inf} es cuadrática.
 
 Ahora bien, del algoritmo \ref{algo:inf:ext} tenemos que las subrutinas \texttt{length} y
 \texttt{switch} tienen complejidad constante. Además, recorremos el vector $\vec{q}$ en el ciclo
@@ -655,7 +652,7 @@ analiza a profundidad el caso finito.
 
 \begin{figure}[hbtp]
 	\centering
-    \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/mult-hist-cum.pdf}
+    \includegraphics[width=0.9\linewidth]{/home/tempdata/repos/thesis/static/inf/mult-hist-cum.pdf}
 	\caption{Distribución acumulada de los multiplicadores de tiempo.}
 	\label{fig:exp:inf:hist}
 \end{figure}
