@@ -21,13 +21,11 @@ The thesis proves that finding an optimal integer solution for the problematic I
 is equivalent to finding integer solutions to certain diophantine equations derived from the
 constraint. The coefficients of these equations come from a coprime vector $q$ associated with
 the objective vector $p$. The sign pattern of $q$ divides this ILP class into two cases:
-
     - $q$ contains a negative entry. The optimum can be found by solving a single Diophantine
       equation. An algorithm is presented that constructs the optimal solution in polynomial time
       (quadratic in problem dimension) Moreover, the optimal objective value can be identified in
       $O(n^2\log_2||p||_\intfy)$ time without explicitly solving the ILP for rational objective vectors
       $p$.
-
     - All entries of $q$ are non-negative. A finite number of diophantine equations must be solved.
       However, if the right hand side of the orthogonal constraint is sufficiently large, it
       suffices to solve a single linear diophantine equation. As a byproduct of the techniques
@@ -41,8 +39,8 @@ practical advantages of our diophantine-based approach.
 Finally, the thesis sketches an extension to general ILPs by searching for integer solutions to
 systems of linear diophantine equations. This reduces ILPs to systems of linear integer
 inequalities, suggesting a possible research direction for future work.
-----
 
+----
 This work will be of interest to researchers in integer programming and optimization, particularly
 those exploring alternatives to Branch-and-Cut. The novel perspective of
 tackling ILPs via diophantine equations could inspire further research or applications in
