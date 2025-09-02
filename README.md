@@ -21,16 +21,17 @@ The thesis proves that finding an optimal integer solution for the problematic I
 is equivalent to finding integer solutions to certain diophantine equations derived from the
 constraint. The coefficients of these equations come from a coprime vector $q$ associated with
 the objective vector $p$. The sign pattern of $q$ divides this ILP class into two cases:
-    - $q$ contains a negative entry. The optimum can be found by solving a single Diophantine
-      equation. An algorithm is presented that constructs the optimal solution in polynomial time
-      (quadratic in problem dimension) Moreover, the optimal objective value can be identified in
-      $O(n^2\log_2||p||_\infty)$ time without explicitly solving the ILP for rational objective vectors
-      $p$.
-    - All entries of $q$ are non-negative. A finite number of diophantine equations must be solved.
-      However, if the right hand side of the orthogonal constraint is sufficiently large, it
-      suffices to solve a single linear diophantine equation. As a byproduct of the techniques
-      developed for this case, new upper bounds for the classical Frobenius coin-change problem are
-      obtained. An algorithm is provided that outperforms Branch-and-Cut methods on these instances.
+
+- $q$ contains a negative entry. The optimum can be found by solving a single Diophantine
+  equation. An algorithm is presented that constructs the optimal solution in polynomial time
+  (quadratic in problem dimension) Moreover, the optimal objective value can be identified in
+  $O(n^2\log_2||p||_\infty)$ time without explicitly solving the ILP for rational objective vectors
+  $p$.
+- All entries of $q$ are non-negative. A finite number of diophantine equations must be solved.
+  However, if the right hand side of the orthogonal constraint is sufficiently large, it
+  suffices to solve a single linear diophantine equation. As a byproduct of the techniques
+  developed for this case, new upper bounds for the classical Frobenius coin-change problem are
+  obtained. An algorithm is provided that outperforms Branch-and-Cut methods on these instances.
 
 Extensive computational experiments show that both specialized algorithms consistently outperform
 the open-source COIN-OR Branch-and-Cut solver on targeted instances. These results confirm the
