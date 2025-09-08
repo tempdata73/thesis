@@ -1,0 +1,1 @@
+![colloquium poster](poster.jpeg)

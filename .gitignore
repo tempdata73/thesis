@@ -20,6 +20,8 @@ thesis/*
 colloq/*
 !colloq/main.tex
 !colloq/main.pdf
+!colloq/README.md
+!colloq/poster.jpeg
 
 # backups
 *.bkp/*
