@@ -16,6 +16,11 @@ thesis/*
 !thesis/main.pdf
 !thesis/chapters/
 
+# colloq
+colloq/*
+!colloq/main.tex
+!colloq/main.pdf
+
 # backups
 *.bkp/*
 
