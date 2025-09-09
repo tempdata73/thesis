@@ -29,6 +29,15 @@
 \pgfplotsset{compat=1.18}
 \usepgfplotslibrary{fillbetween}
 
+\usepackage{booktabs, tabularx, siunitx, subcaption}
+
+\sisetup{
+  round-mode=places,
+  group-separator = {\,},
+  table-number-alignment = center,
+  table-text-alignment = center
+}
+
 \usepackage{bookmark}
 
 % --- Color palette (monochrome-forward) --------------------------------
@@ -173,6 +182,7 @@
 \DeclareMathOperator{\gen}{gen}
 \DeclareMathOperator{\aff}{aff}
 \DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\tr}{tr}
 
 % shortcuts
 \newcommand{\est}[1]{\hat{\vec{ #1 }}}
@@ -220,8 +230,8 @@
 		Sea $A \in \R^{m \times n}$ una matriz con renglones linealmente independientes y sea
 		$\vec{b} \in \R^m$ un vector. Llamamos \textbf{poliedro} al conjunto definido por
 		\begin{equation*}
-			P \coloneq \braces{\vec{x} \in \R^n \vcentcolon A\vec{x} \leq \vec{b}}
-			= \braces{\vec{x} \in \R^n \vcentcolon \vec{a}^T_i\vec{x} \leq b_i, 1 \leq i \leq m}.
+			P \coloneq \braces{\vec{x} \in \R^n \vcentcolon A\vec{x} \geq \vec{b}}
+			= \braces{\vec{x} \in \R^n \vcentcolon \vec{a}^T_i\vec{x} \geq b_i, 1 \leq i \leq m}.
 		\end{equation*}
 	\end{block}
 \end{frame}
@@ -275,7 +285,7 @@
 
 \begin{frame}
 	\begin{block}{Definición}
-		Sea $P \subseteq \R^m$ un poliedro y sea $\vec{c} \in \R^n$ un vector. Llamamos
+		Sea $P \subseteq \R^n$ un poliedro y sea $\vec{c} \in \R^n$ un vector. Llamamos
 		\textbf{problema lineal} al problema de maximización
 		\begin{equation*}
 			z^* \coloneq \max_{\vec{x}}\braces{\vec{c}^T\vec{x} \vcentcolon \vec{x} \in P}.
@@ -441,11 +451,39 @@
 \end{frame}
 
 \begin{frame}
+	\begin{figure}
+		\centering
+		\begin{tikzpicture}[scale=1, node/.style={draw, thick}]
+			\node[node] (Start) at (0,6) {Inicio};
+			\node[node] (Presolve) at (3,6) {Presolución};
+			\node[node] (Return) at (6,5) {Devolver};
+			\node[node] (Node selection) at (3,5) {Selección de nodos};
+			\node[node] (LP relaxation) at (3,4) {Problema relajado};
+			\node[node] (Cuts) at (3,3) {Cortes};
+			\node[node] (Branching) at (3,2) {Ramificación};
+			\node[node] (Heuristics) at (6,3) {Heurísticas};
+			% Arrows
+			\draw[thick, ->] (Start) --(Presolve);
+			\draw[thick, ->] (Presolve) -- (Node selection);
+			\draw[thick, ->] (Presolve) -- (6,6) -- (Return);
+			\draw[thick, ->] (Node selection) -- (LP relaxation);
+			\draw[thick, ->] (Node selection) -- (Return);
+			\draw[thick, ->] (LP relaxation) -- (Cuts);
+			\draw[thick, ->] (LP relaxation) -- (6,4) -- (Heuristics);
+			\draw[thick, ->] (Cuts) -- (Branching);
+			\draw[thick, ->] (Heuristics) -- (Cuts);
+			\draw[thick, ->] (Branching) -- (0,2) -- (0,5) --(Node selection);
+			\draw[thick, ->] (Cuts) -- (0.5,3) -- (0.5,4) -- (LP relaxation);
+		\end{tikzpicture} 
+	\end{figure}
+\end{frame}
+
+
+\begin{frame}
 	En general, Ramificación y Acotamiento es ineficiente (o incluso falla) cuando una
 	restricción del problema es ortogonal al vector objetivo. La instancia minimal que reproduce
 	esta ineficiencia es
 	\begin{subequations}
-		\label{theory:formulation}
 		\begin{align}
 			\max_{\vec{x} \in \Z^n} \quad
 				& \vec{p}^T\vec{x}, \label{theory:objective} \\
@@ -485,34 +523,6 @@
 		\item ¿Cuántas soluciones distintas (no equivalentes) existen?
 	\end{itemize}
 \end{frame}
-
-% \begin{frame}
-% 	\begin{figure}
-% 		\centering
-% 		\begin{tikzpicture}[scale=1, node/.style={draw, thick}]
-% 			\node[node] (Start) at (0,6) {Inicio};
-% 			\node[node] (Presolve) at (3,6) {Presolución};
-% 			\node[node] (Return) at (6,5) {Devolver};
-% 			\node[node] (Node selection) at (3,5) {Selección de nodos};
-% 			\node[node] (LP relaxation) at (3,4) {Problema relajado};
-% 			\node[node] (Cuts) at (3,3) {Cortes};
-% 			\node[node] (Branching) at (3,2) {Ramificación};
-% 			\node[node] (Heuristics) at (6,3) {Heurísticas};
-% 			% Arrows
-% 			\draw[thick, ->] (Start) --(Presolve);
-% 			\draw[thick, ->] (Presolve) -- (Node selection);
-% 			\draw[thick, ->] (Presolve) -- (6,6) -- (Return);
-% 			\draw[thick, ->] (Node selection) -- (LP relaxation);
-% 			\draw[thick, ->] (Node selection) -- (Return);
-% 			\draw[thick, ->] (LP relaxation) -- (Cuts);
-% 			\draw[thick, ->] (LP relaxation) -- (6,4) -- (Heuristics);
-% 			\draw[thick, ->] (Cuts) -- (Branching);
-% 			\draw[thick, ->] (Heuristics) -- (Cuts);
-% 			\draw[thick, ->] (Branching) -- (0,2) -- (0,5) --(Node selection);
-% 			\draw[thick, ->] (Cuts) -- (0.5,3) -- (0.5,4) -- (LP relaxation);
-% 		\end{tikzpicture} 
-% 	\end{figure}
-% \end{frame}
 
 % \begin{frame}
 % 	\begin{figure}[hbtp]
@@ -601,9 +611,9 @@
 \begin{frame}
 	\begin{block}{Teorema de infactibilidad (*)}
 		Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q}$ su
-		múltiplo coprimo. Entonces el problema \eqref{theory:formulation} es
+		múltiplo coprimo. Entonces el problema (1) es
 		infactible si y solo si $\vec{q} \geq \vec{0}$ y el lado derecho $u$ de
-		\eqref{theory:constraint:budget} es negativo. 
+		(1.1b) es negativo. 
 	\end{block}
 \end{frame}
 
@@ -611,7 +621,7 @@
 	\begin{block}{Teorema de factibilidad}
 	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q}$ su
 	múltiplo coprimo, de manera que $\vec{p} = m\vec{q}$ para alguna $m > 0$.
-	Supongamos que el problema \eqref{theory:formulation} es factible. Entonces
+	Supongamos que el problema (1) es factible. Entonces
 	se satisface lo siguiente:
 	\begin{enumerate}
 		\item Si $q_i < 0$ para algún $i \in \braces{1, \ldots, n}$, entonces la
@@ -755,8 +765,22 @@
 	\begin{equation*}
 		\vec{q}^T\vec{x} = q_1x_1 + \cdots + q_nx_n = k.
 	\end{equation*}
-	Podemos resolver recursivamente esta ecuación. Utilizando una formulación
-	hacia adelante, obtenemos...
+\end{frame}
+
+\begin{frame}
+	Para $n = 2$, todas las soluciones enteras de esta ecuación están dadas por
+	\begin{equation*}
+		\begin{cases}
+			x_1 = kx_1' + q_2t, \\
+			x_2 = kx_2' - q_1t,
+		\end{cases}
+	\end{equation*}
+	donde $t \in \Z$ es un parámetro libre y $x_1', x_2'$ son
+	\textbf{coeficientes de Bézout} de $q_1, q_2$. Estos coeficientes satisfacen
+	\begin{equation*}
+		q_1x_1' + q_2x_2' = \gcd{q_1, q_2} = 1,
+	\end{equation*}
+	y se pueden calcular por medio del algoritmo extendido de Euclides.
 \end{frame}
 
 % \begin{frame}
@@ -764,13 +788,12 @@
 % 		Sea $(x_0, y_0)$ una solución particular de la ecuación lineal
 % 		diofantina $ax + by = c$. Entonces \textbf{todas} las soluciones enteras
 % 		de aquella ecuación están dadas por
-% 		\begin{equation}
-% 			\label{prerreq:eq:construction}
+% 		\begin{equation*}
 % 			\begin{cases}
 % 				x = x_0 + \frac{b}{d}t, \\
 % 				y = y_0 - \frac{a}{d}t,
 % 			\end{cases}
-% 		\end{equation}
+% 		\end{equation*}
 % 		donde $d \coloneq \gcd{a, b}$ y $t \in \Z$ es una variable libre.
 % 	\end{block}
 % \end{frame}
@@ -819,12 +842,13 @@
 % \end{frame}
 
 \begin{frame}
+	Resolviendo la ecuación en $n \geq 2$ incógnitas de manera recursiva obtenemos
 	\begin{equation*}
 		x_i 
 			= k \cdot \prod_{j=2}^{i}\omega_j' \cdot x_i' - \sum_{j=1}^{i - 1}m_{ij}x_i'
 			t_j + g_{i + 1}t_i
 	\end{equation*}
-	para $1 \leq i \leq n - 2$, y también,
+	para $1 \leq i \leq n - 2$ y, también,
 	\begin{align*}
 		x_{n-1} &= k \cdot \prod_{j=2}^{n-1} \omega_j' \cdot x_{n-1}' - \sum_{j=1}^{n-2}
 		m_{n-1,j}x_{n-1}' t_j + \frac{q_n}{\prod_{j=1}^{n-1}g_j} t_{n-1}, \\
@@ -836,28 +860,51 @@
 \end{frame}
 
 \begin{frame}
-	Si definimos $\vec{\nu} \in \Z^n$ como
+	Para que se satisfagan las condiciones de no negatividad de $x_1, \ldots,
+	x_n$, debe ser el caso que
+	\begin{equation*}
+		t_i \geq -\frac{\omega_ix_i'}{g_{i + 1}},
+	\end{equation*}
+	para todo $1 \leq i \leq n - 2$.
+	Si $\vec{q}$ tiene alguna entrada negativa, basta* que se satisfaga
+	\begin{equation*}
+		t_{n-1} \geq \max\left\lbrace
+			-\frac{\omega_{n-1}x_{n-1}'}{q_n} \cdot \prod_{j=1}^{n-1}g_j,
+			\frac{\omega_{n-1}x_{n}'}{q_{n-1}} \cdot \prod_{j=1}^{n-1}g_j
+		\right\rbrace.
+	\end{equation*}
+	Si $\vec{q} > \vec{0}$, entonces se debe satisfacer
+	\begin{equation*}
+		-\frac{\omega_{n-1}x_{n-1}'}{q_n} \cdot \prod_{j=1}^{n-2}g_j
+		\leq
+		t_{n - 1}
+		\leq
+		\frac{\omega_{n-1}x_{n}'}{q_{n-1}} \cdot \prod_{j=1}^{n-2}g_j.
+	\end{equation*}
+\end{frame}
+
+\begin{frame}
+	Definamos $\vec{\nu} \in \Z^n$ como
 	\begin{equation*}
 		\nu_i \coloneq x_i' \cdot \prod_{j = 2}^{\min{\lbrace i, n - 1 \rbrace}}\omega_j'.
 	\end{equation*}
-	y también definimos la matriz $M \in \Z^{n \times (n - 1)}$ a través de
+	y también definamos la matriz $M \in \Z^{n \times (n - 1)}$ a través de
 	\begin{equation*}
 		M_{ij} \coloneq \begin{cases}
 			-m_{ij}x_i', &\quad j < i, \\
 			g_{i + 1},  &\quad i = j < n - 1, \\
 			\frac{q_n}{\prod_{k=1}^{n-1}g_k}, &\quad i = j = n - 1, \\
 			-\frac{q_{n-1}}{\prod_{k=1}^{n-1}g_k}, &\quad i = n, j = n - 1, \\
-			0, &\quad \text{e.o.c.},
+			0, &\quad \text{e.o.c.}
 		\end{cases}
 	\end{equation*}
-	encontramos que...
+	Entonces...
 \end{frame}
 
 \begin{frame}
 	\begin{block}{Proposición}
-		Sea $\vec{q} \in \Z^n$ un vector con entradas coprimas y última entrada no
-		nula. Entonces \textbf{todas} las soluciones enteras de la ecuación lineal
-		diofantina
+		Sea $\vec{q} \in \Z^n$ un vector con entradas coprimas. Luego,
+		\textbf{todas} las soluciones enteras de la ecuación lineal diofantina
 		\begin{equation*}
 			\vec{q}^T\vec{x} = q_1x_1 + \cdots + q_nx_n = k
 		\end{equation*}
@@ -867,18 +914,287 @@
 		\end{equation*}
 		donde $\vec{t} \in \Z^{n-1}$.
 	\end{block}
+	\begin{block}{Lema}
+		El vector $\vec{\nu} \in \Z^n$ satisface $\vec{q}^T\vec{\nu} = 1$, y la
+		matriz $M$ es tal que $\ker{M^T} = \gen\braces{\vec{q}}$.
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\begin{block}{Definición}
+		Decimos que un subconjunto $\Lambda$ de $\R^n$ es un \textbf{grupo
+		aditivo} si
+		\begin{enumerate}
+			\item $\vec{0} \in \Lambda$, y
+			\item si $\vec{x}, \vec{y} \in \Lambda$, entonces $\vec{x} + \vec{y}
+				\in \Lambda$, y también $-\vec{x} \in \Lambda$.
+		\end{enumerate}
+		Además, decimos que $\Lambda$ es una \textbf{red} si existen vectores
+		$\vec{v}_1, \ldots, \vec{v}_n$ linealmente independientes tales que
+		\begin{equation*}
+			\Lambda = \lbrace \lambda_1\vec{v}_1 + \cdots + \lambda_n\vec{v}_n \vcentcolon \lambda_i \in
+			\Z \rbrace.
+		\end{equation*}
+		A los vectores $\vec{v}_1, \ldots, \vec{v}_n$ los llamamos la
+		\textbf{base de la red} $\Lambda$.
+	\end{block}
+	\begin{block}{Ejemplo}
+		$\Z^n$ es una red que tiene por base los vectores canónicos
+		$\braces{\vec{e}_1, \ldots, \vec{e}_n}$.
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\begin{block}{Teorema}
+		El conjunto de vectores
+		\begin{equation*}
+			\braces{\vec{\nu}, \vec{m}_1, \ldots, \vec{m}_{n-1}}
+		\end{equation*}
+		forma una base de la red $\Z^n$, donde $\vec{m}_i$ denota la $i$-ésima columna de
+		la matriz $M \in \Z^{n \times (n-1)}$.
+	\end{block}
+	Geométricamente, $\vec{q}$ induce una descomposición de $\Z^n$
+	como la suma directa de las subredes $\Lambda_p$ y $\Lambda_h$, donde
+	\begin{equation*}
+		\Lambda_p \coloneq \braces{k\vec{\nu} \vcentcolon k \in \Z}, \quad
+		\Lambda_h \coloneq \braces{M\vec{t} \vcentcolon \vec{t} \in \Z^{n-1}}.
+	\end{equation*}
+	Por las propiedades de $\vec{\nu}$ y de $M$, tenemos que $\vec{q}^T\vec{x} =
+	k$ para todo $\vec{x} \in \Lambda_p$ y $\vec{q}^T\vec{x} = 0$ para todo
+	$\vec{x} \in \Lambda_h$.
+\end{frame}
+
+\section*{Primer intento de clasificación}
+\begin{frame}
+	\begin{block}{Corolario (*)}
+		Sea $\vec{q}$ un vector con entradas coprimas y sea $\tvec{q}$ un vector con
+		las entradas de $\vec{q}$ permutadas. Entonces $\ker{M^T} \cong
+		\ker{\tilde{M}^T}$.
+	\end{block}
+	\begin{block}{Definición}
+		Sea $\vec{q} \in \Z^n$ un con entradas coprimas, entonces definimos su
+		\textbf{órbita} como
+		\begin{equation*}
+			\orb(\vec{q}) \coloneq \braces{P\vec{q} \vcentcolon P \in \Z^{n\times n} ~\text{es matriz de permutación}}.
+		\end{equation*}
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\begin{block}{Lema}
+		Sea $\vec{q} \in \Z^n$ un vector con entradas coprimas y sea $\tvec{q}
+		\in \orb(\vec{q})$. Entonces las redes $\tilde{\Lambda}_h$ y $\Lambda_h$
+		son isomorfas. Similarmente, las redes $\tilde{\Lambda}_p$ y $\Lambda_p$
+		son isomorfas.
+	\end{block}
+	\begin{block}{Definición}
+		Sean $\vec{p}, \tvec{p} \in \R^n$ vectores esencialmente enteros con
+		entradas distintas de cero. Entonces decimos que $\vec{p}$ y $\tvec{p}$
+		son equivalentes si y solo si $\orb(\vec{q}) = \orb(\tvec{q})$, donde
+		$\vec{q}$ y $\tvec{q}$ son sus respectivos múltiplos coprimos. En este
+		caso escribimos $\vec{p} \sim \tvec{p}$.
+	\end{block}
+\end{frame}
+
+\section*{Segundo intento de clasificación}
+\begin{frame}
+	\begin{block}{Corolario}
+		La matriz
+		\begin{equation*}
+			U_{\vec{q}} \coloneq [ \vec{\nu} \mid \vec{m}_1 \mid \cdots \mid \vec{m}_{n-1} ] \in \Z^{n \times n}
+		\end{equation*}
+		es unimodular, es decir, su determinante es $\pm 1$.
+	\end{block}
+	\begin{itemize}
+		\item Podemos ``traducir'' las descomposiciones $\vec{q} \mapsto
+			U_{\vec{q}}$ y $\tvec{q} \mapsto U_{\tvec{q}}$ por medio de
+			$U_{\vec{q}}\inv{U}_{\tvec{q}}$.
+		\item $\implies$ \textbf{Todos} los vectores coprimos
+			inducen descomposiciones similares.
+		\item $\implies$ \textbf{Todos} los vectores esencialmente enteros
+			pertenecen a la misma clase de equivalencia.
+		\item \textbf{Pero} $\Lambda_p \not\cong \tilde{\Lambda}_p$ y $\Lambda_h
+			\not\cong \tilde{\Lambda}_h$.
+	\end{itemize}
 \end{frame}
 
 % frobenius
 \section{Problema de Frobenius}
 \begin{frame}
-	Hola mundo
+	\begin{block}{Problema}
+		Dados enteros $q_1, \ldots, q_n$ coprimos, encontrar el mayor entero que
+		\textbf{no} puede ser expresado como $q_1x_1 + \cdots + q_nx_n$, donde
+		$x_1, \ldots, x_n$ son no negativos.
+	\end{block}
+	\begin{figure}
+		\centering
+		\begin{tikzpicture}[scale=0.7]
+			\begin{axis}[
+			  axis lines=middle,
+			  xmin=0, xmax=3.3,
+			  ymin=0, ymax=3.3,
+			  xlabel={$x$}, ylabel={$y$},
+			  clip=false
+			]
+				\addplot [name path=top, draw=none, domain=0:3.2] {0.0};
+				\addplot [name path=lower, draw=none, samples=200, domain=0:2.909090909]
+					{(3.2 - 1.1*x)/1.3};
+				\addplot [OrangeRed!25] fill between[of=top and lower];
+				\addplot [black, domain=0.0:2.909090909] {(3.2 - 1.1*x)/1.3};
+				\addplot [black, domain=0.0:2.818181818] {(3.1 - 1.1*x)/1.3};
+				\addplot [black, domain=0.0:2.727272727] {(3.0 - 1.1*x)/1.3};
+				\addplot [black, domain=0.0:2.636363636] {(2.9 - 1.1*x)/1.3};
+				\addplot [black, domain=0.0:2.545454545] {(2.8 - 1.1*x)/1.3};
+				\addplot [black, domain=0.0:2.454545455] {(2.7 - 1.1*x)/1.3};
+				\addplot [thick, dash pattern={on 7pt off 2pt on 1pt off
+					3pt}, black, domain=0.0:2.363636364] {(2.6 - 1.1*x)/1.3};
+				\addplot [black, domain=0.0:2.272727273] {(2.5 - 1.1*x)/1.3};
+				\addplot [dash pattern={on 7pt off 2pt on 1pt off 3pt}, black,
+					thick, domain=0.0:2.18181818] {(2.4 - 1.1*x)/1.3};
+				\addplot [black, domain=0.0:2.090909091] {(2.3 - 1.1*x)/1.3};
+				\addplot [dash pattern={on 7pt off 2pt on 1pt off 3pt}, black,
+					thick, domain=0.0:2] {(2.2 - 1.1*x)/1.3};
+				\addplot [
+				  only marks, mark=*,
+				  mark options={scale=1.3, color=black, fill=Magenta!50}
+				] coordinates {
+					(0, 0)
+					(1, 1)
+					(0, 2)
+					(2, 0)
+				};
+			\end{axis}
+		\end{tikzpicture}
+		\caption*{$11x + 13y \leq 32$}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\begin{block}{Teorema}
+		El numero de Frobenius $F$ satisface
+		\begin{equation*}
+			F \leq \frac{n}{2}\cdot \norm{M}_F \cdot \max_{1 \leq j \leq n}
+			\left\{q_j^2\sqrt{q_j^{-2} + \norm{q}_2^{-2}}\right\},
+		\end{equation*}
+		donde
+		\begin{equation*}
+			\norm{M}_F^2 \coloneq \sum_{i=1}^{n}\sum_{j=1}^{n-1}M_{ij}^2
+			= \tr(M^TM).
+		\end{equation*}
+	\end{block}
+\end{frame}
+
+\section{Algunos resultados numéricos}
+\begin{frame}
+	\begin{figure}[hbtp]
+	  \centering
+	  \begin{subfigure}{0.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/digits-bb_full.pdf}
+	  \end{subfigure}
+	  \hfill
+	  \begin{subfigure}{0.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/digits-dioph.pdf}
+	  \end{subfigure}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\begin{figure}[hbtp]
+		\centering
+		\includegraphics[width=0.45\linewidth]{/home/tempdata/repos/thesis/static/fin/rhs/times-macro.pdf}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\begin{table}[ht]
+		\centering
+		\sisetup{round-precision=2}
+
+		\begin{subtable}{\linewidth}
+		\centering
+		\setlength{\tabcolsep}{3pt}\renewcommand{\arraystretch}{1.1}
+		\begin{tabularx}{\linewidth}{@{}r *{4}{S[table-format=3.3]@{\,}l}@{}}
+			\toprule
+			{$n$}
+			& \multicolumn{2}{c}{FD}
+			& \multicolumn{2}{c}{R\&A}
+			& \multicolumn{2}{c}{\texttt{dioph\_left}}
+			& \multicolumn{2}{c}{\texttt{dioph\_right}} \\
+			\midrule
+			1,000     & 1.270   & (±0.1)   & 0.109   & (±0.02) & 0.013   & (±0.00) & 0.013   & (±0.00) \\
+			2,000     & 10.368  & (±0.02)  & 0.135   & (±0.02) & 0.042   & (±0.00) & 0.043   & (±0.00) \\
+			5,000     & 160.562 & (±0.39)  & 1.666   & (±0.20) & 0.245   & (±0.00) & 0.265   & (±0.00) \\ \midrule
+			10,000    &         &          & 2.124   & (±0.33) & 1.063   & (±0.00) & 1.164   & (±0.00) \\
+			20,000    &         &          & 7.682   & (±0.34) & 4.595   & (±0.01) & 4.991   & (±0.01) \\
+			30,000    &         &          & 19.192  & (±1.18) & 10.743  & (±0.02) & 11.553  & (±0.01) \\
+			40,000    &         &          & 24.334  & (±0.19) & 19.471  & (±0.02) & 20.994  & (±0.08) \\
+			50,000    &         &          & 38.940  & (±0.18) & 30.887  & (±0.03) & 33.451  & (±0.04) \\
+			60,000    &         &          & 51.962  & (±0.53) & 45.072  & (±0.05) & 48.545  & (±0.05) \\
+			70,000    &         &          & 81.033  & (±1.26) & 61.885  & (±0.04) & 66.345  & (±0.10) \\
+			80,000    &         &          & 116.618 & (±0.93) & 81.418  & (±0.06) & 87.726  & (±0.12) \\
+			90,000    &         &          & 141.683 & (±2.10) & 103.962 & (±0.04) & 111.553 & (±0.12) \\ \midrule
+			100,000   &         &          & 170.397 & (±1.75) & 129.440 & (±0.05) & 139.652 & (±0.16) \\
+			\bottomrule
+		\end{tabularx}
+		\end{subtable}
+	\end{table}
 \end{frame}
 
 % multiple
 \section{Múltiples restricciones}
 \begin{frame}
-	Hola mundo
+	Sea $A \in \Q^{m \times n}$ una matriz con renglones linealmente
+	independientes y sea $\vec{b} \in \Q^m$ un vector. Definamos el problema
+	\begin{subequations}
+		\begin{align}
+			\max_{\vec{x} \in \Z^n} \quad
+				& \vec{q}^T\vec{x}, \\
+			\text{s.a.} \quad
+					& \vec{q}^T\vec{x} \leq \eta, \\
+					& A\vec{x} = \vec{b}, \\
+					& \vec{x} \geq \vec{0}. \nonumber
+		\end{align}
+	\end{subequations}
+	Podemos suponer, sin pérdida de generalidad, que $A \in \Z^{m \times n}$ y
+	$\vec{b} \in \Z^m$.
 \end{frame}
+
+\begin{frame}
+	\begin{block}{Teorema}
+		El problema (2) es equivalente al problema
+		\begin{subequations}
+			\begin{align}
+				\max_{k \in \Z, \vec{t} \in \Z^{n-1}}
+					& k, \\
+				\text{s.a.} \quad
+					& k \leq \eta, \\
+					& AM\vec{t} = \vec{b} - kA\vec{\nu}, \\
+					& M\vec{t} \geq -k\vec{\nu}.
+			\end{align}
+		\end{subequations}
+	\end{block}
+	\begin{proof}[Intuición]
+		Sabemos que la transformación lineal
+		\begin{align*}
+			(k, \vec{t}) &\mapsto \vec{x} \coloneq k\vec{\nu} + M\vec{t}
+		\end{align*}
+		es un isomorfismo entre las redes $\Lambda_p \oplus \Lambda_h$ y $\Z^n$...
+	\end{proof}
+\end{frame}
+
+\begin{frame}
+	\begin{block}{Teorema (*)}
+		Sea $(\optr{k}, \optr{\vec{t}})$ el óptimo del problema relajado de
+		(3) y supongamos que $\optr{k}$ no es entero.
+		Entonces el subproblema generado al añadir la restricción $k \geq
+		\ceil{\optr{k}}$ es infactible.
+	\end{block}
+	Siempre es mejor priorizar ramificaciones en $\optr{k}$ puesto que nos
+	deshacemos de manera inmediata subproblemas infactibles.
+\end{frame}
+
+\section{Gracias}
 
 \end{document}
