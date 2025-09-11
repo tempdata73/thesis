@@ -206,7 +206,7 @@
 \subtitle{Ecuaciones lineales diofantinas aplicadas a programas lineales enteros}
 \author[Iñaki Liendo]{Iñaki Liendo}
 \institute[ITAM]{Coloquio de matemáticas}
-\date{\today}
+\date{11 de septiembre de 2025}
 
 \begin{document}
 \begin{frame}[plain]
@@ -510,7 +510,7 @@
 			8! \times (2!)^3 \times 1! \times 1! = 322{,}560
 		\end{equation*}
 		soluciones equivalentes.
-		\item Contanto rotaciones y reflexiones del tablero, cada solución
+		\item Contando rotaciones y reflexiones del tablero, cada solución
 			tiene al menos
 		\begin{equation*}
 			4 \times 2 \times 322{,}560 = 2{,}580{,}480
@@ -759,7 +759,7 @@
 
 \begin{frame}
 	Por el teorema de factibilidad (o el de cobertura), las soluciones se
-	encuentran en una capa entera $\qlayer{q}{k}$ con $0 \leq k \leq \eta$. Por
+	encuentran en una capa entera $\qlayer{q}{k}$ con $k \leq \eta$. Por
 	el lema de utilidad, estas soluciones satisfacen la \textbf{ecuación lineal
 	diofantina}
 	\begin{equation*}
@@ -978,6 +978,7 @@
 			\orb(\vec{q}) \coloneq \braces{P\vec{q} \vcentcolon P \in \Z^{n\times n} ~\text{es matriz de permutación}}.
 		\end{equation*}
 	\end{block}
+	¿Cuál es el tamaño de una órbita? ¿Se puede hacer más grande?
 \end{frame}
 
 \begin{frame}
@@ -1071,10 +1072,10 @@
 
 \begin{frame}
 	\begin{block}{Teorema}
-		El numero de Frobenius $F$ satisface
+		El número de Frobenius $F$ satisface
 		\begin{equation*}
-			F \leq \frac{n}{2}\cdot \norm{M}_F \cdot \max_{1 \leq j \leq n}
-			\left\{q_j^2\sqrt{q_j^{-2} + \norm{q}_2^{-2}}\right\},
+			F \leq \frac{n\sqrt{n - 1}}{2}\cdot \norm{M}_F \cdot \max_{1 \leq j \leq n}
+			\left\{q_j^2\sqrt{q_j^{-2} + \norm{\vec{q}}_2^{-2}}\right\},
 		\end{equation*}
 		donde
 		\begin{equation*}
@@ -1084,63 +1085,63 @@
 	\end{block}
 \end{frame}
 
-\section{Algunos resultados numéricos}
-\begin{frame}
-	\begin{figure}[hbtp]
-	  \centering
-	  \begin{subfigure}{0.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/digits-bb_full.pdf}
-	  \end{subfigure}
-	  \hfill
-	  \begin{subfigure}{0.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/digits-dioph.pdf}
-	  \end{subfigure}
-	\end{figure}
-\end{frame}
-
-\begin{frame}
-	\begin{figure}[hbtp]
-		\centering
-		\includegraphics[width=0.45\linewidth]{/home/tempdata/repos/thesis/static/fin/rhs/times-macro.pdf}
-	\end{figure}
-\end{frame}
-
-\begin{frame}
-	\begin{table}[ht]
-		\centering
-		\sisetup{round-precision=2}
-
-		\begin{subtable}{\linewidth}
-		\centering
-		\setlength{\tabcolsep}{3pt}\renewcommand{\arraystretch}{1.1}
-		\begin{tabularx}{\linewidth}{@{}r *{4}{S[table-format=3.3]@{\,}l}@{}}
-			\toprule
-			{$n$}
-			& \multicolumn{2}{c}{FD}
-			& \multicolumn{2}{c}{R\&A}
-			& \multicolumn{2}{c}{\texttt{dioph\_left}}
-			& \multicolumn{2}{c}{\texttt{dioph\_right}} \\
-			\midrule
-			1,000     & 1.270   & (±0.1)   & 0.109   & (±0.02) & 0.013   & (±0.00) & 0.013   & (±0.00) \\
-			2,000     & 10.368  & (±0.02)  & 0.135   & (±0.02) & 0.042   & (±0.00) & 0.043   & (±0.00) \\
-			5,000     & 160.562 & (±0.39)  & 1.666   & (±0.20) & 0.245   & (±0.00) & 0.265   & (±0.00) \\ \midrule
-			10,000    &         &          & 2.124   & (±0.33) & 1.063   & (±0.00) & 1.164   & (±0.00) \\
-			20,000    &         &          & 7.682   & (±0.34) & 4.595   & (±0.01) & 4.991   & (±0.01) \\
-			30,000    &         &          & 19.192  & (±1.18) & 10.743  & (±0.02) & 11.553  & (±0.01) \\
-			40,000    &         &          & 24.334  & (±0.19) & 19.471  & (±0.02) & 20.994  & (±0.08) \\
-			50,000    &         &          & 38.940  & (±0.18) & 30.887  & (±0.03) & 33.451  & (±0.04) \\
-			60,000    &         &          & 51.962  & (±0.53) & 45.072  & (±0.05) & 48.545  & (±0.05) \\
-			70,000    &         &          & 81.033  & (±1.26) & 61.885  & (±0.04) & 66.345  & (±0.10) \\
-			80,000    &         &          & 116.618 & (±0.93) & 81.418  & (±0.06) & 87.726  & (±0.12) \\
-			90,000    &         &          & 141.683 & (±2.10) & 103.962 & (±0.04) & 111.553 & (±0.12) \\ \midrule
-			100,000   &         &          & 170.397 & (±1.75) & 129.440 & (±0.05) & 139.652 & (±0.16) \\
-			\bottomrule
-		\end{tabularx}
-		\end{subtable}
-	\end{table}
-\end{frame}
+% \section{Algunos resultados numéricos}
+% \begin{frame}
+% 	\begin{figure}[hbtp]
+% 	  \centering
+% 	  \begin{subfigure}{0.45\textwidth}
+% 		\centering
+% 		\includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/digits-bb_full.pdf}
+% 	  \end{subfigure}
+% 	  \hfill
+% 	  \begin{subfigure}{0.45\textwidth}
+% 		\centering
+% 		\includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/digits-dioph.pdf}
+% 	  \end{subfigure}
+% 	\end{figure}
+% \end{frame}
+% 
+% \begin{frame}
+% 	\begin{figure}[hbtp]
+% 		\centering
+% 		\includegraphics[width=0.45\linewidth]{/home/tempdata/repos/thesis/static/fin/rhs/times-macro.pdf}
+% 	\end{figure}
+% \end{frame}
+% 
+% \begin{frame}
+% 	\begin{table}[ht]
+% 		\centering
+% 		\sisetup{round-precision=2}
+% 
+% 		\begin{subtable}{\linewidth}
+% 		\centering
+% 		\setlength{\tabcolsep}{3pt}\renewcommand{\arraystretch}{1.1}
+% 		\begin{tabularx}{\linewidth}{@{}r *{4}{S[table-format=3.3]@{\,}l}@{}}
+% 			\toprule
+% 			{$n$}
+% 			& \multicolumn{2}{c}{FD}
+% 			& \multicolumn{2}{c}{R\&A}
+% 			& \multicolumn{2}{c}{\texttt{dioph\_left}}
+% 			& \multicolumn{2}{c}{\texttt{dioph\_right}} \\
+% 			\midrule
+% 			1,000     & 1.270   & (±0.1)   & 0.109   & (±0.02) & 0.013   & (±0.00) & 0.013   & (±0.00) \\
+% 			2,000     & 10.368  & (±0.02)  & 0.135   & (±0.02) & 0.042   & (±0.00) & 0.043   & (±0.00) \\
+% 			5,000     & 160.562 & (±0.39)  & 1.666   & (±0.20) & 0.245   & (±0.00) & 0.265   & (±0.00) \\ \midrule
+% 			10,000    &         &          & 2.124   & (±0.33) & 1.063   & (±0.00) & 1.164   & (±0.00) \\
+% 			20,000    &         &          & 7.682   & (±0.34) & 4.595   & (±0.01) & 4.991   & (±0.01) \\
+% 			30,000    &         &          & 19.192  & (±1.18) & 10.743  & (±0.02) & 11.553  & (±0.01) \\
+% 			40,000    &         &          & 24.334  & (±0.19) & 19.471  & (±0.02) & 20.994  & (±0.08) \\
+% 			50,000    &         &          & 38.940  & (±0.18) & 30.887  & (±0.03) & 33.451  & (±0.04) \\
+% 			60,000    &         &          & 51.962  & (±0.53) & 45.072  & (±0.05) & 48.545  & (±0.05) \\
+% 			70,000    &         &          & 81.033  & (±1.26) & 61.885  & (±0.04) & 66.345  & (±0.10) \\
+% 			80,000    &         &          & 116.618 & (±0.93) & 81.418  & (±0.06) & 87.726  & (±0.12) \\
+% 			90,000    &         &          & 141.683 & (±2.10) & 103.962 & (±0.04) & 111.553 & (±0.12) \\ \midrule
+% 			100,000   &         &          & 170.397 & (±1.75) & 129.440 & (±0.05) & 139.652 & (±0.16) \\
+% 			\bottomrule
+% 		\end{tabularx}
+% 		\end{subtable}
+% 	\end{table}
+% \end{frame}
 
 % multiple
 \section{Múltiples restricciones}
@@ -1158,9 +1159,10 @@
 		\end{align}
 	\end{subequations}
 	Podemos suponer, sin pérdida de generalidad, que $A \in \Z^{m \times n}$ y
-	$\vec{b} \in \Z^m$.
+	$\vec{b} \in \Z^m$ (¿por qué?).
 \end{frame}
 
+\section{Una formulación adyacente}
 \begin{frame}
 	\begin{block}{Teorema}
 		El problema (2) es equivalente al problema
@@ -1194,6 +1196,171 @@
 	Siempre es mejor priorizar ramificaciones en $\optr{k}$ puesto que nos
 	deshacemos de manera inmediata subproblemas infactibles.
 \end{frame}
+
+\section{Una formulación alternativa}
+\begin{frame}
+	Como los renglones de $A \in \Z^{m \times n}$ son linealmente
+	independientes, existe una matriz unimodular $U \in \Z^{n \times n}$ que
+	satisface $AU = [H \mid \vec{0}]$, donde $H \in \Z^{m \times m}$ es
+	triangular inferior y no singular.
+\end{frame}
+
+\begin{frame}
+	Introducimos el problema de maximización:
+	\begin{subequations}
+		\begin{align*}
+			\max_{k \in \Z, \tvec{y} \in \Z^n}
+				& k, \\
+			\text{s.a.} \quad
+			k &\leq \eta, \\
+				A\tvec{y} &= \vec{b} - kA\vec{\nu},
+		\end{align*}
+	\end{subequations}
+	donde
+	\begin{equation*}
+		\tvec{y} \coloneq U \begin{pmatrix} \tvec{y}_m \\ \tvec{y}_{n-m} \end{pmatrix}
+		= U_m\tvec{y}_m + U_{n-m}\tvec{y}_{n-m}.
+	\end{equation*}
+\end{frame}
+
+\begin{frame}
+	Para toda $k \in \Z$ se cumple
+	\begin{equation*}
+		AU \begin{pmatrix} \inv{H}\left(\vec{b} - kA\vec{\nu}\right) \\ \tvec{y}_{n-m} \end{pmatrix}
+		=
+		[H, \vec{0}] \begin{pmatrix} \inv{H}\left(\vec{b} - kA\vec{\nu}\right) \\ \tvec{y}_{n-m} \end{pmatrix}
+		= \vec{b} - kA\vec{\nu},
+	\end{equation*}
+	lo cual sugiere definir
+	\begin{equation*}
+		\tvec{y}_m \coloneq \inv{H}(\vec{b} - kA\vec{\nu}).
+	\end{equation*}
+	Debemos asegurarnos que $\tvec{y}_m$ sea entero. Definimos el conjunto de
+	factibilidad del subproblema de maximización como
+	\begin{equation*}
+		\mathcal{F} \coloneq \braces{
+			k \in \Z \colon \inv{H}\left(\vec{b} - kA\vec{\nu}\right) \in \Z^m, k \leq \eta
+		}
+	\end{equation*}
+\end{frame}
+
+\begin{frame}
+	Supongamos que $\mathcal{F} \neq \emptyset$ (¿por qué?), entonces tiene un
+	elemento maximal $k^*$ que es solución del subproblema de maximización. Dada
+	esta solución, buscamos resolver el subproblema de factibilidad:
+	\begin{subequations}
+		\begin{align*}
+			M\vec{t} &= \tvec{y}, \\
+			M\vec{t} &\geq -k^*\vec{\nu}.
+		\end{align*}
+	\end{subequations}
+	Ya tenemos determinado $\tvec{y}_m$, falta encontrar $\tvec{y}_{n-m}$:
+	\begin{align*}
+		M\vec{t} = \tvec{y} &= U_m\tvec{y}_m + U_{n-m}\tvec{y}_{n-m} \nonumber \\
+	   &\iff [M \mid -U_{n-m}] \begin{pmatrix} \vec{t} \\ \tvec{y}_{n-m} \end{pmatrix} = U_m\tvec{y}_m.
+	\end{align*}
+\end{frame}
+
+\begin{frame}
+	Debido a la forma normal de Smith, existen dos matrices unimodulares $S
+	\in \Z^{n \times n}$ y $T \in \Z^{(2n - m - 1) \times (2n - m -1)}$ que
+	satisfacen
+\begin{equation*}
+	S[M \mid -U_{n-m}]T = D \in \Z^{n \times (2n - m - 1)},
+\end{equation*}
+	donde $D$ es una matriz diagonal cuyas $n$ primeras entradas son distintas de
+	cero y las restantes $n - m - 1$ son cero. Si multiplicamos $S$ por la izquierda
+	en ambos lados de la ecuación anterior, tenemos
+	\begin{equation*}
+		D\inv{T}\begin{pmatrix} \vec{t} \\ \tvec{y}_{n-m} \end{pmatrix}
+		= SU_m\tvec{y}_{m}.
+	\end{equation*}
+	Si $D_{ii}$ no divide a $(SU_m\tvec{y}_m)_i$ para algua $1 \leq i \leq n$,
+	la primera ecuación del subproblema de factibilidad no tiene solución en los
+	enteros. ¿Qué hacemos?
+\end{frame}
+
+\begin{frame}
+	Supongamos que $D_{ii} \mid (SU_m\tvec{y}_m)_i$ para todo $1 \leq i \leq n$.
+	Obtenemos $n$ soluciones enteras $\vec{r} \in \Z^n$ y $n - m - 1$ variables
+	libres $\vec{s} \in \Z^{n-m-1}$:
+	\begin{equation*}
+		\inv{T}\begin{pmatrix} \vec{t} \\ \tvec{y}_{n-m} \end{pmatrix}
+		=
+		\begin{pmatrix} \vec{r} \\ \vec{s} \end{pmatrix}.
+	\end{equation*}
+	Por lo tanto, nuestro vector $\vec{t}$ es una función afina de $\vec{s}$, es
+	decir, $\vec{t} = \vec{t}(\vec{s})$. ¿Qué implica esto para el subproblema
+	de factibilidad?
+\end{frame}
+
+\begin{frame}
+	Consideremos el conjunto de vectores $\vec{s} \in \Z^{n-m-1}$ que inducen a que
+	$\vec{t}(\vec{s})$ satisfaga la desigualdad en el subproblema de
+	factibilidad:
+	\begin{equation*}
+		\mathcal{S} \coloneq \lbrace \vec{s} \in \Z^{n-m-1} \vcentcolon M\vec{t}(\vec{s}) \geq -k^*\vec{\nu} \rbrace
+	\end{equation*}
+\end{frame}
+
+
+\begin{frame}
+	Consideremos el conjunto de vectores $\vec{s} \in \Z^{n-m-1}$ que inducen a que
+	$\vec{t}(\vec{s})$ satisfaga la desigualdad en el subproblema de
+	factibilidad:
+	\begin{equation*}
+		\mathcal{S} \coloneq \lbrace \vec{s} \in \Z^{n-m-1} \vcentcolon M\vec{t}(\vec{s}) \geq -k^*\vec{\nu} \rbrace
+	\end{equation*}
+
+	\begin{enumerate}
+		\item Encontrar $s \in \mathcal{S}$ es un problema difícil de resolver.
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}
+	Consideremos el conjunto de vectores $\vec{s} \in \Z^{n-m-1}$ que inducen a que
+	$\vec{t}(\vec{s})$ satisfaga la desigualdad en el subproblema de
+	factibilidad:
+	\begin{equation*}
+		\mathcal{S} \coloneq \lbrace \vec{s} \in \Z^{n-m-1} \vcentcolon M\vec{t}(\vec{s}) \geq -k^*\vec{\nu} \rbrace
+	\end{equation*}
+
+	\begin{enumerate}
+		\item Encontrar $s \in \mathcal{S}$ es un problema difícil de resolver.
+		\item Calcular $|\mathcal{S}|$ es un problema difícil de resolver.
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}
+	Consideremos el conjunto de vectores $\vec{s} \in \Z^{n-m-1}$ que inducen a que
+	$\vec{t}(\vec{s})$ satisfaga la desigualdad en el subproblema de
+	factibilidad:
+	\begin{equation*}
+		\mathcal{S} \coloneq \lbrace \vec{s} \in \Z^{n-m-1} \vcentcolon M\vec{t}(\vec{s}) \geq -k^*\vec{\nu} \rbrace
+	\end{equation*}
+
+	\begin{enumerate}
+		\item Encontrar $s \in \mathcal{S}$ es un problema difícil de resolver.
+		\item Calcular $|\mathcal{S}|$ es un problema difícil de resolver.
+		\item Decidir $\mathcal{S} = \emptyset$ es un problema difícil de resolver.
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}
+	\begin{center}
+		¿Cómo sustituir el problema (3) por un problema lineal entero general?
+	\end{center}
+	\begin{subequations}
+		\begin{align}
+			\max_{\vec{x} \in \Z^n} \quad
+				& \vec{q}^T\vec{x}, \\
+			\text{s.a.} \quad
+					& A\vec{x} = \vec{b}, \\
+					& \vec{x} \geq \vec{0}. \nonumber
+		\end{align}
+	\end{subequations}
+\end{frame}
+
 
 \section{Gracias}
 
