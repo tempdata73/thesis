@@ -1,6 +1,6 @@
 \chapter{El caso finito}
 \noindent
-Nuevamente inspirados por el teorema \ref{theory:th:feasibility}, en este capítulo analizamos el
+Inspirados por el teorema \ref{theory:th:feasibility}, en este capítulo analizamos el
 caso en el que el vector coprimo $\vec{q}$ tiene entradas estrictamente positivas. De esta manera,
 el problema \eqref{theory:formulation} deviene una instancia particular del famoso Problema de la
 Mochila:
@@ -10,24 +10,27 @@ Mochila:
 		\max_{\vec{x} \in \Z^n} \quad
 			& \vec{u}^T\vec{x}, \\
 		\text{s.a.} \quad
-			& \vec{w}^T\vec{x} \leq c, \\
+			& \vec{w}^T\vec{x} \leq u, \\
 			& \vec{x} \geq \vec{0},
 	\end{align}
 \end{subequations}
-donde los vectores positivos $\vec{u}, \vec{w} \in \Z^n$ son conocidos como vector de útiles y
-vector de pesos, respectivamente. Puesto que no acotamos $\vec{x}$, el problema recibe el nombre de
-Problema de la Mochila no Acotado. Pero también como $\vec{u} = \vec{w}$, el problema puede
-ser considerado como un Problema de la Suma de Conjuntos no Acotado.
+donde los vectores positivos $\vec{u}, \vec{w} \in \Z^n$ son conocidos como
+vector de útiles y vector de pesos, respectivamente. Puesto que no acotamos
+$\vec{x}$, el problema recibe el nombre de Problema de la Mochila no Acotado.
+Analizaremos el caso $\vec{u} = \vec{w}$, el cual es es considerado como un
+Problema de la Suma de Conjuntos no Acotado.
 
-En la primera sección realizamos un análisis de capas enteras a fin de obtener un resultado análogo
-al teorema \ref{infinite:th:complexity}. En concreto, el teorema \ref{th:intnonneg2} enuncia que,
-para un presupuesto $u$ suficientemente grande en el problema \eqref{theory:formulation}, la
-búsqueda de una solución se reduce a resolver solamente una ecuación lineal diofantina.
+En la primera sección realizamos un análisis de capas enteras a fin de obtener
+un resultado análogo al teorema \ref{infinite:th:complexity}. En concreto, el
+teorema \ref{th:intnonneg2} enuncia que, para un presupuesto $u$
+suficientemente grande en el problema \eqref{theory:formulation}, la búsqueda
+de una solución se reduce a resolver solamente una ecuación lineal diofantina.
 
-El resultado anterior, si bien interesante, es de existencia y no muestra cómo obtener las
-soluciones enteras no negativas de ecuaciones lineales diofantinas. De manera similar a como lo
-hicimos en el capítulo anterior, la segunda sección se encarga de presentar tal construcción de
-soluciones a partir de los algoritmos \ref{algo:fin:helper} y \ref{algo:fin:dioph}.
+El resultado anterior, si bien es interesante, solo es de existencia y no
+muestra cómo obtener las soluciones enteras no negativas de ecuaciones lineales
+diofantinas. De manera similar a como lo hicimos en el capítulo anterior, la
+segunda sección se encarga de presentar la construcción de soluciones a partir
+de los algoritmos \ref{algo:fin:helper} y \ref{algo:fin:dioph}.
 
 Finalmente, en la tercera y última sección de este capítulo, realizamos algunos experimentos
 numéricos que comparan la eficacia de nuestros algoritmos recién desarrollados con la de
@@ -37,12 +40,12 @@ Ramificación y Acotamiento, así como de una formulación alternativa de progra
 \noindent
 De acuerdo al segundo caso del teorema \ref{theory:th:feasibility}, el número de puntos enteros no
 negativos sobre la $k$-ésima capa entera es finito y, por lo tanto, puede ser cero. Sea $k \in
-\braces{\eta, \ldots, 0}$. Sabemos de la Sección \ref{subsec:dioph-eq} que deseamos resolver la
+\braces{\eta, \eta - 1, \ldots, 0}$. Sabemos de la Sección \ref{subsec:dioph-eq} que deseamos resolver la
 ecuación lineal diofantina \eqref{eq:dioph}, por lo que implementamos la misma estrategia para
 plantear una formulación recursiva. 
 
 Debido al supuesto $\vec{q} > \vec{0}$, observemos de \eqref{dummy:eq:ith-equation} que podemos
-agregar la condición $\omega_{i} \geq 0$. En efecto, buscamos que $\vec{x}$ sea no negativo y
+agregar la condición $\omega_{i} \geq 0$, en efecto, buscamos que $\vec{x}$ sea no negativo y
 recordemos que $g_i$ es un máximo común divisor (ver \eqref{dummy:eq:ith-g}), por lo que es
 estrictamente positivo. Juntando esto con el supuesto $\vec{q} > \vec{0}$, encontramos que
 $\omega_i$ es no negativo para toda $i \in \braces{1, \ldots, n - 1}$. Así pues, despejando $t_i$ de
@@ -53,23 +56,24 @@ $\omega_i$ es no negativo para toda $i \in \braces{1, \ldots, n - 1}$. Así pues
 	\leq
 	t_i
 	\leq
-	\left\lfloor \frac{\omega_i\omega_{i+1}'}{q_i} \prod_{j=1}^{i}g_j \right\rceil,
+	\left\lfloor \frac{\omega_i\omega_{i+1}'}{q_i} \prod_{j=1}^{i}g_j \right\rfloor,
 \end{equation*}
 para todo $i \in \lbrace 1, \ldots, n - 2\rbrace$. Luego, como $0 < q_{n - 1}, q_n$, se sigue de
 \eqref{eq:last-solution} que
 \begin{equation*}
 	\label{phase-1:finite:eq:param-bounds-last}
-	\left\lceil -\frac{\omega_{n-1}x_{n-1}'}{q_n} \cdot \prod_{j=1}^{n-2}g_j \right\rceil
+	\left\lceil -\frac{\omega_{n-1}x_{n-1}'}{q_n} \cdot \prod_{j=1}^{n-1}g_j \right\rceil
 	\leq
 	t_{n - 1}
 	\leq
-	\left\lfloor \frac{\omega_{n-1}x_{n}'}{q_{n-1}} \cdot \prod_{j=1}^{n-2}g_j \right\rfloor.
+	\left\lfloor \frac{\omega_{n-1}x_{n}'}{q_{n-1}} \cdot \prod_{j=1}^{n-1}g_j \right\rfloor.
 \end{equation*}
 
-Consecuentemente, el número de elecciones que podemos realizar para el vector de variables libres
-$\vec{t} \in \Z^{n-1}$ es, como lo confirma el teorema \ref{theory:th:feasibility}, finito. Si
-determinamos que no existe tal punto en la $k$-ésima capa entera, descendemos a la $(k -1)$-ésima
-capa entera y continuamos con nuestra búsqueda.
+Consecuentemente, el número de elecciones que podemos realizar para el vector
+de variables libres $\vec{t} \in \Z^{n-1}$ es finito, como lo confirma el
+teorema \ref{theory:th:feasibility}. Si determinamos que no existe tal punto
+$\vec{t}$ en la $k$-ésima capa entera, descendemos a la $(k -1)$-ésima capa
+entera y continuamos con nuestra búsqueda.
 
 % Observemos también que una elección de $t_i$ modifica $\omega_{i+1}$ y por lo tanto también afecta
 % el intervalo de factibilidad de $t_{i+1}$. Siguiendo con este razonamiento, encontramos que una
@@ -116,9 +120,10 @@ entero no negativo sobre una de estas capas enteras.
 		\vec{q}^T\vec{v} = \left\lfloor \frac{u}{q^*} \right\rfloor q^*
 		\leq \frac{u}{q^*}q^* = u,
 	\end{equation*}
-	y entonces $\vec{v}$ es factible. De aquí se sigue que este vector provee una cota inferior para
-	el problema (\ref{theory:formulation}). Así pues, todo vector $\vec{x}$ candidato a ser el
-	óptimo del problema satisface
+	y entonces $\vec{v}$ es factible. De aquí se sigue que este vector provee
+	una cota inferior para valor óptimo del problema
+	(\ref{theory:formulation}). Así pues, todo vector $\vec{x}$ candidato a ser
+	el óptimo del problema satisface
 	\begin{equation*}
 		\vec{q}^T\vec{x} = \frac{\vec{p}^T\vec{x}}{m} \geq \frac{\vec{q}^T\vec{v}}{m} = 
 		\floor{\frac{u}{q^*}} \frac{q^*}{m}.
@@ -300,6 +305,7 @@ usadas para especificar $\vec{p}$. Véase la Figura \ref{fig:m:ex} o el Ejemplo 
   \label{fig:m:ex}
 \end{figure}
 
+% TODO: FIX (ver anotaciones de andreas)
 Observaremos en el análisis de resultados que el número de capas enteras que nuestro algoritmo
 revisa en realidad disminuye a medida que aumenta el presupuesto $u$.
 
@@ -310,14 +316,17 @@ será análogo al teorema \ref{infinite:th:complexity}. No obstante, para lograr
 de un par de definiciones y lemas preliminares.
 
 Para motivar al lector, primero mostramos que existe una vecindad fija de todo punto en $\R^n$ de
-manera que esa vecindad contiene al menos un punto entero. Esto es especificado en el teorema
+manera que esa vecindad contiene al menos un punto entero. Esto será especificado en el teorema
 \ref{lemma:ball-cover}.
 
 Luego, observamos que el ``trozo'' no negativo de una capa entera $H_{\vec{q},
-k\norm{\vec{q}}^{-2}}$ crece a medida que $k$ aumenta. Así pues, si $k$ es lo suficientemente
-grande, habrá un punto sobre ese trozo no negativo cuya vecindad también se encuentra contenida en
-ese trozo y, por lo tanto, habrá un punto entero no negativo sobre ese trozo. Esto es especificado
-en el teorema \ref{th:intsimplex}.
+k\norm{\vec{q}}^{-2}}$ crece a medida que $k$ aumenta. Recordemos que $k \leq
+\eta$ y, por el lema \ref{phase-1:lemma:eta}, $\eta$ depende del lado derecho
+$u$ de \eqref{theory:constraint:budget}. Así pues, si el presupuesto $u$ lo
+permite, habrá un punto sobre ese trozo no negativo cuya vecindad también se
+encuentra contenida en ese trozo y, por lo tanto, habrá un punto entero no
+negativo sobre ese trozo. Esto es especificado en el teorema
+\ref{th:intsimplex}.
 
 Finalmente, relacionamos el punto entero que se encuentra sobre el pedazo no negativo de
 $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ con el problema \eqref{theory:formulation}. Así pues, concluimos
@@ -366,9 +375,9 @@ esta sección con los teoremas \ref{th:intnonneg1} y \ref{th:intnonneg2}.
 		\bigcup_{\vec{t} \in \Z^{n-1}}B_r^{(k)}(k\vec{\nu} + M\vec{t}) \subseteq
 		H_{\vec{q}, k\norm{\vec{q}}^{-2}}.
 	\end{equation}
-	Ahora bien, sea $\vec{y}$ un punto sobre la $k$-ésima capa entera. Por el lema \ref{lemma:iso2}
-	sabemos que las columnas de $M$ son linealmente independientes, y entonces existe $\vec{t} \in
-	\R^{n-1}$ tal que
+	Ahora bien, sea $\vec{y}$ un punto sobre la $k$-ésima capa entera. Por el
+	teorema \ref{th:lattice} sabemos que las columnas de $M$ son linealmente
+	independientes, y entonces existe $\vec{t} \in \R^{n-1}$ tal que
 	\begin{equation*}
 		\vec{y} = k\vec{\nu} + M\vec{t}.
 	\end{equation*}
@@ -380,17 +389,25 @@ esta sección con los teoremas \ref{th:intnonneg1} y \ref{th:intnonneg2}.
 		\vec{x} \coloneq k\vec{\nu} + M\lfloor \vec{t} \rceil \in \Z^{n-1},
 	\end{equation*}
 	de donde se sigue que
-	\begin{align}
-		\norm{\vec{y} - \vec{x}}^{2} 
-		&= \norm{M\vec{\delta}}^{2} \nonumber \\
-		&\leq \sum_{i=1}^{n-1}|\delta_i|^2 \norm{M\vec{e}_i}^{2} \nonumber \\
-		&\leq \frac{1}{4}\sum_{i=1}^{n-1} \norm{M\vec{e}_i}^{2} \label{eq:alt-M-bound} \\
-		&= \frac{1}{4}\norm{M}_F^2, \nonumber
-	\end{align}
-	donde $\norm{M}_F$ denota la norma Frobenius de $M$. Por lo tanto, si definimos
+	\begin{equation*}
+		\norm{\vec{y} - \vec{x}}
+		= \norm{M\vec{\delta}}
+		\leq \norm{M}\norm{\vec{\delta}}
+		\leq \sqrt{n - 1}\norm{M}\norm{\vec{\delta}}_\infty
+		\leq \frac{\sqrt{n - 1}}{2}\norm{M}.
+	\end{equation*}
+	% \begin{align}
+	% 	\norm{\vec{y} - \vec{x}}^{2} 
+	% 	&= \norm{M\vec{\delta}}^{2} \nonumber \\
+	% 	&\leq \sum_{i=1}^{n-1}|\delta_i|^2 \norm{M\vec{e}_i}^{2} \nonumber \\
+	% 	&\leq \frac{1}{4}\sum_{i=1}^{n-1} \norm{M\vec{e}_i}^{2} \label{eq:alt-M-bound} \\
+	% 	&= \frac{1}{4}\norm{M}_F^2, \nonumber
+	% \end{align}
+	% donde $\norm{M}_F$ denota la norma Frobenius de $M$.
+	Por lo tanto, si definimos
 	\begin{equation}
 		\label{eq:radius}
-		r \coloneq \frac{1}{2}\norm{M}_F,
+		r \coloneq \frac{\sqrt{n - 1}}{2}\norm{M},
 	\end{equation}
 	encontramos que $\vec{y} \in B_r^{(k)}(\vec{x})$. Luego, como $\vec{y} \in H_{\vec{q},
 	k\norm{\vec{q}}^2}$ fue genérico, tenemos que si $r$ está definido por \eqref{eq:radius},
@@ -403,16 +420,17 @@ esta sección con los teoremas \ref{th:intnonneg1} y \ref{th:intnonneg2}.
 	Juntando esto con (\ref{eq:ball-cover:1}) obtenemos lo que queríamos demostrar.
 \end{proof}
 
-Lo que se encuentra a continuación se encarga de formalizar y caracterizar lo que nos referíamos
-anteriormente como ``trozo no negativo'' de la $k$-ésima capa entera. Todas las definiciones fueron
-tomadas de \cite{boyd} a excepción del baricentro, mientras que las demostraciones de los lemas y
-teoremas fueron realizadas completamente por el autor.
+Lo que se encuentra a continuación se encarga de formalizar y caracterizar lo
+que nos referíamos anteriormente como ``trozo no negativo'' de la $k$-ésima
+capa entera. Todas las definiciones fueron tomadas del capítulo 2 de
+\cite{boyd} a excepción del baricentro, mientras que las demostraciones de los
+lemas y teoremas fueron realizadas completamente por el autor.
 \begin{definition}
 	\label{def:aff}
 	Sean $\vec{v}_1, \ldots, \vec{v}_m \in \R^n$ una colección de vectores,
 	entonces definimos su \textbf{combinación afina} a partir de
 	\begin{equation*}
-		\aff\braces{\vec{v}_1, \ldots, \vec{v}_m} \coloneq \braces{\theta_1\vec{v}_1 + \cdots + \theta_k\vec{v}_k
+		\aff\braces{\vec{v}_1, \ldots, \vec{v}_m} \coloneq \braces{\theta_1\vec{v}_1 + \cdots + \theta_m\vec{v}_m
 		\colon \theta_1 + \cdots + \theta_m = 1}.
 	\end{equation*}
 \end{definition}
@@ -498,14 +516,17 @@ teoremas fueron realizadas completamente por el autor.
 		H_{\vec{q}, k\norm{\vec{q}}^{-2}} = \vec{u}_j + \gen\braces{\vec{u}_i - \vec{u}_j}_{i \neq
 		j}.
 	\end{equation*}
-	Por el lema \ref{lemma:aff} concluimos que la $k$-ésima capa entera es la combinación
+	Comparando con la definición \ref{phase-1:def:c-layer}, obtenemos una
+	construcción explícita de $\qlayer{\vec{q}}{k}$. Por el lema
+	\ref{lemma:aff} concluimos que la $k$-ésima capa entera es la combinación
 	afina de los vectores $\vec{u}_1, \ldots, \vec{u}_n$.
 \end{example}
 
 \begin{definition}
 	\label{def:simplex}
-	Sean $\vec{v}_1, \ldots, \vec{v}_m \in \R^n$ vectores linealmente independientes. Entonces
-	definimos el \textbf{símplice} $\sigma$ como la combinación convexa de estos vectores:
+	Sean $\vec{v}_1, \ldots, \vec{v}_m \in \R^n$ vectores linealmente
+	independientes. Entonces definimos el \textbf{símplice} $\sigma$ de
+	dimensión $m - 1$ como la combinación convexa de estos vectores:
 	\begin{equation*}
 		\sigma = \conv\braces{\vec{v}_1, \ldots, \vec{v}_m}
 		\coloneq
@@ -527,10 +548,12 @@ teoremas fueron realizadas completamente por el autor.
 	\end{equation}
 \end{observation}
 \begin{observation}
-	Si $\sigma$ es un símplice generado por $m$ vectores, entonces tiene $\binom{m}{m-1} = m$
-	facetas. Tomaremos por hecho, puesto que de otra manera arriesgamos desviarnos por una tangente,
-	que estas facetas constituyen la frontera relativa del símplice. Es decir, tomaremos por hecho
-	que las facetas constituyen las ``aristas'' o ``caras'' de $\sigma$.
+	Si $\sigma$ es un símplice generado por $m$ vectores, entonces tiene
+	$\binom{m}{1} = m$ facetas. Tomaremos por hecho, puesto que de otra
+	manera arriesgamos desviarnos por una tangente, que estas facetas
+	constituyen la frontera relativa del símplice dentro de la $k$-ésima capa
+	entera. Es decir, tomaremos por hecho que las facetas constituyen las
+	``caras'' de $\sigma$.
 \end{observation}
 
 \begin{lemma}
@@ -581,6 +604,7 @@ asegurar que la bola de radio \eqref{eq:radius} esté contenida en el símplice 
 bola está centrada en un punto particular, a saber, en el baricentro del símplice.
 
 \begin{definition}
+	\label{def:barycenter}
 	Sea $\sigma$ un símplice generado por $\vec{v}_1, \ldots, \vec{v}_m \in \R^n$, definimos su
 	\textbf{baricentro} $\est{\sigma}$ como
 	\begin{equation*}
@@ -613,13 +637,14 @@ su $j$-ésima faceta $\sigma_j$ es
 	\label{eq:dist:v1}
 	d(\est{\sigma}, \sigma_j) = |\uvec{\mu}_j^T(\est{\sigma} - \est{\sigma}_j)|,
 \end{equation}
-donde $\uvec{\mu}_j$ es un vector unitario y normal a la $j$-ésima faceta.
+donde $\uvec{\mu}_j$ es un vector unitario, normal a la $j$-ésima faceta, y que
+está contenido en $\qlayer{k}{\vec{q}}$. El siguiente lema caracteriza este vector.
 
 \begin{lemma}
 	\label{mu:orth}
-	Sean $\vec{q} > \vec{0}$, $k > 0$ y retomemos el símplice $\sigma$ generado por los vectores
-	$\braces{\vec{u}_i}_{i=1}^{n}$ en \eqref{def:u-basis}. Definamos, para cada $j \in \braces{1,
-	\ldots, n}$,
+	Sean $\vec{q} > \vec{0}$, $k > 0$ y retomemos el símplice $\sigma$ convexamente generado
+	por los vectores $\braces{\vec{u}_i}_{i=1}^{n}$ definidos en
+	\eqref{def:u-basis}. Definamos, para cada $j \in \braces{1, \ldots, n}$,
 	\begin{equation}
 		\label{eq:normal}
 		\vec{\mu}_j \coloneq \vec{u}_j - \frac{\vec{q}^T\vec{u}_j}{\vec{q}^T\vec{q}}\vec{q}
@@ -629,10 +654,12 @@ donde $\uvec{\mu}_j$ es un vector unitario y normal a la $j$-ésima faceta.
 	$\sigma$.
 \end{lemma}
 \begin{proof}
-	Debemos mostrar que si $\vec{x} \in \sigma_j$, entonces $\vec{\mu}_j^T\vec{y} = 0$ para todo
-	$\vec{y} \in \sigma_j - \vec{x}$. Por la definición \ref{def:simplex}, tenemos que los vectores
-	$\braces{\vec{u}_i}_{i \neq j}$ generan la $j$-ésima faceta $\sigma_j$, y entonces basta mostrar
-	que $\vec{\mu}_j^T\vec{y} = 0$ para todo $\vec{y} \in \sigma_j - \vec{u}_m$ con $m \neq j$.
+	Debemos mostrar que si $\vec{x} \in \sigma_j$, entonces
+	$\vec{\mu}_j^T\vec{y} = 0$ para todo $\vec{y} \in \sigma_j - \vec{x}$. Por
+	la definición \ref{def:simplex}, tenemos que la combinación convexa de  los
+	vectores $\braces{\vec{u}_i}_{i \neq j}$ genera la $j$-ésima faceta
+	$\sigma_j$, y entonces basta mostrar que $\vec{\mu}_j^T\vec{y} = 0$ para
+	todo $\vec{y} \in \sigma_j - \vec{u}_m$ con $m \neq j$.
 
 	Sea, pues, $m \in \braces{1, \ldots, n} \setminus \braces{j}$. Tenemos de las definiciones
 	\ref{def:aff} y \ref{def:simplex}, así como del lema \ref{lemma:aff} que
@@ -660,8 +687,10 @@ donde $\uvec{\mu}_j$ es un vector unitario y normal a la $j$-ésima faceta.
 \end{proof}
 
 Ahora que encontramos vectores normales $\vec{\mu}_j$ para cada faceta $\sigma_j$, podemos
-simplificar un poco más \eqref{eq:dist:v1}. Aprovechando el hecho de que
-$\braces{\vec{u}_i}_{i=1}^{n}$ son todos ortogonales entre sí, obtenemos cálculos simples:
+simplificar un poco más \eqref{eq:dist:v1}. Aprovechando el hecho de que los vectores
+$\braces{\vec{u}_i}_{i=1}^{n}$ son todos ortogonales entre sí, a partir de la
+definición \ref{def:barycenter} y de la ecuación \eqref{def:u-basis} obtenemos cálculos
+simples:
 \begin{align*}
 	\vec{\mu}_j^T\est{\sigma}
 	&=
@@ -672,7 +701,8 @@ $\braces{\vec{u}_i}_{i=1}^{n}$ son todos ortogonales entre sí, obtenemos cálcu
 	&= \frac{1}{n}\norm{\vec{u}_j}^2 - \frac{k}{n\norm{\vec{q}}^2}\sum_{i=1}^{n}k \\
 	&= \frac{k^2}{nq_j^2} - \frac{k^2}{\norm{\vec{q}}^2}.
 \end{align*}
-A través de un procedimiento similar, encontramos también que
+A través de un procedimiento similar, encontramos para el baricentro
+$\est{\sigma}_j$ de la $j$-ésima faceta $\sigma_j$ que
 \begin{equation}
 	\label{eq:facetaux}
 	\vec{\mu}_j^T\est{\sigma}_j = -\frac{k}{\norm{\vec{q}}^2},
@@ -682,11 +712,11 @@ y por lo tanto
 	\label{eq:signed}
 	\vec{\mu}_j^T(\est{\sigma} - \est{\sigma}_j) = \frac{k^2}{nq_j^2}.
 \end{equation}
-Más adelante normalicaremos $\vec{\mu}$ de manera que este vector sea unitario. Cabe resaltar el
+Más adelante normalizaremos $\vec{\mu}_j$ de manera que este vector sea unitario. Cabe resaltar el
 hecho de que el lado derecho \eqref{eq:signed} es positivo. Geométricamente, lo anterior implica
 que los vectores normales $\vec{\mu}_j$ de cada faceta $\sigma_j$ apuntan hacia el interior relativo
 del símplice $\sigma$. Esto sugiere una caracterización alternativa de $\sigma$ que nos permite
-interpretarlo como un poliedro.
+interpretarlo como un poliedro y que es importante para demostrar el teorema \ref{lemma:sigma-radius}.
 \begin{lemma}
 	\label{lemma:sigmachar2}
 	Sea $\vec{q} > \vec{0}$ un vector coprimo y sea $\sigma$ el símplice generado por los vectores
@@ -709,10 +739,12 @@ interpretarlo como un poliedro.
 	\end{equation*}
 	y entonces podemos trabajar con $\vec{\mu}_j$ sin normalizarlo. 
 
-	Sea $\vec{x} \in \sigma$. Por el lema \ref{lemma:sigmachar1} sabemos que
-	$\vec{x}$ se encuentra en la $k$-ésima capa entera. También sabemos que existen escalares no
-	negativos $\theta_1, \ldots, \theta_n$ que suman 1 y que satisfacen $\vec{x} = \theta_1\vec{u}_1
-	+ \cdots + \theta_n\vec{u}_n$. Tenemos entonces
+	Primero demostramos la contención de izquierda a derecha, así que sea
+	$\vec{x} \in \sigma$. Por el lema \ref{lemma:sigmachar1} sabemos que
+	$\vec{x}$ se encuentra en la $k$-ésima capa entera. También sabemos, por el
+	ejemplo \ref{ex:aff}, que existen escalares no negativos $\theta_1, \ldots,
+	\theta_n$ que suman 1 y que satisfacen $\vec{x} = \theta_1\vec{u}_1 +
+	\cdots + \theta_n\vec{u}_n$. Tenemos entonces
 	\begin{align*}
 		\vec{\mu}_j^T\vec{x}
 		&=
@@ -735,10 +767,11 @@ interpretarlo como un poliedro.
 	\end{equation*}
 	lo cual es no negativo para todo $j \in \braces{1, \ldots, n}$.
 
-	Mostramos la otra contención por contrapositiva, así que supongamos que $\vec{x} \not\in
-	\sigma$. Por el lema \ref{lemma:sigmachar1} se sigue o bien que $\vec{x} \not\in H_{\vec{q},
-	k\norm{\vec{q}}^{-2}}$ o bien que $\vec{x} \not\in \R^n_{\geq \vec{0}}$. En el primer caso
-	obtenemos inmediatamente que $\vec{x}$ no se encuentra en el lado derecho de
+	Ahora mostramos la otra contención por contrapositiva, así que supongamos
+	que $\vec{x} \not\in \sigma$. Por el lema \ref{lemma:sigmachar1} se sigue o
+	bien que $\vec{x} \not\in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ o bien que
+	$\vec{x} \not\in \R^n_{\geq \vec{0}}$. En el primer caso obtenemos
+	inmediatamente que $\vec{x}$ no se encuentra en el lado derecho de
 	\eqref{eq:sigmachar2}.
 
 	Supongamos, pues, que $\vec{x}$ está en la $k$-ésima capa entera pero que tiene al menos una
@@ -904,7 +937,6 @@ Usando \eqref{eq:signed} y \eqref{eq:den} para sustituir en \eqref{dist:v2}, obt
 \begin{equation*}
 	d(\est{\sigma}, \sigma_j) = \frac{k}{n} \cdot
 	\frac{1}{q_j^2\sqrt{q_j^{-2} - \norm{\vec{q}}^{-2}}}
-	= \frac{k}{n} \cdot \frac{1}{Q_j},
 \end{equation*}
 donde definimos $Q_j$ pertinentemente. Finalmente, del teorema \ref{lemma:sigma-radius} encontramos que
 el radio $r_\sigma$ de la bola inscrita en el símplice $\sigma$ con centro
@@ -912,7 +944,7 @@ $\est{\sigma}$ está dado por
 \begin{equation}
 	\label{eq:sigma-radius}
 	r_\sigma = \min_{1 \leq j \leq n} \braces{d(\est{\sigma}, \sigma_j)} = \frac{k}{n} \cdot
-	\frac{1}{\max_{1 \leq j \leq n} \lbrace Q_j \rbrace}
+	\frac{1}{\max_{1 \leq j \leq n} \braces{ q_j^2\sqrt{q_j^{-2} + \norm{\vec{q}}^{-2}}}}
 \end{equation}
 
 \begin{theorem}
@@ -934,27 +966,27 @@ $\est{\sigma}$ está dado por
 	De \eqref{eq:radius} y de \eqref{eq:sigma-radius} obtenemos que $r \leq r_\sigma$ si y solo si
 	\begin{equation}
 		\label{eq:eta-limit}
-		k \geq \frac{n}{2}\norm{M}_F\max_{1 \leq j \leq n} \lbrace Q_j \rbrace,
+		k \geq \frac{n\sqrt{n - 1}}{2}\norm{M} \max_{1 \leq j \leq n} \braces{q_j^2 \sqrt{q_j^{-2} + \norm{\vec{q}}^{-2}}},
 	\end{equation}
 	que es lo que queríamos demostrar.
 \end{proof}
-De \eqref{eq:eta-limit} parece que podemos concluir que hay una dependencia lineal entre la
-dimensión $n$ y el parámetro de la capa entera $k$. No obstante, la norma $\norm{M}_F$ depende
-implícitamente de $n$. Para ser más explícitos con respecto a esta dependencia, podemos rescatar de
-\eqref{eq:alt-M-bound} la siguiente cota:
-\begin{equation*}
-	\frac{1}{4}\sum_{j=1}^{n-1}\norm{M\vec{e}_j}^2
-	\leq
-	\frac{n-1}{4}\max_{1 \leq j \leq n} \lbrace \norm{M\vec{e}_j}^2 \rbrace,
-\end{equation*}
-de donde reemplazaríamos la cota \eqref{eq:eta-limit} en el teorema \ref{th:intsimplex} por
-\begin{equation*}
-	k \geq \frac{n\sqrt{n-1}}{2} \max_{1 \leq j \leq n} \lbrace \norm{M\vec{e}_j} \rbrace \cdot
-	\max_{1 \leq j \leq n} \lbrace Q_j \rbrace.
-\end{equation*}
-Esta cota, no obstante, es más grande que la propuesta inicialmente.
+% De \eqref{eq:eta-limit} parece que podemos concluir que hay una dependencia lineal entre la
+% dimensión $n$ y el parámetro de la capa entera $k$. No obstante, la norma $\norm{M}_F$ depende
+% implícitamente de $n$. Para ser más explícitos con respecto a esta dependencia, podemos rescatar de
+% \eqref{eq:alt-M-bound} la siguiente cota:
+% \begin{equation*}
+% 	\frac{1}{4}\sum_{j=1}^{n-1}\norm{M\vec{e}_j}^2
+% 	\leq
+% 	\frac{n-1}{4}\max_{1 \leq j \leq n} \lbrace \norm{M\vec{e}_j}^2 \rbrace,
+% \end{equation*}
+% de donde reemplazaríamos la cota \eqref{eq:eta-limit} en el teorema \ref{th:intsimplex} por
+% \begin{equation*}
+% 	k \geq \frac{n\sqrt{n-1}}{2} \max_{1 \leq j \leq n} \lbrace \norm{M\vec{e}_j} \rbrace \cdot
+% 	\max_{1 \leq j \leq n} \lbrace Q_j \rbrace.
+% \end{equation*}
+% Esta cota, no obstante, es más grande que la propuesta inicialmente.
 
-Además, el resultado que obtuvimos es más fuerte de lo que aparenta. Hemos encontrado una
+El resultado que obtuvimos es más fuerte de lo que aparenta. Hemos encontrado una
 cota inferior de manera que podamos asegurar la existencia de puntos enteros en una vecindad del
 baricentro $\est{\sigma}$. Este punto no es especial, pues en realidad podemos realizar el mismo
 procedimiento enfocándonos en otros puntos del símplice $\sigma$ para asegurar soluciones en sus
