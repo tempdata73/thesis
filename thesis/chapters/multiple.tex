@@ -8,8 +8,8 @@ subproblemas generado por el algoritmo de Ramificación y Acotamiento, lo cual p
 mejores tiempos de terminación.
 
 En la exposición de este capítulo dependemos en gran medida de las formas normales de Hermite y de
-Smith, las cuales son tratadas extensivamente en \cite{alex} y \cite{morris}. El estilo de nuestra
-discusión es menos formal aunque no por ello menos rigurosa.
+Smith, las cuales son tratadas extensivamente en el capítulo 4 de \cite{alex} y capítulo 2 de
+\cite{morris}.
 
 Sea $\vec{p} \in \R^n$ esencialmente entero y sea $\vec{q} \in \Z^n$, de manera que $\vec{p} =
 m\vec{q}$ para algún escalar $m > 0$. Vimos en la subsección \ref{subsec:dioph-eq} que el problema
@@ -287,11 +287,11 @@ determinar rápidamente la existencia o inexistencia de un conjunto de factibili
 a que $\vec{t}(s)$ satisfaga \eqref{subf:feas:ineq}. Este caso se ilustra en el ejemplo
 \ref{ex:three-var}.
 
-A modo de resumen, mostramos en el pseudocódigo \ref{algo:multiple} la forma de resolver problemas
-del tipo \eqref{formulation:lattice}. Por el teorema \ref{th:multeq}, este método también resuelve
-problemas del tipo \eqref{formulation:multiple}. Después de presentar los ejemplos \ref{ex:two-var}
-y \ref{ex:three-var}, mostramos una manera con la cual podemos deshacernos del ciclo infinito en la
-línea \ref{algo:mult:infloop}.
+A modo de resumen, mostramos en el pseudocódigo \ref{algo:multiple} (pág.~\pageref{algo:multiple})
+la forma de resolver problemas del tipo \eqref{formulation:lattice}. Por el teorema \ref{th:multeq},
+este método también resuelve problemas del tipo \eqref{formulation:multiple}. Después de presentar
+los ejemplos \ref{ex:two-var} y \ref{ex:three-var}, mostramos una manera con la cual podemos
+deshacernos del ciclo infinito en la línea \ref{algo:mult:infloop}.
 
 \renewcommand{\algorithmcfname}{Pseudocódigo}
 \begin{algorithm}[ht]
@@ -313,7 +313,7 @@ línea \ref{algo:mult:infloop}.
 		\While{$1 + 1 = 2$\label{algo:mult:infloop}}{
 			Obtener $\tvec{y}_m$ de $H\tvec{y}_m = \vec{b} - kA\vec{\nu}$\;
 			\If{$\tvec{y}_m \in \Z^m$}{
-				ir al paso \ref{algo:mult:z}\;
+				ir a la línea \ref{algo:mult:z}\;
 			}
 			$k \leftarrow k - 1$\; \label{algo:multiple:k}
 		}
@@ -321,7 +321,8 @@ línea \ref{algo:mult:infloop}.
 		$\vec{r} \leftarrow \vec{0}_n$\;
 		\For{$i \leftarrow 1$ \KwTo $n$}{
 			\If{$D_{ii} \nmid z_i$}{
-				ir al paso \ref{algo:multiple:k}\;
+				$k \leftarrow k - 1$\;
+				ir a la línea \ref{algo:mult:infloop}\;
 			}
 			$r_i \leftarrow z_i / D_{ii}$\;
 		}
@@ -330,7 +331,8 @@ línea \ref{algo:mult:infloop}.
 			$\vec{x}^* \leftarrow k\vec{\nu} + M\vec{t}(\vec{s})$\;
 			\Return{$\vec{x}^*$}\;
 		}
-		ir al paso \ref{algo:multiple:k}\;
+		$k \leftarrow k - 1$\;
+		ir a la línea \ref{algo:mult:infloop}\;
 	}
 	\caption{}
 	\label{algo:multiple}

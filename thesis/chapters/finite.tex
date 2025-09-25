@@ -30,7 +30,8 @@ El resultado anterior, si bien es interesante, solo es de existencia y no
 muestra cómo obtener las soluciones enteras no negativas de ecuaciones lineales
 diofantinas. De manera similar a como lo hicimos en el capítulo anterior, la
 segunda sección se encarga de presentar la construcción de soluciones a partir
-de los algoritmos \ref{algo:fin:helper} y \ref{algo:fin:dioph}.
+de los algoritmos \ref{algo:fin:helper} (pág.~ \pageref{algo:fin:helper}) y
+\ref{algo:fin:dioph} (pág.~ \pageref{algo:fin:dioph}).
 
 Finalmente, en la tercera y última sección de este capítulo, realizamos algunos experimentos
 numéricos que comparan la eficacia de nuestros algoritmos recién desarrollados con la de
@@ -40,7 +41,7 @@ Ramificación y Acotamiento, así como de una formulación alternativa de progra
 \noindent
 De acuerdo al segundo caso del teorema \ref{theory:th:feasibility}, el número de puntos enteros no
 negativos sobre la $k$-ésima capa entera es finito y, por lo tanto, puede ser cero. Sea $k \in
-\braces{\eta, \eta - 1, \ldots, 0}$. Sabemos de la Sección \ref{subsec:dioph-eq} que deseamos resolver la
+\braces{\eta, \eta - 1, \ldots, 0}$. Sabemos de la sección \ref{subsec:dioph-eq} que deseamos resolver la
 ecuación lineal diofantina \eqref{eq:dioph}, por lo que implementamos la misma estrategia para
 plantear una formulación recursiva. 
 
@@ -78,7 +79,7 @@ entera y continuamos con nuestra búsqueda.
 % Observemos también que una elección de $t_i$ modifica $\omega_{i+1}$ y por lo tanto también afecta
 % el intervalo de factibilidad de $t_{i+1}$. Siguiendo con este razonamiento, encontramos que una
 % elección de $t_i$ afecta a su vez los intervalos de factibilidad de $t_{i+1}, \ldots, t_{n-1}$. En
-% la Sección \ref{subsec:complex} discutiremos cómo es que esta ``cadena'' acota la complejidad
+% la sección \ref{subsec:complex} discutiremos cómo es que esta ``cadena'' acota la complejidad
 % algorítmica del algoritmo \ref{algo:fin:dioph}.
 
 Ahora bien, en esta primera parte de la sección nos encargamos de calcular una cota superior para el
@@ -269,45 +270,44 @@ entero no negativo sobre una de estas capas enteras.
 Si queremos aplicar el lema \ref{lemma:layer-dist} a la función de la definición anterior, debemos
 reducir nuestra atención a vectores $\vec{p}$ enteros. Esto se debe a que debemos asegurar que el
 múltiplo $m$ sea entero\footnote{
-	Es la creencia del autor que el lema \ref{lemma:layer-dist} puede ser generalizado para múltiplos
-	$m$ racionales, mas esto no agrega demasiado valor en lo que sigue de la tesis.
+	Es la creencia del autor que el lema \ref{lemma:layer-dist} puede ser generalizado para
+	$m$ racional.
 }. Independientemente del comportamiento
 periódico de $\Delta^*$, tenemos que esta función varía significativamente ante cambios en $m$.
 Esto último implica que el número de capas enteras a revisar depende del número de cifras decimales
-usadas para especificar $\vec{p}$. Véase la Figura \ref{fig:m:ex} o el Ejemplo \ref{ex:decimals}. 
+usadas para especificar $\vec{p}$.
 
 \begin{example}
 	\label{ex:decimals}
 	Si tenemos $\vec{p} \coloneq (9.6, 7.2, 5.6)^T$, entonces $m = 0.8$ y por lo tanto el número de
-	capas a revisar dado $u \coloneq 119$ es $\Delta^*(u) = 14$. En cambio, si tenemos $\vec{p} \coloneq
+	capas a revisar dado $u \coloneq 119$ es $\Delta^*(u) = 13$. En cambio, si tenemos $\vec{p} \coloneq
 	(9.60, 7.28, 5.68)^T$, obtenemos $m = 0.08$, por lo que el número de capas a revisar dado $u$ es
-	$\Delta^*(u) = 1499$. Es decir, si usamos una cifra decimal más en cada entrada, entonces
-	$\Delta^*(u)$ se multiplica por 100, aproximadamente.
+	$\Delta^*(u) = 1487$. Eso ilustra la sensitividad de $\Delta^*$ con respecto a $m$.
 \end{example}
 
-\begin{figure}[htbp]
-  \centering
-
-  \begin{minipage}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/misc/delta8m12q.pdf}
-  \end{minipage}
-  \hfill
-  \begin{minipage}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/misc/delta008m960q.pdf}
-  \end{minipage}
-
-  \caption{Número de capas a revisar en función del presupuesto. \textit{Izquierda: }Para los
-	  parámetros $m = 8$ y $q^* = 12$ encontramos que hay un máximo de una capa a revisar.
-	\textit{Derecha: } A medida que $m$ se vuelve fraccionario, las capas a revisar aumentan. En
-		este caso tenemos $m = 0.08$ y $q^* = 960$.}
-  \label{fig:m:ex}
-\end{figure}
+% \begin{figure}[htbp]
+%   \centering
+% 
+%   \begin{minipage}[t]{0.48\textwidth}
+%     \centering
+%     \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/misc/delta8m12q.pdf}
+%   \end{minipage}
+%   \hfill
+%   \begin{minipage}[t]{0.48\textwidth}
+%     \centering
+%     \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/misc/delta008m960q.pdf}
+%   \end{minipage}
+% 
+%   \caption{Número de capas a revisar en función del presupuesto. \textit{Izquierda: }Para los
+% 	  parámetros $m = 8$ y $q^* = 12$ encontramos que hay un máximo de una capa a revisar.
+% 	\textit{Derecha: } A medida que $m$ se vuelve fraccionario, las capas a revisar aumentan. En
+% 		este caso tenemos $m = 0.08$ y $q^* = 960$.}
+%   \label{fig:m:ex}
+% \end{figure}
 
 % TODO: FIX (ver anotaciones de andreas)
-Observaremos en el análisis de resultados que el número de capas enteras que nuestro algoritmo
-revisa en realidad disminuye a medida que aumenta el presupuesto $u$.
+% Observaremos en el análisis de resultados que el número de capas enteras que nuestro algoritmo
+% revisa en realidad disminuye a medida que aumenta el presupuesto $u$.
 
 En esta segunda parte de la sección, demostraremos que para un presupuesto $u$ suficientemente
 grande, la solución del problema \eqref{theory:formulation} se encuentra en la $\eta$-ésima capa
@@ -325,11 +325,11 @@ k\norm{\vec{q}}^{-2}}$ crece a medida que $k$ aumenta. Recordemos que $k \leq
 $u$ de \eqref{theory:constraint:budget}. Así pues, si el presupuesto $u$ lo
 permite, habrá un punto sobre ese trozo no negativo cuya vecindad también se
 encuentra contenida en ese trozo y, por lo tanto, habrá un punto entero no
-negativo sobre ese trozo. Esto es especificado en el teorema
+negativo sobre ese trozo. Esto será especificado en el teorema
 \ref{th:intsimplex}.
 
 Finalmente, relacionamos el punto entero que se encuentra sobre el pedazo no negativo de
-$H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ con el problema \eqref{theory:formulation}. Así pues, concluimos
+$H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ con el problema \eqref{theory:formulation}. Así pues, concluiremos
 esta sección con los teoremas \ref{th:intnonneg1} y \ref{th:intnonneg2}.
 
 \begin{definition}
@@ -377,16 +377,16 @@ esta sección con los teoremas \ref{th:intnonneg1} y \ref{th:intnonneg2}.
 	\end{equation}
 	Ahora bien, sea $\vec{y}$ un punto sobre la $k$-ésima capa entera. Por el
 	teorema \ref{th:lattice} sabemos que las columnas de $M$ son linealmente
-	independientes, y entonces existe $\vec{t} \in \R^{n-1}$ tal que
+	independientes, y entonces existe $\tvec{t} \in \R^{n-1}$ tal que
 	\begin{equation*}
-		\vec{y} = k\vec{\nu} + M\vec{t}.
+		\vec{y} = k\vec{\nu} + M\tvec{t}.
 	\end{equation*}
-	Sea $\lfloor \vec{t} \rceil \in \Z^{n-1}$ el vector resultante de redondear cada entrada de
-	$\vec{t}$ al entero más cercano. Luego, $\vec{t} = \lfloor \vec{t} \rceil + \vec{\delta}$,
+	Sea $\vec{t} \in \Z^{n-1}$ el vector resultante de redondear cada entrada de
+	$\vec{t}$ al entero más cercano. Luego, $\tvec{t} = \vec{t} + \vec{\delta}$,
 	para alguna $\vec{\delta} \in \R^{n-1}$ que satisface $\norm{\vec{\delta}}_{\infty} \leq 1/2$.
 	Definamos
 	\begin{equation*}
-		\vec{x} \coloneq k\vec{\nu} + M\lfloor \vec{t} \rceil \in \Z^{n-1},
+		\vec{x} \coloneq k\vec{\nu} + M\vec{t} \in \Z^{n-1},
 	\end{equation*}
 	de donde se sigue que
 	\begin{equation*}
@@ -530,10 +530,10 @@ lemas y teoremas fueron realizadas completamente por el autor.
 	\begin{equation*}
 		\sigma = \conv\braces{\vec{v}_1, \ldots, \vec{v}_m}
 		\coloneq
-		\braces{\theta_i\vec{v}_1 + \cdots + \theta_k\vec{v}_m
+		\braces{\theta_1\vec{v}_1 + \cdots + \theta_m\vec{v}_m
 		\colon \theta_1 + \cdots + \theta_m = 1, \theta_i \geq 0}.
 	\end{equation*}
-	Decimos entonces que $\sigma$ es generado por $\vec{v}_1, \ldots, \vec{v}_n$. También definimos
+	Decimos entonces que $\sigma$ es generado por $\vec{v}_1, \ldots, \vec{v}_m$. También definimos
 	la \textbf{$j$-ésima faceta} $\sigma_j$ de $\sigma$ como el símplice generado por los vectores
 	$\braces{\vec{v}_i}_{i \neq j}$.
 \end{definition}
@@ -566,7 +566,7 @@ lemas y teoremas fueron realizadas completamente por el autor.
 	\end{equation*}
 \end{lemma}
 \begin{proof}
-	En el Ejemplo \ref{ex:aff} mostramos que
+	En el ejemplo \ref{ex:aff} mostramos que
 	\begin{equation*}
 		\label{eq:aff-layer}
 		H_{\vec{q}, k\norm{\vec{q}}^{-2}} = \aff\braces{\vec{u}_1, \ldots, \vec{u}_n}.
@@ -631,14 +631,14 @@ bola está centrada en un punto particular, a saber, en el baricentro del símpl
 
 Encontraremos que el radio de la bola inscrita está dado por el mínimo de las distancias
 entre el baricentro del símplice con cada una de sus facetas. Puesto que $\est{\sigma}_j \in
-\sigma_j$, sabemos bien por álgebra lineal, bien por optimización, que la distancia entre $\sigma$ y
-su $j$-ésima faceta $\sigma_j$ es
+\sigma_j$, sabemos bien por álgebra lineal, bien por optimización, que la distancia entre
+el baricentro $\est{\sigma}$ del símplice $\sigma$ y su $j$-ésima faceta $\sigma_j$ es
 \begin{equation}
 	\label{eq:dist:v1}
 	d(\est{\sigma}, \sigma_j) = |\uvec{\mu}_j^T(\est{\sigma} - \est{\sigma}_j)|,
 \end{equation}
 donde $\uvec{\mu}_j$ es un vector unitario, normal a la $j$-ésima faceta, y que
-está contenido en $\qlayer{k}{\vec{q}}$. El siguiente lema caracteriza este vector.
+es paralelo a $\qlayer{q}{k}$. El siguiente lema caracteriza este vector.
 
 \begin{lemma}
 	\label{mu:orth}
@@ -650,11 +650,23 @@ está contenido en $\qlayer{k}{\vec{q}}$. El siguiente lema caracteriza este vec
 		\vec{\mu}_j \coloneq \vec{u}_j - \frac{\vec{q}^T\vec{u}_j}{\vec{q}^T\vec{q}}\vec{q}
 		= \vec{u}_j - \frac{k}{\norm{\vec{q}}^2}\vec{q}.
 	\end{equation}
-	Entonces $\vec{\mu}_j$ es un vector normal a la $j$-ésima faceta $\sigma_j$ del símplice
-	$\sigma$.
+	Entonces $\vec{\mu}_j$ es paralelo a $\qlayer{q}{k}$ y también es
+	normal a la $j$-ésima faceta $\sigma_j$ del símplice $\sigma$.
 \end{lemma}
 \begin{proof}
-	Debemos mostrar que si $\vec{x} \in \sigma_j$, entonces
+	Observemos que $\vec{\mu}_j \in \ker{\vec{q} \mapsto \vec{q}^T\vec{x}}$, en efecto,
+	\begin{equation*}
+		\vec{q}^T\vec{\mu}_j = \vec{q}^T\vec{u}_j - \frac{k}{\norm{\vec{q}}^2}\vec{q}^T\vec{q}
+		 = k - k = 0,
+	\end{equation*}
+	Juntando esto con los resultados del ejemplo \ref{ex:aff} encontramos que
+	\begin{equation*}
+		\vec{u}_j + \vec{\mu}_j \in \vec{u}_j + \ker{\vec{q} \mapsto \vec{q}^T\vec{x}} = \vec{u}_j + \gen\braces{\vec{u}_i -
+			\vec{u}_j}_{i \neq j} = \qlayer{q}{k},
+	\end{equation*}
+	por lo que $\vec{\mu}_j$ es paralelo a $\qlayer{q}{k}$.
+
+	También debemos mostrar que si $\vec{x} \in \sigma_j$, entonces
 	$\vec{\mu}_j^T\vec{y} = 0$ para todo $\vec{y} \in \sigma_j - \vec{x}$. Por
 	la definición \ref{def:simplex}, tenemos que la combinación convexa de  los
 	vectores $\braces{\vec{u}_i}_{i \neq j}$ genera la $j$-ésima faceta
@@ -795,7 +807,7 @@ interpretarlo como un poliedro y que es importante para demostrar el teorema \re
 		\lambda_j\norm{\vec{u}_j}^2 - \frac{k^2}{\norm{\vec{q}}} \sum_{i=1}^{n}\lambda_i.
 	\end{align*}
 	Pero $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}} = \aff\braces{\vec{u}_1, \ldots, \vec{u}_n}$
-	(ver Ejemplo \ref{ex:aff}) y entonces los escalares $\lambda_1, \ldots, \lambda_n$ suman a 1.
+	(ver ejemplo \ref{ex:aff}) y entonces los escalares $\lambda_1, \ldots, \lambda_n$ suman a 1.
 	Sustituyendo,
 	\begin{equation*}
 		\vec{\mu}_j^T\vec{x} = \lambda_j\frac{k^2}{q_j^2} - \frac{k^2}{\norm{\vec{q}}^2},
@@ -809,17 +821,21 @@ interpretarlo como un poliedro y que es importante para demostrar el teorema \re
 	derecho de \eqref{eq:sigmachar2}.
 \end{proof}
 
+Hemos caracterizado completamente, salvo la constante de normalización de $\vec{\mu}$, las
+distancias entre el baricentro $\est{\sigma}$ del símplice $\sigma$ y cada una de sus facetas
+$\sigma_j$. El siguiente teorema relaciona estas distancias con el radio de la bola inscrita en el
+símplice $\sigma$ (ver definición \ref{def:r-sigma}).
 \begin{theorem}
 	\label{lemma:sigma-radius}
 	Sea $\vec{q} > \vec{0}$ un vector coprimo y sea $\sigma$ el símplice generado por los vectores
 	$\braces{\vec{u}_i}_{i=1}^{n}$ definidos en \eqref{def:u-basis}. Entonces el radio $r_\sigma$ de
-	la bola inscrita (ver definición \ref{def:r-sigma}) en $\sigma$ con centro
-	$\est{\sigma}$ está dado por
+	la bola inscrita en $\sigma$ con centro $\est{\sigma}$ está dado por
 	\begin{equation*}
 		r_\sigma = \min_{1 \leq j \leq n} d(\est{\sigma}, \sigma_j)
 		= \min_{1 \leq j \leq n} \uvec{\mu}_j^T(\est{\sigma} - \est{\sigma}_j),
 	\end{equation*}
-	donde $\uvec{\mu}_j$ es el vector $\vec{\mu}_j$ definido en \eqref{eq:normal} normalizado.
+	donde $\uvec{\mu}_j$ es el vector $\vec{\mu}_j$ definido en \eqref{eq:normal} normalizado, y
+	$\sigma_j$ es la $j$-ésima faceta del símplice $\sigma$.
 \end{theorem}
 \begin{proof}
 	Como $\est{\sigma} \in \sigma$, tenemos del lema \ref{lemma:sigmachar2} que
@@ -841,12 +857,12 @@ interpretarlo como un poliedro y que es importante para demostrar el teorema \re
 		&=
 		\uvec{\mu}_j^T(\vec{x} - \est{\sigma}) + d(\est{\sigma}, \sigma_j).
 	\end{align*}
-	Por la desigualdad de Cauchy-Schwartz, tenemos
+	Por la desigualdad de Cauchy-Schwarz, tenemos
 	\begin{equation*}
 		\uvec{\mu}_j^T(\vec{x} - \est{\sigma}) \geq -\norm{\uvec{\mu}_j}\norm{\vec{x} -
 		\est{\sigma}} \geq -r,
 	\end{equation*}
-	pues $\uvec{\mu}$ es unitario y $\vec{x} \in B_r^{(k)}(\est{\sigma})$. Así pues, tenemos
+	pues $\uvec{\mu}_j$ es unitario y $\vec{x} \in B_r^{(k)}(\est{\sigma})$. Así pues, tenemos
 	\begin{equation*}
 		\uvec{\mu}_j^T(\vec{x} - \est{\sigma}_j) \geq -r + d(\est{\sigma}, \sigma_j) \geq 0,
 	\end{equation*}
@@ -907,7 +923,9 @@ interpretarlo como un poliedro y que es importante para demostrar el teorema \re
 	demostrar.
 \end{proof}
 
-De \eqref{eq:dist:v1} tenemos
+Continuamos con el cálculo de la distancia entre el baricentro $\est{\sigma}$ del símplice $\sigma$
+y cada una de sus facetas $\sigma_j$. A causa del teorema enterior, esto permitirá tener una
+expresión explícita del radio de la bola inscrita en $\sigmA$. De \eqref{eq:dist:v1} tenemos
 \begin{equation}
 	\label{dist:v2}
 	d(\est{\sigma}, \sigma_j) = \uvec{\mu}_j^T(\est{\sigma} - \est{\sigma}_j)
@@ -938,9 +956,8 @@ Usando \eqref{eq:signed} y \eqref{eq:den} para sustituir en \eqref{dist:v2}, obt
 	d(\est{\sigma}, \sigma_j) = \frac{k}{n} \cdot
 	\frac{1}{q_j^2\sqrt{q_j^{-2} - \norm{\vec{q}}^{-2}}}
 \end{equation*}
-donde definimos $Q_j$ pertinentemente. Finalmente, del teorema \ref{lemma:sigma-radius} encontramos que
-el radio $r_\sigma$ de la bola inscrita en el símplice $\sigma$ con centro
-$\est{\sigma}$ está dado por
+Finalmente, del teorema \ref{lemma:sigma-radius} encontramos que el radio $r_\sigma$ de la bola
+inscrita en el símplice $\sigma$ con baricentro $\est{\sigma}$ está dado por
 \begin{equation}
 	\label{eq:sigma-radius}
 	r_\sigma = \min_{1 \leq j \leq n} \braces{d(\est{\sigma}, \sigma_j)} = \frac{k}{n} \cdot
@@ -958,7 +975,7 @@ $\est{\sigma}$ está dado por
 	\eqref{eq:sigma-radius}. Por el teorema \ref{lemma:ball-cover} sabemos que existe un punto
 	entero $\vec{x}$ en $B_r^{(k)}(\est{\sigma})$, y por el teorema \ref{lemma:sigma-radius} sabemos
 	que la bola $B_{r_\sigma}^{(k)}(\est{\sigma})$ está contenida en $\sigma$. Entonces basta
-	mostrar que existe $k$ suficientemente grande tal que $r \leq r_\sigma$, pues esto implicaría la
+	mostrar que existe $k$ suficientemente grande tal que $r \leq r_\sigma$, pues esto implica la
 	contención de en medio en la cadena
 	\begin{equation*}
 		\vec{x} \in B_r^{(k)}(\est{\sigma}) \subseteq B_{r_\sigma}^{(k)}(\est{\sigma}) \subseteq \sigma.
@@ -997,18 +1014,18 @@ $k$. El punto más interesante es aquel que provee la cota inferior más pequeñ
 
 De manera inmediata obtenemos también los siguientes teoremas. Cabe mencionar que estos resultados
 solamente muestran la existencia de una solución entera $\vec{x}$ no negativa para la ecuación lineal
-diofantina $\vec{q}^T\vec{x} = k$. Será en la Sección \ref{subsec:complex} que discutiremos cómo
-encontrar esta solución.
+diofantina $\vec{q}^T\vec{x} = k$. Será en la sección \ref{subsec:complex} que discutiremos cómo
+encontrar una solución.
 \begin{theorem}
 	\label{th:intnonneg1}
-	Sea $\vec{q} > \vec{0}$ un vector coprimo. Entonces la ecuación lineal diofantina
-	$\vec{q}^T\vec{x} = k$ tiene soluciones enteras no negativas para $k$ suficientemente grande.
+	Sea $\vec{q} > \vec{0}$ un vector coprimo. Si $k \in \Z_{\geq 0}$ satisface \eqref{eq:eta-limit},
+	entonces la ecuación lineal diofantina $\vec{q}^T\vec{x} = k$ tiene soluciones enteras no
+	negativas.
 \end{theorem}
 \begin{proof}
-	Consideremos el símplice $\sigma$ generado por los vectores en \eqref{def:u-basis} y supongamos
-	que $k$ satisface la cota en \eqref{eq:eta-limit}.
+	Consideremos el símplice $\sigma$ generado por los vectores en \eqref{def:u-basis}.
 	Por el teorema \ref{th:intsimplex} existe un punto entero no negativo $\vec{x} \in \sigma$, y
-	esto implica que $x \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ por el lema \ref{lemma:sigmachar1}.
+	esto implica que $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ por el lema \ref{lemma:sigmachar1}.
 	Luego, por el lema \ref{theory:lemma:utility}, $\vec{x}$ satisface la ecuación lineal diofantina
 	$\vec{q}^T\vec{x} = k$.
 \end{proof}
@@ -1032,14 +1049,20 @@ encontrar esta solución.
 	\eqref{theory:formulation}.
 \end{proof}
 
-El teorema \ref{th:intnonneg1} junto con la cota \eqref{eq:eta-limit} provee, hasta donde llega el
+El teorema \ref{th:intnonneg1} provee, hasta donde llega el
 conocimiento del autor, nuevas cotas superiores para los números de Frobenius\footnote{
 	Véase el Problema de la Moneda en \url{https://en.wikipedia.org/wiki/Coin_problem}.
 }. De manera resumida,
-dada una colección de enteros $a_1, \ldots, a_n$ coprimos, el número de Frobenius es el entero $F$
+dada una colección de enteros $q_1, \ldots, q_n$ coprimos, el número de Frobenius es el entero $F$
 más grande tal que $F$ no pueda ser expresado como una combinación lineal entera no negativa de
-$a_1, \ldots, a_n$. Un estudio sobre cómo se compara esta colección de cotas con respecto a la
-literatura existente, si bien interesante, queda fuera del propósito de esta tesis.
+$q_1, \ldots, q_n$. En efecto, o bien $F$ es mayor o igual que el lado derecho de
+\eqref{eq:eta-limit} o bien es estrictamente menor. El primer caso no puede ocurrir porque el
+teorema \ref{th:intnonneg1} asegura que la ecuación lineal diofantina $\vec{q}^T\vec{x} = F$ tiene
+una solución no negativa, es decir, que $F$ puede ser escrito como una combinación lineal entera no
+negativa de $q_1, \ldots, q_n$, pero entonces $F$ no puede ser el número de Frobenius de estos
+enteros. Así pues, $F$ debe ser estrictamente menor que el lado derecho de \eqref{eq:eta-limit}. Un
+estudio sobre cómo se compara esta colección de cotas con respecto a la literatura existente, si
+bien interesante, queda fuera del propósito de esta tesis.
 
 En último lugar, mencionamos que eventualmente es suficiente con revisar la primera capa entera. No
 hemos demostrado, empero, que el número de capas enteras a revisar eventualmente decrece en cuanto
@@ -1058,7 +1081,8 @@ cómo la solución del problema \eqref{theory:formulation} se traduce a la búsq
 entera no negativa de la ecuación lineal diofantina $\vec{q}^T\vec{x} = k$ para alguna $k \leq \eta$,
 donde $\eta$ es tomada del lema \ref{phase-1:lemma:eta}.
 
-En esta sección presentamos los algoritmos \ref{algo:fin:helper} y \ref{algo:fin:dioph}, los cuales
+En esta sección presentamos los algoritmos \ref{algo:fin:helper} y \ref{algo:fin:dioph} (páginas
+\pageref{algo:fin:helper} y \ref{algo:fin:dioph}, respectivamente), los cuales
 se encargan de obtener estas soluciones enteras no negativas que tanto buscamos. Consecuentemente,
 estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
 
@@ -1095,15 +1119,15 @@ estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
 	soluciones, encontramos que existen soluciones no negativas si y solo si existe $t \in \Z$ que
 	satisfaga
 	\begin{equation*}
-		\ceil{-\frac{kx_1'}{q_2}} \leq t \leq \floor{\frac{kx_2'}{q_1}}.
+		b_1 \coloneq \ceil{-\frac{kx_1'}{q_2}} \leq t \leq \floor{\frac{kx_2'}{q_1}} \eqcolon b_2.
 	\end{equation*}
 	Los enteros $b_1$ y $b_2$ en las líneas \ref{alg:fin:b1} y \ref{alg:fin:b2} representan el
 	lado izquierdo y derecho de estas desigualdades, respectivamente. De esta manera, el algoritmo
-	devuelve \NIL~ si solo si este intervalo no está bien definido, es decir, si y solo si no existen
+	devuelve \NIL~ si y solo si este intervalo no está bien definido, es decir, si y solo si no existen
 	soluciones enteras no negativas. Supongamos, pues, que este intervalo sí está bien definido.
 	Entonces, podemos escoger que la variable libre $t$ sea $b_1$. Sustituyendo en
 	\eqref{lemma:correct:base-case:sol} obtenemos una solución entera no negativa de la ecuación
-	\eqref{lemma:correct:base-case} (líneas \ref{alg:fin:xprev} y \ref{alg:fin:xlast}) y entonces
+	\eqref{lemma:correct:base-case} (ver las líneas \ref{alg:fin:xprev} y \ref{alg:fin:xlast}) y entonces
 	el algoritmo es correcto para $n = 2$.
 
 	Haciendo uso de la hipótesis inductiva, queremos mostrar que el algoritmo también es correcto
@@ -1127,15 +1151,15 @@ estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
 			\omega = k\omega' - q_1t,
 		\end{cases}
 	\end{equation}
-	donde $t \in \Z$ es una variable libre, y $x', \omega'$ son los coeficientes de Bézout de $x,
-	\omega$. Recordemos de \eqref{eq:dioph:first-step} que
+	donde $t \in \Z$ es una variable libre, y $x', \omega'$ son los coeficientes de Bézout de $q_1,
+	g$. Recordemos de \eqref{eq:dioph:first-step} que
 	\begin{equation}
 		\label{lemma:correct:eq-omega}
-		\omega = \frac{q_2}{g}x_2 + \ldots + \frac{q_n}{g}x_n.
+		\omega = \frac{q_2}{g}x_2 + \cdots + \frac{q_n}{g}x_n.
 	\end{equation}
 	Como $\vec{q} > \vec{0}$ por hipótesis, $g > 0$ porque el máximo común divisor siempre es
 	positivo, y exigimos que $x_2, \ldots, x_n$ sean no negativos, debe ser el caso que $\omega$
-	también sea no negativo. Luego, despejando de \ref{lemma:correct:sol}, existen soluciones no
+	también sea no negativo. Luego, despejando de \eqref{lemma:correct:sol}, existen soluciones no
 	negativas de la ecuación \eqref{lemma:correct:eq} si y solo si existe $t \in \Z$ que satisfaga
 	\begin{equation}
 		\label{feas}
@@ -1174,9 +1198,9 @@ estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
 	elecciones finitas, devolvemos \NIL~ en la línea \ref{alg:fin:return}.
 
 	En conclusión, si el algoritmo es correcto para vectores $\vec{q}$ con dimensión $n - 1 \geq 2$,
-	entonces también es correcto para vectores $\vec{q}$ con dimensión $n \geq 3$. Juntando esto con el
-	caso base, se sigue por inducción que el algoritmo es correcto para toda $n \geq 2$, que es lo
-	que queríamos demostrar.
+	entonces también lo es para $\vec{q}$ con dimensión $n \geq 3$. Juntando esto con el
+	caso base, se sigue por inducción que el algoritmo es correcto para toda $n \geq 2$, lo cual
+	termina la demostración.
 \end{proof}
 
 \begin{algorithm}[hbtp]
@@ -1186,8 +1210,8 @@ estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
 	\SetKwFunction{length}{length}
 	\SetKwFunction{NonNegativeIntSol}{NonNegativeIntSolFin}
 		\KwData{\\
-			$\vec{q} \in \Z^n_{> \vec{0}}$ coprimo tal que \length{$\vec{q}$} $\geq 2$. \\
-			$k \geq 0$.
+			$(\vec{q}, k)$, donde $\vec{q} \in \Z^n_{> \vec{0}}$ es coprimo con $n \geq 2$ y $k \geq
+			0$.
 			}
 		\KwResult{\\
 			$\vec{x} \in \Z^n_{\geq \vec{0}}$ tal que $\vec{q}^T\vec{x} = k$ o \NIL.
@@ -1230,7 +1254,7 @@ estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
 					\label{alg:fin:vecx}
 				}
 
-				$I \leftarrow I \setminus \braces{t}$\;
+				$I \leftarrow I \setminus \braces{t}$\; \label{alg:fin:branch}
 			}
 
 			\Return $\NIL$\; \label{alg:fin:return}
@@ -1239,15 +1263,15 @@ estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
 	\label{algo:fin:helper}
 \end{algorithm}
 
-Observemos que la elección del parámetro libre $t$ en el intervalo de factiblidad $I$ definido en la
-línea \ref{alg:fin:feas} del algoritmo \ref{algo:fin:helper} es similar a la elección del
-subproblema $S_i$ de optimización definido en la línea \ref{p1c9:alg:BB_loop} del algoritmo
-\ref{algo:bb}. La diferencia radica en que, como todos los puntos enteros sobre la $k$-ésima capa
-entera tienen el mismo nivel de utilidad $k$, no es necesario desarrollar políticas de poda así como
-lo hicimos en el Ejemplo \ref{ex:ilp} en la Sección \ref{sec:prerreq}. De cierta manera, la única
-política de poda posible es la de infactibilidad por no respetar la no negatividad de un punto
-entero.
-
+Si recordamos el algoritmo de Ramificación y Acotamiento ilustrado en el ejemplo \ref{ex:ilp} (y
+documentado en el apéndice \ref{app:bb}), podemos observar que la elección del parámetro libre $t$
+en el intervalo de factiblidad $I$ definido en la línea \ref{alg:fin:feas} del algoritmo
+\ref{algo:fin:helper} es similar a la elección del subproblema $S_i$ de optimización definido en la
+línea \ref{p1c9:alg:BB_loop} del algoritmo \ref{algo:bb}. La diferencia radica en que, como todos
+los puntos enteros sobre la $k$-ésima capa entera tienen el mismo nivel de utilidad $k$, no es
+necesario desarrollar políticas de poda así como lo hicimos en el ejemplo \ref{ex:ilp}. De cierta
+manera, la única política de poda posible es la de infactibilidad por no respetar la no negatividad
+de un punto entero.
 \begin{theorem}
 	\label{th:fin:dioph:correct}
 	El algoritmo \ref{algo:fin:dioph} es correcto.
@@ -1271,13 +1295,15 @@ complejidad del algoritmo.
 
 Siguiendo la misma directriz, vale la pena mencionar lo siguiente con respecto al algoritmo
 \ref{algo:fin:helper}. Varios lenguajes de programación, tales como Python, cuentan con un límite en
-las llamadas de recursión que el usuario puede realizar Si bien este límite puede modificarse,
-aumenta la posibilidad de encontranos con un desbordamiento de pila, pues este algoritmo no está
-expresado en forma de recursión terminal\footnote{Véase \url{https://en.wikipedia.org/wiki/Tail_call}.}.
+las llamadas de recursión que el usuario puede realizar. Si bien este límite puede modificarse,
+aumenta la posibilidad de encontranos con un desbordamiento de pila, pues el algoritmo
+\ref{algo:fin:helper} no está expresado en forma de recursión terminal\footnote{Véase
+\url{https://en.wikipedia.org/wiki/Tail_call}.}, debido a la evaluación del resultado entre las líneas
+\ref{alg:fin:subeq} y \ref{alg:fin:branch}.
 
 Además, este algoritmo, por ejemplo, no minimiza el número de llamadas para calcular el máximo común
 divisor en la línea \ref{alg:fin:g}. En efecto, supongamos que un intervalo de factibilidad $I$
-definido en la línea \ref{alg:fin:feas} induce a que $\vec{x}^{\texttt{tail}}$ sea \NIL~ para todo
+definido en la línea \ref{alg:fin:feas} causa que $\vec{x}^{\texttt{tail}}$ sea \NIL~ para todo
 $t \in I$. Entonces estaríamos haciendo $|I|$ llamadas recursivas a \texttt{NonNegativeIntSolFin} en
 la línea \ref{alg:fin:subeq} con el mismo vector $\vec{q}^{\texttt{tail}}$ y, por lo tanto,
 estaríamos calculando $|I|$ veces la misma $g$ en la línea \ref{alg:fin:g}. Lo mismo ocurre con el
@@ -1337,7 +1363,7 @@ llamadas recursivas en la máquina donde se realizaron los experimentos. Esto si
 manera predeterminada, solamente podríamos resolver problemas de dimensión $n \leq 3{,}000$. No
 obstante, en la subsección \ref{subsec:exp:fin:n} realizamos experimentos con problemas de dimensión
 $n \leq 150{,}000$.
-
++ 
 Vimos que este algoritmo calcula repetidamente los mismos máximos común divisores $g$ y los mismos
 coeficientes de Bézout $x', \omega'$. Puesto que estos números dependen exclusivamente del vector
 $\vec{q}$, decidimos calcularlos en una fase de preprocesamiento antes de llamar
@@ -1349,28 +1375,25 @@ la variable $t_i$ que debemos escoger; el resto de los parámetros están defini
 intervalo de factibilidad $I = [b_1, b_2]$ en el siguiente nivel $i + 1$. Existen, \textit{a
 priori}, dos estrategias que podemos adoptar para este tipo de elecciones.
 
-Por un lado, se encuentra la opción $t_i \leftarrow b_1$ o $t_i \leftarrow b_2$ para todo nivel
+La primera estrategia escoge $t_i \leftarrow b_1$ o $t_i \leftarrow b_2$ para todo nivel
 $i$. Si, en tal nivel $i$, el intervalo de factibilidad es vacío, entonces retrocedemos
 en la pila y hacemos la sustitución $t_i \leftarrow t_i + 1$ o $t_i \leftarrow t_i - 1$ siempre que
 $t_i$ se encuentre dentro del intervalo de factibilidad $[b_1, b_2]$. Así también, actualizamos nuestra
-variable $x_i$ como lo hacemos en el algoritmo \ref{algo:fin:helper} y repetimos el proceso hasta
+variable $x$ como lo hacemos en el algoritmo \ref{algo:fin:helper} y repetimos el proceso hasta
 obtener una solución $\vec{x}$ entera no negativa.
 
-Por el otro lado, podemos construir un árbol de la siguiente manera: en el nivel $i$
-escogemos el punto medio $t_i \leftarrow \floor{(b_1 + b_2)/2}$ y creamos los nodos adyacentes
-\begin{equation}
-	\label{exp:subp}
-	\begin{cases}
-		N_{i0} \leftarrow (i, t_i + 1, b_2, k) & \text{si}~t_i + 1 \leq b_2, \\
-		N_{i1} \leftarrow (i, b_1, t_i - 1, k) & \text{si}~t_i - 1 \geq b_1,
-	\end{cases}
-\end{equation}
-que representan subproblemas posiblemente a resolver en el mismo nivel. Ahora bien, dada esta
-elección del punto medio $t_i$, construimos el problema para el siguiente nivel $i + 1$ con los
-nuevos parámetros calculados en las líneas \ref{alg:fin:k}, \ref{alg:fin:b11} y \ref{alg:fin:b21},
-en este orden. Repetimos este procedimiento hasta obtener una solución $\vec{x}$ entera no negativa.
-Puesto que resolvemos el subproblema del siguiente nivel antes que los del mismo nivel con los nodos
-adyacentes, realizamos una búsqueda en profundidad.
+La segunda estrategia consiste en construir un árbol de la siguiente manera: en el nivel $i$ del
+árbol escogemos el punto medio $t_i \leftarrow \floor{(b_1 + b_2)/2}$ (el cual representa una
+elección de $t$ en la línea \ref{alg:fin:t} del algoritmo \ref{algo:fin:helper} en el nivel de
+recursión $i$) y dividimos el intervalo de factiblidad $I$ en dos intervalos disjuntos: $[b_1,
+\ldots, t_i)$ y $(t_i, \ldots, b_2]$. En caso de que esta elección de $t_i$ cause que el siguiente
+intervalo de factibilidad sea vacío, escogeremos el punto medio de uno de estos dos subintervalos.
+Si el siguiente intervalo de factibilidad no es vacío, escogemos nuevamente el punto medio $t_{i +
+1}$ y continuamos con este procedimiento hasta encontrar una solución entera no negativa, o bien
+hasta agotar todos los intervalos de factibilidad $I$ en todos los niveles de recursión $1 \leq i
+\leq n - 1$. Puesto que nos concentramos en ir al siguiente nivel $i + 1$ antes que agotar el
+intervalo de factiblidad $I$ en el nivel $i$, estamos realizando una búsqueda en profundidad del
+árbol.
 
 El autor encontró en los experimentos preliminares que la segunda estrategia es mucho más eficaz. En
 los experimentos de la subsección \ref{subsec:exp:fin:n}, la primera estrategia tenía tiempos de
@@ -1379,10 +1402,10 @@ de la subsección \ref{subsec:exp:fin:rhs}, ambas estrategias tenían tiempos de
 significativamente menores que R\&A. Por ello, el autor decidió realizar el
 análisis de resultados usando la estrategia del árbol.
 
-Observemos de  \eqref{exp:subp} que el orden en el que agregamos estos subproblemas determina si
-visitamos primero el lado izquierdo o el lado derecho del árbol. El autor realizó los experimentos
-con ambas posibilidades. Así pues, llamaremos \texttt{dioph\_left} a la implementación que recorre
-primero el lado izquierdo y definimos análogamente \texttt{dioph\_right}.
+Observemos de  que el orden en el que consideramos los subintervalos $[b_1, t_i)$ y $(t_i, b_2]$
+determina si visitamos primero el lado izquierdo o el lado derecho del árbol. El autor
+realizó los experimentos con ambas posibilidades. Así pues, llamaremos \texttt{dioph\_left} a la
+implementación que recorre primero el subintervalo izquierdo y definimos análogamente \texttt{dioph\_right}.
 
 \subsection{Una formulación dinámica}
 \label{subsec:fin:dp}
@@ -1393,10 +1416,10 @@ soluciones a programas lineales enteros. Como lo mencionamos al inicio de este c
 prevalencia de este problema en la industria, se han diseñado múltiples algoritmos que
 intentan resolverlo.
 
-El libro \cite{martello} está dedicado a realizar una exposición de los métodos más
-conocidos para resolver el Problema de la Mochila. A fin de ser más completos en nuestra exposición,
-el autor decidió adaptar una formulación dinámica (FD) que permite resolver instancias de
-\eqref{theory:formulation}.
+El libro \cite{martello} está dedicado a realizar una exposición de los métodos más conocidos para
+resolver el Problema de la Mochila. A fin de ser más completos en nuestra exposición, el autor
+decidió adaptar una formulación dinámica (FD) expuesta en las páginas 95 a 98 de \cite{martello} que
+permite resolver instancias de \eqref{theory:formulation}
 
 Supondremos en lo que resta de esta sección que el vector objetivo $\vec{p}$ de \eqref{theory:formulation} es
 entero y tiene entradas estrictamente positivas. Así también, supondremos que el lado derecho $u$ de
@@ -1470,7 +1493,7 @@ reducción al problema binario
 	\max_{\vec{x} \in \braces{0, 1}^{n_b}} \braces{ \vec{\hat{p}}^T\vec{x} \vcentcolon \vec{\hat{p}}^T\vec{x} \leq
 	u},
 \end{equation*}
-para alguna $\vec{\hat{p}} \in \Z^{n_b}$ que puede ser obtenida de $\vec{p}$ (ver \cite{martello}).
+para alguna $\vec{\hat{p}} \in \Z^{n_b}$ que puede ser obtenida de $\vec{p}$ (ver páginas 82 a 84 de \cite{martello}).
 Observemos que si $u \geq \sum_{i=1}^{n_b}\hat{p}_i$, entonces obtenemos la solución trivial
 $\vec{x} = \vec{e} \in \Z^{n_b}$. Puesto que existen \textit{solvers} que implícitamente reducen
 problemas como \eqref{theory:formulation} a su forma binaria (el ejemplo más famoso es
@@ -1500,7 +1523,7 @@ donde $\vec{\hat{p}} \in \R^{n-1}$ resulta de remover del vector $\vec{p}$ su $\
 
 Así pues, sea $n$ la dimensión del problema. Dejamos que $\vec{p} \in \Z^n$ sea un vector aleatorio
 tomado de una distribución uniforme discreta sobre $[10, 5n)^n$. El hecho de que el soporte de la
-distribución dependa de la dimensión reduce a 2\% la probabilidad de que $\vec{p}$ tenga entradas
+distribución dependa de la dimensión reduce la probabilidad de que $\vec{p}$ tenga entradas
 repetidas. Al calcular el vector coprimo $\vec{q}$ checamos que $q_i \neq 1$ para todo $1 \leq i
 \leq n$. De caso contrario, calculamos otro vector aleatorio $\vec{p}$. Finalmente, escogemos el
 lado derecho de la restricción \eqref{theory:constraint:budget} de manera que
@@ -1510,7 +1533,9 @@ lado derecho de la restricción \eqref{theory:constraint:budget} de manera que
 		0.1\sum_{i=1}^{n}p_i & n > 20{,}000,
 	\end{cases}
 \end{equation*}
-para evitar obtener un problema trivial de acuerdo a la reducción binaria.
+para evitar obtener un problema trivial de acuerdo a la reducción binaria. El autor decidió cambiar
+el coeficiente de 0.5 a 0.1 cuando $n > 20{,}000$ para disminuir la probabilidad de que existan
+múltiples soluciones óptimas en problemas de tamaño grande.
 
 La tabla \ref{table:fin:mt:times} muestra los tiempos promedios de terminación así como las
 desviaciones estándar de los métodos utilizados para realizar cada experimento. La tabla
@@ -1567,7 +1592,7 @@ debemos olvidar que FD no encontró una solución en el 61\% de los experimentos
 		& \multicolumn{2}{c}{\texttt{dioph\_left}}
 		& \multicolumn{2}{c}{\texttt{dioph\_right}} \\
 		\midrule
-		1,000     & 1.270   & (±0.1)   & 0.109   & (±0.02) & 0.013   & (±0.00) & 0.013   & (±0.00) \\
+		1,000     & 1.270   & (±0.01)   & 0.109   & (±0.02) & 0.013   & (±0.00) & 0.013   & (±0.00) \\
 		2,000     & 10.368  & (±0.02)  & 0.135   & (±0.02) & 0.042   & (±0.00) & 0.043   & (±0.00) \\
 		5,000     & 160.562 & (±0.39)  & 1.666   & (±0.20) & 0.245   & (±0.00) & 0.265   & (±0.00) \\ \midrule
 		10,000    &         &          & 2.124   & (±0.33) & 1.063   & (±0.00) & 1.164   & (±0.00) \\
@@ -1684,13 +1709,8 @@ En ambos R\&A y los métodos diofantinos hay presencia de un comportamiento osci
 confirmó para los métodos diofantinos que esto coincide en la mayoría de los casos cuando el
 presupuesto $u$ es múltiplo de una de las entradas de $\vec{q}$. En estos casos el problema es
 trivial, pues si $q_j \mid u$, entonces uno de \texttt{dioph\_left} o \texttt{dioph\_right}
-encuentra inmediatamente la solución
-\begin{equation*}
-	x_i \coloneq \begin{cases}
-		\floor{u / q_i} & i = j, \\
-		0 & \text{e.o.c.}
-	\end{cases}
-\end{equation*}
+encuentra inmediatamente la solución $\vec{x} = \floor{u/q_j}\vec{e}_j$.
+
 En los casos que una entrada de $\vec{q}$ divide a $u$, el autor encontró que un repunte en
 \texttt{dioph\_left} coincide con una caída en \texttt{dioph\_right} y viceversa. Las excepciones
 más notables a este comportamiento fueron las dos observaciones anómalas en \texttt{dioph\_left}
