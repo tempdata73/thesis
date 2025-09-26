@@ -1,0 +1,75 @@
+\chapter{Conclusiones}
+\noindent
+En este último capítulo de la tesis, recopilamos los resultados teóricos originales que el autor
+considera que son de mayor importancia.
+
+Los teoremas \ref{theory:th:infeasibility} y \ref{theory:th:feasibility} simplifican y estructuran
+el análisis del problema \eqref{theory:formulation}. A partir de ellos podemos, en primer lugar,
+deshacernos automáticamente de instancias infactibles y, en segundo lugar, de separar en casos las
+instancias factibles.
+
+La proposición \ref{prop:xint} expone una relación lineal entre el vector solución $\vec{x} \in
+\Z^n$ de la ecuación lineal diofantina $\vec{q}^T\vec{x} = k$ con y un vector de variables libres
+$\vec{t} \in \Z^{n-1}$. A su vez, esta proposición da entrada para analizar propiedades de la matriz
+$M \in \Z^{n \times (n - 1)}$ y del vector $\vec{\nu} \in \Z^n$ definidos en \eqref{eq:vec-omega} y
+\eqref{eq:mat-T}, respectivamente. El teorema \ref{th:lattice} aprovecha estas propiedades para
+descomponer la red $\Z^n$ como la suma directa de dos subredes $\Lambda_p$ y $\Lambda_h$ (ver
+\eqref{eq:dec}) que contienen, respectivamente, soluciones particulares y soluciones homogéneas de
+la ecuación lineal diofantina $\vec{q}^T\vec{x} = k$. El teorema \ref{th:isoclass} sugiere que esta
+descomposición no es exclusivamente generada por $\vec{q}$, sino que lo es por su órbita. Esto
+último permite que consideremos una clasificación de programas lineales enteros a partir de los
+vectores coprimos asociados a un vector objetivo y esencialmente entero $\vec{p}$.
+
+Los teoremas \ref{th:alg:inf} y \ref{th:fin:dioph:correct}, así como sus respectivos algoritmos
+\ref{algo:inf:ext} y \ref{algo:fin:dioph} muestran cómo las ecuaciones lineales diofantinas son
+esenciales para resolver instancias de \eqref{theory:formulation}. Además, en el caso finito,
+tenemos que la complejidad para resolver este tipo de instancias es polinomialmente acotada. La
+dificultad radica en instancias cuando todas las entradas del vector coprimo $\vec{q}$ son
+estrictamente positivas. A pesar de ello, el teorema \ref{th:intnonneg2} indica que esta complejidad
+no depende del número de ecuaciones lineales diofantinas a resolver (pues eventualmente es
+suficiente con resolver una), sino que radica en cómo se resuelven estas ecuaciones.
+
+El teorema \ref{th:intnonneg1} muestra que el lado derecho de \eqref{eq:eta-limit} es una cota
+superior para el número de Frobenius $F$. En realidad, lo que obtenemos es una familia de cotas
+superiores, pues $F$ está en función del número de enteros coprimos $q_1, \ldots, q_n$, así como de
+sus valores respectivos, es decir, $F = F(q_1, \ldots, q_n; n)$, donde $n \in \Z_{> 0}$. Puesto que
+podemos calcular la matriz $M$ definida en \eqref{eq:mat-T} en tiempo polinomial, entonces podemos
+calcular en tiempo polinomial la cota superior \eqref{eq:eta-limit} de $F(q_1, \ldots, q_n; n)$ para
+$n \in \Z_{> 0}$ fija y para cualesquiera $q_1, \ldots, q_n$.
+
+Finalmente, el teorema \ref{th:multeq} muestra que la formulación \eqref{formulation:lattice} es
+equivalente al problema \eqref{formulation:multiple}. Si comparamos las respectivas restricciones
+\eqref{lattice:c-layer} y \eqref{formulation:multiple:constraint:budget}, encontramos que ambas son
+ortogonales al vector objetivo, no obstante, la primera es mucho más fácil de controlar que la
+segunda, pues esta ortogonalidad ocurre a lo largo de un solo eje y no de muchos. El teorema
+\ref{th:bbspeed} indica que, en efecto, el algoritmo de Ramificación y Acotamiento podría
+beneficiarse al utilizar esta formulación equivalente, pues automáticamente tenemos que uno de los
+subproblemas es infactible.
+
+Ahora el autor presenta problemas expuestos a lo largo de esta tesis que podrían ser de interés para
+futuras líneas de investigación:
+\begin{enumerate}
+	\item En el ejemplo \ref{ex:inf} mostramos para una instancia particular que Ramificación y
+		Acotamiento genera una sucesión de subproblemas trasladados. Mostrar o refutar que existe
+		una clase instancias de \eqref{theory:formulation} que contienen subproblemas homotéticos.
+		En caso afirmativo, mostrar o refutar que este conjunto de subproblemas es infinito cuando
+		el vector coprimo $\vec{q}$ tiene una entrada negativa.
+	\item Generalizar el lema \ref{lemma:layer-dist} para $m$ racional.
+	\item Para encontrar la cota inferior en el lado derecho de \eqref{eq:eta-limit} tuvimos que calcular el
+		radio de la bola inscrita en el símplice $\sigma$ y centrada en el baricentro $\est{\sigma}$.
+		Es cierto que podemos obtener distintas cotas inferiores si centramos la bola inscrita en
+		$\sigma$ en distintos puntos de este símplice. Mostrar o refutar que el baricentro
+		$\est{\sigma}$ genera la mayor de estas cotas.
+	\item Dada una distribución uniforme discreta $U_{\braces{1, \ldots, N}}$ sobre las entradas del
+		vector coprimo $\vec{q}$, determinar la complejidad promedio de recorrer el árbol generado
+		por el procedimiento descrito en la subsección \ref{subsec:fin:details}.
+	\item Construir un algoritmo que resuelva uno de los tres problemas descritos en la conclusión del capítulo
+		4.
+	\item Realizar experimentos numéricos que comparen los tiempos de terminación de Ramificación y
+		Acotamiento al utilizar la formulación \eqref{formulation:multiple} contra su forma
+		equivalente \eqref{formulation:lattice}.
+\end{enumerate}
+
+\begin{flushright}
+	\epigraph{Would it save you a lot of time if I just gave up and went mad now?}{--- Douglas Adams, The Hitchhiker's Guide to the Galaxy}
+\end{flushright}
