@@ -356,8 +356,9 @@ tercer lugar, diseñamos un experimento numérico que ilustre esta dependencia.
 \label{subsec:inf:complex}
 \noindent
 En ambos algoritmos \ref{algo:inf} y \ref{algo:inf:ext} suponemos que el costo de realizar
-operaciones aritméticas es constante. Primero analizamos el algoritmo \ref{algo:inf}. En el ciclo de
-la línea \ref{alg:def:inf:loop} realizamos $\mathcal{O}(n)$ multiplicaciones y divisiones.
+operaciones aritméticas es constante. Primero analizamos el algoritmo \ref{algo:inf}. En el ciclo
+que comienza en la línea \ref{alg:def:inf:loop} realizamos $\mathcal{O}(n)$ multiplicaciones y
+$\mathcal{O}(n^2)$ divisiones.
 
 Luego, para $1 \leq i \leq n - 2$, se sigue de la línea \ref{alg:def:inf:g} que calculamos una vez
 el máximo común divisor de $n - (i + 1) + 1 = n - i$ números. Vimos en la subsección
@@ -378,22 +379,21 @@ divisor entre dos números. Así pues, comparando estas aproximadamente $n$ llam
 con el cálculo de aproximadamente $n^2$ máximos común divisores entre dos números, podemos ignorar las
 llamadas a la subrutina \texttt{Bezout}.
 
-Es posible mostrar que la complejidad de calcular el máximo común divisor entre dos enteros $a \leq
-b$ es $\mathcal{O}(\log_2 b)$. De esta manera, tenemos de las $\mathcal{O}(n)$ multiplicaciones y
-divisiones, así como de \eqref{eq:numgcd} que la complejidad del algoritmo \ref{algo:inf} es
+Es posible mostrar\footnote{
+	Véase \url{https://en.wikipedia.org/wiki/Euclidean_algorithm}.
+}  que la complejidad de calcular el máximo común divisor entre dos enteros $a \leq b$ es
+$\mathcal{O}(\log_2 b)$. De esta manera, tenemos de las $\mathcal{O}(n)$ multiplicaciones y
+$\mathcal{O}(n^2)$ divisiones, así como de \eqref{eq:numgcd} que la complejidad del algoritmo \ref{algo:inf} es
 \begin{equation*}
-	\mathcal{O}(n^2\log_2\norm{\vec{q}}_\infty) + \mathcal{O}(n) = \begin{cases}
-		\mathcal{O}(n) & \norm{\vec{q}}_\infty = 1, \\
-		\mathcal{O}(n^2) & \text{e.o.c.}
-	\end{cases}
+	\mathcal{O}(n^2\log_2\norm{\vec{q}}_\infty) + \mathcal{O}(n) + \mathcal{O}(n^2) =
+	\mathcal{O}(n^2(1 + \log_2\norm{\vec{q}}_\infty)).
 \end{equation*}
-Puesto que, en general, el vector coprimo $\vec{q} \in \Z^n$ tiene entradas distintas de $0$, $1$ o
-$-1$, diremos que la complejidad del algoritmo \ref{algo:inf} es cuadrática.
 
 Ahora bien, del algoritmo \ref{algo:inf:ext} tenemos que las subrutinas \texttt{length} y
 \texttt{switch} tienen complejidad constante. Además, recorremos el vector $\vec{q}$ en el ciclo
 \ref{alg:inf:loop} una sola vez así como el vector $\tvec{x}$ en el ciclo \ref{alg:inf:loop2}.
-Entonces este algoritmo también tiene complejidad cuadrática.
+Entonces, debido a la única llamada del algoritmo \ref{algo:inf}, este algoritmo también tiene
+complejidad cuadrática.
 
 Finalmente, mencionamos que el número de operaciones de estos dos algoritmos dependen exclusivamente de la
 dimensión $n$ y no del lado derecho $\eta$ de la ecuación $\vec{q}^T\vec{x} = \eta$. Es decir, la
@@ -406,7 +406,7 @@ subsección \ref{subsec:inf:res} confirman esto.
 Primero ilustramos a través de un ejemplo que el árbol generado por R\&A correspondiente a instancias de
 \eqref{theory:formulation} tiene profundidad infinita en algunos casos. Luego mostramos que, aún
 cuando esta profundidad sea finita, el número de decimales utilizados para expresar el vector
-objetivo de \eqref{theory:formulation} afecta exponencialmente en la dimensión los tiempos de
+objetivo de \eqref{theory:formulation} afecta exponencialmente en los tiempos de
 terminación de este método.
 
 \begin{example}
@@ -415,18 +415,23 @@ terminación de este método.
 	\begin{equation*}
 		\max_{(x, y) \in \Z^2}\braces{x - y \vcentcolon x - y \leq 0.3, x \geq 0, y \geq 0}.
 	\end{equation*}
+	Adoptamos la convención para los subproblemas que subíndices 0, a excepción del primero, indican
+	restricciones añadidas del tipo $\leq$ y subíndices 1 indican restricciones añadidas del tipo
+	$\geq$.
+
 	En la figura \ref{fig:infrec} se muestra el poliedro asociado a su problema relajado $S_0$.
-	Encontramos que su solución es $(0.3, 0)$. Puesto que $0.3$ no
-	es entero, ramificamos sobre esta variable y generamos dos subproblemas $S_{00}$ y $S_{01}$ con
-	las restricciones añadidas $x \leq 0$ y $x \geq 1$, respectivamente. La solución de $S_{00}$
-	es $(0, 0)$ y podamos por integralidad.
+	Encontramos que su solución es $(0.3, 0)$. Puesto que $0.3$ no es entero, ramificamos sobre esta
+	variable y generamos dos subproblemas $S_{00}$ y $S_{01}$ con las restricciones añadidas $x \leq
+	0$ y $x \geq 1$, respectivamente. La solución de $S_{00}$ es $(0, 0)$ y podamos por
+	integralidad.
 
 	Ahora bien, la solución de $S_{01}$ es $(1, 0.7)$ y como $0.7$ no es entero, generamos $S_{010}$
 	y $S_{011}$ con las restricciones añadidas $y \leq 0$ y $y \geq 1$. Encontramos que el poliedro
 	de $S_{010}$ es vacío, así que podamos por infactibilidad.
 
 	En la figura \ref{fig:infrec} se muestra el poliedro asociado a $S_{011}$. Observemos que este poliedro es
-	una traslación del asociado a $S_0$. Consecuentemente, hay un comportamiento
+	una traslación del asociado a $S_0$. En otras palabras, $S_{011}$ es un caso particular de una
+	homotecia de $S_{011}$. Consecuentemente, hay un comportamiento
 	periódico en cuanto a la ramificación y solución de estos problemas: resolver $S_{011}$ se
 	reduce a resolver $S_0$, pero el primero es un subproblema del segundo. Siguiendo este
 	razonamiento, encontramos que R\&A genera la cadena de subproblemas autosimilares
@@ -491,10 +496,11 @@ terminación de este método.
 \end{observation}
 
 El autor sospecha que el fenómeno presentado en el ejemplo \ref{ex:inf} ocurre en todas las
-instancias de \eqref{theory:formulation} cuando $\vec{p}$ es esencialmente entero. En particular,
-para problemas de este tipo existe una colección de subproblemas homotéticos entre sí. Además, si el
-vector coprimo $\vec{q}$ de $\vec{p}$ tiene una entrada negativa, entonces esta colección es
-infinita. Por cuestiones de longitud de esta tesis, no investigamos más en este respecto.
+instancias de \eqref{theory:formulation} cuando $\vec{p}$ es esencialmente entero y el lado derecho
+de \eqref{theory:constraint:budget} no es entero. En particular, para problemas de este tipo existe
+una colección de subproblemas homotéticos entre sí. Además, si el vector coprimo $\vec{q}$ de
+$\vec{p}$ tiene una entrada negativa, entonces esta colección es infinita. Por cuestiones de
+longitud de esta tesis, no investigamos más en este respecto.
 
 Para que una implementación pura de Ramificación y Acotamiento termine en tiempo finito al resolver
 una de estas instancias, debe ser el caso que el valor óptimo del problema relajado de
@@ -505,33 +511,65 @@ contiene un punto entero, donde $u$ es el lado derecho de \eqref{theory:constrai
 teorema \ref{phase-1:th:cover}, hay terminación finita si y solo si este hiperplano en realidad es
 una capa entera $\qlayer{q}{k}$ con parámetro $k \in \Z$.
 
-Aún cuando podamos asegurar terminación finita, los puntos enteros sobre la $k$-ésima capa entera
-pueden tener distancias muy grandes entre sí. Por los lemas \ref{lemma:iso1} y \ref{lemma:iso2}
-somos capaces de medir estas distancias. Consideremos el vector $\vec{\nu}$ definido en
-\eqref{eq:vec-omega} y la matriz $M$ definida en \eqref{eq:mat-T}, entonces dos puntos $\vec{x}_1$ y
-$\vec{x}_2$ son adyacentes en la dirección $1 \leq i \leq n - 1$ si
-\begin{align*}
-	\vec{x}_1 &\coloneq k\vec{\nu} + M\vec{t}, \\
-	\vec{x}_2 &\coloneq k\vec{\nu} + M(\vec{t} \pm \vec{e}_i),
-\end{align*}
-para alguna $\vec{t} \in \Z^{n-1}$. Luego, la distancia entre estos dos puntos es
-$\norm{M\vec{e}_i}$.
+Supongamos que tenemos terminación finita y que estamos utilizando el método de Ramificación y
+Acotamiento para resolver una instancia. Por lo que hemos discutido anteriormente, todas las
+soluciones de los subproblemas se encuentran en la $k$-ésima capa entera. El algoritmo de R\&A
+genera cortes del estilo
+\begin{equation}
+	\label{eq:cuts}
+	x_i \leq \big\lfloor x_i^* \big\rfloor,\quad x_i \geq \big\lceil x_i^* \big\rceil,
+\end{equation}
+donde $\vec{x}^*$ es la solución de un
+subproblema con $x_i \not\in \Z$. En cualquier caso, el punto de intersección entre una de estas restricciones junto con
+la restricción presupuestaria \eqref{theory:constraint:budget} introduce un único vértice nuevo para
+el siguiente subproblema. Tenemos entonces del teorema \ref{prerreq:th:linear-sol} que este único
+vértice es una solución para el siguiente subproblema. Los algoritmos más comúnes para resolver
+problemas relajados siempre encuentran como solución un vértice del poliedro, por lo que podemos
+suponer razonablemente que R\&A encontrará este vértice como solución del siguiente subproblema.
+Es decir, si $\vec{x}^*$ es solución de un subproblema, entonces $\big\lfloor x_i^* \big\rfloor$ y
+$\big\lceil x_i^* \big\rceil$ constituyen, respectivamente, las $i$-ésimas entradas de las
+soluciones de los subproblemas obtenidos al añadir los cortes \eqref{eq:cuts}. En particular, encontramos que
+\begin{equation}
+	\label{eq:dembound}
+	0 <
+	\big| x_i^* - \big\lfloor x_i^* \big\rfloor \big| =
+	\big| x_i^* - \big\lceil x_i^* \big\rceil \big| \leq 1.
+\end{equation}
 
-No obstante, implementaciones puras de R\&A generan cortes del estilo $x_j \geq \ceil{x_j^*}$, donde
-$\vec{x}^*$ es la solución a un subproblema. Para instancias autosimilares como la presentada en el
-ejemplo \ref{ex:inf}, esto último implica que $|x_j^{**} - x_j^*| \leq 1$, donde $\vec{x}^{**}$ es
-la solución al nuevo subproblema. Combinando este punto con el anterior, encontramos que los cortes
-generados por implementaciones puras de R\&A son ineficientes, y lo son más a medida que las normas
-de las columnas de $M$ aumentan.
+Ahora bien, por el teorema \ref{th:lattice} sabemos que las columnas de la matriz $M$ definida en
+\eqref{eq:mat-T} son linealmente independientes, por lo que existe $\vec{t}^* \in \R^{n-1}$ tal que
+$\vec{x}^* = k\vec{\nu} + M\vec{t}^*$. Sea $\vec{t} \in \Z^{n-1}$ el vector resultante de redondear
+las entradas de $\vec{t}^*$ a sus enteros más cercanos. No es difícil ver que $\vec{x}
+\coloneq k\vec{\nu} + M\vec{t}$ es el punto entero sobre la $k$-ésima capa entera más cercano a
+$\vec{x}^*$. También es cierto que $\vec{t} = \vec{t}^* + \vec{\delta}$ para alguna $\vec{\delta}
+\in \R^{n-1}$ que satisface $0 < \norm{\vec{\delta}}_\infty \leq 1/2$. Luego,
+\begin{equation}
+	\label{eq:numbound}
+	\big| x^*_i - x_i \big| =
+	\big| \left(\vec{x}^* - \vec{x}\right)_i \big| =
+	\big| \vec{e}_i^TM\left(\vec{t}^* - \vec{t}\right) \big| =
+	\big| \vec{e}_i^TM\vec{\delta} \big|.
+\end{equation}
+Juntando \eqref{eq:dembound} con \eqref{eq:numbound} obtenemos
+\begin{equation}
+	\label{eq:bbound}
+	\bigg| \frac{x_i^* - x_i}{x_i^* - \big\lfloor x_i^*\big\rfloor} \bigg| =
+	\bigg| \frac{x_i^* - x_i}{x_i^* - \big\lceil x_i^*\big\rceil} \bigg|
+	\geq \big|\vec{e}_i^TM\vec{\delta}\big|.
+\end{equation}
 
-Luego, el número de decimales utilizados para expresar las entradas del vector objetivo $\vec{p}$ del problema
+Entonces el número de decimales utilizados para expresar las entradas del vector objetivo $\vec{p}$ del problema
 \eqref{theory:formulation} afecta la eficiencia de estos cortes. En efecto, si usamos
-un decimal más para especificar las entradas de $\vec{p}$, entonces su vector coprimo $\vec{q}$ se
+un decimal más para especificar las entradas de $\vec{p}$, su vector coprimo $\vec{q}$ se
 multiplica aproximadamente por 10. De \eqref{eq:mat-T} tenemos que las entradas de $M$ se
-multiplican aproximadamente por 10 y, por lo tanto, $\norm{M\vec{e}_i}$ es $10^{n}$ veces mayor.
-Es decir, los cortes de R\&A se vuelven aproximadamente $10^{n}$ más ineficientes.
+multiplican aproximadamente por 10 y, por lo tanto, el lado derecho de \eqref{eq:bbound} es 10 veces mayor.
+Es decir, los cortes de R\&A se vuelven aproximadamente 10 más ineficientes al utilizar un decimal
+adicional. Aún más, la complejidad de Ramificación y Acotamiento es exponencial en el número de
+decimales utilizados para expresar $\vec{p}$. No obstante, es cierto que los cortes se vuelven más
+efectivos una vez que $\vec{x}^*$ se encuentra cerca de una solución entera, pues
+$\norm{\vec{\delta}}_\infty \approx 0$.
 
-Es cierto que, en la práctica, no existen implementaciones puras de R\&A. Más bien, existe un
+En la práctica no existen implementaciones puras de R\&A. Más bien, existe un
 ecosistema de módulos que combinan R\&A con otro tipo de generación de cortes, con la manera de
 elegir subproblemas, con métodos de presolución, con heurísticas, etcétera (ver figura
 \ref{p1c11:fig:MIP_solver_flowchart}). Estas técnicas evitan, en primer lugar, que se genere un
@@ -634,20 +672,21 @@ los tiempos de terminación de R\&A cuando utilizamos una cifra decimal adiciona
 máximo de 100. En realidad, el multiplicador más grande fue aproximadamente 5{,}422.
 
 De acuerdo a la subsección anterior, deberíamos esperar que la gran mayoría de los multiplicadores
-se concentren alrededor de $10^{n} = 10{,}000$. No obstante, solo el 20\% de las observaciones tiene un
-multiplicador de $10^2 = 100$ o mayor. Después de un conteo en los archivos de registro generados
-por el \textit{solver} CBC, el autor descubrió que en \textbf{todos} los casos que R\&A encontró una
-solución fue a causa de una heurística y no por el método de ramificación. Por la
-dificultad del árbol que genera el problema \eqref{theory:formulation}, de acuerdo a la subsección
-anterior, esto parece ser razonable.
+se concentren alrededor de 10. Esto último ocurrió en el 40\% de los casos. Después de un conteo en
+los archivos de registro generados por el \textit{solver} CBC, el autor descubrió que en
+\textbf{todos} los casos que R\&A encontró una solución fue a causa de una heurística y no por el
+método de ramificación. Por la dificultad del árbol que genera el problema
+\eqref{theory:formulation}, de acuerdo a la subsección anterior, esto parece ser razonable.
 
 Aún cuando las soluciones fueron obtenidas exclusivamente a través de heurísticas, en el 60\% de los
-casos el multiplicador es al menos 10. Es decir, una cifra decimal adicional en $\vec{p}$ provoca, en la
-mayoría de los casos, que el tiempo de terminación en R\&A sea al menos diez veces mayor.
+casos el multiplicador es mayor a 10. Es decir, una cifra decimal adicional en $\vec{p}$ provoca, en la
+mayoría de los casos, que el tiempo de terminación en R\&A sea al menos diez veces mayor. Así pues,
+los cortes generados por Ramificación y Acotamiento son más ineficientes de lo que habíamos
+predicho.
 
 El autor espera que lo realizado en estos experimentos numéricos muestre categóricamente que el
 método de Ramificación y Acotamiento no depende solo del número de variables o de desigualdades
-utilizadas. Así pues, con esto damos por concluido este capítulo y continuamos con nuestro
+utilizadas. Con esto damos por concluido este capítulo y continuamos con nuestro
 desarrollo del segundo caso del teorema \ref{theory:th:feasibility}. Es decir, el siguiente capítulo
 analiza a profundidad el caso finito.
 
