@@ -1345,7 +1345,7 @@ eficiente a través de ciclos para obtener los resultados de la siguiente secci�
 \label{sec:fin:ex}
 \noindent
 En esta sección medimos la eficiencia y estabilidad del algoritmo \ref{algo:fin:dioph}. Discutimos
-detalles de implementación del método \ref{algo:fin:helper}. Introducimos una formulación dinámica
+detalles de implementación del algoritmo \ref{algo:fin:helper}. Introducimos una formulación dinámica
 (FD) capaz de resolver instancias de \eqref{theory:formulation} cuando $\vec{q} > \vec{0}$, de
 manera que obtenemos otro punto de comparación para nuestro algoritmo además de Ramificación y
 Acotamiento (R\&A). Finalmente, explicamos y realizamos nuestro experimentos numéricos.
@@ -1363,36 +1363,38 @@ llamadas recursivas en la máquina donde se realizaron los experimentos. Esto si
 manera predeterminada, solamente podríamos resolver problemas de dimensión $n \leq 3{,}000$. No
 obstante, en la subsección \ref{subsec:exp:fin:n} realizamos experimentos con problemas de dimensión
 $n \leq 150{,}000$.
-+ 
-Vimos que este algoritmo calcula repetidamente los mismos máximos común divisores $g$ y los mismos
-coeficientes de Bézout $x', \omega'$. Puesto que estos números dependen exclusivamente del vector
-$\vec{q}$, decidimos calcularlos en una fase de preprocesamiento antes de llamar
-\texttt{NonNegativeIntSolFin}. Luego, esta rutina accede a ellos por medio de referencias.
 
-La implementación por ciclos usa una pila de estados $(i, b_1, b_2, k)$, donde $i$ indica el nivel o
+Hemos visto que algoritmo \ref{algo:fin:helper} calcula repetidamente los mismos máximos común
+divisores $g$ y los mismos coeficientes de Bézout $x', \omega'$. Puesto que estos números dependen
+exclusivamente del vector $\vec{q}$, decidimos calcularlos en una fase de preprocesamiento antes de
+llamar \texttt{NonNegativeIntSolFin}. Luego, esta rutina accede a ellos por medio de referencias.
+
+La implementación por ciclos utiliza una pila de estados $(i, b_1, b_2, \omega)$, donde $i$ indica el nivel o
 la variable $t_i$ que debemos escoger; el resto de los parámetros están definidos en el algoritmo
 \ref{algo:fin:helper}. La elección de $t_i$ ciertamente es la más importante, pues determina el
 intervalo de factibilidad $I = [b_1, b_2]$ en el siguiente nivel $i + 1$. Existen, \textit{a
 priori}, dos estrategias que podemos adoptar para este tipo de elecciones.
 
-La primera estrategia escoge $t_i \leftarrow b_1$ o $t_i \leftarrow b_2$ para todo nivel
-$i$. Si, en tal nivel $i$, el intervalo de factibilidad es vacío, entonces retrocedemos
-en la pila y hacemos la sustitución $t_i \leftarrow t_i + 1$ o $t_i \leftarrow t_i - 1$ siempre que
-$t_i$ se encuentre dentro del intervalo de factibilidad $[b_1, b_2]$. Así también, actualizamos nuestra
-variable $x$ como lo hacemos en el algoritmo \ref{algo:fin:helper} y repetimos el proceso hasta
-obtener una solución $\vec{x}$ entera no negativa.
+La primera estrategia escoge $t_i \leftarrow b_1$ o $t_i \leftarrow b_2$ para todo nivel $i$. Si, en
+tal nivel $i$, el intervalo de factibilidad es vacío, entonces retrocedemos en la pila y hacemos la
+sustitución $t_i \leftarrow t_i + 1$ o $t_i \leftarrow t_i - 1$ siempre que $t_i$ se encuentre
+dentro del intervalo de factibilidad $[b_1, b_2]$. Así también, actualizamos nuestra variable $x$
+como lo hacemos en la línea \ref{alg:fin:x} del algoritmo \ref{algo:fin:helper}. Repetimos el
+proceso hasta obtener una solución $\vec{x}$ entera no negativa o hasta agotar nuestro intervalo de
+factibilidad y devolvemos \NIL.
 
 La segunda estrategia consiste en construir un árbol de la siguiente manera: en el nivel $i$ del
 árbol escogemos el punto medio $t_i \leftarrow \floor{(b_1 + b_2)/2}$ (el cual representa una
 elección de $t$ en la línea \ref{alg:fin:t} del algoritmo \ref{algo:fin:helper} en el nivel de
-recursión $i$) y dividimos el intervalo de factiblidad $I$ en dos intervalos disjuntos: $[b_1,
-\ldots, t_i)$ y $(t_i, \ldots, b_2]$. En caso de que esta elección de $t_i$ cause que el siguiente
-intervalo de factibilidad sea vacío, escogeremos el punto medio de uno de estos dos subintervalos.
-Si el siguiente intervalo de factibilidad no es vacío, escogemos nuevamente el punto medio $t_{i +
-1}$ y continuamos con este procedimiento hasta encontrar una solución entera no negativa, o bien
-hasta agotar todos los intervalos de factibilidad $I$ en todos los niveles de recursión $1 \leq i
-\leq n - 1$. Puesto que nos concentramos en ir al siguiente nivel $i + 1$ antes que agotar el
-intervalo de factiblidad $I$ en el nivel $i$, estamos realizando una búsqueda en profundidad del
+recursión $i$) y empujamos a la pila los estados $(i, b_1, t_i - 1, \omega)$ en caso de que $b_1 < t_i$ y
+también empujamos $(i, t_i + 1, b_2, \omega)$ en caso de que $t_i < b_2$. Estos estados representan
+subproblemas que se deben resolver si nuestra elección de $t_i$ causa que el siguiente intervalo de
+factibilidad sea vacío. En caso de que este intervalo no sea vacío, también empujamos a la pila el
+estado del siguiente nivel con parámetros $b_1$, $b_2$ y $\omega$ calculados como en el algoritmo
+\ref{algo:fin:helper}. Así pues, en el nivel $i < n - 1$ del árbol intentamos encontrar la $i$-ésima entrada
+del vector solución $\vec{x} \geq \vec{0}$ de manera que $x_i \geq 0$ pero también que $x_{i + 1}$
+pueda ser no negativo. Puesto que empujamos a la pila un estado del siguiente nivel $i + 1$ antes de
+agotar el intervalo de factiblidad en el nivel $i$, realizamos una búsqueda en profundidad del
 árbol.
 
 El autor encontró en los experimentos preliminares que la segunda estrategia es mucho más eficaz. En
@@ -1402,15 +1404,16 @@ de la subsección \ref{subsec:exp:fin:rhs}, ambas estrategias tenían tiempos de
 significativamente menores que R\&A. Por ello, el autor decidió realizar el
 análisis de resultados usando la estrategia del árbol.
 
-Observemos de  que el orden en el que consideramos los subintervalos $[b_1, t_i)$ y $(t_i, b_2]$
-determina si visitamos primero el lado izquierdo o el lado derecho del árbol. El autor
-realizó los experimentos con ambas posibilidades. Así pues, llamaremos \texttt{dioph\_left} a la
-implementación que recorre primero el subintervalo izquierdo y definimos análogamente \texttt{dioph\_right}.
+Observemos que el orden en el que consideramos los estados $(i, b_1, t_i - 1, \omega)$ y $(i, t_i +
+1, b_2, \omega)$ determina si visitamos primero el lado izquierdo o el lado derecho del árbol. El
+autor realizó los experimentos con ambas posibilidades. Así pues, llamaremos \texttt{dioph\_left} a
+la implementación que recorre primero el subintervalo izquierdo y definimos análogamente
+\texttt{dioph\_right}.
 
 \subsection{Una formulación dinámica}
 \label{subsec:fin:dp}
 \noindent
-El método de Ramificación y Acotamiento no es el único para encontrar
+El algoritmo de Ramificación y Acotamiento no es el único para encontrar
 soluciones a programas lineales enteros. Como lo mencionamos al inicio de este capítulo, el problema
 \eqref{theory:formulation} es una instancia particular del Problema de la Mochila. Por la
 prevalencia de este problema en la industria, se han diseñado múltiples algoritmos que
@@ -1426,47 +1429,44 @@ entero y tiene entradas estrictamente positivas. Así también, supondremos que 
 \eqref{theory:constraint:budget} es entero. Como queremos que nuestro problema sea factible, del
 teorema \ref{theory:th:infeasibility} tenemos que $u \geq 0$.
 
-El problema \eqref{theory:formulation} tiene subestructura óptima. En efecto, podemos partir
-$\vec{p}$ como
-$(p_1, \tvec{p})$ y calcular la solución $\tvec{x}$ del subproblema de
-\eqref{theory:formulation} con $\tvec{p}$. Observemos que
-\begin{equation*}
-	\vec{p}^T\vec{x} \leq u \iff p_1x_1 + \tvec{p}^T\tvec{x} \leq u \iff x_1 \leq
-	\frac{\hat{u}}{p_1},
-\end{equation*}
-donde $\hat{u} \coloneq u - \tvec{p}^T\tvec{x}$. Como deseamos maximizar
-$\vec{p}^T\vec{x}$ y $p_1 > 0$, debe ser el caso que $x_1 = \floor{\hat{u}/p_1}$. Es posible mostrar
-por contradicción que el vector $(x, \tvec{x})$ es la solución del problema y por lo tanto
-\eqref{theory:formulation} tiene subestructura óptima.
-
-Sea $f_m(\hat{u})$ el valor óptimo del subproblema de \eqref{theory:formulation} cuando el
-lado derecho de \eqref{theory:constraint:budget} es $\hat{u}$ y debemos escoger las
-primeras $m$ entradas del vector solución $\vec{x}$. Como $\vec{p} > \vec{0}$, no es difícil ver que $0 \leq
-\hat{u} \leq u$. Entonces tenemos
+Sea $f_m(\hat{u})$ el valor óptimo de \eqref{theory:formulation} cuando el lado derecho de
+\eqref{theory:constraint:budget} es $\hat{u} \leq u$ con $\hat{u}$ entero y nos restringimos a las
+primeras $m$ entradas de $\vec{p}$, con lo que obtenemos un problema de dimensión $1 \leq m \leq n$.
+Proponemos la formulación dinámica
 \begin{subequations}
 	\begin{align}
 		\label{formulation:dp}
-		f_1(\hat{u}) &\coloneq \floor{\hat{u}/p_1}p_1, \\
+		f_1(\hat{u}) &\coloneq \floor{\hat{u}/p_1}p_1, \label{dp:base} \\
 		f_m(\hat{u}) &\coloneq \begin{cases}
-			f_{m-1}(\hat{u}), & \hat{u} \leq p_m - 1, \\
+			f_{m-1}(\hat{u}), & \hat{u} < p_m, \\
 			\max\braces{f_{m - 1}(\hat{u}), f_{m}(\hat{u} - p_m) + p_m}, & p_m \leq \hat{u} \leq u.
 			\label{dp:rec}
 		\end{cases}
 	\end{align}
 \end{subequations}
-La ecuación \eqref{dp:rec} se explica de la siguiente manera. Si el presupuesto $\hat{u}$ es menor
-que el ``precio'' $p_m$, entonces no podemos costearnos una unidad adicional de $x_m$. En caso de que sí
-podamos costearla, comparamos la utilidad de adquirirla pero disminuir nuestro
-presupuesto $\hat{u}$ en $p_m$, contra la utilidad de no adquirirla pero dejar nuestro presupuesto
-igual.
 
-Finalmente, para obtener el valor óptimo de \eqref{theory:formulation}, debemos calcular $f_n(u)$.
-Puesto que tenemos $n$ subproblemas que resolver y para cada subproblema debemos realizar, en el
-peor de los casos, $u$ comparaciones, se sigue que el costo de calcular $f_n(u)$ es $\mathcal{O}(nu)$.
-No obstante, ambos R\&A y los métodos diofantinos (\texttt{dioph\_left} y
-\texttt{dioph\_right}) terminan con la solución óptima, así que la implementación realizada por el
-autor de esta formulación dinámica incluye una manera de construir la solución, a pesar del costo
-adicional en eficiencia, el cual es lineal en $u$.
+A continuación mostramos informalmente que esta formulación dinámica es correcta. Esta demostración
+consiste en realizar una inducción lexicográfica sobre el conjunto de tuplas $\braces{(m, \hat{u})
+\vcentcolon 1 \leq m \leq n, 0 \leq \hat{u} \leq u}$. Si $m = 1$, se sigue inmediatamente que
+\eqref{dp:base} es el valor óptimo para todo presupuesto $0 \leq \hat{u} \leq u$. Ahora bien,
+supongamos inductivamente que $f_{m-1}(\hat{u})$ es el valor óptimo para alguna $m > 1$ y para todo
+$0 \leq \hat{u} \leq u$.
+Si $\hat{u} < p_m$, entonces $f_{m-1}(\hat{u})$ es el valor óptimo, pues $p_m > 0$
+y buscamos una solución no negativa. De \eqref{dp:rec} se sigue que $f_m(\hat{u})$ es el valor
+óptimo para todo $0 \leq \hat{u} < p_m$. Luego, aprovechando la hipótesis inductiva sobre $m$ junto
+este último punto, podemos utilizar un argumento fuertemente inductivo sobre $\hat{u}$ para mostrar
+que $f_m(\hat{u})$ también es el valor óptimo para todo $p_m \leq \hat{u} \leq u$. De esta manera
+encontramos que si $f_{m - 1}(\hat{u})$ es el valor óptimo para todo $0 \leq \hat{u} \leq u$,
+entonces $f_m(\hat{u})$ también lo es. Por el caso base $m = 1$ tenemos entonces que $f_m(\hat{u})$
+es el valor óptimo para todo $1 \leq m \leq n$ y para todo $0 \leq \hat{u} \leq u$.
+
+Finalmente, para obtener el valor óptimo de \eqref{theory:formulation}, debemos calcular $f_n(u)$,
+lo cual implica calcular, en el peor de los casos, $f_m(\hat{u})$ para todo $1 \leq m \leq n$ y para
+todo $0 \leq \hat{u} \leq u$. Se desprende que el costo de calcular $f_n(u)$ es $\mathcal{O}(nu)$.
+No obstante, ambos R\&A y los métodos diofantinos (\texttt{dioph\_left} y \texttt{dioph\_right})
+terminan con la solución óptima, así que la implementación realizada por el autor de esta
+formulación dinámica incluye una manera de construir la solución, a pesar del costo adicional en
+eficiencia, el cual es $\mathcal{O}(u)$.
 
 \subsection{Experimentos en la dimensión}
 \label{subsec:exp:fin:n}
@@ -1521,7 +1521,7 @@ y el problema \eqref{theory:formulation} es equivalente a
 \end{equation*}
 donde $\vec{\hat{p}} \in \R^{n-1}$ resulta de remover del vector $\vec{p}$ su $\ell$-ésima entrada.
 
-Así pues, sea $n$ la dimensión del problema. Dejamos que $\vec{p} \in \Z^n$ sea un vector aleatorio
+Así pues, sea $n > 2$ la dimensión del problema. Dejamos que $\vec{p} \in \Z^n$ sea un vector aleatorio
 tomado de una distribución uniforme discreta sobre $[10, 5n)^n$. El hecho de que el soporte de la
 distribución dependa de la dimensión reduce la probabilidad de que $\vec{p}$ tenga entradas
 repetidas. Al calcular el vector coprimo $\vec{q}$ checamos que $q_i \neq 1$ para todo $1 \leq i
@@ -1546,11 +1546,11 @@ medidos, respectivamente. Las casillas vacías indican que el método no encontr
 problema correspondiente en menos de los 300 segundos de tolerancia.
 
 De manera más inmediata, tenemos que los métodos diofantinos son significativamente más rápidos.
-Además, los tiempos de terminación de los métodos diofantinos así como de FD están altamente
-concentrados alrededor de la media, por lo que son estables. En efecto, los coeficientes de
-variación de los métodos diofantinos estuvieron, en la gran mayoría de los casos, por
-debajo de 0.5\%, mientras que los de FD estuvieron por debajo de 1\%. En contraste, solo la mitad de
-los coeficientes de variación de R\&A estuvo por debajo del 1\%.
+Además, los tiempos de terminación de los métodos diofantinos así como de la formulación dinámica
+(FD) están altamente concentrados alrededor de la media, por lo que son estables. En efecto, los
+coeficientes de variación de los métodos diofantinos estuvieron, en la gran mayoría de los casos,
+por debajo de 0.5\%, mientras que los de FD estuvieron por debajo de 1\%. En contraste, solo la
+mitad de los coeficientes de variación de R\&A estuvo por debajo del 1\%.
 
 A pesar de que FD sea, en términos prácticos, igual de estable que los métodos diofantinos, no
 debemos olvidar que FD no encontró una solución en el 61\% de los experimentos realizados.
@@ -1676,8 +1676,8 @@ como el presupuesto del problema \eqref{theory:formulation}. Tomamos las mismas 
 la subsección pasada para evitar soluciones triviales.
 
 En este caso, fijamos la dimensión en $n = 1{,}000$ y dejamos que el vector esencialmente entero
-$\vec{p} \in \Z^n$ sea un vector aleatorio tomado de una distribución uniforme discreta sobre el
-intervalo $[10, 10{,}000)^n$. Luego, tomamos $N = 128$ puntos enteros equidistantes sobre el intervalo
+$\vec{p} \in \Z^n$ sea un vector aleatorio tomado de una distribución uniforme discreta y entera sobre el
+intervalo $[10, 10{,}000)^n$. Luego, tomamos 128 puntos enteros equidistantes sobre el intervalo
 $[.01S, S)$, donde $S \coloneq \sum_{i=1}^np_i$. y medimos los tiempos de terminación promedio sobre
 las 20 corridas. La figura \ref{fig:exp:fin:rhs:zoom} muestra estos tiempos de terminación, mientras que
 la figura \ref{fig:exp:fin:rhs:cv} muestra la distribución de sus coeficientes de variación.
@@ -1718,24 +1718,24 @@ más notables a este comportamiento fueron las dos observaciones anómalas en \t
 oscilatorio en R\&A no coincide con los casos en los que el presupuesto $u$ es múltiplo de alguna
 entrada de $\vec{p}$.
 
-Destaca la inestabilidad del método de R\&A. El autor hipotetizó que esto se debe a la constante
-sobrecarga computacional de transferir datos entre los módulos del problema relajado y la generación
-de cortes (ver figura \ref{p1c11:fig:MIP_solver_flowchart}) dentro del \textit{solver} CBC. Por
-ello, el autor decidió correr el mismo experimento tomando en cuenta una configuración de R\&A que
-prohíba la generación de cortes. Debido a la dimensión $n = 1{,}000$ del problema y al fenómeno
-expuesto en la sección \ref{sec:inf:exp}, no prohibimos el uso de heurísticas.
+Observamos de la figura \ref{fig:exp:fin:rhs:cv} que el algoritmo de Ramificación y Acotamiento es
+sumamente inestable. El autor hipotetizó que esto se debe a la constante sobrecarga computacional de
+transferir datos entre los módulos del problema relajado y la generación de cortes (ver figura
+\ref{p1c11:fig:MIP_solver_flowchart}) dentro del \textit{solver} CBC. Por ello, el autor decidió
+correr el mismo experimento tomando en cuenta una configuración de R\&A que prohíba la generación de
+cortes. Debido a la dimensión $n = 1{,}000$ del problema y al fenómeno expuesto en la sección
+\ref{sec:inf:exp}, no prohibimos el uso de heurísticas.
 
 El autor encontró que los tiempos de terminación son similares y por lo tanto no tiene sentido
 mostrarlos, pero sí hay un cambio significativo en la estabilidad de esta nueva configuración. La
-comparación de coeficientes de variación se muestra en la figura \ref{fig:exp:fin:rhs:cv-wbb}.
-
-Es claro que la mediana de los coeficientes de variación es aproximadamente un tercio en la
-implementación sin cortes. Es decir, en el 50\% de los $N = 128$ experimentos que realizamos, las
+comparación de coeficientes de variación se muestra en la figura \ref{fig:exp:fin:rhs:cv-wbb}, en la
+cual se observa que la mediana de los coeficientes de variación es aproximadamente un tercio en la
+implementación sin cortes. Es decir, en el 50\% de los 128 experimentos que realizamos, las
 distribuciones de los tiempos de terminación están tres veces más concentradas alrededor de su media
 en la configuración sin cortes que en la configuración original. Aún así, el rango de ambas
 distribuciones es la misma, lo que sugiere que en ningún momento la generación de cortes ayudó a
 encontrar más rápidamente las soluciones óptimas. En realidad, la generación de cortes provocó que
-Ramificación y Acotamiento se comportara erráticamente.
+Ramificación y Acotamiento tuviera una mayor varianza relativa en los tiempos de terminación.
 
 En conclusión, el autor considera que el argumento a favor del uso de métodos diofantinos es fuerte.
 Mostramos en ambos experimentos de esta sección que los métodos diofantinos son más rápidos, más

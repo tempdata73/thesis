@@ -519,27 +519,39 @@ genera cortes del estilo
 	\label{eq:cuts}
 	x_i \leq \big\lfloor x_i^* \big\rfloor,\quad x_i \geq \big\lceil x_i^* \big\rceil,
 \end{equation}
-donde $\vec{x}^*$ es la solución de un
-subproblema con $x_i \not\in \Z$. En cualquier caso, el punto de intersección entre una de estas restricciones junto con
-la restricción presupuestaria \eqref{theory:constraint:budget} introduce un único vértice nuevo para
-el siguiente subproblema. Tenemos entonces del teorema \ref{prerreq:th:linear-sol} que este único
-vértice es una solución para el siguiente subproblema. Los algoritmos más comúnes para resolver
+donde $\vec{x}^*$ es la solución de un subproblema relajado con $x_i \not\in \Z$. Sin pérdida de
+generalidad, supongamos que añadimos a este subproblema relajado un corte como el de la derecha de
+\eqref{eq:cuts} y que se mantiene la factibilidad. El punto de intersección entre esta restricción junto con la restricción
+presupuestaria \eqref{theory:constraint:budget} introduce un único vértice nuevo para el siguiente
+subproblema relajado. Tenemos entonces del teorema \ref{prerreq:th:linear-sol} que este único vértice es una
+solución. Los algoritmos más comúnes para resolver
 problemas relajados siempre encuentran como solución un vértice del poliedro, por lo que podemos
-suponer razonablemente que R\&A encontrará este vértice como solución del siguiente subproblema.
-Es decir, si $\vec{x}^*$ es solución de un subproblema, entonces $\big\lfloor x_i^* \big\rfloor$ y
-$\big\lceil x_i^* \big\rceil$ constituyen, respectivamente, las $i$-ésimas entradas de las
-soluciones de los subproblemas obtenidos al añadir los cortes \eqref{eq:cuts}. En particular, encontramos que
+suponer razonablemente que R\&A encontrará este vértice como solución del siguiente subproblema
+relajado. Es
+decir, si $\vec{x}^*$ es solución de un subproblema relajado, entonces $\big\lceil x_i^* \big\rceil$
+constituye la $i$-ésima entrada de la solución del siguiente subproblema relajado obtenido al añadir el corte $x_i \geq
+\big\lceil x_i^* \big\rceil$. En particular, encontramos que
 \begin{equation}
 	\label{eq:dembound}
 	0 <
-	\big| x_i^* - \big\lfloor x_i^* \big\rfloor \big| =
 	\big| x_i^* - \big\lceil x_i^* \big\rceil \big| \leq 1.
 \end{equation}
 
-Ahora bien, por el teorema \ref{th:lattice} sabemos que las columnas de la matriz $M$ definida en
-\eqref{eq:mat-T} son linealmente independientes, por lo que existe $\vec{t}^* \in \R^{n-1}$ tal que
-$\vec{x}^* = k\vec{\nu} + M\vec{t}^*$. Sea $\vec{t} \in \Z^{n-1}$ el vector resultante de redondear
-las entradas de $\vec{t}^*$ a sus enteros más cercanos. No es difícil ver que $\vec{x}
+% Ahora bien, por el teorema \ref{th:lattice} sabemos que las columnas de la matriz $M$ definida en
+% \eqref{eq:mat-T} son linealmente independientes, por lo que existe $\vec{t}^* \in \R^{n-1}$ tal que
+% $\vec{x}^* = k\vec{\nu} + M\vec{t}^*$.
+
+Por el teorema \ref{th:lattice}, existe $(k^*, \vec{t}^*) \in \R^n$ tal que $\vec{x}^* =
+k^*\vec{\nu} + M\vec{t}^*$, donde la matriz $M$ y el vector $\vec{\nu}$ están definidos,
+respectivamente, en \eqref{eq:vec-omega} y \eqref{eq:mat-T}. Habíamos supuesto que el algoritmo de
+R\&A tiene terminación finita, y entonces $\vec{x}^*$ se encuentra en la $k$-ésima capa entera, con
+parámetro $k \in \Z$. Se sigue de los lemas \ref{theory:lemma:utility}, \ref{lemma:iso1} y \ref{lemma:iso2}
+que
+\begin{equation*}
+	k = \vec{q}^T\vec{x}^* = k^*\vec{q}^T\vec{\nu} + \left(\vec{q}^TM\right)\vec{t}^* = k^*,
+\end{equation*}
+y entonces $\vec{x}^* = k\vec{\nu} + M\vec{t}^*$. Sea $\vec{t} \in \Z^{n-1}$ el vector resultante de
+redondear las entradas de $\vec{t}^*$ a sus enteros más cercanos. No es difícil ver que $\vec{x}
 \coloneq k\vec{\nu} + M\vec{t}$ es el punto entero sobre la $k$-ésima capa entera más cercano a
 $\vec{x}^*$. También es cierto que $\vec{t} = \vec{t}^* + \vec{\delta}$ para alguna $\vec{\delta}
 \in \R^{n-1}$ que satisface $0 < \norm{\vec{\delta}}_\infty \leq 1/2$. Luego,
@@ -550,24 +562,23 @@ $\vec{x}^*$. También es cierto que $\vec{t} = \vec{t}^* + \vec{\delta}$ para al
 	\big| \vec{e}_i^TM\left(\vec{t}^* - \vec{t}\right) \big| =
 	\big| \vec{e}_i^TM\vec{\delta} \big|.
 \end{equation}
-Juntando \eqref{eq:dembound} con \eqref{eq:numbound} obtenemos
+Dividiendo \eqref{eq:numbound} entre \eqref{eq:dembound} obtenemos
 \begin{equation}
 	\label{eq:bbound}
-	\bigg| \frac{x_i^* - x_i}{x_i^* - \big\lfloor x_i^*\big\rfloor} \bigg| =
 	\bigg| \frac{x_i^* - x_i}{x_i^* - \big\lceil x_i^*\big\rceil} \bigg|
 	\geq \big|\vec{e}_i^TM\vec{\delta}\big|.
 \end{equation}
 
-Entonces el número de decimales utilizados para expresar las entradas del vector objetivo $\vec{p}$ del problema
-\eqref{theory:formulation} afecta la eficiencia de estos cortes. En efecto, si usamos
-un decimal más para especificar las entradas de $\vec{p}$, su vector coprimo $\vec{q}$ se
-multiplica aproximadamente por 10. De \eqref{eq:mat-T} tenemos que las entradas de $M$ se
-multiplican aproximadamente por 10 y, por lo tanto, el lado derecho de \eqref{eq:bbound} es 10 veces mayor.
-Es decir, los cortes de R\&A se vuelven aproximadamente 10 más ineficientes al utilizar un decimal
-adicional. Aún más, la complejidad de Ramificación y Acotamiento es exponencial en el número de
-decimales utilizados para expresar $\vec{p}$. No obstante, es cierto que los cortes se vuelven más
-efectivos una vez que $\vec{x}^*$ se encuentra cerca de una solución entera, pues
-$\norm{\vec{\delta}}_\infty \approx 0$.
+Entonces el número de decimales utilizados para expresar las entradas del vector objetivo $\vec{p}$
+del problema \eqref{theory:formulation} afecta la eficiencia de estos cortes. En efecto, si usamos
+un decimal más para especificar las entradas de $\vec{p}$, su vector coprimo $\vec{q}$ se multiplica
+aproximadamente por 10. De \eqref{eq:mat-T} tenemos que las entradas de $M$ se multiplican
+aproximadamente por 10 y, por lo tanto, el lado derecho de \eqref{eq:bbound} es 10 veces mayor. Es
+decir, los cortes de R\&A se vuelven aproximadamente 10 más ineficientes al utilizar un decimal
+adicional. En conclusión, la complejidad de Ramificación y Acotamiento es exponencial en el número
+de decimales utilizados para expresar $\vec{p}$, pues R\&A requiere 10 veces más cortes por decimal
+adicional. No obstante, es cierto que los cortes se vuelven más efectivos una vez que $\vec{x}^*$ se
+encuentra cerca de una solución entera, pues $\norm{\vec{\delta}}_\infty \approx 0$.
 
 En la práctica no existen implementaciones puras de R\&A. Más bien, existe un
 ecosistema de módulos que combinan R\&A con otro tipo de generación de cortes, con la manera de
@@ -618,24 +629,25 @@ objetivo mostrar que los tiempos de terminación de R\&A son lentos y aumentan s
 cuando utilizamos más cifras decimales para especificar el vector objetivo $\vec{p}$ de
 \eqref{theory:formulation}.
 
-Así pues, generamos un vector $\vec{p}_3$ tomado de una distribución uniforme discreta sobre el
-intervalo $[9{,}000, 10{,}000)^n$. A este vector inicial lo dividimos por 1{,}000, de manera que sea un
-vector racional con tres cifras decimales. Escogimos aleatoriamente 2 de estas $n = 4$ entradas y
-las multiplicamos por $-1$, con lo que aseguramos que el vector coprimo $\vec{q}_3$ asociado a
-$\vec{p}_3$ tenga al menos una entrada negativa.
+Así pues, generamos un vector $\vec{p}_3$ tomado de una distribución uniforme discreta de enteros sobre el
+intervalo $[9{,}000, 10{,}000)^n$. A este vector inicial lo dividimos por 1{,}000, de manera que sea
+un vector racional con tres cifras decimales y entradas en $[9, 10)$. Escogimos aleatoriamente 2 de
+estas $n = 4$ entradas y las multiplicamos por $-1$, con lo que aseguramos que el vector coprimo
+$\vec{q}_3$ asociado a $\vec{p}_3$ tenga al menos una entrada negativa.
 
-Luego, muestreamos $n = 4$ observaciones de una distribución uniforme discreta sobre $[0, 10)$ y le
-concatenamos a cada entrada de $\vec{p}_3$ una de estas observaciones, por lo que obtenemos un
-vector racional $\vec{p}_4$ con cuatro cifras decimales. Repetimos una vez más el procedimiento
-anterior pero usando $\vec{p}_4$ para generar el vector racional $\vec{p}_5$ con cinco cifras
-decimales. Evidentemente, los vectores coprimos $\vec{q}_4$ y $\vec{q}_5$ asociados respectivamente
-a $\vec{p}_4$ y $\vec{p}_5$ tienen entradas negativas en los mismo lugares que $\vec{q}_3$.
+Luego, muestreamos $n = 4$ observaciones de una distribución uniforme discreta de enteros sobre $[0,
+10)$, las multiplicamos por $10^{-4}$ y sumamos cada observación a una entrada de $\vec{p}_3$, de
+manera que obtenemos un vector racional $\vec{p}_4$ con cuatro cifras decimales. Repetimos una vez
+más el procedimiento anterior pero usando $\vec{p}_4$ para generar el vector racional $\vec{p}_5$
+con cinco cifras decimales. Evidentemente, los vectores coprimos $\vec{q}_4$ y $\vec{q}_5$ asociados
+respectivamente a $\vec{p}_4$ y $\vec{p}_5$ tienen entradas negativas en los mismo lugares que
+$\vec{q}_3$.
 
-En último lugar, para obtener el lado derecho de \eqref{theory:constraint:budget}, calculamos $N = 128$
-puntos enteros espaciados logarítmicamente en el intervalo $[10^3, 10^7)$. En la figura
-\ref{fig:exp:inf:rhs} se muestran los tiempos de terminación promedio de las 20 corridas. Las
-rupturas de continuidad en las líneas son causadas porque R\&A no encontró una solución antes del
-límite de 300 segundos.
+En último lugar, para obtener el lado derecho de \eqref{theory:constraint:budget}, calculamos 128
+puntos $u \in \Z_{\geq 0}$ espaciados aproximadamente logarítmicamente en el intervalo $[10^3,
+10^7)$. En la figura \ref{fig:exp:inf:rhs} se muestran los tiempos de terminación promedio de las 20
+corridas. Las rupturas de continuidad en las líneas son causadas porque R\&A no encontró una
+solución antes del límite de 300 segundos.
 
 \begin{figure}[hbtp]
   \centering
@@ -660,20 +672,22 @@ Por los resultados obtenidos en las dos subsecciones anteriores, no sorprende qu
 precisión numérica del vector objetivo $\vec{p}$. Esto solo muestra que los tiempos de terminación
 de R\&A son lentos para instancias de \eqref{theory:formulation}.
 
-En realidad, nos interesa mostrar la inestabilidad numérica de R\&A a medida que la precisión del
-vector objetivo $\vec{p}$ aumenta. Para ello, fijamos una de las $N = 128$ instancias y dividimos el
-tiempo de terminación usando $\vec{p}_4$ entre el correspondiente tiempo usando $\vec{p}_3$; si
-R\&A no encontró una solución en cualesquiera de los dos problemas, nos deshacemos de este
-dato. Realizamos el mismo procedimiento entre $\vec{p}_5$ y $\vec{p}_4$.
-
-Denominamos como multiplicadores a las razones anteriores, pues representan el factor de aumento en
-los tiempos de terminación de R\&A cuando utilizamos una cifra decimal adicional. La figura
-\ref{fig:exp:inf:hist} muestra la distribución de estos multiplicadores, donde los recortamos a un
-máximo de 100. En realidad, el multiplicador más grande fue aproximadamente 5{,}422.
+En realidad nos interesa mostrar la sensibilidad en los tiempos de terminación de R\&A a medida que
+la precisión del vector objetivo $\vec{p}$ aumenta. Es decir, si $T(\vec{p}_i)$ es el tiempo de
+terminación de R\&A con una instancia usando el vector esencialmente entero $\vec{p}_i$ que tiene
+$i$ cifras decimales, entonces queremos medir la proporción $T(\vec{p}_{i+1}) /
+T(\vec{p}_i)$. Denominamos como multiplicadores a las razones anteriores, pues representan el factor
+de aumento en los tiempos de terminación de R\&A cuando utilizamos una cifra decimal adicional.
+Puesto que cada instancia depende del presupuesto $u$ de la restricción
+\eqref{theory:constraint:budget} y tomamos 128 de estos presupuestos por cada nivel de precisión
+$i$, obtenemos $128 \times (3 - 1) = 256$ multiplicadores registrados. La figura
+\ref{fig:exp:inf:hist} muestra la distribución de estos multiplicadores, donde recortamos cada
+multiplicador para que el máximo fuera 100, pues observamos que el más grande entre estos fue
+aproximadamente 5{,}422.
 
 De acuerdo a la subsección anterior, deberíamos esperar que la gran mayoría de los multiplicadores
-se concentren alrededor de 10. Esto último ocurrió en el 40\% de los casos. Después de un conteo en
-los archivos de registro generados por el \textit{solver} CBC, el autor descubrió que en
+se concentren alrededor de 10. Esto último ocurrió en el 40\% de los casos. Después de realizar un
+conteo en los archivos de registro generados por el \textit{solver} CBC, el autor descubrió que en
 \textbf{todos} los casos que R\&A encontró una solución fue a causa de una heurística y no por el
 método de ramificación. Por la dificultad del árbol que genera el problema
 \eqref{theory:formulation}, de acuerdo a la subsección anterior, esto parece ser razonable.
@@ -691,8 +705,19 @@ desarrollo del segundo caso del teorema \ref{theory:th:feasibility}. Es decir, e
 analiza a profundidad el caso finito.
 
 \begin{figure}[hbtp]
-	\centering
-    \includegraphics[width=0.9\linewidth]{/home/tempdata/repos/thesis/static/inf/mult-hist-cum.pdf}
-	\caption{Distribución acumulada de los multiplicadores de tiempo.}
-	\label{fig:exp:inf:hist}
+  \centering
+  \begin{subfigure}{0.80\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/mult-hist-cum-sep.pdf}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.80\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/mult-hist-cum.pdf}
+  \end{subfigure}
+
+  \caption{Distribución acumulada de los multiplicadores de tiempo. \textit{Arriba:} Separados por
+  el número de cifras decimales utilizadas. \textit{Abajo:} Distribución conjunta sin tomar en
+	cuenta el número de cifras decimales utilizadas.}
+  \label{fig:exp:inf:hist}
 \end{figure}
