@@ -35,7 +35,7 @@ de los algoritmos \ref{algo:fin:helper} (pág.~ \pageref{algo:fin:helper}) y
 
 Finalmente, en la tercera y última sección de este capítulo, realizamos algunos experimentos
 numéricos que comparan la eficacia de nuestros algoritmos recién desarrollados con la de
-Ramificación y Acotamiento, así como de una formulación alternativa de programación dinámica.
+Ramificación y Acotamiento, así como de una formulación programación dinámica.
 
 \section{Análisis de capas enteras}
 \noindent
@@ -1023,11 +1023,11 @@ encontrar una solución.
 	negativas.
 \end{theorem}
 \begin{proof}
-	Consideremos el símplice $\sigma$ generado por los vectores en \eqref{def:u-basis}.
-	Por el teorema \ref{th:intsimplex} existe un punto entero no negativo $\vec{x} \in \sigma$, y
-	esto implica que $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ por el lema \ref{lemma:sigmachar1}.
-	Luego, por el lema \ref{theory:lemma:utility}, $\vec{x}$ satisface la ecuación lineal diofantina
-	$\vec{q}^T\vec{x} = k$.
+	Consideremos el símplice $\sigma$ generado por los vectores en \eqref{def:u-basis}. Por el
+	teorema \ref{th:intsimplex} existe un punto entero $\vec{x} \in \sigma$, lo cual implica que
+	$\vec{x} \geq \vec{0}$ y además $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ por el lema
+	\ref{lemma:sigmachar1}. Luego, por el lema \ref{theory:lemma:utility}, $\vec{x}$ satisface la
+	ecuación lineal diofantina $\vec{q}^T\vec{x} = k$.
 \end{proof}
 \begin{theorem}
 	\label{th:intnonneg2}
@@ -1066,9 +1066,8 @@ bien interesante, queda fuera del propósito de esta tesis.
 
 En último lugar, mencionamos que eventualmente es suficiente con revisar la primera capa entera. No
 hemos demostrado, empero, que el número de capas enteras a revisar eventualmente decrece en cuanto
-el presupuesto $u$ aumenta. Observaremos en el análisis de resultados que hay un patrón periódico y
-decreciente en cuanto al número de capas enteras revisadas. Demostrar, en cambio, que este
-comportamiento siempre se cumple es mucho más difícil y queda fuera del propósito de esta tesis.
+el presupuesto $u$ aumenta. Demostrar que este comportamiento siempre se cumple es mucho más difícil
+y,  queda fuera del propósito de esta tesis.
 
 \section{Construcción de soluciones}
 \label{subsec:complex}
@@ -1082,7 +1081,7 @@ entera no negativa de la ecuación lineal diofantina $\vec{q}^T\vec{x} = k$ para
 donde $\eta$ es tomada del lema \ref{phase-1:lemma:eta}.
 
 En esta sección presentamos los algoritmos \ref{algo:fin:helper} y \ref{algo:fin:dioph} (páginas
-\pageref{algo:fin:helper} y \ref{algo:fin:dioph}, respectivamente), los cuales
+\pageref{algo:fin:helper} y \pageref{algo:fin:dioph}, respectivamente), los cuales
 se encargan de obtener estas soluciones enteras no negativas que tanto buscamos. Consecuentemente,
 estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
 
@@ -1434,8 +1433,8 @@ Sea $f_m(\hat{u})$ el valor óptimo de \eqref{theory:formulation} cuando el lado
 primeras $m$ entradas de $\vec{p}$, con lo que obtenemos un problema de dimensión $1 \leq m \leq n$.
 Proponemos la formulación dinámica
 \begin{subequations}
+	\label{formulation:dp}
 	\begin{align}
-		\label{formulation:dp}
 		f_1(\hat{u}) &\coloneq \floor{\hat{u}/p_1}p_1, \label{dp:base} \\
 		f_m(\hat{u}) &\coloneq \begin{cases}
 			f_{m-1}(\hat{u}), & \hat{u} < p_m, \\
@@ -1450,23 +1449,23 @@ consiste en realizar una inducción lexicográfica sobre el conjunto de tuplas $
 \vcentcolon 1 \leq m \leq n, 0 \leq \hat{u} \leq u}$. Si $m = 1$, se sigue inmediatamente que
 \eqref{dp:base} es el valor óptimo para todo presupuesto $0 \leq \hat{u} \leq u$. Ahora bien,
 supongamos inductivamente que $f_{m-1}(\hat{u})$ es el valor óptimo para alguna $m > 1$ y para todo
-$0 \leq \hat{u} \leq u$.
-Si $\hat{u} < p_m$, entonces $f_{m-1}(\hat{u})$ es el valor óptimo, pues $p_m > 0$
-y buscamos una solución no negativa. De \eqref{dp:rec} se sigue que $f_m(\hat{u})$ es el valor
-óptimo para todo $0 \leq \hat{u} < p_m$. Luego, aprovechando la hipótesis inductiva sobre $m$ junto
-este último punto, podemos utilizar un argumento fuertemente inductivo sobre $\hat{u}$ para mostrar
-que $f_m(\hat{u})$ también es el valor óptimo para todo $p_m \leq \hat{u} \leq u$. De esta manera
-encontramos que si $f_{m - 1}(\hat{u})$ es el valor óptimo para todo $0 \leq \hat{u} \leq u$,
-entonces $f_m(\hat{u})$ también lo es. Por el caso base $m = 1$ tenemos entonces que $f_m(\hat{u})$
-es el valor óptimo para todo $1 \leq m \leq n$ y para todo $0 \leq \hat{u} \leq u$.
+$0 \leq \hat{u} \leq u$. Si $\hat{u} < p_m$, entonces $f_{m-1}(\hat{u})$ es el valor óptimo, pues
+$p_m > 0$ y buscamos una solución no negativa. De \eqref{dp:rec} se sigue que $f_m(\hat{u})$ es el
+valor óptimo para todo $0 \leq \hat{u} < p_m$. Luego, aprovechando la hipótesis inductiva sobre $m$
+junto este último punto como caso base, podemos utilizar un argumento fuertemente inductivo sobre
+$\hat{u}$ para mostrar que $f_m(\hat{u})$ también es el valor óptimo para todo $p_m \leq \hat{u}
+\leq u$. De esta manera encontramos que si $f_{m - 1}(\hat{u})$ es el valor óptimo para todo $0 \leq
+\hat{u} \leq u$, entonces $f_m(\hat{u})$ también lo es. Por el caso base $m = 1$ tenemos entonces
+que $f_m(\hat{u})$ es el valor óptimo para todo $1 \leq m \leq n$ y para todo $0 \leq \hat{u} \leq
+u$.
 
 Finalmente, para obtener el valor óptimo de \eqref{theory:formulation}, debemos calcular $f_n(u)$,
 lo cual implica calcular, en el peor de los casos, $f_m(\hat{u})$ para todo $1 \leq m \leq n$ y para
 todo $0 \leq \hat{u} \leq u$. Se desprende que el costo de calcular $f_n(u)$ es $\mathcal{O}(nu)$.
 No obstante, ambos R\&A y los métodos diofantinos (\texttt{dioph\_left} y \texttt{dioph\_right})
-terminan con la solución óptima, así que la implementación realizada por el autor de esta
-formulación dinámica incluye una manera de construir la solución, a pesar del costo adicional en
-eficiencia, el cual es $\mathcal{O}(u)$.
+terminan con la solución óptima y no solo el valor óptimo, así que la implementación realizada por
+el autor de esta formulación dinámica incluye una manera de construir la solución, a pesar del costo
+adicional en eficiencia, el cual es $\mathcal{O}(u)$.
 
 \subsection{Experimentos en la dimensión}
 \label{subsec:exp:fin:n}
@@ -1484,7 +1483,7 @@ es tal que $q_j = 1$ , entonces obtenemos la solución trivial
 \end{equation*}
 Esto se vuelve aún más trivial para nuestro método cuando ordenamos las entradas de $\vec{q}$ de
 manera ascendente. En términos del vector objetivo $\vec{p}$, esto se traduce a que no debe existir una
-entrada $p_i$ tal que todas las entradas que le sigan sean múltiplo de $p_i$. De caso contrario,
+entrada $p_i$ tal que todas las entradas que le sigan sean múltiplos de $p_i$. De caso contrario,
 tendremos $g_{i + 1} = p_i$ y por lo tanto $q_i = 1$.
 
 En segundo lugar, es posible mostrar que todo problema \eqref{theory:formulation} tiene una
@@ -1555,7 +1554,7 @@ mitad de los coeficientes de variación de R\&A estuvo por debajo del 1\%.
 A pesar de que FD sea, en términos prácticos, igual de estable que los métodos diofantinos, no
 debemos olvidar que FD no encontró una solución en el 61\% de los experimentos realizados.
 
-\begin{table}[ht]
+\begin{table}[Ht]
 	\centering
 	\sisetup{round-precision=2}
 
@@ -1614,7 +1613,7 @@ debemos olvidar que FD no encontró una solución en el 61\% de los experimentos
 	\label{table:fin:mt:times}
 \end{table}
 
-\begin{table}[hbtp]
+\begin{table}[Ht]
 	\centering
 	\sisetup{round-precision=3}
 	\setlength{\tabcolsep}{3pt}\renewcommand{\arraystretch}{1.1}

@@ -98,7 +98,7 @@ por ejemplo, que $a_{n-1}$ y $a_n$ sean ambos cero y entonces $\gcd{a_{n-1}, a_n
 Para que esta manera de definir el máximo común divisor sea equivalente a la definición
 \ref{prerreq:def:gcd}, deberemos presuponer o bien que $a_{n - 1} \neq 0$ o bien que $a_n \neq 0$. A
 partir de este punto usaremos ambas definiciones de manera indistinta. Independientemente de qué
-definición usemos, la manera de calcular el máximo común divisor siempre es a través del Algoritmo
+definición usemos, la manera de calcular el máximo común divisor siempre es a través del algoritmo
 de Euclides.
 
 \begin{observation}
@@ -162,7 +162,7 @@ donde deseamos determinar enteros $x_1, \ldots, x_n$ que satisfagan
 \end{equation*}
 Será de nuestro interés en las siguientes secciones resolver iterativamente este tipo de ecuaciones.
 Por el momento basta mencionar que podemos enfocarnos en el caso $n = 2$ sin ninguna pérdida de
-generalidad. No obstante, los resultados se mantienen para cualquier $n \in \N$.
+generalidad. No obstante, los resultados se mantienen para cualquier $n \in \N_{\geq 2}$.
 
 Los siguientes enunciados abordan el problema de determinar la existencia de soluciones para este
 tipo de ecuaciones, así como de construir estas soluciones.
@@ -179,7 +179,7 @@ solución particular.
 	Sea $d \coloneq \gcd{a, b}$ y sean $x', y'$ enteros tales que $ax' + by' = d$ (c.f. teorema
 	\ref{prerreq:th:bezout}). Decimos entonces que $x', y'$ son \textbf{coeficientes de Bézout} asociados a
 	$a$ y $b$, respectivamente\footnote{
-		Los coeficientes de Bézout se pueden calcular a través del Algoritmo Extendido de Euclides.
+		Los coeficientes de Bézout se pueden calcular a través del algoritmo extendido de Euclides.
 		Véase \url{https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm}.
 	}.
 \end{definition}
@@ -272,7 +272,7 @@ soluciones de estos programas enteros.
 	Todo poliedro $P$ definido de esta manera representa la intersección de $m$ semi-espacios
 	afinos. Esto se debe a que $A\vec{x} \geq \vec{b}$ si y solo si $\vec{a}_i^T\vec{x} \geq b_i$
 	para toda $1 \leq i \leq m$ y donde $\vec{a}_i^T$ representa el $i$-ésimo renglón de la matriz
-	$A$. En la Figura \ref{fig:hyp} se muestra visualmente esta relación entre hiperplanos afinos y
+	$A$. En la Figura \ref{fig:hyp} se muestra visualmente esta relación entre semi-espacios afinos y
 	poliedros.
 \end{observation}
 
@@ -438,7 +438,7 @@ Observemos que, si decidimos recorrer todos los nodos del árbol binario, entonc
 resolver al menos $2^n$ subproblemas, donde $n$ es la dimensión del problema lineal. Por esta razón,
 el algoritmo cuenta con políticas para deshacerse de subárboles que nunca proveerán la solución
 óptima. El autor considera que es mejor ilustrar estas políticas a partir de un ejemplo. El
-Algoritmo \ref{algo:bb} en el Apéndice \ref{app:bb} presenta una versión rudimentaria del método de
+algoritmo \ref{algo:bb} en el apéndice \ref{app:bb} presenta una versión rudimentaria del método de
 Ramificación y Acotamiento.
 
 \begin{example}[\cite{fabs}]
@@ -1356,10 +1356,8 @@ $\vec{q}$ y no de $\vec{x}$.
 	$\qlayer{q}{k}$ que contiene a $\vec{x}$. Así, por el lema
 	\ref{theory:lemma:utility}, $\vec{x}$ satisface la
 	ecuación lineal diofantina $\vec{q}^T\vec{x} = k$.
-	Por construcción en la subsección
-	\ref{subsec:dioph-eq} y por la exhaustividad del teorema \ref{prerreq:th:construction}
-	sabemos que existe $\vec{t} \in \Z^{n-1}$ tal que $\vec{x} = k\vec{\nu} + M\vec{t}$. Luego,
-	por el lema \ref{lemma:iso1}, tenemos
+	Por la proposición \ref{prop:xint} sabemos que existe $\vec{t} \in \Z^{n-1}$ tal que $\vec{x} =
+	k\vec{\nu} + M\vec{t}$. Luego, por el lema \ref{lemma:iso1}, tenemos
 	\begin{equation*}
 		k = \vec{q}^T\vec{x} = k \vec{q}^T\vec{\nu} + \vec{q}^TM\vec{t} = k +
 		(\vec{q}^TM)\vec{t}.
@@ -1402,7 +1400,7 @@ caracterizarlos por medio de $\vec{q}$.
 		\Z^n = \lbrace \lambda_1\vec{e}_1 + \cdots + \lambda_n\vec{e}_n \vcentcolon \lambda_i \in
 		\Z \rbrace.
 	\end{equation*}
-	De esta, manera $\Z^n$ es una red que tiene como base canónica a los vectores $\vec{e}_1,
+	De esta manera, $\Z^n$ es una red que tiene como base canónica a los vectores $\vec{e}_1,
 	\ldots, \vec{e}_n$.
 \end{example}
 
@@ -1414,7 +1412,7 @@ caracterizarlos por medio de $\vec{q}$.
 \end{theorem}
 \begin{proof}
 	En el lema \ref{lemma:iso2} mostramos que las columnas de $M$ son linealmente independientes.
-	Mostramos por contradicción que $\vec{\nu}$ es linealmente independiente de las columnas de
+	Ahora mostramos por contradicción que $\vec{\nu}$ es linealmente independiente de las columnas de
 	$M$, así que supongamos que no lo es, por lo que existen escalares $\lambda_1, \ldots,
 	\lambda_{n-1}$ tales que
 	\begin{equation*}
@@ -1431,9 +1429,8 @@ caracterizarlos por medio de $\vec{q}$.
 
 	Ahora bien, sea $\vec{x} \in \Z^n$, por el teorema \ref{phase-1:th:cover}, sabemos que $\vec{x}
 	\in \qlayer{q}{k}$ para alguna $k \in \Z$. Por el lema \ref{theory:lemma:utility}, $\vec{x}$
-	satisface la ecuación lineal diofantina $\vec{q}^T\vec{x} = k$. Por construcción en la
-	subsección \ref{subsec:dioph-eq} y por la exhaustividad del teorema
-	\ref{prerreq:th:construction} sabemos que existe $\vec{t} \in \Z^{n-1}$ que satisface
+	satisface la ecuación lineal diofantina $\vec{q}^T\vec{x} = k$. Por la proposición
+	\ref{prop:xint} sabemos que existe $\vec{t} \in \Z^{n-1}$ que satisface
 	\begin{equation*}
 		\vec{x} = k\vec{\nu} + M\vec{t} = k\vec{\nu} + t_1\vec{m}_1 + \cdots +
 		t_{n-1}\vec{m}_{n-1}.
@@ -1581,7 +1578,7 @@ coprimo en vez del vector esencialmente entero $\vec{p}$ en el problema original
 \end{definition}
 \begin{lemma}
 	\label{lemma:orb}
-	Sean $\vec{q}, \tvec{q} \in \Z^n$ vectores coprimos con entradas distintas de cero. Entonces
+	Sean $\vec{q}, \tvec{q} \in \Z^n$ vectores con entradas coprimas distintas de cero. Entonces
 	$\tvec{q} \in \orb(\vec{q})$ si y solo si $\orb(\tvec{q}) = \orb(\vec{q})$.
 \end{lemma}
 \begin{proof}
@@ -1601,7 +1598,7 @@ coprimo en vez del vector esencialmente entero $\vec{p}$ en el problema original
 
 \begin{lemma}
 	\label{lemma:isoclass}
-	Sea $\vec{q} \in \Z^n$ un vector coprimo con entradas distintas de cero y sea $\tvec{q} \in
+	Sea $\vec{q} \in \Z^n$ un vector con entradas coprimas distintas de cero y sea $\tvec{q} \in
 	\orb(\vec{q})$. Entonces las redes $\tilde{\Lambda}_h$ y $\Lambda_h$ definidas en \eqref{eq:dec}
 	son isomorfas. Similarmente, las redes $\tilde{\Lambda}_p$ y $\Lambda_p$ son isomorfas.
 \end{lemma}
@@ -1663,13 +1660,14 @@ vectores esencialmente enteros, independientemente de su dimensión.
 
 Con esta definición y el teorema \ref{th:isoclass} encontramos que si los vectores esencialmente
 enteros $\vec{p} \in \R^n$ y $\tvec{p} \in \R^{m}$ son equivalentes, entonces el programa lineal
-\eqref{theory:formulation} es esencialmente el mismo.
+\eqref{theory:formulation} es esencialmente el mismo. En conclusión, encontramos una suerte de
+clasificación de este tipo de programas lineales. Hemos visto que el único representante importante
+para resolver estos problemas es el múltiplo coprimo $\vec{q} \in \Z^n$ o, más bien, una proyección
+de este de manera que no tenga entradas nulas.
 
-En conclusión, encontramos una suerte de clasificación de este tipo de programas lineales. Hemos
-visto que el único representante importante para resolver estos problemas es el múltiplo coprimo
-$\vec{q} \in \Z^n$ o, más bien, una proyección de este de manera que no tenga entradas nulas.
-Solamente cuando querramos relacionar los resultados con una instancia específica del problema
-\eqref{theory:formulation} haremos mención del vector esencialmente entero $\vec{p} \in \R^n$.
+
+% Solamente cuando querramos relacionar los resultados con una instancia específica del problema
+% \eqref{theory:formulation} haremos mención del vector esencialmente entero $\vec{p} \in \R^n$.
 
 % También definamos el grupo de permutaciones en $n$ letras como
 % \begin{equation*}

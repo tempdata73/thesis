@@ -179,7 +179,7 @@ factibilidad
 Puesto que $H \in \Z^{m \times m}$ es no singular, para cada $k \in \Z$, existe una única solución
 $\tvec{y}_m \in \R^m$ del sistema de ecuaciones $H\tvec{y}_m = \vec{b} - kA\vec{\nu}$. Como, además, $H$
 es triangular inferior, podemos resolver rápidamente este sistema de ecuaciones y verificar si, para
-cada $k \in \Z$, la correspondiente solución $\tvec{y}_m$ es entera o no.
+cada $k \leq \eta$ entera, la correspondiente solución $\tvec{y}_m$ es entera o no.
 
 % \begin{observation}
 % 	Para que $F$ sea no vacío, debe existir $k \in \Z$ tal que $\det(H) \mid (k\vec{a}_j^T
@@ -537,24 +537,27 @@ restricción $\tau \leq \vec{q}^T\vec{x} \leq \eta$ es válida para el programa 
 	\end{align}
 \end{subequations}
 
-En primer lugar, si $\eta = \infty$, entonces el problema relajado es no acotado y no tiene sentido
-usar el pseudocódigo \eqref{algo:multiple} para buscar una solución de este problema. Esta estrategia
-es de igual manera usada por todo \textit{solver} de código libre o comercial antes de tan siquiera
-buscar una solución.
+En primer lugar, si $\eta = \infty$, entonces el problema relajado es no acotado. En el teorema 1 de
+\cite{goldman} se demuestra que si esto ocurre y además las entradas de $A$, de $\vec{b}$ y de
+$\vec{q}$ son todas racionales, entonces el programa lineal entero o es infactible o es no acotado.
+Como tenemos integralidad de $A$ y de $\vec{b}$ por suposición, así como integralidad de $\vec{q}$
+por la definición \ref{theory:def:rational}, no tiene sentido usar el pseudocódigo
+\ref{algo:multiple} para buscar una solución de este problema, independientemente de que el
+problema sea infactible o no acotado.
 
 En segundo lugar, si $\tau = -\infty$ y $\eta < \infty$, entonces el problema
 \eqref{formulation:last} es factible y representa exactamente el mismo problema que
 \eqref{formulation:multiple}. En este caso, como lo hemos discutido, siempre saldremos del ciclo
 infinito en la línea \ref{algo:mult:infloop}, por lo que el método delineado por el pseudocódigo
-\eqref{algo:multiple} eventualmente terminará con una solución de este problema.
+\ref{algo:multiple} eventualmente terminará con una solución de este problema.
 
 Finalmente, si $-\infty < \tau \leq \eta < \infty$ nos encontramos en la situación ideal. Esto
 se debe a que podemos reemplazar el ciclo en la línea \ref{algo:mult:infloop} por algo del estilo
 ``\texttt{para} $k \leftarrow \eta$ \texttt{a} $\tau$ \texttt{hacer}...''. Es decir, sabemos exactamente
 cuántas capas enteras debemos recorrer para que el método delineado por el pseudocódigo
-\eqref{algo:multiple} termine. Observemos que, en este caso, existe la posibilidad de que $P \neq
+\ref{algo:multiple} termine. Observemos que, en este caso, existe la posibilidad de que $P \neq
 \emptyset$ pero $P \cap \Z^n = \emptyset$. Sin realizar modificaciones grandes al pseudocódigo
-\eqref{algo:multiple}, encontramos que, o bien termina con una solución $\vec{x}^*$ del problema
+\ref{algo:multiple}, encontramos que, o bien termina con una solución $\vec{x}^*$ del problema
 \eqref{formulation:last}, o bien certifica en $\eta - \tau + 1$ pasos que este problema es infactible.
 
 Cabe mencionar que en la subsección \eqref{subsec:lp} indicamos que existen diversos algoritmos

@@ -4,18 +4,19 @@
 \label{app:bb}
 
 \noindent
-El Algoritmo \ref{algo:bb} presenta una versión rudimentaria del algoritmo de ramificación y
-acotamiento. El rendimiento de este método depende en gran parte de la elección del subproblema
-\eqref{p1c9:alg:BB_loop} pues partir de su solución podemos obtener cotas que nos permitan podar
+El algoritmo \ref{algo:bb} presenta una versión rudimentaria Ramificación y
+Acotamiento. El rendimiento de este método depende en gran parte de la elección del subproblema en
+la línea
+\ref{p1c9:alg:BB_loop}, pues partir de su solución podemos obtener cotas que nos permitan podar
 subárboles lo más pronto posible. En la práctica, también debemos tomar en cuenta estrategias de
 selección que permitan paralelizar la solución de los problemas relajados, o que minimicen la
 sobrecarga computacional de ``saltar'' de un subproblema a otro.
 
 Además del problema de selección de los nodos, también se encuentra el de creación de estos nodos.
-En la línea \eqref{p1c9:alg:branch} ramificamos $S_i$ usando una de las técnicas más básicas: elegir
+En la línea \ref{p1c9:alg:branch} ramificamos $S_i$ usando una de las técnicas más básicas: elegir
 $x_j^i$ fraccionario y generar $S_{i0}$, $S_{i1}$ a partir de los cortes válidos $x_j \leq
 \floor{x_j^i}$ y $x_j \geq \ceil{x_j^i}$. En realidad, existen muchas otras estrategias de corte,
-tales como los cortes de Gomory, cortes SOS1, cortes de pseudo costos, cortes fuertes, cortes de
+tales como los cortes de Gomory-Chvátal, cortes SOS1, cortes de pseudo costos, cortes fuertes, cortes de
 mochila, etcétera.
 
 Implementaciones comerciales y de código abierto extienden el algoritmo de Ramificación y

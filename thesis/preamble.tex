@@ -28,6 +28,19 @@
 \usepackage{cleveref}
 
 \usepackage{epigraph}
+\renewcommand{\epigraphsize}{\footnotesize}
+
+\usepackage{nomencl}
+\makenomenclature
+\renewcommand{\nomname}{Nomenclatura}
+\renewcommand{\pagedeclaration}[1]{\dotfill página~#1}
+\usepackage{etoolbox}
+\renewcommand\nomgroup[1]{%
+  \item[\bfseries
+  \ifstrequal{#1}{A}{Abreviaciones}{%
+  \ifstrequal{#1}{B}{Símbolos reservados}{%
+  \ifstrequal{#1}{C}{Convenciones}{}}}%
+]}
 
 % tables
 \usepackage{booktabs, tabularx, siunitx, subcaption}

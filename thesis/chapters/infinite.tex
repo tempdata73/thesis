@@ -10,7 +10,9 @@ de generalidad, que $m$ es positivo.
 Retomemos el entero $\eta \in \Z$ del lema \ref{phase-1:lemma:eta} que parametriza la primera capa
 entera que satisface el presupuesto \eqref{theory:constraint:budget}. A causa del teorema
 \ref{theory:th:feasibility}, sabemos que si $q_i < 0$ para alguna $i \in \braces{1, \ldots, n}$,
-entonces la $\eta$-ésima capa entera contiene un número infinito de puntos factibles.
+entonces la $\eta$-ésima capa entera contiene un número infinito de puntos factibles. No es difíci
+ver, a través del lema \ref{theory:lemma:utility}, que estos puntos factibles también son soluciones
+óptimas.
 
 \begin{corollary}
 	\label{cor:inf:obj}
@@ -20,7 +22,7 @@ entonces la $\eta$-ésima capa entera contiene un número infinito de puntos fac
 	el lado derecho de la restricción presupuestaria \eqref{theory:constraint:budget}.
 \end{corollary}
 \begin{proof}
-	Por hipótesis, una entrada de $\vec{q}$ es negativa. Del segundo caso del teorema
+	Por hipótesis, una entrada de $\vec{q}$ es negativa. Del teorema
 	\ref{theory:th:feasibility} sabemos que existen una infinidad de soluciones en la $\eta$-ésima
 	capa entera, así que sea $\vec{x}^*$ una de ellas. Por el lema \ref{theory:lemma:utility} se
 	sigue que $\vec{q}^T\vec{x}^* = \eta$, pero $\vec{p} = m\vec{q}$ por la definición
@@ -53,7 +55,7 @@ Puesto que somos capaces de decidir si un escalar $u^*$ es el valor óptimo del 
 \eqref{theory:formulation}, nos preguntamos ahora cómo obtener la solución óptima.
 
 Por hipótesis de este capítulo, el vector coprimo $\vec{q}$ tiene al menos una entrada negativa. Del
-segundo caso del teorema \ref{theory:th:feasibility}, sabemos que las infinitas soluciones de
+teorema \ref{theory:th:feasibility}, sabemos que las infinitas soluciones de
 \eqref{theory:formulation} se encuentran en la $\eta$-ésima capa entera. Luego, del lema
 \ref{theory:lemma:utility} tenemos que estas soluciones satisfacen la ecuación lineal diofantina
 $\vec{q}^T\vec{x} = \eta$.
@@ -297,8 +299,8 @@ estándar en la literatura.
 	cierto que $\tilde{q}_1 > 0$. A partir de la transposición en la línea \ref{alg:subr:switch1}
 	encontramos que $\tilde{q}_m > 0$.
 
-	Del ciclo en la línea \ref{alg:inf:loop} recuperamos el primer índice $j$ tal que $\tilde{q}_j < 0$ y
-	lo transponemos con la $(m - 1)$-ésima entrada de $\tvec{q}$ en la línea
+	Del ciclo que comienza en la línea \ref{alg:inf:loop} recuperamos el primer índice $j$ tal que
+	$\tilde{q}_j < 0$ y lo transponemos con la $(m - 1)$-ésima entrada de $\tvec{q}$ en la línea
 	\ref{alg:subr:switch3}, de manera que obtenemos $\tilde{q}_{m-1} < 0$.
 
 	Con los tres puntos anteriores, encontramos que el vector $\tvec{q}$ satisface las
@@ -306,7 +308,7 @@ estándar en la literatura.
 	y satisface la ecuación lineal diofantina $\tvec{q}^T\tvec{x} = \eta$.
 
 	Las siguientes dos líneas se encargan de invertir las transposiciones hechas previamente.
-	Finalmente, en el ciclo de la línea \ref{alg:inf:loop2} insertamos en $\vec{x}$ las entradas $i$
+	Finalmente, en el ciclo que comienza en la línea \ref{alg:inf:loop2} insertamos en $\vec{x}$ las entradas $i$
 	de $\tvec{x}$ donde $q_{\sigma_i} \neq 0$. En otro caso tenemos $x_i = 0$. Así pues, el vector
 	$\vec{x} \in \Z^n$ es no negativo y también satisface
 	\begin{equation*}
@@ -431,7 +433,7 @@ terminación de este método.
 
 	En la figura \ref{fig:infrec} se muestra el poliedro asociado a $S_{011}$. Observemos que este poliedro es
 	una traslación del asociado a $S_0$. En otras palabras, $S_{011}$ es un caso particular de una
-	homotecia de $S_{011}$. Consecuentemente, hay un comportamiento
+	homotecia de $S_{0}$. Consecuentemente, hay un comportamiento
 	periódico en cuanto a la ramificación y solución de estos problemas: resolver $S_{011}$ se
 	reduce a resolver $S_0$, pero el primero es un subproblema del segundo. Siguiendo este
 	razonamiento, encontramos que R\&A genera la cadena de subproblemas autosimilares
@@ -497,10 +499,12 @@ terminación de este método.
 
 El autor sospecha que el fenómeno presentado en el ejemplo \ref{ex:inf} ocurre en todas las
 instancias de \eqref{theory:formulation} cuando $\vec{p}$ es esencialmente entero y el lado derecho
-de \eqref{theory:constraint:budget} no es entero. En particular, para problemas de este tipo existe
-una colección de subproblemas homotéticos entre sí. Además, si el vector coprimo $\vec{q}$ de
-$\vec{p}$ tiene una entrada negativa, entonces esta colección es infinita. Por cuestiones de
-longitud de esta tesis, no investigamos más en este respecto.
+$u$ de \eqref{theory:constraint:budget} es tal que $u/m \not\in \Z$, donde $m$ es el escalar que
+satisface $\vec{p} = m\vec{q}$, y donde $\vec{q}$ es el múltiplo coprimo de $\vec{p}$. En
+particular, para problemas de este tipo existe una colección de subproblemas homotéticos entre sí.
+Además, si el vector coprimo $\vec{q}$ de $\vec{p}$ tiene una entrada negativa, entonces esta
+colección es infinita. Por cuestiones de longitud de esta tesis, no investigamos más en este
+respecto.
 
 Para que una implementación pura de Ramificación y Acotamiento termine en tiempo finito al resolver
 una de estas instancias, debe ser el caso que el valor óptimo del problema relajado de
@@ -675,15 +679,15 @@ de R\&A son lentos para instancias de \eqref{theory:formulation}.
 En realidad nos interesa mostrar la sensibilidad en los tiempos de terminación de R\&A a medida que
 la precisión del vector objetivo $\vec{p}$ aumenta. Es decir, si $T(\vec{p}_i)$ es el tiempo de
 terminación de R\&A con una instancia usando el vector esencialmente entero $\vec{p}_i$ que tiene
-$i$ cifras decimales, entonces queremos medir la proporción $T(\vec{p}_{i+1}) /
-T(\vec{p}_i)$. Denominamos como multiplicadores a las razones anteriores, pues representan el factor
-de aumento en los tiempos de terminación de R\&A cuando utilizamos una cifra decimal adicional.
-Puesto que cada instancia depende del presupuesto $u$ de la restricción
-\eqref{theory:constraint:budget} y tomamos 128 de estos presupuestos por cada nivel de precisión
-$i$, obtenemos $128 \times (3 - 1) = 256$ multiplicadores registrados. La figura
-\ref{fig:exp:inf:hist} muestra la distribución de estos multiplicadores, donde recortamos cada
-multiplicador para que el máximo fuera 100, pues observamos que el más grande entre estos fue
-aproximadamente 5{,}422.
+$i$ cifras decimales, entonces queremos medir la proporción $T(\vec{p}_{i+1}) / T(\vec{p}_i)$.
+Denominamos como multiplicadores a las razones anteriores, pues representan el factor de aumento en
+los tiempos de terminación de R\&A cuando utilizamos una cifra decimal adicional. Puesto que cada
+instancia depende del presupuesto $u$ de la restricción \eqref{theory:constraint:budget} y tomamos
+128 de estos presupuestos por cada nivel de precisión $i$, obtenemos a lo más $128 \times (3 - 1) =
+256$ multiplicadores registrados, pues no podemos medir aquellos en donde $T(\vec{p}_i)$ es mayor a
+300 segundos. La figura \ref{fig:exp:inf:hist} muestra la distribución de estos multiplicadores,
+donde recortamos cada multiplicador para que el máximo fuera 100, pues observamos que el más grande
+entre estos fue aproximadamente 5{,}422.
 
 De acuerdo a la subsección anterior, deberíamos esperar que la gran mayoría de los multiplicadores
 se concentren alrededor de 10. Esto último ocurrió en el 40\% de los casos. Después de realizar un
@@ -701,8 +705,7 @@ predicho.
 El autor espera que lo realizado en estos experimentos numéricos muestre categóricamente que el
 método de Ramificación y Acotamiento no depende solo del número de variables o de desigualdades
 utilizadas. Con esto damos por concluido este capítulo y continuamos con nuestro
-desarrollo del segundo caso del teorema \ref{theory:th:feasibility}. Es decir, el siguiente capítulo
-analiza a profundidad el caso finito.
+desarrollo del segundo caso del teorema \ref{theory:th:feasibility}.
 
 \begin{figure}[hbtp]
   \centering

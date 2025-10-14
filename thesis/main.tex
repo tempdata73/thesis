@@ -14,6 +14,7 @@
 \begin{document}
 
 \input{title}
+\input{declaration.tex}
 
 \pagenumbering{Roman}
 \chapter*{Agradecimientos}
@@ -26,8 +27,7 @@
 \noindent
 A mi hermano Cristóbal. A mis padres Javier y Yanitzin. A mis abuelos Isidoro y Gloria, Germán y
 Virginia. A mis tíos y a todos mis primos. Agradezco en lo más profundo de mi corazón tener el
-privilegio de llamarlos familia. Sea en mis sueños o en cualquier otro lado, mi hogar es donde se
-encuentran ustedes.
+privilegio de llamarlos familia. Mi hogar es dondequiera que ustedes se encuentren.
 
 A mis amigos María José Borges, Fernando Yedra, Hugo Nava, Luis Alfonso Maciel, Mauricio Pazos,
 Hazel Yáñez, Micho Altamirano, Santiago Prado, José Luis Bravo, Annia Pi-Suñer, Alejandro Naranjo,
@@ -35,13 +35,32 @@ Pedro Olivares, Adrián González, Orlando Almazán, Ricardo Bravo, Irvin Ramír
 Mauricio Díaz, Carlos Rivera, Rodrigo Arjona, Miguel Ángel Torres y Ariadna Irena. Búsquenme si
 quieren su agradecimiento personalizado, pues es buena excusa para salir y crear más memorias.
 
-A mi asesor el Dr. Andreas Wachtel por la inagotable paciencia con la que ha transformado una
-colección de símbolos inconexos en una tesis coherente.
+A mi asesor Andreas Wachtel por la inagotable paciencia con la que ha transformado una
+colección de símbolos inconexos en una tesis coherente. A mi coasesora Edith Vargas García así como
+a mis sinodales Ezequiel Soto Sánchez y Edgar Possani por el tiempo que dedicaron a revisar este
+trabajo.
 
 A todos los que he tenido la fortuna de conocer pero que nuestros caminos han sido interrumpidos.
-Los recuerdos que compartimos son olas que me atrapan en una marea de nostalgia y melancolía.
+Las olas de nuestros recuerdos compartidos me atrapan en una marea de nostalgia y melancolía.
 
-\clearpage
+\nomenclature[A, 01]{R\&A}{Ramificación y Acotamiento}
+\nomenclature[A, 02]{FD}{Formulación dinámica}
+
+\nomenclature[B, 01]{$\vec{p}$}{Vector esencialmente entero. Ver definición \ref{theory:def:rational}.}
+\nomenclature[B, 02]{$\vec{q}$}{Vector coprimo asociado a $\vec{p}$. Ver definición \ref{theory:def:rational}.}
+\nomenclature[B, 03]{$\qlayer{q}{k}$}{$k$-ésima capa entera con parámetro $k$ entero. Ver definición \ref{phase-1:def:c-layer}.}
+\nomenclature[B, 04]{$\eta$}{Entero que parametriza la primera capa entera en satisfacer la restricción presupuestaria.}
+\nomenclature[B, 06]{$\vec{\nu}$}{Vector entero definido en \eqref{eq:vec-omega}.}
+\nomenclature[B, 07]{$M$}{Matriz entera y rectangular definida en \eqref{eq:mat-T}.}
+\nomenclature[B, 08]{$\sigma$}{Símplice de dimensión $m - 1$ generado por un conjunto de $m$ vectores linealmente independientes. Ver definición \ref{def:simplex}.}
+\nomenclature[B, 09]{$\est{\sigma}$}{Baricentro del símplice $\sigma$. Ver definición \ref{def:barycenter}.}
+\nomenclature[B, 10]{$\sigma_j$}{$j$-ésima faceta del símplice $\sigma$. Ver definición \ref{def:simplex}.}
+\nomenclature[B, 11]{$\est{\sigma}_j$}{Baricentro de la $j$-ésima faceta $\sigma_j$ del símplice $\sigma$. Ver definición \ref{def:barycenter}.}
+\nomenclature[B, 12]{$\est{\mu}_j$}{Vector unitario normal a $\sigma_j$ que apunta al interior de $\sigma$ y que además es paralelo a $\sigma$.}
+\nomenclature[b, 13]{$S_i$}{Subproblema relajado de un programa lineal entero y que se resolverá a través de R\&A, donde $i \in \braces{0, 1, 00, 01, 10, 11, \ldots}$.}
+
+\nomenclature[C, 01]{$\norm{\cdot}$}{Norma 2 de un vector o de un operador lineal acotado.}
+\printnomenclature
 
 \chapter*{Resumen}
 \input{chapters/intro}
