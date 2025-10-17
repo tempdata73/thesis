@@ -1449,15 +1449,24 @@ consiste en realizar una inducción lexicográfica sobre el conjunto de tuplas $
 \vcentcolon 1 \leq m \leq n, 0 \leq \hat{u} \leq u}$. Si $m = 1$, se sigue inmediatamente que
 \eqref{dp:base} es el valor óptimo para todo presupuesto $0 \leq \hat{u} \leq u$. Ahora bien,
 supongamos inductivamente que $f_{m-1}(\hat{u})$ es el valor óptimo para alguna $m > 1$ y para todo
-$0 \leq \hat{u} \leq u$. Si $\hat{u} < p_m$, entonces $f_{m-1}(\hat{u})$ es el valor óptimo, pues
-$p_m > 0$ y buscamos una solución no negativa. De \eqref{dp:rec} se sigue que $f_m(\hat{u})$ es el
-valor óptimo para todo $0 \leq \hat{u} < p_m$. Luego, aprovechando la hipótesis inductiva sobre $m$
-junto este último punto como caso base, podemos utilizar un argumento fuertemente inductivo sobre
-$\hat{u}$ para mostrar que $f_m(\hat{u})$ también es el valor óptimo para todo $p_m \leq \hat{u}
-\leq u$. De esta manera encontramos que si $f_{m - 1}(\hat{u})$ es el valor óptimo para todo $0 \leq
-\hat{u} \leq u$, entonces $f_m(\hat{u})$ también lo es. Por el caso base $m = 1$ tenemos entonces
-que $f_m(\hat{u})$ es el valor óptimo para todo $1 \leq m \leq n$ y para todo $0 \leq \hat{u} \leq
-u$.
+$0 \leq \hat{u} \leq u$.
+De \eqref{dp:rec}
+junto con la hipótesis inductiva sobre $m$ se sigue que, si $\hat{u} < p_m$, entonces $f_m(\hat{u})
+= f_{m-1}(\hat{u})$ es óptimo. 
+Ahora utilizamos un argumento fuertemente inductivo sobre $\hat{u}$ para
+mostrar que $f_m(\hat{u})$ es el valor óptimo para todo $0 \leq \hat{u} \leq u$, donde el caso
+base es el punto anterior.
+Suponemos ahora que $f_m(\hat{u})$ es el valor
+óptimo para todo $0 \leq \hat{u} < \tilde{u} \leq u$, por lo que debemos mostrar que $f_m(\hat{u} +
+1)$ también es el valor óptimo. Por el caso base podemos suponer que $\hat{u} \geq p_m$.
+Observemos que $\hat{u} + 1 - p_m \leq \hat{u}$ pues $p_m > 0$, de
+donde se sigue que $f_m(\hat{u} + 1 - p_m) + p_m$ es óptimo por hipótesis fuertemente inductiva sobre
+$\hat{u}$, así también, $f_{m-1}(\hat{u} + 1)$ es óptimo por hipótesis inductiva sobre $m$.
+De \eqref{dp:rec} y del hecho que $\hat{u} \geq p_m$, se sigue que $f_m(\hat{u} + 1)$ es el valor óptimo.
+Utilizando el caso base sobre $\hat{u}$ encontramos que
+$f_m(\hat{u})$ es el valor óptimo para todo $0 \leq u \leq u$. Luego, del caso base sobre $m$,
+concluimos que $f_m(\hat{u})$ es el valor óptimo para todo $1 \leq m \leq n$ y para todo $0 \leq
+\hat{u} \leq u$.
 
 Finalmente, para obtener el valor óptimo de \eqref{theory:formulation}, debemos calcular $f_n(u)$,
 lo cual implica calcular, en el peor de los casos, $f_m(\hat{u})$ para todo $1 \leq m \leq n$ y para
