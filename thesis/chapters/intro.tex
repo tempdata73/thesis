@@ -1,81 +1,81 @@
+\chapter*{Introducción}
 \noindent
-El algoritmo de Ramificación y Acotamiento (R\&A) es el estándar para resolver programas lineales
-enteros. Este método se basa en el famoso paradigma de divide y vencerás, el cual combina las
-soluciones de subproblemas más pequeños a fin de que se obtenga una solución del problema original.
-Los problemas se estructuran de manera que generen un árbol: el problema original genera una
-colección de subproblemas, y luego cada subproblema genera su propia colección de subsubproblemas,
-etcétera.
-
-En la sección \ref{subsec:lp} describimos cómo es que Ramificación y Acotamiento cuenta con reglas o
-políticas de poda para evitar resolver todos los subproblemas, pues de manera contraria el número de
-nodos a recorrer crece exponencialmente. No obstante, R\&A jamás podará subárboles que contengan una
-posible solución. Por lo tanto, las políticas de poda operan de manera subóptima siempre que exista
-una gran cantidad de posibles soluciones distribuidas en subárboles disjuntos. Si, en el peor de los
-casos, cada hoja del árbol contiene una solución, entonces R\&A deberá resolver todos los
-subproblemas.
-
-Se ha observado que esto último ocurre siempre que el vector objetivo es ortogonal a una de las
-restricciones activas del programa lineal entero. En este caso, el programa relajado cuenta con una infinidad
-de soluciones, por lo que todo subproblema tendrá al menos una solución, lo cual implica que las
-políticas resultan ser ineficientes. La instancia más simple que exhibe estas
-ineficiencias en las políticas de poda es
-\begin{equation}
+En gran medida, esta tesis analiza programas lineales enteros del tipo
+\begin{subequations}
 	\label{eq:base}
-	\max_{\vec{x} \in \Z^n} \braces{\vec{p}^T\vec{x} \vcentcolon \vec{p}^T\vec{x} \leq u, \vec{x}
-	\geq \vec{0}}.
-\end{equation}
-En este caso, la restricción $\vec{p}^T\vec{x} \leq u$ es ortogonal al vector objetivo.
+	\begin{align}
+		\max_{\vec{x} \in \Z^n} \quad
+			& \vec{p}^T\vec{x}, \label{eq:base:1} \\
+		\text{s.a.} \quad
+			& \vec{p}^T\vec{x} \leq u, \label{eq:base:2} \\
+			& \vec{x} \geq \vec{0}. \nonumber
+	\end{align}
+\end{subequations}
+donde $\vec{p} \in \R^n \setminus \braces{\vec{0}}$ pertenece a una clase de vectores que
+definiremos en el primer capítulo, y $u \in \R$ es un escalar. Son dos las razones por las que nos
+dedicamos a estudiar casi exclusivamente estas instancias: en primer lugar, el hecho de que este
+problema tenga una sola restricción facilita su análisis y su interpretación geométrica; y, en segundo
+lugar, las simetrías introducidas por el hecho de que el vector $\vec{p}$ define tanto la función
+objetivo \eqref{eq:base:1} como la restricción \eqref{eq:base:2} causan ineficiencias en el
+método de R\&A al momento de resolver el problema. De esta manera, el programa
+lineal entero \eqref{eq:base} es una especie de ``ejemplo minimal'' que motiva el diseño de
+algoritmos alternativos y posiblemente más eficientes que R\&A.
 
-En esta tesis analizamos a profundidad el problema anterior para desarrollar un nuevo método que nos
-permita resolver de manera más eficiente este tipo de instancias. Por la misma estructura de este
-problema, supondremos sin pérdida de generalidad que $\vec{p}$ no tiene entradas nulas. Ciertamente,
-nos desharemos de esta suposición una vez que introduzcamos el caso de múltiples restricciones en el
-capítulo 4.
+% Se ha observado que esto último ocurre siempre que el vector objetivo es ortogonal a una de las
+% restricciones activas del programa lineal entero. En este caso, el programa relajado cuenta con una
+% infinidad de soluciones, por lo que todo subproblema tendrá al menos una solución, lo cual implica
+% que las políticas resultan ser ineficientes. La instancia más simple que exhibe estas ineficiencias
+% en las políticas de poda es En este caso, la restricción $\vec{p}^T\vec{x} \leq u$ es ortogonal al
+% vector objetivo.
 
-De manera resumida, mostramos que existe una equivalencia entre resolver problemas del tipo
-\eqref{eq:base} y resolver ecuaciones lineales diofantinas en $n$ incógnitas. Los coeficientes de
-las ecuaciones lineales diofantinas estarán dadas por las entradas de un vector $\vec{q}$ asociado a
-$\vec{p}$. Así también, el número de ecuaciones que deberemos resolver depende, en gran medida, de
-los signos en las entradas de $\vec{q}$. El teorema \ref{theory:th:feasibility} muestra que si
-alguna entrada $q_i$ es negativa, entonces es necesario resolver una sola ecuación y, en caso de que
-todas las entradas de $\vec{q}$ sean positivas, el número de ecuaciones a resolver es finito.
+% De manera resumida, mostramos que existe una equivalencia entre resolver problemas del tipo
+% \eqref{eq:base} y resolver ecuaciones lineales diofantinas en $n$ incógnitas. Los coeficientes de
+% las ecuaciones lineales diofantinas estarán dadas por las entradas de un vector $\vec{q}$ definido a
+% partir de $\vec{p}$. Así también, el número de ecuaciones que deberemos resolver depende, en gran
+% medida, de los signos en las entradas de $\vec{q}$. El teorema \ref{theory:th:feasibility} muestra
+% que si alguna entrada $q_i$ es negativa, entonces es necesario resolver una sola ecuación y, en caso
+% de que todas las entradas de $\vec{q}$ sean positivas, el número de ecuaciones a resolver es finito.
 
-El capítulo 1 presenta los prerrequisitos necesarios para obtener los resultados que se encuentran a
-lo largo de esta tesis. Definimos una clase de vectores a la cual supondremos que $\vec{p}$
-pertenece y obtendremos varias de sus propiedades. Sin duda, esta clase de vectores contiene
-cualquier vector representable en aritmética finita por lo que, en la práctica, este supuesto es
-razonable. Los resultados que más destacan en esta parte de la tesis son, en opinión del autor, los
-teoremas \ref{theory:th:feasibility} y \ref{th:lattice}, así como el corolario \ref{cor:unimodular}.
+En el capítulo 1 se presentan los prerrequisitos necesarios para obtener los resultados que se
+encuentran a lo largo de esta tesis. En particular, se define una clase de vectores a la cual
+supondremos que el vector objetivo $\vec{p}$ pertenece, y también se obtienen varias de sus
+propiedades. Esta clase de vectores contiene cualquier vector representable en aritmética finita por
+lo que, en la práctica, este supuesto es razonable. Entre los resultados originales del autor que
+más destacan en esta parte de la tesis son el teorema \ref{theory:th:feasibility}, el cual separa en
+dos subclases las instancias de \eqref{eq:base} y que son tratadas respectivamente en los capítulos
+2 y 3; y el teorema \ref{th:lattice}, el cual da inicio a una clasificación de programas lineales
+enteros.
 
-El capítulo 2 analiza el caso en el que el vector $\vec{q}$ asociado a $\vec{p}$ tiene una entrada
-negativa. Bajo esta hipótesis adicional, la solución del problema \eqref{eq:base} se obtiene al
+En el capítulo 2 se analiza el caso en el que dos entradas del vector $\vec{p}$ tienen signos
+distintos. Bajo esta hipótesis adicional, la solución del problema \eqref{eq:base} se obtiene al
 resolver una sola ecuación lineal diofantina. Por un lado, mostramos que el valor objetivo del
 problema \eqref{eq:base} se puede determinar de manera inmediata sin tener conocimiento de la
 solución óptima. Por el otro lado, presentamos un algoritmo que construye la solución óptima y cuya
-complejidad es polinomialmente acotada. Finalmente, realizamos una serie de experimentos numéricos
-que permiten comparar los tiempos de terminación de nuestro algoritmo con los de Ramificación y
+complejidad es polinomialmente acotada en la dimensión del vector $\vec{p}$. Finalmente, realizamos
+una serie de experimentos numéricos que permiten comparar los tiempos de terminación de este nuevo
+algoritmo con los de Ramificación y Acotamiento.
+
+En el capítulo 3 se analiza el caso en el que todas las entradas del vector $\vec{p}$ tienen el mismo
+signo. Bajo esta hipótesis solamente podemos asegurar la finitud del número de ecuaciones lineales
+diofantinas que debemos resolver para encontrar la solución de \eqref{eq:base}. No obstante,
+mostramos que si el lado derecho de la restricción \eqref{eq:base:2} es suficientemente grande,
+entonces sí basta con resolver una sola ecuación lineal diofantina para obtener el óptimo. Además,
+presentamos un algoritmo que construye la solución óptima de \eqref{eq:base}. Es en este capítulo
+que, de manera simultánea, encontramos cotas superiores para el número de Frobenius mencionado en la
+motivación de esta tesis. Al igual que en el capítulo 2, se realizan experimentos numéricos
+que permiten comparar los tiempos de terminación de este nuevo algoritmo con los de Ramificación y
 Acotamiento.
 
-El capítulo 3 analiza el caso en el que el vector $\vec{q}$ asociado a $\vec{p}$ tiene entradas
-estrictamente positivas. Bajo esta hipótesis solamente podemos asegurar la finitud del número de
-ecuaciones lineales diofantinas que debemos resolver para encontrar la solución de \eqref{eq:base}.
-No obstante, mostramos que si el lado derecho de la restricción $\vec{p}^T\vec{x} \leq u$ es
-suficientemente grande, entonces sí basta con resolver una sola ecuación lineal diofantina para
-obtener el óptimo. De manera incidental, a través de las herramientas desarrolladas en este
-capítulo, encontramos también nuevas cotas superiores para el Problema de la Moneda de Frobenius.
-Además, presentamos un algoritmo que construye la solución óptima de \eqref{eq:base} bajo el
-supuesto $\vec{q} > \vec{0}$. Al igual que el capítulo 2, realizamos una serie de experimentos
-numéricos que permiten comparar los tiempos de terminación de nuestro algoritmo con los de
-Ramificación y Acotamiento.
+En el capítulo 4 se introduce el caso de múltiples restricciones, y resulta ser que la división en
+casos del teorema \ref{theory:th:feasibility} deja de ser vigente. Por lo tanto, se desarrolla un
+nuevo método que permite resolver este tipo de problemas más generales bajo la perspectiva de
+sistemas de ecuaciones lineales diofantinas. Puesto que un análisis detallado sería demasiado
+extenso para añadirlo a la tesis, la discusión en este capítulo es más superficial, pero no por ello
+menos rigurosa.
 
-El capítulo 4 introduce el caso de múltiples restricciones. Observamos en este capítulo que la
-división en casos del teorema \ref{theory:th:feasibility} deja de ser vigente. Desarrollamos un
-nuevo método que permite resolver este tipo de problemas. Es decir, exhibimos una manera de resolver
-programas lineales enteros bajo la perspectiva de la búsqueda de soluciones de sistemas de
-ecuaciones lineales diofantinas. Por lo tanto, es necesario introducir nueva maquinaria para resolver
-este tipo de sistemas de ecuaciones. Puesto que este nuevo análisis requerido sería demasiado grande
-para añadirlo a la tesis, el autor prefirió ser más informal en su exposición. Ciertamente, este
-capítulo sirve como directriz inicial para la realización de futuras investigaciones.
-
-% Cabe mencionar que cerramos cada capítulo con su respectivo apartado de conclusiones, por lo que no
-% hay capítulo final independiente.
+Finalmente, en el capítulo 5 se presenta una recopilación de los resultados originales y más
+destacables obtenidos a lo largo de esta tesis. Así también, se presenta una recopilación de
+problemas mencionados en esta tesis pero que no fueron tratados, bien porque eran tangenciales al
+objetivo central, bien porque sus respectivos análisis serían demasiado extensos para ser añadidos.
+Ciertamente, cada uno de estos problemas sirve como directriz inicial para la realización de futuras
+investigaciones.

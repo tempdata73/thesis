@@ -3,6 +3,7 @@
 \input{preamble}
 
 \includeonly{
+	chapters/intro,
 	chapters/theory,
 	chapters/infinite,
 	chapters/finite,
@@ -63,7 +64,24 @@ relativo de $\sigma$ y que además es paralelo a $\sigma$.}
 \printnomenclature
 
 \chapter*{Resumen}
-\input{chapters/intro}
+El algoritmo de \emph{Ramificación y Acotamiento} (R\&A) es uno de los más utilizados para resolver
+programas lineales enteros. Este método se basa en el famoso paradigma de ``divide y vencerás'', el
+cual combina las soluciones de subproblemas más pequeños a fin de obtener una solución del problema
+original. Estos problemas se estructuran en forma de árbol: el problema original genera una
+colección de subproblemas, y cada subproblema genera su propia colección de subsubproblemas,
+etcétera.
+
+En esta tesis se muestra que existe una colección de programas lineales enteros con una sola
+restricción para los cuales el paradigma de ``divide y vencerás'' es inadecuado. En particular, las
+simetrías que exhiben estos problemas impiden que R\&A los resuelva eficientemente. Además, se
+muestra la existencia de una subcolección de programas lineales enteros cuyos árboles asociados son
+tales que R\&A no termina en tiempo finito. Se desarrollan dos nuevos algoritmos que resuelven de
+manera más eficiente este tipo de instancias problemáticas a partir de la búsqueda de soluciones de
+ecuaciones lineales diofantinas. De manera simultánea, se obtiene un método pseudopolinomial para
+calcular cotas superiores del número de Frobenius en el \emph{Problema de la Moneda de Frobenius}.
+Finalmente, se generalizan estos algoritmos para encontrar soluciones de programas lineales enteros
+con más de una restricción.
+
 \clearpage
 
 \setcounter{tocdepth}{1}
@@ -71,6 +89,7 @@ relativo de $\sigma$ y que además es paralelo a $\sigma$.}
 \cleardoublepage
 \pagenumbering{arabic}
 
+\input{chapters/intro}
 \input{chapters/theory}
 \input{chapters/infinite}
 \input{chapters/finite}
