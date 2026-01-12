@@ -1,15 +1,14 @@
 \chapter{Aspectos Teóricos}
 \noindent
-Este capítulo presenta los prerrequisitos necesarios para obtener los resultados que se encuentran a
-lo largo de esta tesis.
-En primer lugar, la sección \ref{sec:prerreq} recopila resultados básicos de teoría de números y de
-programación lineal. Estas herramientas forman parte de la literatura tradicional y constituyen lo
-mínimo necesario para la derivación de nuestros propios resultados.
-En segundo lugar, la sección \ref{sec:foundations} presenta enunciados y definiciones obtenidos de
-\cite{herr}, los cuales utilizaremos para continuar con la construcción de nuestros propios
-resultados que, en pleno conocimiento del autor, son originales.
+En este capítulo se presentan los prerrequisitos necesarios para obtener los resultados que se
+encuentran a lo largo de esta tesis. En primer lugar, la sección \ref{sec:prerreq} recopila
+resultados básicos de teoría de números y de programación lineal que forman parte de la literatura
+tradicional y constituyen nuestras bases a partir de las cuales derivaremos nuestros propios
+resultados. En segundo lugar, la sección \ref{sec:foundations} presenta enunciados y definiciones
+obtenidos de \cite{herr}, los cuales utilizaremos para continuar con la construcción de nuestros
+resultados originales.
 
-Como mencionamos en la motivación de esta tesis, nos concentraremos casi exclusivamente en problemas
+Como mencionamos en la introducción de esta tesis, nos concentraremos casi exclusivamente en problemas
 de programación lineal entera del tipo
 \begin{subequations}
 	\label{theory:formulation}
@@ -18,25 +17,22 @@ de programación lineal entera del tipo
 			& \vec{p}^T\vec{x}, \label{theory:objective} \\
 		\text{s.a.} \quad
 			& \vec{p}^T\vec{x} \leq u, \label{theory:constraint:budget} \\
-			& \vec{x} \geq \vec{0}. \nonumber
+			& \vec{x} \geq \vec{0}, \nonumber
 	\end{align}
 \end{subequations}
-
-En la sección \ref{sec:foundations} analizaremos a profundidad este problema, cuyo punto de
-culminación será el teorema \ref{theory:th:feasibility}. De manera resumida, el análisis de este
-problema se divide en dos casos, dependiendo de los signos de las entradas de un vector $\vec{q}$
-asociado a $\vec{p}$.
-
-Observemos que, para este problema, podemos suponer sin pérdida de generalidad que todas las
-entradas de $\vec{p}$ son distintas de cero. En efecto, si alguna entrada $p_i$ es cero, podremos
-decir que $x_i = 0$. Cuando introduzcamos en el capítulo 4 múltiples restricciones nos desharemos de
-este supuesto.
+donde $\vec{p}\in\R\setminus\braces{\vec{0}}$ pertenece a una clase que definiremos en la sección
+\ref{sec:foundations} y $u \in \R$ es un escalar. Podemos suponer, sin pérdida de generalidad, que
+todas las entradas de $\vec{p}$ son distintas de cero. En efecto, si alguna entrada $p_i$ es nula,
+cualquier elección entera y no negativa de $x_i$ es válida para este programa lineal entero. Esta
+suposición será implícita en lo que resta del capítulo, aunque se hará explícita en algunas
+ocasiones para profundizar el caso cuando alguna entrada sea nula. Cuando introduzcamos en el capítulo
+4 múltiples restricciones nos desharemos de este supuesto.
 
 \section{Prerrequisitos}
 \label{sec:prerreq}
 \noindent
-El autor consideró pertinente no incluir demostraciones en esta sección, pues los enunciados son
-mostrados en cualquier clase de álgebra superior, programación lineal, o investigación de
+Se consideró pertinente no incluir demostraciones en esta sección, pues los enunciados son
+mostrados en los cursos de álgebra superior, programación lineal, o investigación de
 operaciones. Las referencias principales para las subsecciones de teoría de números y de
 programación lineal son \cite{carmen} y \cite{fabs}, respectivamente.
 
@@ -53,77 +49,71 @@ programación lineal son \cite{carmen} y \cite{fabs}, respectivamente.
 		D(a) \coloneq \braces{b \in \Z \vcentcolon b \mid a}.
 	\end{equation*}
 \end{definition}
-\begin{observation}
-	Si $a$ es distinto de cero, entonces $D(a)$ es finito. En efecto, si $b \mid a$ y $a \neq 0$, es
-	posible mostrar que $|b| \leq |a|$, lo cual implica que $|D(a)| \leq 2|a|$. En caso de que $a$
-	sea nulo, se sigue que $D(a) = \Z$.
-\end{observation}
-\begin{observation}
-	Para cualquier entero $a$ se satisface $\lbrace -1, 1 \rbrace \subseteq D(a)$, pues $a = a \cdot
-	1$ y también $a = (-a) \cdot (-1)$.
-\end{observation}
+Observemos que si $a$ es distinto de cero, entonces $D(a)$ es finito. En efecto, si $b \mid a$ y $a
+\neq 0$, es posible mostrar que $|b| \leq |a|$, lo cual implica que $|D(a)| \leq 2|a|$, donde
+$|D(a)|$ denota la cardinalidad del conjunto $D(a)$ y $|a|$ el valor absoluto de $a$. En caso de que
+$a$ sea nulo, se sigue que $D(a) = \Z$.
+% \begin{observation}
+% 	Para cualquier entero $a$ se satisface $\lbrace -1, 1 \rbrace \subseteq D(a)$, pues $a = a \cdot
+% 	1$ y también $a = (-a) \cdot (-1)$.
+% \end{observation}
 
 \begin{definition}
 	\label{prerreq:def:gcd}
 	Sean $a_1, \ldots, a_n$ enteros no todos iguales a cero, entonces definimos su \textbf{máximo
-	común divisor} $d$ como el elemento maximal del conjunto $\bigcap_{i=1}^{n}D(a_i)$, y escribimos
+	común divisor} $d$ como el máximo elemento del conjunto $\bigcap_{i=1}^{n}D(a_i)$, y escribimos
 	$d = \gcd{a_1, \ldots, a_n}$. Si $d = 1$, entonces decimos que $a_1, \ldots, a_n$ son
 	\textbf{coprimos}.
 \end{definition}
+Puesto que alguna entrada $a_i$ es distinta de cero en la definición anterior, encontramos que el
+conjunto $\bigcap_{i=1}^{n}D(a_i)$ es finito y también es no vacío, por lo que este conjunto tiene
+un máximo elemento. Es decir, el máximo común divisor $d$ siempre está bien definido.
 
-Puesto que alguna entrada $a_i$ es distinta de cero en la definición anterior, encontramos que el conjunto
-$\bigcap_{i=1}^{n}D(a_i)$ es finito y también es no vacío (ver observación anterior), por lo que
-este conjunto tiene un elemento maximal. Es decir, el máximo común divisor $d$ siempre está bien
-definido.
-\begin{observation}
-	El máximo común divisor siempre es positivo, pues se cumple que $1 \in D(a)$ para todo entero
-	$a$, lo que implica por maximalidad que $1 \leq \gcd{a_1, \ldots, a_n}$ para cualquier colección
-	de enteros no todos nulos.
-\end{observation}
+Además, el máximo común divisor siempre es positivo, pues se cumple que $1 \in D(a)$ para todo
+entero $a$, lo que implica por maximalidad que $1 \leq \gcd{a_1, \ldots, a_n}$ para cualquier
+colección de enteros no todos nulos.
 
-La definición más común del máximo común es dada de manera inductiva. Decimos que $d$ es el máximo
-común divisor de dos enteros $a_1, a_2$, no ambos iguales a cero, si se satisface
-\begin{enumerate}
-	\item $d \mid a_1$ y $d \mid a_2$, y también,
-	\item si $d' \mid a_1$ y $d' \mid a_2$, entonces $d' \mid d$.
-\end{enumerate}
-Luego, para un conjunto de enteros $a_1, a_2 \ldots a_n$, no todos iguales a cero, definimos el máximo común
-divisor entre ellos a partir de
-\begin{equation*}
-	\gcd{a_1, a_2, \ldots, a_{n-1}, a_n} \coloneq \gcd{a_1, \gcd{a_2, \ldots, \gcd{a_{n-1}, a_n}}}.
-\end{equation*}
-Sin embargo, debemos ser cuidadosos con esta manera de definir las cosas, pues puede ser el caso,
-por ejemplo, que $a_{n-1}$ y $a_n$ sean ambos cero y entonces $\gcd{a_{n-1}, a_n}$ no está bien definido.
+La manera más común para calcular el máximo común divisor es a partir del algoritmo de Euclides.
 
-Para que esta manera de definir el máximo común divisor sea equivalente a la definición
-\ref{prerreq:def:gcd}, deberemos presuponer o bien que $a_{n - 1} \neq 0$ o bien que $a_n \neq 0$. A
-partir de este punto usaremos ambas definiciones de manera indistinta. Independientemente de qué
-definición usemos, la manera de calcular el máximo común divisor siempre es a través del algoritmo
-de Euclides.
+% La definición más común del máximo común es dada de manera inductiva. Decimos que $d$ es el máximo
+% común divisor de dos enteros $a_1, a_2$, no ambos iguales a cero, si se satisface
+% \begin{enumerate}
+% 	\item $d \mid a_1$ y $d \mid a_2$, y también,
+% 	\item si $d' \mid a_1$ y $d' \mid a_2$, entonces $d' \mid d$.
+% \end{enumerate}
+% Luego, para un conjunto de enteros $a_1, a_2 \ldots a_n$, no todos iguales a cero, definimos el máximo común
+% divisor entre ellos a partir de
+% \begin{equation*}
+% 	\gcd{a_1, a_2, \ldots, a_{n-1}, a_n} \coloneq \gcd{a_1, \gcd{a_2, \ldots, \gcd{a_{n-1}, a_n}}}.
+% \end{equation*}
+% Sin embargo, debemos ser cuidadosos con esta manera de definir las cosas, pues puede ser el caso,
+% por ejemplo, que $a_{n-1}$ y $a_n$ sean ambos cero y entonces $\gcd{a_{n-1}, a_n}$ no está bien definido.
+% 
+% Para que esta manera de definir el máximo común divisor sea equivalente a la definición
+% \ref{prerreq:def:gcd}, deberemos presuponer o bien que $a_{n - 1} \neq 0$ o bien que $a_n \neq 0$. A
+% partir de este punto usaremos ambas definiciones de manera indistinta. Independientemente de qué
+% definición usemos, la manera de calcular el máximo común divisor siempre es a través del algoritmo
+% de Euclides.
 
-\begin{observation}
-	No porque una colección de enteros sea coprima se sigue que estos enteros son coprimos a pares.
-	Por ejemplo, los enteros 1, 3 y 3 son coprimos pero evidentemente 3 y 3 no lo son.
-\end{observation}
+% \begin{observation}
+% 	No porque una colección de enteros sea coprima se sigue que estos enteros son coprimos a pares.
+% 	Por ejemplo, los enteros 1, 3 y 3 son coprimos pero evidentemente 3 y 3 no lo son.
+% \end{observation}
 
 \begin{definition}
 	Decimos que $c \in \Z$ es una \textbf{combinación lineal entera} de un conjunto de enteros $a_1, \ldots,
 	a_n$ si existen enteros $x_1, \ldots, x_n$ tales que $c = a_1x_1 + \cdots + a_nx_n$. Si $c$ es
 	positivo, también decimos que esto último es una \textbf{combinación lineal entera positiva}.
 \end{definition}
-
-% El siguiente teorema, a pesar de su simpleza, es central para los resultados obtenidos en esta
-% tesis.
 \begin{theorem}
 	\label{prerreq:th:bezout}
 	Sea $d$ un entero y sean $a_1, \ldots, a_n$ una colección de enteros no todos iguales a cero.
 	Entonces $d = \gcd{a_1, \ldots, a_n}$ si y solo si $d$ es la mínima combinación lineal entera
 	positiva de $a_1, \ldots, a_n$.
 \end{theorem}
-
 \begin{example}
-	El máximo común divisor $d$ de los enteros $a_1 \coloneq 2$, $a_2 \coloneq 3$ y $a_3 \coloneq 5$
-	es 1 y además se cumple que $-3a_1 - a_2 + 2a_3 = 1 = d$.
+	El máximo común divisor de los enteros 2, 3 y 5 es 1. Observemos que $-3\cdot 2 - 1\cdot 3 +
+	2\cdot 5 = 1$.
 \end{example}
 
 \begin{lemma}
@@ -138,17 +128,19 @@ Además del máximo común divisor, haremos uso del mínimo común múltiplo, au
 		M(a) \coloneq \braces{x \in \Z \vcentcolon a \mid x}.
 	\end{equation*}
 	También definimos el \textbf{mínimo común múltiplo} de un conjunto de enteros $a_1, \ldots,
-	a_n$, no todos iguales a cero, como el elemento minimal del conjunto $\Z_{\geq 0} \cap
-	\bigcap_{i=1}^{n}M(a_i)$. Escribimos $\lcm{a_1, \ldots, a_n}$ para denotar a este mínimo común
-	múltiplo.
+	a_n$, no todos iguales a cero, como el mínimo elemento del conjunto
+	\begin{equation*}
+		\Z_{\geq 0} \cap \bigcap_{i=1}^{n}M(a_i).
+	\end{equation*}
+	Escribimos $\lcm{a_1, \ldots, a_n}$ para denotar a este mínimo común múltiplo.
 \end{definition}
 
-\begin{observation}
-	Si $a$ es nulo, entonces $M(a) = \braces{0}$. En caso contrario encontramos que $M(a)$ es un
-	conjunto infinito.
-\end{observation}
+% \begin{observation}
+% 	Si $a$ es nulo, entonces $M(a) = \braces{0}$. En caso contrario encontramos que $M(a)$ es un
+% 	conjunto infinito.
+% \end{observation}
 
-Para mostrar que el múltiplo común múltiplo está bien definido, basta observar que el producto $|a_1
+Para mostrar que el mínimo común múltiplo está bien definido, basta observar que el producto $|a_1
 \cdots a_n|$ es no negativo y también es un elemento de $M(a_i)$ para toda $i \in \braces{1, \ldots,
 n}$.
 
@@ -156,32 +148,30 @@ n}$.
 
 \noindent
 Sea $c \in \Z$ y sean $a_1, \ldots, a_n$ enteros. Una ecuación lineal diofantina es una ecuación
-donde deseamos determinar enteros $x_1, \ldots, x_n$ que satisfagan
+en la que deseamos determinar enteros $x_1, \ldots, x_n$ que satisfagan
 \begin{equation*}
 	a_1x_1 + \cdots + a_nx_n = c.
 \end{equation*}
 Será de nuestro interés en las siguientes secciones resolver iterativamente este tipo de ecuaciones.
-Por el momento basta mencionar que podemos enfocarnos en el caso $n = 2$ sin ninguna pérdida de
-generalidad. No obstante, los resultados se mantienen para cualquier $n \in \N_{\geq 2}$.
-
-Los siguientes enunciados abordan el problema de determinar la existencia de soluciones para este
-tipo de ecuaciones, así como de construir estas soluciones.
+En esta sección nos enfocamos en el caso $n = 2$, y en la sección \ref{sec:foundations}
+generalizamos estos resultados para cualquier entero $n \geq 2$. Los siguientes enunciados abordan
+el problema de determinar la existencia y construcción de soluciones para este tipo de ecuaciones.
 \begin{theorem}[Existencia]
 	\label{prerreq:th:existence}
 	Sean $a$ y $b$ enteros, no ambos iguales a cero. Entonces la ecuación lineal diofantina $ax + by
 	= c$ tiene solución entera si y solo si $\gcd{a, b} \mid c$.
 \end{theorem}
-
-Para construir el conjunto de soluciones a una ecuación lineal diofantina, primero encontramos  una
+Para construir el conjunto de soluciones de una ecuación lineal diofantina, primero encontramos  una
 solución particular.
 \begin{definition}
 	\label{prerreq:def:bezout}
-	Sea $d \coloneq \gcd{a, b}$ y sean $x', y'$ enteros tales que $ax' + by' = d$ (c.f. teorema
-	\ref{prerreq:th:bezout}). Decimos entonces que $x', y'$ son \textbf{coeficientes de Bézout} asociados a
-	$a$ y $b$, respectivamente\footnote{
+	Sea $d \coloneq \gcd{a, b}$ y sean $x', y'$ números enteros tales que $ax' + by' = d$ (su
+	existencia está garantizada por el teorema \ref{prerreq:th:bezout}). Decimos entonces que $x',
+	y'$ son \textbf{coeficientes de Bézout} asociados a
+	$a$ y $b$, respectivamente.\footnote{
 		Los coeficientes de Bézout se pueden calcular a través del algoritmo extendido de Euclides.
-		Véase \url{https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm}.
-	}.
+		Véase \url{https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm}
+	}
 \end{definition}
 
 \begin{observation}
@@ -236,27 +226,6 @@ por lo que $(c' \cdot x', c' \cdot y')$ es una solución particular de la ecuaci
 \subsection{Programación lineal}
 \label{subsec:lp}
 \noindent
-La programación lineal se encarga de resolver problemas de optimización de la forma
-\begin{equation}
-	\label{prim:lineal-opt}
-	\max_{\vec{x}} ~\lbrace \vec{c}^T\vec{x} \colon \vec{x} \in P \rbrace,
-\end{equation}
-donde $P$ es un poliedro.
-
-En esta sección repasamos brevemente propiedades del poliedro $P$ al cual llamamos región factible.
-Así también, indicamos dónde se encuentra el óptimo del problema \eqref{prim:lineal-opt} y hacemos
-mención rápida sobre cómo obtenerlo. Finalmente, nos enfocamos en programas lineales enteros y, más
-importantemente, describimos cómo funciona el algoritmo de Ramificación y Acotamiento para encontrar
-soluciones de estos programas enteros.
-
-\begin{definition}
-	Sea $\vec{a} \in \R^n$ un vector no nulo y sea $b \in \R$ un escalar. Llamamos
-	\textbf{hiperplano afino}
-	al conjunto de vectores $\vec{x} \in \R^n$ que satisfacen $\vec{a}^T\vec{x} = b$. Así también,
-	llamamos \textbf{semi-espacios afinos} a los conjuntos de vectores $\vec{x}, \vec{y} \in \R^n$ que
-	satisfacen $\vec{a}^T\vec{x} \geq b$ y $\vec{a}^T\vec{y} \leq b$.
-\end{definition}
-
 \begin{definition}
 	Sea $A \in \R^{m \times n}$ una matriz con renglones linealmente independientes y $\vec{b} \in
 	\R^m$ un vector. Entonces al conjunto definido por
@@ -268,13 +237,33 @@ soluciones de estos programas enteros.
 	\textbf{politopo}.
 \end{definition}
 
-\begin{observation}
-	Todo poliedro $P$ definido de esta manera representa la intersección de $m$ semi-espacios
-	afinos. Esto se debe a que $A\vec{x} \geq \vec{b}$ si y solo si $\vec{a}_i^T\vec{x} \geq b_i$
-	para toda $1 \leq i \leq m$ y donde $\vec{a}_i^T$ representa el $i$-ésimo renglón de la matriz
-	$A$. En la Figura \ref{fig:hyp} se muestra visualmente esta relación entre semi-espacios afinos y
-	poliedros.
-\end{observation}
+La programación lineal se encarga de resolver problemas de optimización de la forma
+\begin{equation}
+	\label{prim:lineal-opt}
+	\max_{\vec{x} \in \R^n} ~\lbrace \vec{c}^T\vec{x} \colon \vec{x} \in P \rbrace,
+\end{equation}
+donde $P \in \R^n$ es un poliedro al cual llamamos \textbf{región factible}, $\vec{c} \in \R^n$ un vector,
+comúnmente conocido como el \textbf{vector objetivo}, y $\vec{x} \in \R^n$ un vector de variables a decidir.
+
+% En esta sección repasamos brevemente algunas propiedades de la región factible $P$. Así también,
+% indicamos dónde se encuentra el óptimo del problema \eqref{prim:lineal-opt} y hacemos mención rápida
+% sobre cómo obtenerlo. Finalmente, nos enfocamos en programas lineales enteros y, más
+% importantemente, describimos cómo funciona el algoritmo de Ramificación y Acotamiento para encontrar
+% soluciones de estos programas enteros.
+
+\begin{definition}
+	Sea $\vec{a} \in \R^n$ un vector no nulo y sea $b \in \R$ un escalar. Llamamos
+	\textbf{hiperplano afín}
+	al conjunto de vectores $\vec{x} \in \R^n$ que satisfacen $\vec{a}^T\vec{x} = b$. Así también,
+	llamamos \textbf{semi-espacios afines} a los conjuntos de vectores $\vec{x}, \vec{y} \in \R^n$ que
+	satisfacen $\vec{a}^T\vec{x} \geq b$ y $\vec{a}^T\vec{y} \leq b$.
+\end{definition}
+
+Observemos que todo poliedro $P$ es la intersección de $m$ semi-espacios afines. Esto se debe a que,
+para una matriz $A \in \R^{m \times n}$ con renglones independientes y un vector $\vec{b} \in \R^m$,
+$A\vec{x} \geq \vec{b}$ si y solo si $\vec{a}_i^T\vec{x} \geq b_i$ para toda $1 \leq i \leq m$ y
+donde $\vec{a}_i^T$ denota el $i$-ésimo renglón de la matriz $A$. En la Figura \ref{fig:hyp} se
+muestra visualmente esta relación entre semi-espacios afines y poliedros.
 
 \begin{figure}[ht]
 	\centering
@@ -319,19 +308,20 @@ soluciones de estos programas enteros.
 			\node at (0.75, 0.75) {$P$};
 		\end{tikzpicture}
 	\end{minipage}
-	\caption{\textit{Izquierda:} Un hiperplano afino $\braces{\vec{x} \colon \vec{a}^T\vec{x} = b}$
-	junto con los dos semi-espacios que induce. \textit{Derecha:} Un politopo $P$.}
+	\caption{\textit{Izquierda:} Un hiperplano afín $\braces{\vec{x} \colon \vec{a}^T\vec{x} = b}$
+	junto con sus dos semi-espacios $\braces{\vec{x} \colon \vec{a}^T\vec{x} \geq \vec{b}}$ y
+	$\braces{\vec{x} \colon \vec{a}^T\vec{x} \leq \vec{b}}$. \textit{Derecha:} Un politopo $P$.}
 	\label{fig:hyp}
 \end{figure}
 
-\begin{definition}
+\begin{definition}[\cite{fabs}]
 	Sea $P$ un poliedro. Decimos que el vector $\vec{x} \in P$ es un \textbf{vértice} de $P$ si existe
 	$\vec{c} \in \R^n$ de manera que $\vec{c}^T\vec{x} < \vec{c}^T\vec{y}$ para todo $\vec{y} \in P
 	\setminus \braces{\vec{x}}$.
 \end{definition}
 
 En términos gráficos, decimos que $\vec{x}$ es un vértice si se satisfacen dos condiciones: en
-primer lugar, existe un hiperplano afino que pasa por $\vec{x}$ y uno de sus semi-espacios inducidos
+primer lugar, existe un hiperplano afín que pasa por $\vec{x}$ y uno de sus semi-espacios
 contiene completamente al poliedro $P$; en segundo lugar, ningún otro punto de $P$ se encuentra
 sobre este hiperplano.
 
@@ -342,18 +332,19 @@ Sea $P$ un poliedro y sea $\vec{c} \in \R^n$ un vector. Todo problema de optimiz
 	\item El valor óptimo no existe: ningún vector $\vec{x} \in \R^n$ satisface
 		el sistema de desigualdades $A\vec{x} \geq \vec{b}$. Es decir, la región factible es vacía.
 	\item El valor óptimo existe y es infinito: el poliedro $P$ no es acotado y
-		somos capaces de encontrar una sucesión de vectores $\lbrace \vec{x}_k \rbrace_{k \in \N}$
+		existe una sucesión de vectores $\lbrace \vec{x}_k \rbrace_{k \in \N}$
 		en el poliedro $P$ que satisface $\vec{c}^T\vec{x}_{k+1} > \vec{c}^T\vec{x}_k$ para todo $k \in \N$.
-	\item El valor óptimo existe y es finito: este caso es la negación de los dos casos anteriores,
-		pero cabe recalcar que esto no significa que el poliedro $P$ es acotado.
+	\item El valor óptimo existe y es finito: este caso es la negación de los dos puntos anteriores.
+		Observemos que aquí cabe la posibilidad de que el poliedro $P$ no sea acotado, pues puede
+		que no exista la sucesión creciente de valores objetivo definida en el caso anterior.
 \end{enumerate}
 En el primer caso decimos que \textbf{el problema es infactible}, mientras que en los últimos dos
 decimos que \textbf{el problema es factible}. También diremos comúnmente del segundo caso que
 \textbf{el problema es no acotado}.
 \end{definition}
 
-Es posible mostrar que todo poliedro $P \coloneq \lbrace \vec{x} \in \R^n \colon A\vec{x} \geq
-\vec{b} \rbrace$ puede ser transformado a la forma estándar
+En el capítulo 3 de \cite{fabs} se muestra que todo poliedro $P \coloneq \lbrace \vec{x} \in \R^n
+\colon A\vec{x} \geq \vec{b} \rbrace$ puede ser transformado a la forma estándar
 \begin{equation*}
 	\lbrace \left( \vec{x}^+, \vec{x}^-, \vec{s} \right) \in \R^{n + n + m} \colon A(\vec{x}^+ -
 \vec{x}^-) - \vec{s} = \vec{b}, \left(\vec{x}^+, \vec{x}^-, \vec{s}\right) \geq \vec{0}\rbrace,
@@ -370,10 +361,9 @@ sin pérdida de generalidad como
 			& \vec{x} \geq \vec{0} \nonumber.
 	\end{align}
 \end{subequations}
-De ahora en adelante nuestro análisis se concentrará exclusivamente en problemas lineales de este
-tipo. Es decir, supondremos, sin pérdida de generalidad, que todo problema lineal se encuentra en
-esta forma estándar.
-
+De ahora en adelante nuestro análisis se concentrará exclusivamente en problemas lineales en forma
+estándar. A continuación enunciamos el teorema fundamental que nos permite resolver problemas
+lineales.
 \begin{theorem}
 	\label{prerreq:th:linear-sol}
 	Sea $P$ un poliedro que tiene al menos un vértice, consideremos el problema
@@ -381,23 +371,22 @@ esta forma estándar.
 	el conjunto de soluciones óptimas contiene al menos un vértice de $P$.
 \end{theorem}
 
-Este teorema fundamental constituye el primer paso para la construcción de varios algoritmos que
-encuentran soluciones del problema \eqref{prerreq:formulation}. Ciertamente, el más famoso de todos
-es el algoritmo simplex, el cual ``salta'' de vértice en vértice hasta llegar a uno con valor
-óptimo. Otros, más modernos y conocidos como métodos de puntos interiores, comienzan en el interior
-del poliedro $P$ y son ``atraídos'' como imanes a uno de los vértices con valor óptimo. No es el
-objetivo de esta tesis exponer la maquinaria matemática detrás de estos algoritmos\footnote{
-	Sin embargo, la literatura para explicar estos métodos es abundante. Véase, por ejemplo,
-	\cite{nocedal}.
-}.
+Este teorema constituye el primer paso para la construcción de varios algoritmos que encuentran
+soluciones del problema \eqref{prerreq:formulation}. El más famoso de todos es el algoritmo
+\emph{simplex}, el cual ``salta'' de vértice en vértice hasta llegar a uno con valor óptimo. Otros,
+más modernos y conocidos como \emph{métodos de puntos interiores}, comienzan en el interior del
+poliedro $P$ y son ``atraídos'' como imanes a uno de los vértices con valor óptimo. No es el
+objetivo de esta tesis exponer la teoría detrás de estos algoritmos. Sin embargo, al
+lector interesado le recomendamos leer los capítulos 13 y 14 de \cite{nocedal}.
 
 Ahora describimos brevemente los programas lineales enteros y pasamos a explicar el método de
 Ramificación y Acotamiento. Por ello, lo que se encuentra a continuación supone que contamos con un
 algoritmo para resolver problemas del tipo \eqref{prerreq:formulation}.
 \begin{definition}
-	Sea $A \in \R^{m \times n}$ una matriz con renglones linealmente independientes y sea $\vec{b}
-	\in \R^m$ un vector. Al problema de optimización lineal \eqref{prerreq:formulation} lo llamamos
-	\textbf{problema relajado} del programa lineal entero
+	Sean $A \in \R^{m \times n}$ una matriz con renglones linealmente independientes, $\vec{c} \in
+	\R^n$ un vector, y $\vec{b} \in \R^m$ otro vector. Al problema de optimización lineal
+	\eqref{prerreq:formulation} lo llamamos \textbf{problema relajado} del \textbf{programa lineal
+	entero}
 	\begin{subequations}
 		\label{prerreq:formulation:ilp}
 		\begin{align}
@@ -420,26 +409,25 @@ entonces tenemos que $P \cap \Z^n$ corresponde a la región factible de
 \eqref{prerreq:formulation:ilp}, mientras que $P$ corresponde a la región factible de su problema
 relajado.
 
-A partir de lo anterior, deducimos inmediatamente que el valor óptimo $\optilp{z}$ de un programa
-entero es una cota inferior del valor óptimo $z^*$ de su problema relajado, pues ambos son problemas
-de maximización y es cierto que $P \cap \Z^n \subseteq P$. De aquí se sigue que si $\optilp{z} =
-z^*$, entonces la solución óptima $\vec{x}^*$ del problema relajado también es la solución
-óptima del programa lineal entero si $\vec{x}^* \in \Z^n$.
+A partir de lo anterior, deducimos inmediatamente que el valor óptimo $z^*$ de un problema relajado
+es una cota superior del valor óptimo $\optilp{z}$ de su programa lineal entero, pues ambos son
+problemas de maximización y es cierto que $P \cap \Z^n \subseteq P$. De aquí se sigue que si
+$\optilp{z} = z^*$, entonces la solución óptima $\vec{x}^*$ del problema relajado también es la
+solución óptima del programa lineal entero si $\vec{x}^* \in \Z^n$.
 
 El algoritmo estándar para encontrar soluciones de programas lineales enteros es Ramificación y
 Acotamiento. Este método consiste en generar un árbol binario donde cada nodo representa un
 subproblema lineal a resolver. En la raíz del árbol resolvemos el problema relajado
 \eqref{prerreq:formulation} y, si la solución óptima $\vec{x}^* \in \R^n$ no es entera, entonces
-para alguna entrada $x_i^*$ no entera agregamos la restricción $x_i \leq \lfloor x_i^* \rfloor$ para
-crear un subproblema, y también añadimos la restricción $x_i \geq \lceil x_i^* \rceil$ para crear
-otro subproblema. Este procedimiento se realiza de manera recursiva.
+escogemos alguna entrada no entera $x_i^*$, creamos el nodo hijo izquierdo añadiendo la restricción
+$x_i \leq \floor{x_i^*}$ y, similarmente, creamos el nodo hijo derecho añadiendo la restricción $x_i
+\geq \ceil{x_i^*}$. Este procedimiento se realiza de manera recursiva. En el apéndice \ref{app:bb}
+se presenta de manera más detallada este método.
 
 Observemos que, si decidimos recorrer todos los nodos del árbol binario, entonces tendremos que
 resolver al menos $2^n$ subproblemas, donde $n$ es la dimensión del problema lineal. Por esta razón,
-el algoritmo cuenta con políticas para deshacerse de subárboles que nunca proveerán la solución
-óptima. El autor considera que es mejor ilustrar estas políticas a partir de un ejemplo. El
-algoritmo \ref{algo:bb} en el apéndice \ref{app:bb} presenta una versión rudimentaria del método de
-Ramificación y Acotamiento.
+el algoritmo cuenta con políticas de poda para deshacerse de ramas cuyos nodos nunca proveerán la
+solución óptima. Ilustramos estas políticas a partir de un ejemplo.
 
 \begin{example}[\cite{fabs}]
 	\label{ex:ilp}
@@ -454,8 +442,8 @@ Ramificación y Acotamiento.
 			& x_1, x_2 \geq 0.
 	\end{align*}
 	La región factible de este problema se muestra en la Figura \ref{fig:feas}. La solución al problema
-	relajado, cuya región factible denotamos por $S_0$, está dada por $\vec{x}^0 \coloneq (20/7,
-	3)^T$. Como $x_1^0 = 20/7$ no es entero, generamos dos nuevos subproblemas con regiones
+	relajado, cuya región factible denotamos por $S_0$, está dada por $\vec{x}^{(0)} \coloneq (20/7,
+	3)^T$. Como $x_1^{(0)} = 20/7$ no es entero, generamos dos nuevos subproblemas con regiones
 	factibles
 	\begin{align*}
 		S_{00} &\coloneq S_0 \cup \braces{ x_1 \leq \floor{20/7} = 2}, \\
@@ -465,28 +453,28 @@ Ramificación y Acotamiento.
 	podemos generar otros subproblemas. En este caso, decimos que \textbf{podamos $S_{01}$ por
 	infactibilidad}.
 
-	Ahora bien, la solución al problema $S_{00}$ está dada por $\vec{x}^1 \coloneq (2, 1/2)^T$.
-	Encontramos que $x_2^1$ = 1/2 no es entero y por lo tanto generamos dos nuevos subproblemas:
+	Ahora bien, la solución al problema $S_{00}$ está dada por $\vec{x}^{(1)} \coloneq (2, 1/2)^T$.
+	Encontramos que $x_2^{(1)}$ = 1/2 no es entero y por lo tanto generamos dos nuevos subproblemas:
 	\begin{align*}
 		S_{000} &\coloneq S_{00} \cup \braces{ x_2 \leq \floor{1/2} = 0}, \\
 		S_{001} &\coloneq S_{00} \cup \braces{ x_2 \geq \ceil{1/2} = 1}.
 	\end{align*}
-	Observemos que la solución $\vec{x}^2$ de $S_{001}$ es $(2, 1)^T$, la cual es entera y tiene valor
+	Observemos que la solución $\vec{x}^{(2)}$ de $S_{001}$ es $(2, 1)^T$, la cual es entera y tiene valor
 	objetivo $z_2^* \coloneq 7$. No generamos otros subproblemas a partir de este problema porque
-	sus regiones factibles estarán contenidas en $S_{001}$ y por lo tanto sus valores objetivos
+	las posibles subregiones factibles estarán contenidas en $S_{001}$ y por lo tanto sus valores objetivos
 	serán menores o iguales al de $S_{001}$. Así pues, decimos que \textbf{podamos $S_{001}$ por
 	integralidad}.
 
-	La solución de $S_{000}$, en cambio, es $\vec{x}^3 \coloneq (3/2, 0)^T$ y tendríamos que ramificar
-	de nuevo en otros dos subproblemas. No obstante, observemos que el valor objetivo de este
-	subproblema es $z_3^* \coloneq 6$, el cual es menor que $z_2^* = 7$. Como la región factible de
-	cualquier subproblema generado a partir de este último problema estára contenido en $S_{000}$,
-	se sigue que su valor objetivo será menor o igual al de $S_{000}$. Es decir, no encontraremos
-	otro vector cuyo valor objetivo sea mayor que $z_2^*$. Decimos entonces que
-	\textbf{podamos $S_{000}$ por cota}.
+	La solución de $S_{000}$, en cambio, es $\vec{x}^{(3)} \coloneq (3/2, 0)^T$ y tendríamos que
+	ramificar de nuevo en otros dos subproblemas. No obstante, el valor objetivo de este subproblema
+	es $z_3^* \coloneq 6$, el cual es menor que $z_2^* = 7$. Como la región factible de cualquier
+	subproblema generado a partir de este último problema estára contenido en $S_{000}$, se sigue
+	que su valor objetivo será menor o igual al de $S_{000}$. Es decir, no encontraremos otro vector
+	cuyo valor objetivo sea mayor que $z_2^*$. Decimos entonces que \textbf{podamos $S_{000}$ por
+	cota}.
 
 	Como hemos agotado todos los subproblemas que podríamos generar, entonces concluimos que la
-	solución óptima de este programa  lineal entero es $\vec{x}^2 = (2, 1)^T$ y tiene valor objetivo
+	solución óptima de este programa  lineal entero es $\vec{x}^{(2)} = (2, 1)^T$ y tiene valor objetivo
 	$z_2^* = 7$.
 \end{example}
 \begin{figure}
@@ -601,7 +589,7 @@ vectores puramente racionales.
 \begin{definition}
 	\label{phase-1:def:c-layer}
 	Sea $\vec{v} \in \R^n$ un vector esencialmente entero y sea $t \in \R$ un escalar. Decimos que
-	su hiperplano afino asociado
+	su hiperplano afín asociado
 	\begin{equation}
 		\label{phase-1:def:affine-hyperplane}
 		\clayer{\vec{v}}{t} \coloneq \ker{\vec{x} \mapsto \vec{v}^T\vec{x}} + t\vec{v}
