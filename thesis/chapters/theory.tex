@@ -21,12 +21,15 @@ de programación lineal entera del tipo
 	\end{align}
 \end{subequations}
 donde $\vec{p}\in\R\setminus\braces{\vec{0}}$ pertenece a una clase que definiremos en la sección
-\ref{sec:foundations} y $u \in \R$ es un escalar. Podemos suponer, sin pérdida de generalidad, que
-todas las entradas de $\vec{p}$ son distintas de cero. En efecto, si alguna entrada $p_i$ es nula,
-cualquier elección entera y no negativa de $x_i$ es válida para este programa lineal entero. Esta
-suposición será implícita en lo que resta del capítulo, aunque se hará explícita en algunas
-ocasiones para profundizar el caso cuando alguna entrada sea nula. Cuando introduzcamos en el capítulo
-4 múltiples restricciones nos desharemos de este supuesto.
+\ref{sec:foundations} y $u \in \R$ es un escalar. Comúnmente haremos referencia a la restricción
+\eqref{theory:constraint:budget} como \textbf{restricción presupuestaria} debido a que cada unidad
+de $x_i$ ``cuesta'' $p_i$ unidades y queremos maximizar nuestro ``gasto''
+\eqref{theory:objective} sin exceder nuestro \textbf{presupuesto} $u$. Podemos suponer, sin pérdida
+de generalidad, que todas las entradas de $\vec{p}$ son distintas de cero. En efecto, si alguna
+entrada $p_i$ es nula, cualquier elección entera y no negativa de $x_i$ es válida para este programa
+lineal entero. Esta suposición será implícita en lo que resta del capítulo, aunque se hará explícita
+en algunas ocasiones para profundizar el caso cuando alguna entrada sea nula. Cuando introduzcamos
+en el capítulo 4 múltiples restricciones nos desharemos de este supuesto.
 
 \section{Prerrequisitos}
 \label{sec:prerreq}
@@ -520,29 +523,29 @@ solución óptima. Ilustramos estas políticas a partir de un ejemplo.
 \section{Fundamentos}
 \label{sec:foundations}
 \noindent
-Esta sección se divide en cuatro partes. En primer lugar, damos a conocer las definiciones y
-encunciados provistos por \cite{herr}. Es importante aclarar que el autor tradujo libremente algunos
-términos a falta de encontrar fuentes en español que hicieran uso de ellos. En particular, el autor
-decidió nombrar ``vectores esencialmente enteros'' a los \textit{projectively rational vectors} (ver
-definición \ref{theory:def:rational}) y ``capas enteras'' a los \textit{c-layers} (ver definición
-\ref{phase-1:def:c-layer}).
+Esta sección se divide en cuatro partes. En primer lugar, se dan a conocer las definiciones y
+encunciados provistos por \cite{herr}. Es importante aclarar que se tradujeron libremente los
+términos \textit{projectively rational vectors} y \textit{c-layers} como ``vectores esencialmente
+enteros'' (véase definición \ref{theory:def:rational}) y ``capas enteras'' (véase
+\ref{phase-1:def:c-layer}), respectivamente, a falta de encontrar fuentes en español que hicieran
+uso de ellos.
 
-En segundo lugar, mostramos la equivalencia entre resolver problemas del tipo
-\eqref{theory:formulation} y resolver ecuaciones lineales diofantinas. Nos basamos en los teoremas
+En segundo lugar, se muestra una equivalencia entre resolver el problema \eqref{theory:formulation}
+y resolver ecuaciones lineales diofantinas. Este resultado se basa en los teoremas
 \ref{prerreq:th:existence} y \ref{prerreq:th:construction} para construir inductivamente el conjunto
 de soluciones de una ecuación lineal diofantina en $n$ incógnitas. Las soluciones de estas
 ecuaciones serán definidas a partir de una relación de recurrencia y también dependerán de una
 colección de $n - 1$ parámetros libres.
 
-En tercer lugar, establecemos una transformación lineal entre el conjunto de soluciones de una ecuación
+En tercer lugar, se exhibe una transformación lineal entre el conjunto de soluciones de una ecuación
 lineal diofantina en $n$ incógnitas y el conjunto de $n - 1$ parámetros libres que determinan estas
-soluciones. Luego, investigamos las propiedades de esta transformación lineal que serán de gran utilidad
-teórica para los siguientes capítulos, en especial para el capítulo 4.
+soluciones. Luego, se investigan las propiedades de esta transformación lineal que serán de gran utilidad
+teórica para los siguientes capítulos, en particular para el capítulo 4.
 
-Finalmente, mostramos que el vector objetivo $\vec{p}$ del problema original
-\eqref{theory:formulation} induce una descomposición interesante de $\Z^n$ y analizamos cómo se
-relacionan estas descomposiciones al considerar distintos vectores $\vec{p}$. Esto nos permitirá
-mostrar equivalencias entre distintas instancias del problema \eqref{theory:formulation}.
+Finalmente, se muestra que el vector objetivo $\vec{p}$ del problema original
+\eqref{theory:formulation} induce una descomposición de $\Z^n$ y se analiza cómo se relacionan estas
+descomposiciones al considerar distintos vectores $\vec{p}$. Esto permitirá mostrar equivalencias
+entre distintas instancias del problema \eqref{theory:formulation}.
 
 \subsection{Capas enteras}
 \label{subsec:sym}
@@ -550,22 +553,20 @@ mostrar equivalencias entre distintas instancias del problema \eqref{theory:form
 \begin{definition}
 	\label{theory:def:rational}
 	Decimos que un vector $\vec{v} \in \R^n \setminus \lbrace \vec{0} \rbrace$ es
-	\textbf{esencialmente entero} si existen un vector $\vec{w} \in \Z^n$ y un escalar $m \neq 0$
-	tales que $\vec{v} = m\vec{w}$. Además, decimos que $\vec{w}$ es el \textbf{múltiplo coprimo} de
-	$\vec{v}$ si sus entradas son coprimas y si su primera entrada no nula es positiva.
+	\textbf{esencialmente entero} si existen un vector $\vec{w} \in \Z^n$ y un escalar $m \in \R
+	\setminus \braces{0}$ tales que $\vec{v} = m\vec{w}$. Además, decimos que $\vec{w}$ es el
+	\textbf{múltiplo coprimo} de $\vec{v}$ si sus entradas son coprimas y si su primera entrada no
+	nula es positiva.
 \end{definition}
 \begin{example}
 	El vector $\left(-\sqrt{2}, 1/\sqrt{2}\right)^T = 2\sqrt{2}(-2, 1)^T$ es esencialmente entero
 	y $(2, -1)^T$ es su múltiplo coprimo. En contraste, el vector $\paren{\sqrt{2}, \sqrt{3}}^T$ no es
-	esencialmente entero.
+	esencialmente entero. Para ver esto último, supongamos que existe un escalar $m \in
+	\R\setminus\braces{0}$ y enteros $a, b$ tales que $m(a, b) = \paren{\sqrt{2}, \sqrt{3}}$.
+	Claramente, $a, b \neq 0$ y se debe cumplir $a/b = \sqrt{2/3}$, pero el lado izquierdo es un
+	número racional mientras que el derecho es un número irracional, así que obtenemos una
+	contradicción, por lo que el vector $\paren{\sqrt{2}, \sqrt{3}}$ no es esencialmente entero.
 \end{example}
-\begin{observation}
-	Todo vector racional $\vec{v} \in \Q^n \setminus \braces{\vec{0}} $  es esencialmente
-	entero. En efecto, para cada $i \in \braces{1, \ldots, n}$ existen $p_i, q_i \in
-	\Z$ con $q_i \neq 0$ tales que $v_i = p_i/q_i$. Luego, si definimos $m \coloneq \lcm{q_1,
-	\ldots, q_n} \neq 0$ y también $\vec{w} \coloneq m\vec{v} \in \Z^n$, encontramos que $\vec{v} =
-	\frac{1}{m}\vec{w}$.
-\end{observation}
 \begin{observation}
 	\label{obs:coprime-unique}
 	Todo vector $\vec{v}$ esencialmente entero tiene a lo más dos vectores coprimos asociados. Sean
@@ -578,13 +579,19 @@ mostrar equivalencias entre distintas instancias del problema \eqref{theory:form
 	vectores es el múltiplo coprimo de $\vec{v}$. Así, el múltiplo coprimo de un vector
 	esencialmente entero es único.
 \end{observation}
+\begin{observation}
+	Todo vector racional $\vec{v} \in \Q^n \setminus \braces{\vec{0}} $  es esencialmente
+	entero. En efecto, para cada $i \in \braces{1, \ldots, n}$ existen $p_i, q_i \in
+	\Z$ con $q_i \neq 0$ tales que $v_i = p_i/q_i$. Luego, si definimos $m \coloneq \lcm{q_1,
+	\ldots, q_n} \neq 0$ y también $\vec{w} \coloneq m\vec{v} \in \Z^n$, encontramos que $\vec{v} =
+	\frac{1}{m}\vec{w}$.
+\end{observation}
 
-Puesto que todo número representable en cualquier sistema de aritmética finita es necesariamente
-racional, decidimos enfocar nuestro análisis en vectores esencialmente enteros. Desde el punto de
-vista puramente teórico, esta condición reduce de manera drástica el tipo de programas lineales que
-podemos resolver. No obstante, esta clase de vectores es un poco más general que los considerados en
-otros textos de programación lineal. Por ejemplo, \cite{martello} y \cite{alex} toman en cuenta
-vectores puramente racionales.
+% Desde el punto de
+% vista puramente teórico, esta condición reduce de manera drástica el tipo de programas lineales que
+% podemos resolver. No obstante, esta clase de vectores es un poco más general que los considerados en
+% otros textos de programación lineal. Por ejemplo, \cite{martello} y \cite{alex} toman en cuenta
+% vectores puramente racionales.
 
 \begin{definition}
 	\label{phase-1:def:c-layer}
@@ -598,6 +605,12 @@ vectores puramente racionales.
 	es una \textbf{capa entera} si contiene al menos un punto entero.
 \end{definition}
 
+La ventaja principal de utilizar la clase de vectores esencialmente enteros en vez de los vectores
+sobre $\R^n$ o sobre $\Q^n$ se debe a que esta clase es la más grande, de acuerdo al teorema 9 de
+\cite{herr}, en la que el número de capas enteras es finita entre cualesquiera dos puntos. Los
+algoritmos que presentaremos en el capítulo 3 enumeran estas capas enteras, así que su finitud
+asegura la terminación en tiempo finito de estos algoritmos.
+
 \begin{lemma}
 	\label{phase-1:lemma:layer}
 	Sean $\vec{v}, \vec{x} \in \R^n$ con $\vec{v}$ distinto de cero. Entonces $\vec{x} \in
@@ -606,14 +619,14 @@ vectores puramente racionales.
 \end{lemma}
 
 Las capas enteras son invariantes ante reescalamientos en el vector $\vec{v}$: si $r \neq 0$,
-entonces $\clayer{\vec{v}}{t} = \clayer{r\vec{v}}{t/r}$. En efecto, sea $\vec{x} \in
-\clayer{\vec{v}}{t}$. Luego, existe $\vec{v}^\perp$ ortogonal a $\vec{v}$ tal que
+entonces $\clayer{\vec{v}}{t} = \clayer{r\vec{v}}{t/r}$. Esta igualdad se prueba por contenciones.
+Sea $\vec{x} \in \clayer{\vec{v}}{t}$, entonces existe $\vec{v}^\perp$ ortogonal a $\vec{v}$ tal que
 \begin{equation*}
 	\vec{x} = \vec{v}^\perp + t\vec{v} = \vec{v}^\perp + \frac{t}{r}(r\vec{v}).
 \end{equation*}
-Pero si $\vec{v}^\perp$ es ortogonal a $\vec{v}$, entonces también es ortogonal a $r\vec{v}$.
-Así, encontramos que $\vec{x} \in \clayer{r\vec{v}}{t/r}$. La otra contención se muestra de
-manera similar.
+Pero si $\vec{v}^\perp$ es ortogonal a $\vec{v}$, entonces también es ortogonal a $r\vec{v}$. Así,
+encontramos que $\vec{x} \in \clayer{r\vec{v}}{t/r}$. La otra contención se muestra de manera
+similar.
 
 En particular, si $\vec{w}$ es el múltiplo coprimo de $\vec{v}$, se cumple que
 \begin{equation}
@@ -628,7 +641,7 @@ donde $m \neq 0$ es el escalar que satisface $\vec{v} = m\vec{w}$. Así pues, pa
 enteras, basta con fijarnos en los múltiplos coprimos que las definen en vez de sus vectores
 esencialmente enteros asociados.
 
-\begin{theorem}
+\begin{theorem}[\cite{herr}]
 	\label{phase-1:th:cover}
 	Sea $\vec{v} \in \R^n$ un vector esencialmente entero y sea $\vec{w}$ su múltiplo coprimo.
 	Entonces la familia de capas enteras $\braces{\qlayer{w}{k} \vcentcolon k \in \Z}$ cubre a
@@ -711,14 +724,14 @@ desigualdad.
 \end{proof}
 
 Puesto que la gran mayoría de nuestros enunciados y algoritmos dependen de este primer parámetro
-$\eta$, tendremos que separarlos al menos en dos casos. Por ello, el autor creyó prudente
-considerar solamente el caso $m > 0$, aunque cabe mencionar que los enunciados y demostraciones para
-el caso $m < 0$ son completamente análogos, donde las diferencias recaen en que el orden de las
+$\eta$, tendremos que separarlos al menos en dos casos. Creemos que es prudente
+considerar solamente el caso $m > 0$, ya que los enunciados y demostraciones para
+el caso $m < 0$ son completamente análogos. Las diferencias recaen en que el orden de las
 desigualdades cambian o las funciones piso se reemplazan por funciones techo, por ejemplo.
 
-En resumen, si $m > 0$, encontramos que las capas enteras que satsifacen la restricción
+En resumen, si $m > 0$, encontramos que las capas enteras que satisfacen la restricción
 \eqref{theory:constraint:budget} están parametrizadas por $k \in \braces{\eta, \eta - 1, \ldots}$,
-donde $\eta$ está definida en \ref{phase-1:lemma:eta}. Además, por el lema
+donde $\eta$ está definida en el lema \ref{phase-1:lemma:eta}. Además, por el lema
 \ref{theory:lemma:utility}, todo $\vec{x} \in \qlayer{q}{k}$ satisface la ecuación $\vec{q}^T\vec{x} = k$.
 \begin{theorem}
 	\label{theory:th:infeasibility}
@@ -727,15 +740,16 @@ donde $\eta$ está definida en \ref{phase-1:lemma:eta}. Además, por el lema
 	\vec{0}$ y el lado derecho $u$ de \eqref{theory:constraint:budget} es negativo. 
 \end{theorem}
 \begin{proof}
-	Supongamos que $\vec{q} \geq \vec{0}$ y $u < 0$. Si $\vec{x} \in \Z_{\geq \vec{0}}^n$
-	entonces $\vec{q}^T\vec{x} \geq 0 > u$ y por lo tanto $\vec{x}$ no es factible. Luego,
+	$(\implies)$ Supongamos que $\vec{q} \geq \vec{0}$ y $u < 0$. Si $\vec{x} \in \Z_{\geq
+	\vec{0}}^n$ entonces $\vec{q}^T\vec{x} \geq 0 > u$ y por lo tanto $\vec{x}$ no es factible.
+	Luego,
 	\begin{equation*}
 		\Z_{\geq \vec{0}}^{n} \cap \lbrace \vec{x} \vcentcolon \vec{q}^T\vec{x} 
 		\leq u \rbrace = \emptyset,
 	\end{equation*}
 	y el problema no es factible.
 
-	Mostramos la otra implicación por contraposición. Si $u
+	$(\impliedby)$ Procedemos por contraposición. Si $u
 	\geq 0$ observamos que $\vec{0} \in \Z^n$ es factible. Se debe cumplir $u < 0$. Similarmente, si
 	$q_i < 0$ para algún $i \in \lbrace 1, \ldots, n \rbrace$, encontramos que $\lceil u/q_i
 	\rceil\vec{e}_i \in \Z^n$ es factible:
@@ -795,7 +809,7 @@ dividirse en dos casos.
 			\emptyset$. Además, por la definición \ref{theory:def:rational}, $\vec{q}$ tiene una
 			entrada positiva y por lo tanto $I^+ \neq \emptyset$. Luego, ambos conjuntos $I^+$ e
 			$I^-$ forman una partición del conjunto $\braces{1, \ldots, n}$. Podemos escoger
-			enteros positivos $c_1, \ldots, c_n$ que satisfagan simultáneamente
+			enteros positivos $\braces{c_i}_{i \in I^+}$ que satisfagan simultáneamente
 			\begin{align}
 				x_k + \sum_{i \in I^+}q_ic_i &\geq 0, \quad \forall k \in I^-,
 				\label{theory:pf:1} \\
@@ -821,13 +835,13 @@ dividirse en dos casos.
 				&= \eta.
 			\end{align*}
 			Así pues, tenemos existencia de un punto factible. Para concluir que hay un número
-			infinito de puntos factibles, basta observar que si la elección de coeficientes $c_1,
-			\ldots, c_n$ satisface ambas desigualdades \eqref{theory:pf:1} y \eqref{theory:pf:2},
+			infinito de puntos factibles, basta observar que si la elección de coeficientes
+			$\braces{c_i}_{i \in I^+}$ satisface ambas desigualdades \eqref{theory:pf:1} y \eqref{theory:pf:2},
 			entonces cualquier múltiplo entero positivo de estos coeficientes también las satisface.
-		\item Se sigue que $u \geq 0$. Definamos
+		\item Se sigue del teorema anterior que $u \geq 0$. Definamos
 			\begin{equation}
 				\label{theory:pf:p_k}
-				P_k \coloneq \qlayer{q}{k} \cap \Z_{\geq \vec{0}}^n
+				P_k \coloneq \paren{\qlayer{q}{k} \cap \Z_{\geq \vec{0}}^n}
 				= \left\lbrace \vec{x} \in \Z^n \vcentcolon \vec{q}^T\vec{x} = k,
 					\vec{x} \geq \vec{0} \right\rbrace,
 			\end{equation}
@@ -836,11 +850,27 @@ dividirse en dos casos.
 			ningún punto sobre capas enteras con parámetros negativos es factible.
 
 			Sea $k \in \braces{\eta, \eta - 1, \ldots, 0}$. La capa entera $\qlayer{q}{k}$
-			interseca los ejes positivos en $\frac{k}{q_i}\vec{e}_i$.
-			Definamos $\ell_i \coloneq \lceil k/q_i \rceil$. No es difícil ver que $P_k$ está
-			contenido en el prisma cuyas aristas son $[0, \ell_i]$ y, por lo tanto,
+			interseca los ejes positivos en $\frac{k}{q_i}\vec{e}_i$,
+			así que definamos $\ell_i \coloneq \lceil k/q_i \rceil$. Luego,
 			\begin{equation*}
-				P_k \subseteq \prod_{i = 1}^{n} [0, \ell_i] \cap \Z^n = \prod_{i = 1}^{n}
+				\qlayer{q}{k} \cap \R^n_{\geq \vec{0}} \subseteq \prod_{i = 1}^{n} [0, \ell_i],
+			\end{equation*}
+			pues del caso contrario podemos escoger $\vec{x} \in \qlayer{q}{k}$ con $\vec{x} \geq
+			\vec{0}$ y también $x_i > \ell_i$ para alguna $i \in \braces{1, \ldots, n}$. Por el lema
+			\ref{theory:lemma:utility} tenemos
+			\begin{equation*}
+				k = \vec{q}^T\vec{x} > \sum_{j \neq i}q_jx_j + q_i\ceil{\frac{k}{q_i}}
+			\end{equation*}
+			y entonces
+			\begin{equation*}
+				0 \geq k - q_i\ceil{\frac{k}{q_i}} > \sum_{j \neq i}q_jx_j \geq 0.
+			\end{equation*}
+			De donde la última desigualdad se obtiene del hecho que ambos $\vec{q}$ y $\vec{x}$ son
+			no negativos. Así pues, obtenemos una contradicción y la contención anterior es cierta.
+			De esta manera, obtenemos
+			\begin{equation*}
+				\paren{\qlayer{q}{k} \cap \R^n_{\geq \vec{0}}} \cap \Z^n_{\geq \vec{0}} = P_k
+				\subseteq \paren{\prod_{i = 1}^{n} [0, \ell_i]} \cap \Z^n = \prod_{i = 1}^{n}
 				\left( [0, \ell_i] \cap \Z \right).
 			\end{equation*}
 			Pero $\left| [0, \ell_i] \cap \Z \right| = \ell_i + 1$. Así,
@@ -868,9 +898,9 @@ siempre que las entradas de $\vec{q}$ sean coprimas. Habíamos supuesto esto en 
 anterior.
 
 Así también, la construcción de soluciones enteras de ecuaciones lineales diofantinas proveerá
-herramientas teóricas útiles para demostrar la gran mayoría de resultados que presentaremos. Cabe
-mencionar que la siguiente subsección se encarga de construir solamente soluciones enteras de estas
-ecuaciones. Será cuestión de los capítulos 2 y 3 obtener soluciones que además sean no negativas.
+herramientas teóricas útiles para demostrar la gran mayoría de resultados que presentaremos. Por lo
+tanto, la siguiente subsección se encarga de construir solamente soluciones enteras de estas
+ecuaciones. Será cuestión de los capítulos 2 y 3 obtener soluciones sean no negativas.
 
 \subsection{Construcción de soluciones enteras}
 \label{subsec:dioph-eq}
@@ -882,8 +912,8 @@ puntos $\vec{x} \in \Z^n$ que se encuentran sobre esa capa satisfacen la ecuaci�
 	\label{eq:dioph}
 	\vec{q}^T\vec{x} = q_1x_1 + q_2x_2 + \cdots + q_nx_n = k.
 \end{equation}
-Como hemos mencionado previamente, podemos suponer sin pérdida de generalidad que ninguna entrada
-de $\vec{q}$ es nula.
+con $\vec{q} = (q_1, \ldots, q_n)$. Como hemos mencionado previamente, podemos suponer sin pérdida
+de generalidad que ninguna entrada de $\vec{q}$ es nula.
 
 En la sección \ref{section:number-theory} mostramos condiciones de existencia
 de este tipo de ecuaciones, así como su construcción, cuando $n = 2$. Partimos de la
@@ -911,7 +941,7 @@ Por el teorema \ref{prerreq:th:existence}, existen soluciones enteras para todo 
 Como $q_1/g_1$ y $g_2$ son coprimos, encontramos que sus coeficientes de Bézout (ver definición
 \ref{prerreq:def:bezout}) asociados $x_1', \omega_2'$ son soluciones particulares de la ecuación
 \begin{equation*}
-	\frac{q_1}{g_1}x_1 + g_2\omega_2 = 1.
+	\frac{q_1}{g_1}x_1' + g_2\omega_2' = 1.
 \end{equation*}
 Deducimos del teorema \ref{prerreq:th:construction} que las soluciones de la ecuación
 \eqref{eq:dioph:first-step} están dadas por
@@ -1078,11 +1108,14 @@ respectivamente, por lo que satisfacen
 \end{equation}
 
 Hemos demostrado, que la ecuación lineal diofantina \eqref{eq:dioph} tiene al menos una solución,
-siempre que $\vec{q}$ sea un vector coprimo. Así pues, saldamos nuestra
-cuenta pendiente con respecto a una parte de la demostración \ref{theory:th:feasibility}.
-Además, construimos una infinidad de soluciones enteras, pues la elección de
-cada variable libre $t_i \in \Z$ provee una solución distinta. Aún más, por el teorema
-\ref{prerreq:th:construction}, sabemos que el conjunto de estas soluciones es exhaustiva.
+siempre que $\vec{q}$ sea un vector coprimo. Así pues, saldamos nuestra cuenta pendiente con
+respecto a una parte de la demostración \ref{theory:th:feasibility}. Además, construimos una
+infinidad de soluciones enteras, pues la elección de cada variable libre $t_i \in \Z$ provee una
+solución distinta. Aún más, por el teorema \ref{prerreq:th:construction}, sabemos que el conjunto de
+estas soluciones es exhaustiva. En la siguiente subsección estableceremos, a partir de
+la construcción de soluciones aquí obtenida, una relación lineal entre las soluciones enteras
+$\vec{x} = (x_1, \ldots, x_n)$ de la ecuación lineal diofantina $\vec{q}^T\vec{x} = k$ y el vector
+de variables libres $\vec{t} = (t_1, \ldots, t_{n-1})$.
 
 Con respecto a la no negatividad de las soluciones mencionamos brevemente lo siguiente.
 Observamos de \eqref{eq:recurrence} que $t_i$ debe satisfacer
@@ -1113,7 +1146,8 @@ de recurrencia
 	\end{cases}
 \end{equation}
 \begin{lemma}
-	La forma cerrada de la relación de recurrencia \eqref{eq:omega-recurrence} está dada por
+	La forma cerrada de la relación de recurrencia \eqref{eq:omega-recurrence} está dada para toda
+	$i \in \N$ por
 	\begin{equation}
 		\label{eq:omega-formula}
 		\omega_i =
@@ -1121,13 +1155,15 @@ de recurrencia
 		- \sum_{j=1}^{i - 1}
 		t_j \cdot
 		\frac{q_j}{\prod_{\ell=1}^{j}g_\ell}
-		\cdot \prod_{\ell=j+2}^{i}\omega_\ell'.
+		\cdot \prod_{\ell=j+2}^{i}\omega_\ell',
 	\end{equation}
-	donde, por conveniencia, le asignamos el valor de 0 a la suma vacía y el valor de 1 al producto
-	vacío.
+	donde $q_1, q_2, \ldots$ son enteros no nulos coprimos, $g_i$ está definido
+	recursivamente por \eqref{dummy:next-g} con $g_1 = 1$, $\omega_{i + 1}'$ satisface
+	\eqref{dummy:eq:bez-eq}, y $k, t_1, t_2, \ldots$ son enteros.
+	Asignamos el valor de 0 a la suma vacía y el valor de 1 al producto vacío.
 \end{lemma}
 \begin{proof}
-	Lo demostramos inductivamente. Observemos que
+	Utilizaremos inducción matemática sobre $i \in \N$. Observemos que para $i = 1$, se tiene que
 	\begin{equation*}
 		\omega_1 =
 		k \cdot \prod_{j=2}^{1} \omega_j'
@@ -1137,9 +1173,9 @@ de recurrencia
 		\cdot \prod_{\ell=j+2}^{1}\omega_\ell'
 		= k,
 	\end{equation*}
-	debido a que definimos el producto vacío como 1 y la suma vacía como 0. Supongamos
-	inductivamente que (\ref{eq:omega-formula}) se satisface para alguna $i \in \N$. Entonces,
-	tenemos
+	debido a que definimos el producto vacío como 1 y la suma vacía como 0. Ahora hacemos uso de la
+	hipótesis inductiva, así que supongamos que \eqref{eq:omega-formula} se satisface para alguna $i
+	\in \N$, entonces, debemos mostrar que también se satisface para $i + 1$. Veamos que
 	% TODO: fix overfull error
 	\begin{align*}
 		&k \cdot \prod_{j=2}^{i + 1} \omega_j'
@@ -1165,9 +1201,11 @@ de recurrencia
 		&= \omega_i \cdot \omega_{i + 1}' - \frac{q_i}{\prod_{\ell = 1}^{i}g_\ell} \cdot t_i \\
 		&= \omega_{i+1}.
 	\end{align*}
-	Por el principio de inducción se sigue que \eqref{eq:omega-formula} satisface
-	\eqref{eq:omega-recurrence} para todo $i \in \N$. Así, esta fórmula es la forma cerrada de la
-	relación de recurrencia propuesta.
+	Observemos que el producto de la derecha en el segundo renglón es 1 por ser un producto vacío, y
+	que del tercer al cuarto renglón hicimos uso de la hipótesis inductiva. Así pues, por el
+	principio de inducción se sigue que \eqref{eq:omega-formula} satisface
+	\eqref{eq:omega-recurrence} para todo $i \in \N$. Concluimos con que esta fórmula es la forma
+	cerrada de la relación de recurrencia propuesta.
 \end{proof}
 
 Ahora que encontramos una forma cerrada a la relación de recurrencia \eqref{eq:omega-recurrence},
@@ -1205,7 +1243,7 @@ llegamos a
 	\end{align}
 \end{subequations}
 
-Así pues, definimos $\vec{\nu} \in \Z^n$ como
+Así pues, definimos el vector $\vec{\nu} \in \Z^n$ como
 \begin{equation}
 	\label{eq:vec-omega}
 	\nu_i \coloneq x_i' \cdot \prod_{j = 2}^{\min{\lbrace i, n - 1 \rbrace}}\omega_j'.
@@ -1222,7 +1260,7 @@ También definimos la matriz $M \in \Z^{n \times (n - 1)}$ a través de
 	\end{cases}
 \end{equation}
 Sustituyendo estas definiciones en \eqref{eq:x:i} y \eqref{eq:x:last} obtenemos la siguiente
-proposición.
+proposición original.
 \begin{prop}
 	\label{prop:xint}
 	Sea $\vec{q} \in \Z^n$ un vector con entradas coprimas y última entrada no nula. Entonces todas
@@ -1231,7 +1269,8 @@ proposición.
 		\label{eq:transf}
 		\vec{x} = k\vec{\nu} + M\vec{t},
 	\end{equation}
-	donde $\vec{t} \in \Z^{n-1}$.
+	donde $\vec{t} \in \Z^{n-1}$, $\vec{\nu} \in \Z^n$ está definida en \eqref{eq:vec-omega} y $M
+	\in \Z^{n \times (n - 1)}$ en \eqref{eq:mat-T}.
 \end{prop}
 
 \begin{observation}
@@ -1265,11 +1304,14 @@ $\vec{q}$ y no de $\vec{x}$.
 	\end{equation}
 	para todo $i \in \lbrace 1, \ldots, n - 1\rbrace$. Empezamos con el caso base $i = n - 1$. De
 	\eqref{eq:vec-omega}, encontramos que
-	\begin{equation}
+	\begin{align}
 		\label{eq:omega-base-case}
-		q_{n-1}\nu_{n-1} + q_n\nu_n =
+		q_{n-1}\nu_{n-1} + q_n\nu_n &=
+		q_{n-1}\paren{x_{n-1}' \cdot \prod_{j=2}^{n-1}\omega_j'} + 
+		q_{n}\paren{x_n' \cdot \prod_{j=2}^{n-1}\omega_j'} \nonumber \\
+									&=
 		\prod_{j=2}^{n-1}\omega_j' \cdot \left(q_{n-1}x_{n-1}' + q_nx_n'\right).
-	\end{equation}
+	\end{align}
 	Recordemos que $x_{n-1}'$ y $x_n'$ son coeficientes de Bézout asociados a los coeficientes del
 	lado izquierdo de \eqref{eq:last-equation}, los cuales son coprimos. Entonces se cumple, por el
 	teorema \ref{prerreq:th:bezout}, que
@@ -1287,8 +1329,8 @@ $\vec{q}$ y no de $\vec{x}$.
 		\prod_{j=2}^{n-1}\omega_j' \cdot \prod_{j=1}^{n-1}g_j.
 	\end{equation*}
 	Supongamos que \eqref{eq:omega-induction} se satisface para alguna $i \in \braces{2, \ldots, n -
-	1}$. Reduciendo $i$, ocupando \eqref{eq:vec-omega} y usando la hipótesis inductiva,
-	obtenemos
+	1}$. Para ver qué pasa con $i - 1$, ocupamos \eqref{eq:vec-omega} y utilizamos la hipótesis
+	inductiva:
 	\begin{align*}
 		\sum_{j=i-1}^{n}q_j\nu_j
 		&= q_{i-1}\nu_{i-1} + \sum_{j=i}^{n}q_j\nu_j \\
@@ -1320,12 +1362,15 @@ $\vec{q}$ y no de $\vec{x}$.
 \end{proof}
 \begin{lemma}
 	\label{lemma:iso2}
-	Si $q_n \neq 0$ entonces $\gen\braces{\vec{q}} = \ker{M^T}$, donde la matriz $M$ está
-	definida en \eqref{eq:mat-T}.
+	Si $\vec{q} \in \Z^n$ es un vector coprimo con $q_n \neq 0$, entonces $\vec{q}$ genera el
+	complemento ortogonal de la imagen de $M$, es decir, se satisface $\gen\braces{\vec{q}} =
+	\img\braces{M}^\perp$, donde la matriz $M$ está definida en \eqref{eq:mat-T}.
 \end{lemma}
 \begin{proof}
-	La matriz $M$ es triangular inferior y su diagonal principal es distinta de cero. En efecto,
-	para todo $i \in \lbrace 1, \ldots, n - 2\rbrace$, tenemos
+	Por el teorema de la dimensión sabemos que se satisface $\img\braces{M}^\perp = \ker{M^T}$, así que
+	basta mostrar que $\gen\braces{\vec{q}} = \ker{M^T}$. La matriz $M$ es triangular inferior y su
+	diagonal principal es distinta de cero. En efecto, para todo $i \in \lbrace 1, \ldots, n -
+	2\rbrace$, tenemos
 	\begin{equation*}
 		M_{ii} = g_{i + 1} = \gcd{\frac{q_i}{\prod_{j=1}^{i}g_j}, \ldots,
 		\frac{q_n}{\prod_{j=1}^{i}g_j}}.
@@ -1337,7 +1382,7 @@ $\vec{q}$ y no de $\vec{x}$.
 	\end{equation*}
 	Se sigue que las columnas de $M$ son linealmente
 	independientes, y entonces su imagen tiene dimensión $n - 1$. Por lo tanto, $M^T$ tiene $n - 1$
-	renglones linealmente independientes. Se sigue por el teorema de la Dimensión que $\dim
+	renglones linealmente independientes y entonces $\dim
 	\ker{M^T} = 1$, así que basta mostrar que $\vec{q} \in \ker{M^T}$.
 
 	Sea $\vec{x} \in \Z^n$. Por el teorema \ref{phase-1:th:cover}, existe una capa entera
@@ -1356,8 +1401,8 @@ $\vec{q}$ y no de $\vec{x}$.
 
 La gran mayoría de nuestra argumentación para demostrar los resultados ha sido fundamentada a través
 de las capas enteras $\qlayer{q}{k}$, al igual que por el teorema \ref{phase-1:th:cover}. Sin embargo,
-estas capas enteras contienen puntos que no son enteros y por lo tanto no son de nuestro interés.
-Nos gustaría concentrarnos exclusivamente en puntos enteros, al mismo tiempo que buscamos
+estas capas enteras contienen puntos que no son enteros y por lo tanto no son de nuestro interés, ya
+que nos gustaría concentrarnos exclusivamente en puntos enteros, al mismo tiempo que buscamos
 caracterizarlos por medio de $\vec{q}$.
 
 % La siguiente definición hará que logremos este primer objetivo de enfocarnos exclusivamente en los
@@ -1365,7 +1410,8 @@ caracterizarlos por medio de $\vec{q}$.
 % de $\vec{q}$.
 
 \begin{definition}[\cite{alex}]
-	Decimos que un subconjunto $\Lambda$ de $\R^n$ es un \textbf{grupo aditivo} si
+	Decimos que un subconjunto $\Lambda$ del espacio vectorial $\paren{\R^n, +, \cdot}$ es un
+	\textbf{grupo aditivo} si
 	\begin{enumerate}
 		\item $\vec{0} \in \Lambda$, y
 		\item si $\vec{x}, \vec{y} \in \Lambda$, entonces $\vec{x} + \vec{y} \in \Lambda$, y también
@@ -1374,7 +1420,8 @@ caracterizarlos por medio de $\vec{q}$.
 	Además, decimos que $\Lambda$ es una \textbf{red} si existen vectores $\vec{v}_1, \ldots, \vec{v}_n$
 	linealmente independientes tales que
 	\begin{equation*}
-		\Lambda = \lbrace \lambda_1\vec{v}_1 + \cdots + \lambda_n\vec{v}_n \vcentcolon \lambda_i \in
+		\Lambda = \lbrace \vec{x} \vcentcolon \vec{x} = \lambda_1\vec{v}_1 + \cdots +
+		\lambda_n\vec{v}_n, \lambda_i \in
 		\Z \rbrace.
 	\end{equation*}
 	A los vectores $\vec{v}_1, \ldots, \vec{v}_n$ los llamamos la \textbf{base de la red} $\Lambda$.
@@ -1385,7 +1432,7 @@ caracterizarlos por medio de $\vec{q}$.
 	$\vec{e}_1, \ldots, \vec{e}_n$, entonces encontramos que son linealmente independientes, pero
 	también se cumple
 	\begin{equation*}
-		\Z^n = \lbrace \lambda_1\vec{e}_1 + \cdots + \lambda_n\vec{e}_n \vcentcolon \lambda_i \in
+		\Z^n = \lbrace \vec{x} \vcentcolon \vec{x} = \lambda_1\vec{e}_1 + \cdots + \lambda_n\vec{e}_n, \lambda_i \in
 		\Z \rbrace.
 	\end{equation*}
 	De esta manera, $\Z^n$ es una red que tiene como base canónica a los vectores $\vec{e}_1,
@@ -1402,7 +1449,7 @@ caracterizarlos por medio de $\vec{q}$.
 	En el lema \ref{lemma:iso2} mostramos que las columnas de $M$ son linealmente independientes.
 	Ahora mostramos por contradicción que $\vec{\nu}$ es linealmente independiente de las columnas de
 	$M$, así que supongamos que no lo es, por lo que existen escalares $\lambda_1, \ldots,
-	\lambda_{n-1}$ tales que
+	\lambda_{n-1}$, no todos cero, tales que
 	\begin{equation*}
 		\vec{\nu} = \lambda_1 \vec{m}_1 + \cdots + \lambda_{n-1} \vec{m}_{n-1},
 	\end{equation*}
@@ -1469,51 +1516,53 @@ ecuación lineal diofantina $\vec{q}^T\vec{x} = k$. Similarmente, por el lema \r
 vector $\vec{x} \in \Lambda_h$ es una solución de la ecuación lineal diofantina homogénea
 $\vec{q}^T\vec{x} = 0$.
 
-Sea $\vec{x} \in \Z^n$. Por un lado, el teorema \ref{phase-1:th:cover} indica que $\vec{x} \in
-\qlayer{q}{k}$ para alguna $k \in \Z$. Por el otro lado, la descomposición $\Z^n \cong \Lambda_p
-\oplus \Lambda_h$ es tal que $\vec{x}$ puede ser escrito como $\vec{x}_p + \vec{x}_h$,
-donde $\vec{x}_p \in \Lambda_p$ y $\vec{x}_h \in \Lambda_h$, así que se satisface simultáneamente
-$\vec{q}^T\vec{x}_p = k$ y $\vec{q}^T\vec{x}_h = 0$.
+Por el teorema \ref{th:lattice}, encontramos que $\Z^n$ se puede descomponer como la suma directa de
+sus subredes $\Lambda_p$ y $\Lambda_h$, es decir, $\Z^n \cong \Lambda_p \oplus \Lambda_h$. De esta
+manera, tenemos que todo vector $\vec{x} \in \Z^n$ se puede descomponer de la forma $\vec{x} =
+\vec{x}_p + \vec{x}_h$, donde $\vec{x}_p \in \Lambda_p$ por lo que $\vec{q}^T\vec{x}_p = k$ para
+alguna $k$ entera y, similarmente, $\vec{x}_h \in \Lambda_h$ lo que implica que $\vec{q}^T\vec{x}_h
+= 0$. Ahora bien, por el teorema \ref{phase-1:th:cover} y el lema \ref{theory:lemma:utility},
+$\vec{x} \in \qlayer{q}{k}$ y entonces el componente $\vec{x}_p$ se encarga de que $\vec{x}$ se
+encuentre sobre la $k$-ésima capa entera, mientras que el componente $\vec{x}_h$ se desliza sobre
+esta capa. Esta idea de descomponer el espacio a partir de soluciones particulares y homogéneas de
+una ecuación no es novedosa, pues es sumamente frecuente hacerlo para espacios vectoriales.
 
-De manera intuitiva, $\vec{x}_p$ se encarga de que $\vec{x}$ se encuentre sobre la $k$-ésima capa
-entera, mientras que $\vec{x}_h$ se desliza sobre esta capa. Esta idea de descomponer el
-espacio a partir de soluciones particulares y homogéneas de una ecuación no es novedosa,
-pues es sumamente frecuente hacerlo para espacios vectoriales.
-
-Observemos que si $q_n = 0$, es válido permutar las entradas de $\vec{q}$ de
-manera que el vector permutado $\tvec{q}$ cumpla el supuesto $\tilde{q}_n \neq
-0$. Podemos preguntarnos cómo se relacionan las imágenes de las matrices $M$ y
-$\tilde{M}$ de estos dos vectores. Pero si $q_n = 0$, entonces puede ser que
-$M$ no esté bien definida. Requerimos de un supuesto más fuerte para responder
-la pregunta.
+Observemos que si $q_n = 0$, es válido permutar las entradas de $\vec{q}$ de manera que el vector
+permutado $\tvec{q}$ cumpla el supuesto $\tilde{q}_n \neq 0$. Podemos preguntarnos cómo se
+relacionan las imágenes de las matrices $M$ y $\tilde{M}$ definidas en \eqref{eq:mat-T} y
+utilizando $\vec{q}$ y $\tvec{q}$ respectivamente para construirlas. Pero si $q_n = 0$, entonces
+puede ser que $M$ no esté bien definida. Requerimos de un supuesto más fuerte para responder la
+pregunta.
 
 \begin{corollary}
 	\label{cor:iso3}
 	Sea $\vec{q}$ un vector coprimo y sea $\tvec{q}$ un vector con las entradas de $\vec{q}$
-	permutadas. Supongamos que $q_n, \tilde{q}_n \neq 0$. Entonces sus respectivas matrices $M$ y
-	$\tilde{M}$ definidas en \eqref{eq:mat-T} son isomorfas:
-	\begin{equation*}
-		\ker{M^T} \cong \ker{\tilde{M}^T}.
-	\end{equation*}
+	permutadas. Supongamos que $q_n, \tilde{q}_n \neq 0$. Sean $M$ y $\tilde{M}$ sus respectivas
+	matrices definidas en \eqref{eq:mat-T}, entonces se satisface
+	\begin{align*}
+		\ker{M} \cong \ker{\tilde{M}}, &\quad
+		\img\braces{M} \cong \img\braces{\tilde{M}}, \\
+		\ker{M^T} \cong \ker{\tilde{M}^T}, &\quad
+		\img\braces{M^T} \cong \img\braces{\tilde{M}^T}.
+	\end{align*}
 \end{corollary}
 \begin{proof}
-	Existe una matriz de permutación $P \in \Z^{n \times n}$ tal que $\tvec{q} = P\vec{q}$.
+	Por el teorema de la dimensión basta mostrar uno de estos isomorfismos, así que mostramos que
+	$\img\braces{M} \cong \img\braces{\tilde{M}}$.
+	Por hipótesis, existe una matriz de permutación $P \in \Z^{n \times n}$ tal que $\tvec{q} = P\vec{q}$.
 	Puesto que $P$ es invertible, tenemos $\gen\braces{\vec{q}} \cong
 	\gen\braces{\tvec{q}}$. Usando el lema \ref{lemma:iso2} obtenemos
 	\begin{equation*}
-		\ker{M^T} = \gen\braces{\vec{q}} \cong \gen\braces{\tvec{q}} = \ker{\tilde{M}^T},
+		\img\braces{M}^\perp = \gen\braces{\vec{q}} \cong \gen\braces{\tvec{q}} =
+		\img\braces{\tilde{M}}^\perp
 	\end{equation*}
-	que es lo que queríamos demostrar.
+	y entonces $\img\braces{M} \cong \img\braces{\tilde{M}}$, que es lo que queríamos demostrar.
 \end{proof}
 \begin{observation}
 	Si $\tvec{q} = P\vec{q}$ no es cierto que $\tilde{M} = PM$. Por ejemplo, consideremos el vector
 	$\vec{q} \coloneq (1, 1, -2)^T$ y la matriz de permutación
 	\begin{equation*}
-		P \coloneq \begin{pmatrix}
-			1 & 0 & 0 \\
-			0 & 0 & 1 \\
-			0 & 1 & 0 \\
-		\end{pmatrix},
+		P \coloneq [ \vec{e}_1 \mid \vec{e}_3 \mid \vec{e}_2 ],
 	\end{equation*}
 	de donde obtenemos $\tvec{q} = (1, -2, 1)^T$. Calculamos de \eqref{eq:mat-T} que
 	\begin{equation*}
@@ -1570,18 +1619,18 @@ coprimo en vez del vector esencialmente entero $\vec{p}$ en el problema original
 	$\tvec{q} \in \orb(\vec{q})$ si y solo si $\orb(\tvec{q}) = \orb(\vec{q})$.
 \end{lemma}
 \begin{proof}
-	Supongamos que $\tvec{q} \in \orb(\vec{q})$, luego existe una matriz de permutación $P \in \Z^{n\times
+	$(\implies)$ Supongamos que $\orb(\tvec{q}) = \orb(\vec{q})$. Debemos mostrar que $\tvec{q} \in
+	\orb(\tvec{q})$, lo cual se cumple puesto que $\tvec{q} = I_n\tvec{q}$ y la
+	matriz identidad $I_n \in \Z^{n \times n}$ es una matriz de permutación.
+
+	$(\impliedby)$ Supongamos que $\tvec{q} \in \orb(\vec{q})$, luego existe una matriz de permutación $P \in \Z^{n\times
 	n}$ tal que $\tvec{q} = P\vec{q}$. Ahora bien, sea $\vec{\hat{q}} \in \orb(\tvec{q})$, por lo
-	que existe una matriz de permutación $P' \in \Z^{n\times n}$ tal que $\vec{\hat{q}} = P'\tvec{q}
+	que existe una matriz de permutación $P' \in \Z^{n\times n}$ tal que se satisface $\vec{\hat{q}} = P'\tvec{q}
 	= (P'P)\vec{q}$. Como el producto de matrices de permutación también es una matriz de
 	permutación, se sigue que $\vec{\hat{q}} \in \orb(\vec{q})$. Con esto mostramos la contención
 	$\orb(\tvec{q}) \subseteq \orb(\vec{q})$. La otra contención se muestra de manera análoga, pues
 	$\vec{q} = \inv{P}\tvec{q}$ y la inversa de una matriz de permutación también es una matriz de
 	permutación.
-
-	Supongamos que $\orb(\tvec{q}) = \orb(\vec{q})$. Entonces basta mostrar que $\tvec{q} \in
-	\orb(\tvec{q})$, pero esto es inmediatamente cierto puesto que $\tvec{q} = I_n\tvec{q}$ y la
-	matriz identidad $I_n \in \Z^{n \times n}$ es una matriz de permutación.
 \end{proof}
 
 \begin{lemma}
@@ -1648,7 +1697,7 @@ vectores esencialmente enteros, independientemente de su dimensión.
 
 Con esta definición y el teorema \ref{th:isoclass} encontramos que si los vectores esencialmente
 enteros $\vec{p} \in \R^n$ y $\tvec{p} \in \R^{m}$ son equivalentes, entonces el programa lineal
-\eqref{theory:formulation} es esencialmente el mismo. En conclusión, encontramos una suerte de
+\eqref{theory:formulation} es esencialmente el mismo. En conclusión, encontramos una especie de
 clasificación de este tipo de programas lineales. Hemos visto que el único representante importante
 para resolver estos problemas es el múltiplo coprimo $\vec{q} \in \Z^n$ o, más bien, una proyección
 de este de manera que no tenga entradas nulas.

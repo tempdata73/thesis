@@ -83,7 +83,8 @@
 
 % vectors and linear algebra
 \newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
-\renewcommand{\ker}[1]{\mathop{\mathrm{ker}{\left\lbrace #1 \right\rbrace}}}
+\renewcommand{\ker}[1]{\operatorname{ker}\braces{#1}}
+\renewcommand{\img}{\operatorname{im}}
 \renewcommand{\vec}[1]{\boldsymbol{#1}}
 \newcommand{\inv}[1]{#1^{-1}}
 \DeclarePairedDelimiter\braket{\langle}{\rangle}
@@ -112,7 +113,7 @@
 \newcommand{\proy}[1]{\pi^{(#1)}}
 
 \newcommand{\clayer}[2]{H_{#1, #2}}
-\newcommand{\qlayer}[2]{\clayer{\vec{#1}}{#2\norm{\vec{#1}}^{-2}}}
+\newcommand{\qlayer}[2]{\clayer{\vec{#1}}{#2/\norm{\vec{#1}}^{2}}}
 
 \newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
 \newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
