@@ -72,12 +72,12 @@ Por lo que podemos encontrar una solución entera no negativa $\vec{x}$ de la ec
 diofantina $(P\vec{q})^T\vec{x} = \eta$ y entonces $P\vec{x}$ es solución de
 \eqref{theory:formulation}.
 
-\begin{observation}
-	Si $\vec{q} \in \Z^n$ es un vector coprimo, entonces $P\vec{q}$ no necesariamente lo es, ya que
-	posiblemente $(P\vec{q})_1 < 0$. Esto no constituye un problema, pues la construcción de soluciones
-	en la sección \ref{subsec:dioph-eq} requiere que las entradas del vector sean coprimas y no hace
-	suposiciones sobre sus signos.
-\end{observation}
+% \begin{observation}
+% 	Si $\vec{q} \in \Z^n$ es el múltiplo coprimo de un vector esencialmente entero , entonces $P\vec{q}$ no necesariamente lo es, ya que
+% 	posiblemente $(P\vec{q})_1 < 0$. Esto no constituye un problema, pues la construcción de soluciones
+% 	en la sección \ref{subsec:dioph-eq} requiere que las entradas del vector sean coprimas y no hace
+% 	suposiciones sobre sus signos.
+% \end{observation}
 
 En particular podemos suponer, sin pérdida de generalidad, que las entradas de  $\vec{q}$ satisfacen
 $q_{n-1} < 0 < q_n$. Como $\vec{q}$ no tiene entradas nulas, de la
@@ -108,8 +108,15 @@ $\omega_1 = \eta$, y $x_{n-1}', x_n'$ son coeficientes de Bézout que satisfacen
 	b_1 \coloneq -\frac{\omega_{n-1}x_{n-1}'}{q_n} \cdot \prod_{j=1}^{n-1}g_j, \quad
 	b_2 \coloneq \frac{\omega_{n-1}x_{n}'}{q_{n-1}} \cdot \prod_{j=1}^{n-1}g_j.
 \end{equation}
-Puesto que $q_{n-1} < 0 < q_n$, si despejamos $t_{n-1}$ de \eqref{eq:last-solution} encontramos que
-las últimas dos entradas de $\vec{x}$ son no negativas si y solo si $t_{n-1}$ satisface
+Puesto que $q_{n-1} < 0 < q_n$, podemos despejar $t_{n-1}$ de las dos últimas soluciones de
+\eqref{eq:last-solution} y reproducidas aquí por conveniencia,
+\begin{equation*}
+	\begin{cases}
+		x_{n-1} = \omega_{n-1}x_{n-1}' + \frac{q_n}{\prod_{j=1}^{n-1}g_j}t_{n-1}, \\
+		x_n = \omega_{n-1}x_n' - \frac{q_{n-1}}{\prod_{j=1}^{n-1}g_j}t_{n-1},
+	\end{cases}
+\end{equation*}
+encontramos que las últimas dos entradas de $\vec{x}$ son no negativas si y solo si $t_{n-1}$ satisface
 \begin{equation}
 	\label{eq:feasible-param:collapsed}
 	t_{n-1} \geq \ceil{\max\lbrace b_1, b_2 \rbrace}.
@@ -154,7 +161,7 @@ $\vec{\nu}$ y $M$, determinar $\vec{t}$ y luego recuperar $\vec{x}$.
 
 El algoritmo \ref{algo:inf} (pág.~\pageref{algo:inf}) muestra aquel procedimiento constructivo.
 Para ello, suponemos la existencia de una subrutina \texttt{Bezout} que, como su nombre lo indica,
-calcula los coeficientes de Bézout entre dos enteros. El autor reitera, así como lo hizo en la
+calcula los coeficientes de Bézout entre dos enteros. Reiteramos, así como lo hicimos en la
 sección \ref{section:number-theory}, que estos coeficientes se pueden calcular por medio del
 algoritmo extendido de Euclides.
 
@@ -206,7 +213,7 @@ algoritmo extendido de Euclides.
 
 \begin{lemma}
 	\label{lemma:alg:inf:correct}
-	El algoritmo \ref{algo:inf} es correcto.
+	El algoritmo \ref{algo:inf} de la página \pageref{algo:inf} es correcto.
 \end{lemma}
 \begin{proof}
 	Basta observar que el algoritmo sigue la construcción recursiva de la sección
@@ -238,7 +245,7 @@ el sentido que incorpora esta forma de manejar las entradas nulas de $\vec{q}$. 
 vector $\tvec{q}$ de manera que aseguramos que su penúltima entrada es negativa y su última entrada
 es positiva, por lo que podemos deshacernos de este supuesto. Al igual que en el algoritmo anterior,
 suponemos la existencia de las subrutinas \texttt{length} y \texttt{switch}, las cuales determinan
-la dimensión de un vector $\vec{q}$ y permutan sus entradas, respectivamente. Ambas subrutinas son
+la dimensión de un vector $\vec{q}$ y permutan dos de sus entradas, respectivamente. Ambas subrutinas son
 estándar en la literatura.
 
 \begin{algorithm}[ht]
@@ -287,7 +294,7 @@ estándar en la literatura.
 
 \begin{theorem}
 	\label{th:alg:inf}
-	El algoritmo \ref{algo:inf:ext} es correcto.
+	El algoritmo \ref{algo:inf:ext} de la página \pageref{algo:inf:ext} es correcto.
 \end{theorem}
 \begin{proof}
 	Primero mostramos que el vector $\tvec{q}$ satisface las hipótesis del algoritmo
@@ -308,12 +315,14 @@ estándar en la literatura.
 	y satisface la ecuación lineal diofantina $\tvec{q}^T\tvec{x} = \eta$.
 
 	Las siguientes dos líneas se encargan de invertir las transposiciones hechas previamente.
-	Finalmente, en el ciclo que comienza en la línea \ref{alg:inf:loop2} insertamos en $\vec{x}$ las entradas $i$
-	de $\tvec{x}$ donde $q_{\sigma_i} \neq 0$. En otro caso tenemos $x_i = 0$. Así pues, el vector
-	$\vec{x} \in \Z^n$ es no negativo y también satisface
+	Finalmente, en el ciclo que comienza en la línea \ref{alg:inf:loop2} insertamos en $\vec{x}$ los
+	valores de $\tvec{x}$ donde las entradas de $\vec{q}$ son no nulas. En otro caso, donde las
+	entradas de $\vec{q}$ son nulas, podemos escoger cualquier no negativo para las entradas
+	correspondientes de $\vec{x}$, entonces dejamos que estas entradas sean
+	cero. Así pues, el vector $\vec{x} \in \Z^n$ es no negativo y también satisface
 	\begin{equation*}
 		\vec{q}^T\vec{x} = \sum_{i = 1}^{n}q_ix_i
-		= \sum_{i = 1}^{m}q_{\sigma_i}x_{\sigma_i}
+		% = \sum_{i = 1}^{m}q_{\sigma_i}x_{\sigma_i}
 		= \sum_{i = 1}^{m}\tilde{q}_i\tilde{x}_i
 		= \eta,
 	\end{equation*}
@@ -344,24 +353,22 @@ estándar en la literatura.
 \section{Experimentos numéricos}
 \label{sec:inf:exp}
 \noindent
-En esta subsección exponemos la dependencia implícita que tiene Ramificación y Acotamiento (R\&A)
-con la precisión numérica que usamos para especificar el vector objetivo en programas lineales
-enteros. Por lo tanto, no es cierto que estos programas dependan exclusivamente de su dimensión y de
-su número de restricciones, como se escucha normalmente.
-
 En primer lugar, determinamos la complejidad algorítmica del algoritmo \ref{algo:inf:ext} y lo
-usamos como base de nuestras comparaciones. En segundo lugar, enseñamos por qué el método de R\&A
-también depende del número de decimales usados para especificar las entradas del vector objetivo. En
-tercer lugar, diseñamos un experimento numérico que ilustre esta dependencia.
+usamos como base de nuestras comparaciones. En segundo lugar, mostramos que la complejidad del
+algoritmo \ref{algo:bb} del apéndice \ref{app:bb} (es decir, de una implementación ``pura'' de
+Ramificación y Acotamiento) depende del número de decimales utilizados para especificar las entradas
+del vector objetivo, así como de la magnitud en el lado derecho de las restricciones. En tercer
+lugar, diseñamos un experimento numérico que ilustre esta dependencia.
 
-\subsection{Análisis de nuestro método}
+\subsection{Análisis de la complejidad de nuestros algoritmos}
 \label{subsec:inf:complex}
 \noindent
-En ambos algoritmos \ref{algo:inf} y \ref{algo:inf:ext} suponemos que el costo de realizar
-operaciones aritméticas es constante. Primero analizamos el algoritmo \ref{algo:inf}. En el ciclo
-que comienza en la línea \ref{alg:def:inf:loop} realizamos $\mathcal{O}(n)$ multiplicaciones y
-$\mathcal{O}(n^2)$ divisiones.
+En ambos algoritmos \ref{algo:inf} y \ref{algo:inf:ext} dados en las páginas \pageref{algo:inf} y
+\pageref{algo:inf:ext}, respectivamente, suponemos que el costo de realizar operaciones aritméticas
+es constante.
 
+Primero analizamos el algoritmo \ref{algo:inf}. En el ciclo que comienza en la línea
+\ref{alg:def:inf:loop} realizamos $\mathcal{O}(n)$ multiplicaciones y $\mathcal{O}(n^2)$ divisiones.
 Luego, para $1 \leq i \leq n - 2$, se sigue de la línea \ref{alg:def:inf:g} que calculamos una vez
 el máximo común divisor de $n - (i + 1) + 1 = n - i$ números. Vimos en la subsección
 \ref{section:number-theory} que el máximo común divisor puede ser definido de manera inductiva.
@@ -402,7 +409,7 @@ dimensión $n$ y no del lado derecho $\eta$ de la ecuación $\vec{q}^T\vec{x} = 
 complejidad de estos algoritmos con respecto a $\eta$ es constante. Los resultados numéricos en la
 subsección \ref{subsec:inf:res} confirman esto.
 
-\subsection{Dependencia de R\&A con el número de decimales}
+\subsection{Árbol de Ramificación y Acotamiento con profundidad dependiente del número de decimales}
 \label{subsec:inf:int}
 \noindent
 Primero ilustramos a través de un ejemplo que el árbol generado por R\&A correspondiente a instancias de
@@ -414,33 +421,37 @@ terminación de este método.
 \begin{example}
 	\label{ex:inf}
 	Consideremos el programa lineal entero
-	\begin{equation*}
-		\max_{(x, y) \in \Z^2}\braces{x - y \vcentcolon x - y \leq 0.3, x \geq 0, y \geq 0}.
-	\end{equation*}
-	Adoptamos la convención para los subproblemas que subíndices 0, a excepción del primero, indican
-	restricciones añadidas del tipo $\leq$ y subíndices 1 indican restricciones añadidas del tipo
-	$\geq$.
+	\begin{align*}
+		\max_{(x, y) \in \Z^2} \quad
+			& x - y, \\
+		\text{s.a.} \quad
+			& x - y \leq 0.3, \\
+			& x, y \geq 0,
+	\end{align*}
+	Adoptamos la siguiente convención de notación con respecto a los subproblemas: agregamos un 0
+	como sufijo al subíndice si la última restricción añadida fue del tipo $\leq$ y, similarmente,
+	agregamos un 1 si la última restricción añadida fue del tipo $\geq$.
 
-	En la figura \ref{fig:infrec} se muestra el poliedro asociado a su problema relajado $S_0$.
+	En la figura \ref{fig:infrec} se muestra el poliedro asociado a su problema relajado $S$.
 	Encontramos que su solución es $(0.3, 0)$. Puesto que $0.3$ no es entero, ramificamos sobre esta
-	variable y generamos dos subproblemas $S_{00}$ y $S_{01}$ con las restricciones añadidas $x \leq
-	0$ y $x \geq 1$, respectivamente. La solución de $S_{00}$ es $(0, 0)$ y podamos por
+	variable y generamos dos subproblemas $S_{0}$ y $S_{1}$ con las restricciones añadidas $x \leq
+	0$ y $x \geq 1$, respectivamente. La solución de $S_{0}$ es $(0, 0)$ y podamos por
 	integralidad.
 
-	Ahora bien, la solución de $S_{01}$ es $(1, 0.7)$ y como $0.7$ no es entero, generamos $S_{010}$
-	y $S_{011}$ con las restricciones añadidas $y \leq 0$ y $y \geq 1$. Encontramos que el poliedro
-	de $S_{010}$ es vacío, así que podamos por infactibilidad.
+	Ahora bien, la solución de $S_{1}$ es $(1, 0.7)$ y como $0.7$ no es entero, generamos $S_{10}$
+	y $S_{11}$ con las restricciones añadidas $y \leq 0$ y $y \geq 1$. Encontramos que el poliedro
+	de $S_{10}$ es vacío, así que podamos por infactibilidad.
 
-	En la figura \ref{fig:infrec} se muestra el poliedro asociado a $S_{011}$. Observemos que este poliedro es
-	una traslación del asociado a $S_0$. En otras palabras, $S_{011}$ es un caso particular de una
-	homotecia de $S_{0}$. Consecuentemente, hay un comportamiento
-	periódico en cuanto a la ramificación y solución de estos problemas: resolver $S_{011}$ se
-	reduce a resolver $S_0$, pero el primero es un subproblema del segundo. Siguiendo este
-	razonamiento, encontramos que R\&A genera la cadena de subproblemas autosimilares
+	En la parte derecha de la figura \ref{fig:infrec} se muestra el poliedro asociado a $S_{11}$.
+	Observemos que este poliedro es una traslación del asociado a $S$. En otras palabras, $S_{11}$
+	es un caso particular de una homotecia de $S$. Consecuentemente, hay un comportamiento periódico
+	en cuanto a la ramificación y solución de estos problemas: resolver $S_{11}$ se reduce a
+	resolver $S$, pero el primero es un subproblema del segundo. Siguiendo este razonamiento,
+	encontramos que R\&A genera la cadena de subproblemas autosimilares
 	\begin{equation*}
-		S_0, S_{011}, S_{01111}, S_{0111111}, \ldots
+		S, S_{11}, S_{1111}, S_{111111}, \ldots
 	\end{equation*}
-	y este método jamás terminará con una solución.
+	y el algoritmo \ref{algo:bb} del apéndice \ref{app:bb} jamás terminará con una solución.
 \end{example}
 
 \begin{figure}
@@ -449,18 +460,18 @@ terminación de este método.
 		\begin{tikzpicture}[scale=0.7]
 			\begin{axis}[
 			  axis lines=middle,
-			  xmin=0, xmax=1.2,
-			  ymin=0, ymax=1.2,
+			  xmin=0, xmax=2.2,
+			  ymin=0, ymax=2.2,
 			  xlabel={$x$}, ylabel={$y$},
 			  clip=false
 			]
-				\addplot [name path=top, draw=none, domain=0:1.2] {1.2};
-				\addplot [name path=lower, draw=none, samples=200, domain=0:1.2]
+				\addplot [name path=top, draw=none, domain=0:2.2] {2.2};
+				\addplot [name path=lower, draw=none, samples=200, domain=0:2.2]
 				  {max(x-0.3, 0)};
 				\addplot [blue!25] fill between[of=top and lower];
-				\addplot [blue, thick, domain=0.3:1.2] {x - 0.3};
+				\addplot [blue, thick, domain=0.3:2.2] {x - 0.3};
 				\addplot [blue, thick, domain=0:0.3] {0};
-				\node at (axis cs:0.5,0.7) {\Large $S_{0}$};
+				\node at (axis cs:0.7,1.25) {\Large $S$};
 			\end{axis}
 		\end{tikzpicture}
 	\end{minipage}
@@ -469,8 +480,8 @@ terminación de este método.
 		\begin{tikzpicture}[scale=0.7, >= stealth]
 			\begin{axis}[
 			  axis lines=middle,
-			  xmin=1, xmax=2.2,
-			  ymin=1, ymax=2.2,
+			  xmin=0, xmax=2.2,
+			  ymin=0, ymax=2.2,
 			  xlabel={$x$}, ylabel={$y$},
 			  clip=false
 			]
@@ -480,30 +491,29 @@ terminación de este método.
 				\addplot [blue!25] fill between[of=top and lower];
 				\addplot [blue, thick, domain=1.3:2.2] {x - 0.3};
 				\addplot [blue, thick, domain=1:1.3] {1};
-				\node at (axis cs:1.5,1.7) {\Large $S_{011}$};
+				\node at (axis cs:1.5,1.7) {\Large $S_{11}$};
 			\end{axis}
 		\end{tikzpicture}
 	\end{minipage}
 	\caption{\textit{Izquierda}: Poliedro asociado al problema relajado del ejemplo \ref{ex:inf}.
-	\textit{Derecha}: Poliedro asociado a un subproblema de $S_0$.}
+	\textit{Derecha}: Poliedro asociado a un subproblema de $S$.}
 	\label{fig:infrec}
 \end{figure}
 
-\begin{observation}
-	Si el lado derecho hubiera sido $0$ en vez $0.3$, R\&A hubiera terminado inmediatamente con la
-	solución $(0, 0)$ al resolver el problema relajado. Es decir, un cambio de $0.3$ unidades en el
-	lado derecho de la única desigualdad provocó que el árbol generado por R\&A tuviera profundidad
-	unitaria a profundida infinita. Este único ejemplo muestra que R\&A no depende exclusivamente
-	del número de variables y desigualdades.
-\end{observation}
+Observemos que si el lado derecho hubiera sido $0$ en lugar de $0.3$, R\&A hubiera terminado
+inmediatamente con la solución $(0, 0)$ al resolver el problema relajado. Es decir, un cambio de
+$0.3$ unidades en el lado derecho de la única desigualdad provocó que el árbol generado por R\&A
+tuviera profundidad unitaria a profundida infinita. Así pues, este ejemplo también muestra que
+implementaciones puras de R\&A dependen de la magnitud del lado derecho de las restricciones.
 
-El autor sospecha que el fenómeno presentado en el ejemplo \ref{ex:inf} ocurre en todas las
-instancias de \eqref{theory:formulation} cuando $\vec{p}$ es esencialmente entero y el lado derecho
-$u$ de \eqref{theory:constraint:budget} es tal que $u/m \not\in \Z$, donde $m$ es el escalar que
-satisface $\vec{p} = m\vec{q}$, y donde $\vec{q}$ es el múltiplo coprimo de $\vec{p}$. En
-particular, para problemas de este tipo existe una colección de subproblemas homotéticos entre sí.
-Además, si el vector coprimo $\vec{q}$ de $\vec{p}$ tiene una entrada negativa, entonces esta
-colección es infinita. Por cuestiones de longitud de esta tesis, no investigamos más en este
+Sospechamos que el fenómeno presentado en el ejemplo anterior ocurre en todas las instancias de
+\eqref{theory:formulation} cuando $\vec{p}$ es esencialmente entero y el lado derecho $u$ de
+\eqref{theory:constraint:budget} es tal que $u/m \not\in \Z$, donde $m$ es el escalar que satisface
+$\vec{p} = m\vec{q}$, y donde $\vec{q}$ es el múltiplo coprimo de $\vec{p}$. Es decir, conjeturamos
+que, para problemas que cumplen con estas condiciones, existe una colección de subproblemas
+homotéticos entre sí. Además, si el múltiplo coprimo $\vec{q}$ de $\vec{p}$ tiene una entrada
+negativa, entonces esta colección es infinita. Por cuestiones de longitud de esta tesis de
+licenciatura y por el hecho de que es un tema de carácter abierto, no investigamos más en este
 respecto.
 
 Para que una implementación pura de Ramificación y Acotamiento termine en tiempo finito al resolver
@@ -584,15 +594,15 @@ de decimales utilizados para expresar $\vec{p}$, pues R\&A requiere 10 veces má
 adicional. No obstante, es cierto que los cortes se vuelven más efectivos una vez que $\vec{x}^*$ se
 encuentra cerca de una solución entera, pues $\norm{\vec{\delta}}_\infty \approx 0$.
 
-En la práctica no existen implementaciones puras de R\&A. Más bien, existe un
-ecosistema de módulos que combinan R\&A con otro tipo de generación de cortes, con la manera de
-elegir subproblemas, con métodos de presolución, con heurísticas, etcétera (ver figura
-\ref{p1c11:fig:MIP_solver_flowchart}). Estas técnicas evitan, en primer lugar, que se genere un
-árbol de profundidad infinita y, en segundo lugar, encuentran soluciones eficientemente.
+En la práctica no existen implementaciones puras de R\&A, sino que existe un ecosistema de módulos
+que combinan R\&A con otro tipo de generación de cortes, con la manera de elegir subproblemas, con
+métodos de presolución, con heurísticas, etcétera (ver figura \ref{p1c11:fig:MIP_solver_flowchart}).
+Estas técnicas evitan, en primer lugar, que se genere un árbol de profundidad infinita y, en segundo
+lugar, encuentran soluciones eficientemente.
 
-A pesar de lo anterior, en la siguiente subsección mostramos que la obtención de soluciones de
-\eqref{theory:formulation} todavía es lenta cuando una entrada del vector coprimo $\vec{q}$ del
-vector objetivo $\vec{p}$ es negativa.
+En la siguiente subsección mostramos que la obtención de soluciones de \eqref{theory:formulation}
+todavía es lenta cuando una entrada del vector coprimo $\vec{q}$ del vector objetivo $\vec{p}$ es
+negativa.
 
 \subsection{Análisis de resultados}
 \label{subsec:inf:res}
@@ -602,9 +612,9 @@ numérico. En segundo lugar, explicamos y justificamos el diseño del experiment
 mostramos y analizamos los resultados obtenidos.
 
 Para realizar nuestro experimentos con R\&A, usamos el COIN-OR Branch-and-Cut (CBC) \textit{solver}
-por medio de la interfaz de PuLP implementada en Python. La configuración usada permite métodos de
-presolución, cortes de mochila y de Gomory-Chvátal. Prohibimos el uso de múltiples hilos a fin de
-garantizar una comparación justa con nuestro método.
+por medio de la interfaz de PuLP 3.1 implementada en Python 3.12. La configuración
+usada permite métodos de presolución, cortes de mochila y de Gomory-Chvátal. Prohibimos el uso de
+múltiples hilos (\textit{threads}) a fin de garantizar una comparación justa con nuestro método.
 
 Cada observación de tiempo de cada método representa el promedio de 20 corridas. Para cada
 observación realizamos 2 corridas preliminares a fin de evitar sesgos en el tiempo por cuestión de
@@ -616,10 +626,8 @@ Por cuestiones de tiempo, cada proceso tenía un tiempo límite de 300 segundos 
 correr. De esta manera, decimos que el método no encontró una solución en caso de que más de 10
 observaciones sobrepasaran este límite. Además, comparamos los valores objetivo de nuestra
 implementación con los de Ramificación y Acotamiento y en ningún momento encontramos que estos
-fueran distintos. El autor menciona que su implementación se encuentra libre en
-GitHub\footnote{Véase: \url{https://github.com/tempdata73/thesis}.} así como
-los tiempos de terminación de cada método junto con archivos de registro que
-certifican estos tiempos.
+fueran distintos. Cabe mencionar que nuestra implementación se encuentra libre en
+GitHub\footnote{Véase: \url{https://github.com/tempdata73/thesis}.}
 
 Finalmente, los experimentos fueron realizados en una computadora portátil Dell XPS 15 equipada con
 un procesador Intel Core i7-8750H (6 núcleos físicos y 12 hilos, frecuencia base de 2.20 GHz y
@@ -685,15 +693,16 @@ los tiempos de terminación de R\&A cuando utilizamos una cifra decimal adiciona
 instancia depende del presupuesto $u$ de la restricción \eqref{theory:constraint:budget} y tomamos
 128 de estos presupuestos por cada nivel de precisión $i$, obtenemos a lo más $128 \times (3 - 1) =
 256$ multiplicadores registrados, pues no podemos medir aquellos en donde $T(\vec{p}_i)$ es mayor a
-300 segundos. La figura \ref{fig:exp:inf:hist} muestra la distribución de estos multiplicadores,
-donde recortamos cada multiplicador para que el máximo fuera 100, pues observamos que el más grande
-entre estos fue aproximadamente 5{,}422.
+300 segundos. La figura \ref{fig:exp:inf:hist} muestra la distribución acumulada de estos
+multiplicadores. Por cuestiones visuales, recortamos la gráfica para que el multiplicador más grande
+fuera 100, pues 49 multiplicadores se encontraban en el rango (100, 5{,}422] y
+generaban un sesgo innecesario en la distribución.
 
 De acuerdo a la subsección anterior, deberíamos esperar que la gran mayoría de los multiplicadores
 se concentren alrededor de 10. Esto último ocurrió en el 40\% de los casos. Después de realizar un
-conteo en los archivos de registro generados por el \textit{solver} CBC, el autor descubrió que en
+conteo en los archivos de registro generados por el \textit{solver} CBC, descubrimos que en
 \textbf{todos} los casos que R\&A encontró una solución fue a causa de una heurística y no por el
-método de ramificación. Por la dificultad del árbol que genera el problema
+método de ramificación. Debido la dificultad del árbol que genera el problema
 \eqref{theory:formulation}, de acuerdo a la subsección anterior, esto parece ser razonable.
 
 Aún cuando las soluciones fueron obtenidas exclusivamente a través de heurísticas, en el 60\% de los
@@ -702,10 +711,11 @@ mayoría de los casos, que el tiempo de terminación en R\&A sea al menos diez v
 los cortes generados por Ramificación y Acotamiento son más ineficientes de lo que habíamos
 predicho.
 
-El autor espera que lo realizado en estos experimentos numéricos muestre categóricamente que el
-método de Ramificación y Acotamiento no depende solo del número de variables o de desigualdades
-utilizadas. Con esto damos por concluido este capítulo y continuamos con nuestro
-desarrollo del segundo caso del teorema \ref{theory:th:feasibility}.
+Esperamos que lo realizado en estos experimentos numéricos muestre categóricamente que el método de
+Ramificación y Acotamiento no depende solo del número de variables o de desigualdades utilizadas,
+sino que también de la precisión numérica con la que se especifican los datos. Con esto damos por
+concluido este capítulo y continuamos con nuestro desarrollo del segundo caso del teorema
+\ref{theory:th:feasibility}.
 
 \begin{figure}[hbtp]
   \centering

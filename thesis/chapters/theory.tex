@@ -76,27 +76,25 @@ Además, el máximo común divisor siempre es positivo, pues se cumple que $1 \i
 entero $a$, lo que implica por maximalidad que $1 \leq \gcd{a_1, \ldots, a_n}$ para cualquier
 colección de enteros no todos nulos.
 
-La manera más común para calcular el máximo común divisor es a partir del algoritmo de Euclides.
+La definición más común del máximo común es dada de manera inductiva. Decimos que $d$ es el máximo
+común divisor de dos enteros $a_1, a_2$, no ambos iguales a cero, si se satisface
+\begin{enumerate}
+	\item $d \mid a_1$ y $d \mid a_2$, y también,
+	\item si $d' \mid a_1$ y $d' \mid a_2$, entonces $d' \mid d$.
+\end{enumerate}
+Luego, para un conjunto de enteros $a_1, a_2 \ldots a_n$, no todos iguales a cero, definimos el máximo común
+divisor entre ellos a partir de
+\begin{equation*}
+	\gcd{a_1, a_2, \ldots, a_{n-1}, a_n} \coloneq \gcd{a_1, \gcd{a_2, \ldots, \gcd{a_{n-1}, a_n}}}.
+\end{equation*}
+Sin embargo, debemos ser cuidadosos con esta manera de definir las cosas, pues puede ser el caso,
+por ejemplo, que $a_{n-1}$ y $a_n$ sean ambos cero y entonces $\gcd{a_{n-1}, a_n}$ no está bien definido.
 
-% La definición más común del máximo común es dada de manera inductiva. Decimos que $d$ es el máximo
-% común divisor de dos enteros $a_1, a_2$, no ambos iguales a cero, si se satisface
-% \begin{enumerate}
-% 	\item $d \mid a_1$ y $d \mid a_2$, y también,
-% 	\item si $d' \mid a_1$ y $d' \mid a_2$, entonces $d' \mid d$.
-% \end{enumerate}
-% Luego, para un conjunto de enteros $a_1, a_2 \ldots a_n$, no todos iguales a cero, definimos el máximo común
-% divisor entre ellos a partir de
-% \begin{equation*}
-% 	\gcd{a_1, a_2, \ldots, a_{n-1}, a_n} \coloneq \gcd{a_1, \gcd{a_2, \ldots, \gcd{a_{n-1}, a_n}}}.
-% \end{equation*}
-% Sin embargo, debemos ser cuidadosos con esta manera de definir las cosas, pues puede ser el caso,
-% por ejemplo, que $a_{n-1}$ y $a_n$ sean ambos cero y entonces $\gcd{a_{n-1}, a_n}$ no está bien definido.
-% 
-% Para que esta manera de definir el máximo común divisor sea equivalente a la definición
-% \ref{prerreq:def:gcd}, deberemos presuponer o bien que $a_{n - 1} \neq 0$ o bien que $a_n \neq 0$. A
-% partir de este punto usaremos ambas definiciones de manera indistinta. Independientemente de qué
-% definición usemos, la manera de calcular el máximo común divisor siempre es a través del algoritmo
-% de Euclides.
+Para que esta manera de definir el máximo común divisor sea equivalente a la definición
+\ref{prerreq:def:gcd}, deberemos presuponer o bien que $a_{n - 1} \neq 0$ o bien que $a_n \neq 0$. A
+partir de este punto usaremos ambas definiciones de manera indistinta. Independientemente de qué
+definición usemos, la manera de calcular el máximo común divisor siempre es a través del algoritmo
+de Euclides.
 
 % \begin{observation}
 % 	No porque una colección de enteros sea coprima se sigue que estos enteros son coprimos a pares.
@@ -1698,10 +1696,19 @@ vectores esencialmente enteros, independientemente de su dimensión.
 Con esta definición y el teorema \ref{th:isoclass} encontramos que si los vectores esencialmente
 enteros $\vec{p} \in \R^n$ y $\tvec{p} \in \R^{m}$ son equivalentes, entonces el programa lineal
 \eqref{theory:formulation} es esencialmente el mismo. En conclusión, encontramos una especie de
-clasificación de este tipo de programas lineales. Hemos visto que el único representante importante
-para resolver estos problemas es el múltiplo coprimo $\vec{q} \in \Z^n$ o, más bien, una proyección
-de este de manera que no tenga entradas nulas.
+clasificación de este tipo de programas lineales.
 
+% Hemos visto que el único representante importante
+% para resolver estos problemas es el múltiplo coprimo $\vec{q} \in \Z^n$ o, más bien, una proyección
+% de este de manera que no tenga entradas nulas.
+
+En el siguiente capítulo observaremos que conviene imponer un orden sobre las entradas del vector
+coprimo $\vec{q} \in \Z^n$ de manera que se satisfaga $q_{n - 1} < 0 < q_n$. Esto se reduce a escoger
+un elemento en $\orb(\vec{q})$ que cumpla con esta característica. Equivalentemente, dado un vector
+esencialmente entero $\vec{p} \in \R^{n + \ell}$ con $\ell$ entradas nulas, veremos que conviene
+escoger un representante en su clase de equivalencia $[\vec{p}]$ tal que su múltiplo coprimo
+asociado $\vec{q} \in \Z^n$ cumpla $q_{n-1} < 0 < q_n$. Esto ejemplificará concretamente la
+conveniencia de definir una clase de equivalencia sobre el conjunto de vectores esencialmente enteros.
 
 % Solamente cuando querramos relacionar los resultados con una instancia específica del problema
 % \eqref{theory:formulation} haremos mención del vector esencialmente entero $\vec{p} \in \R^n$.
