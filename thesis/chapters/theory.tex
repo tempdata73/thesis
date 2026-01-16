@@ -1,10 +1,10 @@
 \chapter{Aspectos Teóricos}
 \noindent
 En este capítulo se presentan los prerrequisitos necesarios para obtener los resultados que se
-encuentran a lo largo de esta tesis. En primer lugar, la sección \ref{sec:prerreq} recopila
+encuentran a lo largo de esta tesis. En primer lugar, en la sección \ref{sec:prerreq} se recopilan
 resultados básicos de teoría de números y de programación lineal que forman parte de la literatura
 tradicional y constituyen nuestras bases a partir de las cuales derivaremos nuestros propios
-resultados. En segundo lugar, la sección \ref{sec:foundations} presenta enunciados y definiciones
+resultados. En segundo lugar, en la sección \ref{sec:foundations} se presentan enunciados y definiciones
 obtenidos de \cite{herr}, los cuales utilizaremos para continuar con la construcción de nuestros
 resultados originales.
 
@@ -28,8 +28,7 @@ de $x_i$ ``cuesta'' $p_i$ unidades y queremos maximizar nuestro ``gasto''
 de generalidad, que todas las entradas de $\vec{p}$ son distintas de cero. En efecto, si alguna
 entrada $p_i$ es nula, cualquier elección entera y no negativa de $x_i$ es válida para este programa
 lineal entero. Esta suposición será implícita en lo que resta del capítulo, aunque se hará explícita
-en algunas ocasiones para profundizar el caso cuando alguna entrada sea nula. Cuando introduzcamos
-en el capítulo 4 múltiples restricciones nos desharemos de este supuesto.
+al final cuando investiguemos la manera de clasificar instancias de este programa lineal entero.
 
 \section{Prerrequisitos}
 \label{sec:prerreq}
@@ -70,7 +69,7 @@ $a$ sea nulo, se sigue que $D(a) = \Z$.
 \end{definition}
 Puesto que alguna entrada $a_i$ es distinta de cero en la definición anterior, encontramos que el
 conjunto $\bigcap_{i=1}^{n}D(a_i)$ es finito y también es no vacío, por lo que este conjunto tiene
-un máximo elemento. Es decir, el máximo común divisor $d$ siempre está bien definido.
+un máximo elemento. Es decir, el máximo común divisor está bien definido.
 
 Además, el máximo común divisor siempre es positivo, pues se cumple que $1 \in D(a)$ para todo
 entero $a$, lo que implica por maximalidad que $1 \leq \gcd{a_1, \ldots, a_n}$ para cualquier
@@ -83,17 +82,17 @@ común divisor de dos enteros $a_1, a_2$, no ambos iguales a cero, si se satisfa
 	\item si $d' \mid a_1$ y $d' \mid a_2$, entonces $d' \mid d$.
 \end{enumerate}
 Luego, para un conjunto de enteros $a_1, a_2 \ldots a_n$, no todos iguales a cero, definimos el máximo común
-divisor entre ellos a partir de
+divisor entre ellos de manera inductiva:
 \begin{equation*}
-	\gcd{a_1, a_2, \ldots, a_{n-1}, a_n} \coloneq \gcd{a_1, \gcd{a_2, \ldots, \gcd{a_{n-1}, a_n}}}.
+	\gcd{a_1, a_2, \ldots, a_{n-1}, a_n} \coloneq \gcd{a_1, \gcd{a_2, \ldots, \gcd{a_{n-1}, a_n} \cdots }}.
 \end{equation*}
 Sin embargo, debemos ser cuidadosos con esta manera de definir las cosas, pues puede ser el caso,
 por ejemplo, que $a_{n-1}$ y $a_n$ sean ambos cero y entonces $\gcd{a_{n-1}, a_n}$ no está bien definido.
 
 Para que esta manera de definir el máximo común divisor sea equivalente a la definición
 \ref{prerreq:def:gcd}, deberemos presuponer o bien que $a_{n - 1} \neq 0$ o bien que $a_n \neq 0$. A
-partir de este punto usaremos ambas definiciones de manera indistinta. Independientemente de qué
-definición usemos, la manera de calcular el máximo común divisor siempre es a través del algoritmo
+partir de este punto usaremos ambas definiciones de manera indistinta. Independientemente de la
+definición que utilicemos, es posible calcular el máximo común divisor a través del algoritmo
 de Euclides.
 
 % \begin{observation}
@@ -108,7 +107,7 @@ de Euclides.
 \end{definition}
 \begin{theorem}
 	\label{prerreq:th:bezout}
-	Sea $d$ un entero y sean $a_1, \ldots, a_n$ una colección de enteros no todos iguales a cero.
+	Sea $d$ un entero y sea $a_1, \ldots, a_n$ una colección de enteros no todos iguales a cero.
 	Entonces $d = \gcd{a_1, \ldots, a_n}$ si y solo si $d$ es la mínima combinación lineal entera
 	positiva de $a_1, \ldots, a_n$.
 \end{theorem}
@@ -148,12 +147,12 @@ n}$.
 \subsubsection{Ecuaciones lineales diofantinas}
 
 \noindent
-Sea $c \in \Z$ y sean $a_1, \ldots, a_n$ enteros. Una ecuación lineal diofantina es una ecuación
-en la que deseamos determinar enteros $x_1, \ldots, x_n$ que satisfagan
+Sea $c \in \Z$ y sea $a_1, \ldots, a_n$ una colección de enteros. Una ecuación
+lineal diofantina es una ecuación en la que deseamos determinar enteros $x_1,
+\ldots, x_n$ que satisfagan
 \begin{equation*}
 	a_1x_1 + \cdots + a_nx_n = c.
 \end{equation*}
-Será de nuestro interés en las siguientes secciones resolver iterativamente este tipo de ecuaciones.
 En esta sección nos enfocamos en el caso $n = 2$, y en la sección \ref{sec:foundations}
 generalizamos estos resultados para cualquier entero $n \geq 2$. Los siguientes enunciados abordan
 el problema de determinar la existencia y construcción de soluciones para este tipo de ecuaciones.
@@ -169,21 +168,17 @@ solución particular.
 	Sea $d \coloneq \gcd{a, b}$ y sean $x', y'$ números enteros tales que $ax' + by' = d$ (su
 	existencia está garantizada por el teorema \ref{prerreq:th:bezout}). Decimos entonces que $x',
 	y'$ son \textbf{coeficientes de Bézout} asociados a
-	$a$ y $b$, respectivamente.\footnote{
-		Los coeficientes de Bézout se pueden calcular a través del algoritmo extendido de Euclides.
-		Véase \url{https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm}
-	}
+	$a$ y $b$, respectivamente.
 \end{definition}
-
-\begin{observation}
-	Los coeficientes de Bézout asociados a un par de enteros no son únicos. En efecto, si $x', y'$
-	son coeficientes de Bézout de $a$ y $b$, entonces $x' + b$, $y' - a$ también lo son:
-	\begin{equation*}
-		a(x' + b) + b(y' - a) = ax' + by' + ab - ab = ax' + by' = d.
-	\end{equation*}
-	Para fines de esta tesis basta la existencia de estos coeficientes, por lo que decimos de manera
-	indistinta ``los coeficientes de Bézout'' y ``una elección de coeficientes de Bézout''.
-\end{observation}
+Los coeficientes de Bézout se pueden calcular a través del algoritmo extendido
+de Euclides. Observemos que estos coeficientes no son únicos. En efecto, si
+$x', y'$ son coeficientes de Bézout de $a$ y $b$, entonces $x' + b$, $y' - a$
+también lo son:
+\begin{equation*}
+	a(x' + b) + b(y' - a) = ax' + by' + ab - ab = ax' + by' = d.
+\end{equation*}
+Para fines de esta tesis basta la existencia de estos coeficientes, por lo que diremos de manera
+indistinta ``los coeficientes de Bézout'' y ``una elección de coeficientes de Bézout''.
 
 Definamos $d \coloneq \gcd{a, b}$ y supongamos que la ecuación $ax + by = c$ tiene solución.
 Por el teorema \ref{prerreq:th:existence}, se sigue que $d \mid c$, y entonces existe $c' \in \Z$
@@ -196,8 +191,8 @@ por lo que $(c' \cdot x', c' \cdot y')$ es una solución particular de la ecuaci
 
 \begin{theorem}[Construcción]
 	\label{prerreq:th:construction}
-	Sea $(x_0, y_0)$ una solución particular de la ecuación lineal diofantina $ax + by = c$.
-	Entonces todas las soluciones enteras de aquella ecuación están dadas por
+	Sea $ax + by = c$ una ecuación lineal diofantina con solución particular $(x_0, y_0)$, entonces
+	todas sus soluciones están dadas por
 	\begin{equation}
 		\label{prerreq:eq:construction}
 		\begin{cases}
@@ -243,7 +238,7 @@ La programación lineal se encarga de resolver problemas de optimización de la 
 	\label{prim:lineal-opt}
 	\max_{\vec{x} \in \R^n} ~\lbrace \vec{c}^T\vec{x} \colon \vec{x} \in P \rbrace,
 \end{equation}
-donde $P \in \R^n$ es un poliedro al cual llamamos \textbf{región factible}, $\vec{c} \in \R^n$ un vector,
+donde $P \subseteq \R^n$ es un poliedro al cual llamamos \textbf{región factible}, $\vec{c} \in \R^n$ un vector,
 comúnmente conocido como el \textbf{vector objetivo}, y $\vec{x} \in \R^n$ un vector de variables a decidir.
 
 % En esta sección repasamos brevemente algunas propiedades de la región factible $P$. Así también,
@@ -263,8 +258,8 @@ comúnmente conocido como el \textbf{vector objetivo}, y $\vec{x} \in \R^n$ un v
 Observemos que todo poliedro $P$ es la intersección de $m$ semi-espacios afines. Esto se debe a que,
 para una matriz $A \in \R^{m \times n}$ con renglones independientes y un vector $\vec{b} \in \R^m$,
 $A\vec{x} \geq \vec{b}$ si y solo si $\vec{a}_i^T\vec{x} \geq b_i$ para toda $1 \leq i \leq m$ y
-donde $\vec{a}_i^T$ denota el $i$-ésimo renglón de la matriz $A$. En la Figura \ref{fig:hyp} se
-muestra visualmente esta relación entre semi-espacios afines y poliedros.
+donde $\vec{a}_i^T$ denota el $i$-ésimo renglón de la matriz $A$. En la figura \ref{fig:hyp} se
+muestra la relación entre semi-espacios afines y poliedros.
 
 \begin{figure}[ht]
 	\centering
@@ -316,7 +311,7 @@ muestra visualmente esta relación entre semi-espacios afines y poliedros.
 \end{figure}
 
 \begin{definition}[\cite{fabs}]
-	Sea $P$ un poliedro. Decimos que el vector $\vec{x} \in P$ es un \textbf{vértice} de $P$ si existe
+	Sea $P \subseteq \R^n$ un poliedro. Decimos que el vector $\vec{x} \in P$ es un \textbf{vértice} de $P$ si existe
 	$\vec{c} \in \R^n$ de manera que $\vec{c}^T\vec{x} < \vec{c}^T\vec{y}$ para todo $\vec{y} \in P
 	\setminus \braces{\vec{x}}$.
 \end{definition}
@@ -344,10 +339,13 @@ decimos que \textbf{el problema es factible}. También diremos comúnmente del s
 \textbf{el problema es no acotado}.
 \end{definition}
 
-En el capítulo 3 de \cite{fabs} se muestra que todo poliedro $P \coloneq \lbrace \vec{x} \in \R^n
-\colon A\vec{x} \geq \vec{b} \rbrace$ puede ser transformado a la forma estándar
+En el capítulo 3 de \cite{fabs} se muestra que todo poliedro
 \begin{equation*}
-	\lbrace \left( \vec{x}^+, \vec{x}^-, \vec{s} \right) \in \R^{n + n + m} \colon A(\vec{x}^+ -
+	P \coloneq \braces{\vec{x} \in \R^n \vcentcolon A\vec{x} \geq \vec{b}}
+\end{equation*}
+puede ser transformado a la forma estándar
+\begin{equation*}
+	\lbrace \left( \vec{x}^+, \vec{x}^-, \vec{s} \right) \in \R^{n + n + m} \vcentcolon A(\vec{x}^+ -
 \vec{x}^-) - \vec{s} = \vec{b}, \left(\vec{x}^+, \vec{x}^-, \vec{s}\right) \geq \vec{0}\rbrace,
 \end{equation*}
 de manera que todo problema de optimización de la forma \eqref{prim:lineal-opt} puede ser escrito
@@ -380,9 +378,9 @@ poliedro $P$ y son ``atraídos'' como imanes a uno de los vértices con valor ó
 objetivo de esta tesis exponer la teoría detrás de estos algoritmos. Sin embargo, al
 lector interesado le recomendamos leer los capítulos 13 y 14 de \cite{nocedal}.
 
-Ahora describimos brevemente los programas lineales enteros y pasamos a explicar el método de
-Ramificación y Acotamiento. Por ello, lo que se encuentra a continuación supone que contamos con un
-algoritmo para resolver problemas del tipo \eqref{prerreq:formulation}.
+Ahora describimos brevemente los programas lineales enteros y explicamos el método de R\&A.
+Supondremos en lo que resta de esta tesis que contamos con un algoritmo para resolver problemas del tipo
+\eqref{prerreq:formulation}.
 \begin{definition}
 	Sean $A \in \R^{m \times n}$ una matriz con renglones linealmente independientes, $\vec{c} \in
 	\R^n$ un vector, y $\vec{b} \in \R^m$ otro vector. Al problema de optimización lineal
@@ -400,11 +398,10 @@ algoritmo para resolver problemas del tipo \eqref{prerreq:formulation}.
 	\end{subequations}
 \end{definition}
 Resalta el hecho de que la formulación de un programa lineal entero es idéntico a su formulación
-relajada, solamente agregamos la restricción de que nuestra solución óptima $\vec{x}^*$
-sea entera. Es decir, lo único que cambia es la región de factibilidad. De hecho, si
-definimos el poliedro
+relajada, y solamente intercambiamos nuestro espacio de búsqueda $\R^n$ por $\Z^n$. Es decir, lo único
+que cambia es la región de factibilidad. De hecho, si definimos el poliedro
 \begin{equation*}
-	P \coloneq \lbrace \vec{x} \in \R^n \colon A\vec{x} = \vec{b}, \vec{x} \geq \vec{0} \rbrace,
+	P \coloneq \lbrace \vec{x} \in \R^n \vcentcolon A\vec{x} = \vec{b}, \vec{x} \geq \vec{0} \rbrace,
 \end{equation*}
 entonces tenemos que $P \cap \Z^n$ corresponde a la región factible de
 \eqref{prerreq:formulation:ilp}, mientras que $P$ corresponde a la región factible de su problema
@@ -421,9 +418,8 @@ Acotamiento. Este método consiste en generar un árbol binario donde cada nodo 
 subproblema lineal a resolver. En la raíz del árbol resolvemos el problema relajado
 \eqref{prerreq:formulation} y, si la solución óptima $\vec{x}^* \in \R^n$ no es entera, entonces
 escogemos alguna entrada no entera $x_i^*$, creamos el nodo hijo izquierdo añadiendo la restricción
-$x_i \leq \floor{x_i^*}$ y, similarmente, creamos el nodo hijo derecho añadiendo la restricción $x_i
-\geq \ceil{x_i^*}$. Este procedimiento se realiza de manera recursiva. En el apéndice \ref{app:bb}
-se presenta de manera más detallada este método.
+$x_i \leq \floor{x_i^*}$ y también creamos el nodo hijo derecho añadiendo la restricción $x_i \geq
+\ceil{x_i^*}$. Este procedimiento se realiza de manera recursiva.
 
 Observemos que, si decidimos recorrer todos los nodos del árbol binario, entonces tendremos que
 resolver al menos $2^n$ subproblemas, donde $n$ es la dimensión del problema lineal. Por esta razón,
@@ -442,36 +438,36 @@ solución óptima. Ilustramos estas políticas a partir de un ejemplo.
 			& x_2 \leq 3, \\
 			& x_1, x_2 \geq 0.
 	\end{align*}
-	La región factible de este problema se muestra en la Figura \ref{fig:feas}. La solución al problema
-	relajado, cuya región factible denotamos por $S_0$, está dada por $\vec{x}^{(0)} \coloneq (20/7,
+	La región factible de este problema se muestra en la figura \ref{fig:feas}. La solución al problema
+	relajado, cuya región factible denotamos por $S$, está dada por $\vec{x}^{(0)} \coloneq (20/7,
 	3)^T$. Como $x_1^{(0)} = 20/7$ no es entero, generamos dos nuevos subproblemas con regiones
 	factibles
 	\begin{align*}
-		S_{00} &\coloneq S_0 \cup \braces{ x_1 \leq \floor{20/7} = 2}, \\
-		S_{01} &\coloneq S_0 \cup \braces{ x_1 \geq \ceil{20/7} = 3}.
+		S_{0} &\coloneq S \cup \braces{ x_1 \leq \floor{20/7} = 2}, \\
+		S_{1} &\coloneq S \cup \braces{ x_1 \geq \ceil{20/7} = 3}.
 	\end{align*}
-	De la Figura \ref{fig:feas}, observamos que $S_{01}$ es vacío y por lo tanto de este problema no
-	podemos generar otros subproblemas. En este caso, decimos que \textbf{podamos $S_{01}$ por
+	De la figura \ref{fig:feas}, observamos que $S_{1}$ es vacío y por lo tanto de este problema no
+	podemos generar otros subproblemas. En este caso, decimos que \textbf{podamos $S_{1}$ por
 	infactibilidad}.
 
-	Ahora bien, la solución al problema $S_{00}$ está dada por $\vec{x}^{(1)} \coloneq (2, 1/2)^T$.
+	Ahora bien, la solución al problema $S_{0}$ está dada por $\vec{x}^{(1)} \coloneq (2, 1/2)^T$.
 	Encontramos que $x_2^{(1)}$ = 1/2 no es entero y por lo tanto generamos dos nuevos subproblemas:
 	\begin{align*}
-		S_{000} &\coloneq S_{00} \cup \braces{ x_2 \leq \floor{1/2} = 0}, \\
-		S_{001} &\coloneq S_{00} \cup \braces{ x_2 \geq \ceil{1/2} = 1}.
+		S_{00} &\coloneq S_{0} \cup \braces{ x_2 \leq \floor{1/2} = 0}, \\
+		S_{01} &\coloneq S_{0} \cup \braces{ x_2 \geq \ceil{1/2} = 1}.
 	\end{align*}
-	Observemos que la solución $\vec{x}^{(2)}$ de $S_{001}$ es $(2, 1)^T$, la cual es entera y tiene valor
+	Observemos que la solución $\vec{x}^{(2)}$ de $S_{01}$ es $(2, 1)^T$, la cual es entera y tiene valor
 	objetivo $z_2^* \coloneq 7$. No generamos otros subproblemas a partir de este problema porque
-	las posibles subregiones factibles estarán contenidas en $S_{001}$ y por lo tanto sus valores objetivos
-	serán menores o iguales al de $S_{001}$. Así pues, decimos que \textbf{podamos $S_{001}$ por
+	las posibles subregiones factibles estarán contenidas en $S_{01}$ y por lo tanto sus valores objetivos
+	serán menores o iguales al de $S_{01}$. Así pues, decimos que \textbf{podamos $S_{01}$ por
 	integralidad}.
 
-	La solución de $S_{000}$, en cambio, es $\vec{x}^{(3)} \coloneq (3/2, 0)^T$ y tendríamos que
+	La solución de $S_{00}$, en cambio, es $\vec{x}^{(3)} \coloneq (3/2, 0)^T$ y tendríamos que
 	ramificar de nuevo en otros dos subproblemas. No obstante, el valor objetivo de este subproblema
 	es $z_3^* \coloneq 6$, el cual es menor que $z_2^* = 7$. Como la región factible de cualquier
-	subproblema generado a partir de este último problema estára contenido en $S_{000}$, se sigue
-	que su valor objetivo será menor o igual al de $S_{000}$. Es decir, no encontraremos otro vector
-	cuyo valor objetivo sea mayor que $z_2^*$. Decimos entonces que \textbf{podamos $S_{000}$ por
+	subproblema generado a partir de este último problema estára contenido en $S_{00}$, se sigue
+	que su valor objetivo será menor o igual al de $S_{00}$. Es decir, no encontraremos otro vector
+	cuyo valor objetivo sea mayor que $z_2^*$. Decimos entonces que \textbf{podamos $S_{00}$ por
 	cota}.
 
 	Como hemos agotado todos los subproblemas que podríamos generar, entonces concluimos que la
@@ -513,36 +509,41 @@ solución óptima. Ilustramos estas políticas a partir de un ejemplo.
 			};
 		\end{axis}
 	\end{tikzpicture}
-	\caption{Los puntos negros forman la región factible del programa lineal entero del Ejemplo
+	\caption{Los puntos negros forman la región factible del programa lineal entero del ejemplo
 	\ref{ex:ilp}, mientras que la región sombreada es la región factible de su problema relajado.}
 	\label{fig:feas}
 \end{figure}
 
+En el algoritmo \ref{algo:bb} de la página \pageref{app:bb} se formalizan estos pasos. Así también,
+en el apéndice \ref{app:bb} se contextualiza y detalla el uso de Ramificación y Acotamiento, pues
+está continuamente sujeto a extensiones y mejoras por parte de los investigadores en optimización e
+investigación de operaciones. Por ello, tendremos en mente el algoritmo \ref{algo:bb} cuando hagamos
+referencia a R\&A a menos que mencionemos explícitamente lo contrario.
+
 \section{Fundamentos}
 \label{sec:foundations}
 \noindent
-Esta sección se divide en cuatro partes. En primer lugar, se dan a conocer las definiciones y
-encunciados provistos por \cite{herr}. Es importante aclarar que se tradujeron libremente los
-términos \textit{projectively rational vectors} y \textit{c-layers} como ``vectores esencialmente
-enteros'' (véase definición \ref{theory:def:rational}) y ``capas enteras'' (véase
-\ref{phase-1:def:c-layer}), respectivamente, a falta de encontrar fuentes en español que hicieran
-uso de ellos.
+En primer lugar, se dan a conocer las definiciones y encunciados originalmente dados en \cite{herr}.
+Es importante aclarar que se tradujeron los términos \textit{projectively rational
+vectors} y \textit{c-layers} como ``vectores esencialmente enteros'' y ``capas enteras'' en las
+definiciones \ref{theory:def:rational} y \ref{phase-1:def:c-layer}, respectivamente, a falta de
+encontrar fuentes en español que hicieran uso de ellos.
 
-En segundo lugar, se muestra una equivalencia entre resolver el problema \eqref{theory:formulation}
-y resolver ecuaciones lineales diofantinas. Este resultado se basa en los teoremas
-\ref{prerreq:th:existence} y \ref{prerreq:th:construction} para construir inductivamente el conjunto
-de soluciones de una ecuación lineal diofantina en $n$ incógnitas. Las soluciones de estas
-ecuaciones serán definidas a partir de una relación de recurrencia y también dependerán de una
-colección de $n - 1$ parámetros libres.
+En segundo lugar, se muestra una equivalencia entre resolver el programa lineal entero
+\eqref{theory:formulation} y resolver ecuaciones lineales diofantinas. Este resultado se basa en los
+teoremas \ref{prerreq:th:existence} y \ref{prerreq:th:construction} para construir inductivamente el
+conjunto de soluciones de una ecuación lineal diofantina en $n$ incógnitas. Estas soluciones serán
+definidas a partir de una relación de recurrencia y dependerán de una colección de $n - 1$
+variables libres.
 
 En tercer lugar, se exhibe una transformación lineal entre el conjunto de soluciones de una ecuación
-lineal diofantina en $n$ incógnitas y el conjunto de $n - 1$ parámetros libres que determinan estas
+lineal diofantina en $n$ incógnitas y el conjunto de $n - 1$ variables libres que determinan estas
 soluciones. Luego, se investigan las propiedades de esta transformación lineal que serán de gran utilidad
-teórica para los siguientes capítulos, en particular para el capítulo 4.
+teórica para los siguientes capítulos, en especial para el capítulo 4.
 
 Finalmente, se muestra que el vector objetivo $\vec{p}$ del problema original
-\eqref{theory:formulation} induce una descomposición de $\Z^n$ y se analiza cómo se relacionan estas
-descomposiciones al considerar distintos vectores $\vec{p}$. Esto permitirá mostrar equivalencias
+\eqref{theory:formulation} induce una descomposición de $\Z^n$ y se analiza cómo se relacionan las
+descomposiciones asociadas a distintos vectores $\vec{p}$. Esto permitirá mostrar equivalencias
 entre distintas instancias del problema \eqref{theory:formulation}.
 
 \subsection{Capas enteras}
@@ -557,8 +558,8 @@ entre distintas instancias del problema \eqref{theory:formulation}.
 	nula es positiva.
 \end{definition}
 \begin{example}
-	El vector $\left(-\sqrt{2}, 1/\sqrt{2}\right)^T = 2\sqrt{2}(-2, 1)^T$ es esencialmente entero
-	y $(2, -1)^T$ es su múltiplo coprimo. En contraste, el vector $\paren{\sqrt{2}, \sqrt{3}}^T$ no es
+	El vector $\left(-\sqrt{2}, 1/\sqrt{2}\right) = 2\sqrt{2}(-2, 1)$ es esencialmente entero
+	y $(2, -1)$ es su múltiplo coprimo. En contraste, el vector $\paren{\sqrt{2}, \sqrt{3}}$ no es
 	esencialmente entero. Para ver esto último, supongamos que existe un escalar $m \in
 	\R\setminus\braces{0}$ y enteros $a, b$ tales que $m(a, b) = \paren{\sqrt{2}, \sqrt{3}}$.
 	Claramente, $a, b \neq 0$ y se debe cumplir $a/b = \sqrt{2/3}$, pero el lado izquierdo es un
@@ -639,11 +640,11 @@ donde $m \neq 0$ es el escalar que satisface $\vec{v} = m\vec{w}$. Así pues, pa
 enteras, basta con fijarnos en los múltiplos coprimos que las definen en vez de sus vectores
 esencialmente enteros asociados.
 
-\begin{theorem}[\cite{herr}]
+\begin{theorem}
 	\label{phase-1:th:cover}
 	Sea $\vec{v} \in \R^n$ un vector esencialmente entero y sea $\vec{w}$ su múltiplo coprimo.
-	Entonces la familia de capas enteras $\braces{\qlayer{w}{k} \vcentcolon k \in \Z}$ cubre a
-	$\Z^n$.
+	Entonces una cobertura de $\Z^n$ está dada por la familia de capas enteras
+	$\braces{\qlayer{w}{k} \vcentcolon k \in \Z}$.
 \end{theorem}
 
 \begin{lemma}
@@ -672,23 +673,14 @@ esencialmente enteros asociados.
 % (\ref{theory:constraint:budget}) la llamaremos restricción presupuestaria, así como presupuesto al
 % lado derecho de esta restricción.
 
-Consideremos el problema \eqref{theory:formulation} y supongamos que el vector objetivo $\vec{p}$ es
-esencialmente entero. Sea $\vec{q}$ su múltiplo coprimo. Sabemos de \eqref{eq:clayer-eq} que 
-	$\braces{\clayer{\vec{p}}{t} \vcentcolon t \in \R}
-	=
-	\braces{\clayer{\vec{q}}{t} \vcentcolon t \in \R}$.
-Puesto que nos concentramos en puntos enteros, por el teorema \ref{phase-1:th:cover} podemos
-considerar exclusivamente el subconjunto de capas enteras $\braces{\qlayer{q}{k} \vcentcolon k \in
-\Z}$.
+Supongamos que el vector objetivo $\vec{p}$ del problema \eqref{theory:formulation} es esencialmente
+entero y sea $\vec{q}$ su múltiplo coprimo. Puesto que el espacio de búsqueda de este problema es
+$\Z^n$, se sigue de \eqref{eq:clayer-eq} y del teorema \ref{phase-1:th:cover} que podemos
+restringir la búsqueda a la familia de capas enteras $\braces{\qlayer{q}{k} \vcentcolon k \in \Z}$.
 
-Observemos del lema \ref{theory:lemma:utility} junto con la restricción presupuestaria
-\eqref{theory:constraint:budget} que los puntos enteros de la \textbf{$k$-ésima capa entera}
-$\qlayer{q}{k}$ o bien respetan todos esta restricción o bien ninguno la respeta. Nos gustaría
-entonces determinar el primer parámetro $\eta \in \Z$ que induce a que todos los puntos enteros de
-$\qlayer{q}{\eta}$ respeten la restricción presupuestaria.
-
-Para respetar la restricción \eqref{theory:constraint:budget}, debe ser el caso que
-todo $\vec{x} \in \qlayer{q}{k}$ satisfaga
+Del lema \ref{theory:lemma:utility} encontramos que los puntos de la \textbf{$k$-ésima capa entera}
+o bien respetan todos la restricción presupuestaria \eqref{theory:constraint:budget}, o bien ninguno
+lo hace. Sea $\vec{x} \in \qlayer{q}{k}$ y observemos que
 \begin{equation}
 	\label{eq:eta-cases}
 	\vec{p}^T\vec{x} = m\vec{q}^T\vec{x} = mk \leq u
@@ -698,16 +690,17 @@ todo $\vec{x} \in \qlayer{q}{k}$ satisfaga
 		k \leq u/m, & m > 0,
 	\end{cases}
 \end{equation}
-donde $m \neq 0$ es el escalar que satisface $\vec{p} = m\vec{q}$. Así pues, dependiendo del signo
-de $m$, tenemos que el primer parámetro $\eta$ en satisfacer la restricción presupuestaria puede ser
-interpretado como el entero más pequeño o el entero más grande que satisface su respectiva
-desigualdad.
+donde $m \neq 0$ es el escalar que satisface $\vec{p} = m\vec{q}$. Obtenemos de manera inmediata el
+siguiente lema.
+% Así pues, dependiendo del signo de $m$, tenemos que el primer parámetro $\eta$ en satisfacer la
+% restricción presupuestaria puede ser interpretado como el entero más pequeño o el entero más grande
+% que satisface su respectiva desigualdad.
 
 \begin{lemma}
 	\label{phase-1:lemma:eta}
 	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q}$ su múltiplo coprimo, de
 	manera que $\vec{p} = m\vec{q}$ para algún escalar $m \neq 0$. Entonces la primera capa entera
-	$\qlayer{q}{\eta}$ que satisfacen la restricción \eqref{theory:constraint:budget} está
+	$\qlayer{q}{\eta}$ en satisfacer la restricción \eqref{theory:constraint:budget} está
 	parametrizada por
 	\begin{equation}
 		\label{lemma:eq:eta-cases}
@@ -717,25 +710,23 @@ desigualdad.
 		\end{cases}
 	\end{equation}
 \end{lemma}
-\begin{proof}
-	Se sigue inmediatamente de \eqref{eq:eta-cases}.
-\end{proof}
 
-Puesto que la gran mayoría de nuestros enunciados y algoritmos dependen de este primer parámetro
+Puesto que la gran mayoría de nuestros enunciados y algoritmos dependen del parámetro
 $\eta$, tendremos que separarlos al menos en dos casos. Creemos que es prudente
 considerar solamente el caso $m > 0$, ya que los enunciados y demostraciones para
-el caso $m < 0$ son completamente análogos. Las diferencias recaen en que el orden de las
-desigualdades cambian o las funciones piso se reemplazan por funciones techo, por ejemplo.
+el caso $m < 0$ son completamente análogos. Las diferencias recaen, por ejemplo, en que el orden de
+las desigualdades cambian o las funciones piso se reemplazan por funciones techo.
 
 En resumen, si $m > 0$, encontramos que las capas enteras que satisfacen la restricción
-\eqref{theory:constraint:budget} están parametrizadas por $k \in \braces{\eta, \eta - 1, \ldots}$,
-donde $\eta$ está definida en el lema \ref{phase-1:lemma:eta}. Además, por el lema
-\ref{theory:lemma:utility}, todo $\vec{x} \in \qlayer{q}{k}$ satisface la ecuación $\vec{q}^T\vec{x} = k$.
+\eqref{theory:constraint:budget} están parametrizadas por $k \in \braces{\eta, \eta - 1, \ldots}$.
+Además, por el lema \ref{theory:lemma:utility}, todo $\vec{x} \in \qlayer{q}{k}$ satisface la
+ecuación $\vec{q}^T\vec{x} = k \leq \eta \leq u$, donde $u$ es el lado derecho de la restricción
+\eqref{theory:constraint:budget}.
 \begin{theorem}
 	\label{theory:th:infeasibility}
 	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q}$ su múltiplo coprimo.
 	Entonces el problema \eqref{theory:formulation} es infactible si y solo si $\vec{q} \geq
-	\vec{0}$ y el lado derecho $u$ de \eqref{theory:constraint:budget} es negativo. 
+	\vec{0}$ y el lado derecho $u$ de la restricción \eqref{theory:constraint:budget} es negativo. 
 \end{theorem}
 \begin{proof}
 	$(\implies)$ Supongamos que $\vec{q} \geq \vec{0}$ y $u < 0$. Si $\vec{x} \in \Z_{\geq
@@ -780,7 +771,7 @@ dividirse en dos casos.
 	\begin{enumerate}
 		\item
 			En la subsección \ref{subsec:dioph-eq} mostraremos que, como $\vec{q}$ es un vector
-			cuyas entradas son coprimas, entonces existe un punto entero $\vec{x}$ que satisface la
+			coprimo, entonces existe un punto entero $\vec{x}$ que satisface la
 			ecuación lineal diofantina $\vec{q}^T\vec{x} = \eta$. Por el momento confiemos que esto
 			es verdadero. Luego,
 			\begin{equation*}
@@ -800,7 +791,7 @@ dividirse en dos casos.
 				\quad I^- \coloneq \lbrace j \vcentcolon q_j < 0 \rbrace.
 			\end{equation*}
 			Podemos suponer sin pérdida de generalidad que $I^\circ$ es vacío. En efecto, si $x_k
-			< 0$ para algún $k \in I^\circ$, esa entrada no sería factible, pero fácilmente
+			< 0$ para alguna $k \in I^\circ$, esa entrada no sería factible, pero fácilmente
 			podríamos definir $x_k^+ = 0$ para hacerla factible.
 
 			Por hipótesis, sabemos que $\vec{q}$ tiene una entrada negativa y por lo tanto $I^- \neq

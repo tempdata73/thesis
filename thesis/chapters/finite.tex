@@ -2,40 +2,38 @@
 \noindent
 Inspirados por el teorema \ref{theory:th:feasibility}, en este capítulo analizamos el
 caso en el que el vector coprimo $\vec{q}$ tiene entradas estrictamente positivas. De esta manera,
-el problema \eqref{theory:formulation} deviene una instancia particular del famoso Problema de la
-Mochila:
+el problema \eqref{theory:formulation} deviene una instancia particular del famoso \emph{Problema de la
+Mochila}:
 \begin{subequations}
 	\label{knapsack-formulation}
 	\begin{align}
 		\max_{\vec{x} \in \Z^n} \quad
-			& \vec{u}^T\vec{x}, \\
+			& \vec{s}^T\vec{x}, \\
 		\text{s.a.} \quad
 			& \vec{w}^T\vec{x} \leq u, \\
 			& \vec{x} \geq \vec{0},
 	\end{align}
 \end{subequations}
-donde los vectores positivos $\vec{u}, \vec{w} \in \Z^n$ son conocidos como
-vector de útiles y vector de pesos, respectivamente. Puesto que no acotamos
-$\vec{x}$, el problema recibe el nombre de Problema de la Mochila no Acotado.
-Analizaremos el caso $\vec{u} = \vec{w}$, el cual es es considerado como un
-Problema de la Suma de Conjuntos no Acotado.
+donde los vectores positivos $\vec{s}, \vec{w} \in \Z^n$ son conocidos como vector de útiles y
+vector de pesos, respectivamente. Puesto que no acotamos $\vec{x}$, el problema recibe el nombre de
+\emph{Problema de la Mochila no Acotado}. Analizaremos el caso $\vec{p} = \vec{s} = \vec{w}$, el cual es es
+considerado como un \emph{Problema de la Suma de Conjuntos no Acotado}.
 
-En la primera sección realizamos un análisis de capas enteras a fin de obtener
-un resultado análogo al teorema \ref{infinite:th:complexity}. En concreto, el
-teorema \ref{th:intnonneg2} enuncia que, para un presupuesto $u$
-suficientemente grande en el problema \eqref{theory:formulation}, la búsqueda
-de una solución se reduce a resolver solamente una ecuación lineal diofantina.
+En la primera sección realizamos un análisis de capas enteras a fin de obtener un resultado análogo
+al teorema \ref{infinite:th:complexity}. En concreto, el teorema \ref{th:intnonneg2} enuncia que,
+para un presupuesto $u$ suficientemente grande en el problema \eqref{theory:formulation}, la
+búsqueda de una solución se reduce a resolver solamente una ecuación lineal diofantina.
 
-El resultado anterior, si bien es interesante, solo es de existencia y no
-muestra cómo obtener las soluciones enteras no negativas de ecuaciones lineales
-diofantinas. De manera similar a como lo hicimos en el capítulo anterior, la
-segunda sección se encarga de presentar la construcción de soluciones a partir
-de los algoritmos \ref{algo:fin:helper} (pág.~ \pageref{algo:fin:helper}) y
-\ref{algo:fin:dioph} (pág.~ \pageref{algo:fin:dioph}).
+El resultado anterior, si bien es interesante, solo es de existencia y no muestra cómo obtener las
+soluciones enteras no negativas de ecuaciones lineales diofantinas. De manera similar a como lo
+hicimos en el capítulo anterior, la segunda sección se encarga de presentar la construcción de
+soluciones a partir de los algoritmos \ref{algo:fin:helper} y \ref{algo:fin:dioph}, presentados en
+las páginas \pageref{algo:fin:helper} y \pageref{algo:fin:dioph}, respectivamente.
 
 Finalmente, en la tercera y última sección de este capítulo, realizamos algunos experimentos
 numéricos que comparan la eficacia de nuestros algoritmos recién desarrollados con la de
-Ramificación y Acotamiento, así como de una formulación programación dinámica.
+Ramificación y Acotamiento, así como de una formulación de programación dinámica a fin de contar con
+otro punto de comparación y tener conclusiones más robustas.
 
 \section{Análisis de capas enteras}
 \noindent
@@ -257,9 +255,9 @@ entero no negativo sobre una de estas capas enteras.
 \end{proof}
 \begin{definition}
 	Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q} \in \Z^n$ su múltiplo
-	coprimo. Consideremos los parámetros $\eta$ y $\tau$ (c.f. lemas \ref{phase-1:lemma:eta} y
-	\ref{lemma:tau}) como funciones del presupuesto $u$. Entonces decimos que la función $\Delta^*
-	\colon \R \to \R$ dada por
+	coprimo. Consideremos los parámetros $\eta$ y $\tau$ definidos, respectivamente, en los lemas
+	lemas \ref{phase-1:lemma:eta} y \ref{lemma:tau}, como funciones del presupuesto $u$. Entonces
+	decimos que la función $\Delta^* \colon \R \to \R$ dada por
 	\begin{equation}
 		\label{eq:dist-layers}
 		\Delta^*(u) \coloneq \eta(u) - \tau(u)
@@ -428,10 +426,10 @@ lemas y teoremas fueron realizadas completamente por el autor.
 \begin{definition}
 	\label{def:aff}
 	Sean $\vec{v}_1, \ldots, \vec{v}_m \in \R^n$ una colección de vectores,
-	entonces definimos su \textbf{combinación afina} a partir de
+	entonces definimos su \textbf{combinación afín} a partir de
 	\begin{equation*}
-		\aff\braces{\vec{v}_1, \ldots, \vec{v}_m} \coloneq \braces{\theta_1\vec{v}_1 + \cdots + \theta_m\vec{v}_m
-		\colon \theta_1 + \cdots + \theta_m = 1}.
+		\aff\braces{\vec{v}_1, \ldots, \vec{v}_m} \coloneq \braces{\vec{v} \in \R^n \vcentcolon \vec{v} =
+		\sum_{i=1}^{m}\theta_i\vec{v}_i, \sum_{i=1}^{m}\theta_i = 1}
 	\end{equation*}
 \end{definition}
 
@@ -479,7 +477,7 @@ lemas y teoremas fueron realizadas completamente por el autor.
 \begin{example}
 	\label{ex:aff}
 	% Si $\vec{q}$ es un vector coprimo que satisface $q_n \neq 0$, entonces la $k$-ésima capa entera
-	% $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ es la combinación afina de un conjunto de vectores. En
+	% $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ es la combinación afín de un conjunto de vectores. En
 	% efecto, sabemos del teorema \ref{th:lattice} que el vector $\vec{\nu}$ (ver
 	% \eqref{eq:vec-omega}) junto con las columnas $\vec{m}_1, \ldots, \vec{m}_{n-1}$ de M (ver
 	% \eqref{eq:mat-T}) forman una base de la red $\Z^n$ y, por extensión, del espacio vectorial
@@ -492,12 +490,12 @@ lemas y teoremas fueron realizadas completamente por el autor.
 	% 	= k\vec{\nu} + \gen\braces{(\vec{m}_i + k\vec{\nu}) - k\vec{\nu}}.
 	% \end{equation*}
 	% Por el lema \ref{lemma:aff} sabemos entonces que la $k$-ésima capa entera es la combinación
-	% afina de los vectores $k\vec{\nu}, \vec{m}_1 + k\vec{\nu}, \ldots, \vec{m}_{n-1} + k\vec{\nu}$.
+	% afín de los vectores $k\vec{\nu}, \vec{m}_1 + k\vec{\nu}, \ldots, \vec{m}_{n-1} + k\vec{\nu}$.
 
 	Si $\vec{q} > \vec{0}$ es un vector coprimo y $k$ un entero positivo, entonces la $k$-ésima capa
-	entera $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ es la combinación afina de un conjunto de vectores.
+	entera $H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ es la combinación afín de un conjunto de vectores.
 	En efecto, recordemos de la definición \ref{phase-1:def:c-layer} que esta capa entera es
-	simplemente un hiperplano afino. Como $\vec{q}$ es el vector normal a este hiperplano, se sigue
+	simplemente un hiperplano afín. Como $\vec{q}$ es el vector normal a este hiperplano, se sigue
 	que puede ser escrito como $\vec{v} + \ker{\vec{q} \mapsto \vec{q}^T\vec{x}}$ para alguna
 	$\vec{v} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$.
 
@@ -519,7 +517,7 @@ lemas y teoremas fueron realizadas completamente por el autor.
 	Comparando con la definición \ref{phase-1:def:c-layer}, obtenemos una
 	construcción explícita de $\qlayer{\vec{q}}{k}$. Por el lema
 	\ref{lemma:aff} concluimos que la $k$-ésima capa entera es la combinación
-	afina de los vectores $\vec{u}_1, \ldots, \vec{u}_n$.
+	afín de los vectores $\vec{u}_1, \ldots, \vec{u}_n$.
 \end{example}
 
 \begin{definition}
@@ -530,8 +528,10 @@ lemas y teoremas fueron realizadas completamente por el autor.
 	\begin{equation*}
 		\sigma = \conv\braces{\vec{v}_1, \ldots, \vec{v}_m}
 		\coloneq
-		\braces{\theta_1\vec{v}_1 + \cdots + \theta_m\vec{v}_m
-		\colon \theta_1 + \cdots + \theta_m = 1, \theta_i \geq 0}.
+		\braces{
+			\vec{v} \in \R^n \vcentcolon \vec{v} = \sum_{i=1}^{m}\theta_i\vec{v}_i,
+			\sum_{i=1}^{m}\theta_i=1, \theta_i \geq 0
+		}
 	\end{equation*}
 	Decimos entonces que $\sigma$ es generado por $\vec{v}_1, \ldots, \vec{v}_m$. También definimos
 	la \textbf{$j$-ésima faceta} $\sigma_j$ de $\sigma$ como el símplice generado por los vectores
@@ -539,7 +539,7 @@ lemas y teoremas fueron realizadas completamente por el autor.
 \end{definition}
 \begin{observation}
 	Comparando con la definición \ref{def:aff}, encontramos que todo símplice $\sigma$ generado por
-	$\vec{v}_1, \ldots, \vec{v}_m$ está contenido en la combinación afina de estos vectores. Es
+	$\vec{v}_1, \ldots, \vec{v}_m$ está contenido en la combinación afín de estos vectores. Es
 	decir,
 	\begin{equation}
 		\label{aff:contention}
@@ -1080,8 +1080,7 @@ cómo la solución del problema \eqref{theory:formulation} se traduce a la búsq
 entera no negativa de la ecuación lineal diofantina $\vec{q}^T\vec{x} = k$ para alguna $k \leq \eta$,
 donde $\eta$ es tomada del lema \ref{phase-1:lemma:eta}.
 
-En esta sección presentamos los algoritmos \ref{algo:fin:helper} y \ref{algo:fin:dioph} (páginas
-\pageref{algo:fin:helper} y \pageref{algo:fin:dioph}, respectivamente), los cuales
+En esta sección presentamos los algoritmos \ref{algo:fin:helper} y \ref{algo:fin:dioph} los cuales
 se encargan de obtener estas soluciones enteras no negativas que tanto buscamos. Consecuentemente,
 estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
 
@@ -1092,7 +1091,7 @@ estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
 
 \begin{theorem}
 	\label{th:fin:helper:correct}
-	El algoritmo \ref{algo:fin:helper} es correcto.
+	El algoritmo \ref{algo:fin:helper} de la página \pageref{algo:fin:helper} es correcto.
 \end{theorem}
 \begin{proof}
 	Hacemos la demostración por inducción en la dimensión $n$ del vector $\vec{q}$. Supongamos, para
@@ -1112,7 +1111,7 @@ estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
 			x_2 = kx_2' - q_1t, \\
 		\end{cases}
 	\end{equation}
-	donde $t \in \Z$ es una variable libre, y $x_1', x_2'$ son los coeficientes de Bézout (c.f.
+	donde $t \in \Z$ es una variable libre, y $x_1', x_2'$ son los coeficientes de Bézout (véase
 	definición \ref{prerreq:def:bezout}) de $q_1$ y $q_2$, respectivamente. Por claridad, escribimos
 	$x_1'$ y $x_2'$ como $x_{n-1}'$ y $x_{n}'$ en la línea \ref{alg:fin:bez}. Despejando de estas
 	soluciones, encontramos que existen soluciones no negativas si y solo si existe $t \in \Z$ que
@@ -1174,8 +1173,8 @@ estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
 	causa de \eqref{feas} y en la línea \ref{alg:fin:subeq} nos encargamos entonces de encontrar
 	soluciones enteras no negativas de la ecuación \eqref{lemma:correct:eq-omega}. Se verifica
 	automáticamente que los coeficientes del lado derecho de esta ecuación son coprimos y
-	constituyen justamente las entradas del vector $\vec{q}^{\texttt{tail}}$ (c.f. línea
-	\ref{alg:fin:qt}). Como $g > 0$ se sigue que $\vec{q}^{\texttt{tail}} > \vec{0}$. Luego,
+	constituyen justamente las entradas del vector $\vec{q}^{\texttt{tail}}$, como se observa en la línea
+	\ref{alg:fin:qt}. Como $g > 0$ se sigue que $\vec{q}^{\texttt{tail}} > \vec{0}$. Luego,
 	$\vec{q}^{\texttt{tail}}$ y $\omega$ satisfacen las hipótesis del algoritmo.
 
 	Por hipótesis inductiva, en la línea \ref{alg:xtail} tenemos o bien que
@@ -1273,7 +1272,7 @@ manera, la única política de poda posible es la de infactibilidad por no respe
 de un punto entero.
 \begin{theorem}
 	\label{th:fin:dioph:correct}
-	El algoritmo \ref{algo:fin:dioph} es correcto.
+	El algoritmo \ref{algo:fin:dioph} de la página \pageref{algo:fin:dioph} es correcto.
 \end{theorem}
 \begin{proof}
 	A causa del teorema \ref{th:fin:helper:correct} basta verificar que el algoritmo termina y no
@@ -1301,7 +1300,7 @@ aumenta la posibilidad de encontranos con un desbordamiento de pila, pues el alg
 \ref{alg:fin:subeq} y \ref{alg:fin:branch}.
 
 Además, este algoritmo, por ejemplo, no minimiza el número de llamadas para calcular el máximo común
-divisor en la línea \ref{alg:fin:g}. En efecto, supongamos que un intervalo de factibilidad $I$
+divisor en la línea \ref{alg:fin:g}. En efecto, supongamos que un intervalo de factibilidad finito $I$
 definido en la línea \ref{alg:fin:feas} causa que $\vec{x}^{\texttt{tail}}$ sea \NIL~ para todo
 $t \in I$. Entonces estaríamos haciendo $|I|$ llamadas recursivas a \texttt{NonNegativeIntSolFin} en
 la línea \ref{alg:fin:subeq} con el mismo vector $\vec{q}^{\texttt{tail}}$ y, por lo tanto,
@@ -1344,13 +1343,14 @@ eficiente a través de ciclos para obtener los resultados de la siguiente secci�
 \label{sec:fin:ex}
 \noindent
 En esta sección medimos la eficiencia y estabilidad del algoritmo \ref{algo:fin:dioph}. Discutimos
-detalles de implementación del algoritmo \ref{algo:fin:helper}. Introducimos una formulación dinámica
-(FD) capaz de resolver instancias de \eqref{theory:formulation} cuando $\vec{q} > \vec{0}$, de
-manera que obtenemos otro punto de comparación para nuestro algoritmo además de Ramificación y
-Acotamiento (R\&A). Finalmente, explicamos y realizamos nuestro experimentos numéricos.
+detalles de implementación del algoritmo \ref{algo:fin:helper}. Introducimos una formulación de
+programación dinámica (FPD) capaz de resolver instancias de \eqref{theory:formulation} cuando
+$\vec{q} > \vec{0}$, de manera que obtenemos otro punto de comparación para nuestro algoritmo además
+de Ramificación y Acotamiento (R\&A). Finalmente, explicamos y realizamos nuestro experimentos
+numéricos.
 
-Cabe mencionar que utilizamos el mismo equipo así como la misma configuración de R\&A que se detalla
-en la sección \ref{subsec:inf:complex} para la realización de estos experimentos.
+Utilizamos el mismo equipo así como la misma configuración de R\&A que se detalla en la sección
+\ref{subsec:inf:complex} para la realización de estos experimentos.
 
 \subsection{Detalles de implementación}
 \label{subsec:fin:details}
@@ -1366,7 +1366,7 @@ $n \leq 150{,}000$.
 Hemos visto que algoritmo \ref{algo:fin:helper} calcula repetidamente los mismos máximos común
 divisores $g$ y los mismos coeficientes de Bézout $x', \omega'$. Puesto que estos números dependen
 exclusivamente del vector $\vec{q}$, decidimos calcularlos en una fase de preprocesamiento antes de
-llamar \texttt{NonNegativeIntSolFin}. Luego, esta rutina accede a ellos por medio de referencias.
+llamar \texttt{NonNegativeIntSolFin}.
 
 La implementación por ciclos utiliza una pila de estados $(i, b_1, b_2, \omega)$, donde $i$ indica el nivel o
 la variable $t_i$ que debemos escoger; el resto de los parámetros están definidos en el algoritmo
@@ -1398,10 +1398,10 @@ agotar el intervalo de factiblidad en el nivel $i$, realizamos una búsqueda en 
 
 El autor encontró en los experimentos preliminares que la segunda estrategia es mucho más eficaz. En
 los experimentos de la subsección \ref{subsec:exp:fin:n}, la primera estrategia tenía tiempos de
-terminación aproximadamente equivalentes a los de R\&A. Para los experimentos
-de la subsección \ref{subsec:exp:fin:rhs}, ambas estrategias tenían tiempos de terminación
-significativamente menores que R\&A. Por ello, el autor decidió realizar el
-análisis de resultados usando la estrategia del árbol.
+terminación aproximadamente equivalentes a los de R\&A. Para los experimentos de la subsección
+\ref{subsec:exp:fin:rhs}, ambas estrategias tenían tiempos de terminación significativamente menores
+que R\&A. Por ello, decidimos realizar el análisis de resultados utilizando únicamente la estrategia
+del árbol.
 
 Observemos que el orden en el que consideramos los estados $(i, b_1, t_i - 1, \omega)$ y $(i, t_i +
 1, b_2, \omega)$ determina si visitamos primero el lado izquierdo o el lado derecho del árbol. El
@@ -1409,29 +1409,31 @@ autor realizó los experimentos con ambas posibilidades. Así pues, llamaremos \
 la implementación que recorre primero el subintervalo izquierdo y definimos análogamente
 \texttt{dioph\_right}.
 
-\subsection{Una formulación dinámica}
+\subsection{Una formulación de programación dinámica}
 \label{subsec:fin:dp}
+% El algoritmo de Ramificación y Acotamiento no es el único para encontrar
+% soluciones a programas lineales enteros. Como lo mencionamos al inicio de este capítulo, el problema
+% \eqref{theory:formulation} es una instancia particular del Problema de la Mochila. Por la
+% prevalencia de este problema en la industria, se han diseñado múltiples algoritmos que
+% intentan resolverlo.
+
 \noindent
-El algoritmo de Ramificación y Acotamiento no es el único para encontrar
-soluciones a programas lineales enteros. Como lo mencionamos al inicio de este capítulo, el problema
-\eqref{theory:formulation} es una instancia particular del Problema de la Mochila. Por la
-prevalencia de este problema en la industria, se han diseñado múltiples algoritmos que
-intentan resolverlo.
-
 El libro \cite{martello} está dedicado a realizar una exposición de los métodos más conocidos para
-resolver el Problema de la Mochila. A fin de ser más completos en nuestra exposición, el autor
-decidió adaptar una formulación dinámica (FD) expuesta en las páginas 95 a 98 de \cite{martello} que
-permite resolver instancias de \eqref{theory:formulation}
-
-Supondremos en lo que resta de esta sección que el vector objetivo $\vec{p}$ de \eqref{theory:formulation} es
-entero y tiene entradas estrictamente positivas. Así también, supondremos que el lado derecho $u$ de
-\eqref{theory:constraint:budget} es entero. Como queremos que nuestro problema sea factible, del
-teorema \ref{theory:th:infeasibility} tenemos que $u \geq 0$.
+resolver el Problema de la Mochila, del cual el problema \eqref{theory:formulation} es un caso
+particular si suponemos que el vector objetivo $\vec{p}$ tiene entradas con el mismo
+signo. A fin de contar con otro algoritmo además de Ramificación y Acotamiento para comparar la
+eficiencia del algoritmo \ref{algo:fin:dioph}, decidimos adaptar una formulación de programación
+dinámica (FPD) expuesta en las páginas 95 a 98 de \cite{martello} que permite resolver instancias de
+\eqref{theory:formulation} bajo algunas suposiciones adicionales. A saber, supondremos en lo que
+resta de esta sección que el vector objetivo $\vec{p}$ de \eqref{theory:formulation} es entero y
+tiene entradas estrictamente positivas. Así también, supondremos que el lado derecho $u$ de
+\eqref{theory:constraint:budget} es entero. Como queremos que nuestro problema sea factible,
+supondremos que $u \geq 0$ a causa del teorema \ref{theory:th:infeasibility}.
 
 Sea $f_m(\hat{u})$ el valor óptimo de \eqref{theory:formulation} cuando el lado derecho de
 \eqref{theory:constraint:budget} es $\hat{u} \leq u$ con $\hat{u}$ entero y nos restringimos a las
 primeras $m$ entradas de $\vec{p}$, con lo que obtenemos un problema de dimensión $1 \leq m \leq n$.
-Proponemos la formulación dinámica
+Proponemos la formulación de programación dinámica
 \begin{subequations}
 	\label{formulation:dp}
 	\begin{align}
@@ -1443,38 +1445,39 @@ Proponemos la formulación dinámica
 		\end{cases}
 	\end{align}
 \end{subequations}
+\begin{theorem}
+	Supongamos que el vector objetivo $\vec{p}$ del problema \eqref{theory:formulation} es entero y
+	tiene entradas estrictamente positivas, y también supongamos que el lado derecho $u$ de
+	\eqref{theory:constraint:budget} es entero y no negativo. Entonces $f_n(u)$ dado recursivamente
+	por \eqref{formulation:dp} es el valor óptimo de este problema.
+\end{theorem}
+\begin{proof}
+	Realizamos una inducción lexicográfica sobre el conjunto de tuplas $\braces{(m, \hat{u})
+	\vcentcolon 1 \leq m \leq n, 0 \leq \hat{u} \leq u}$. Si $m = 1$, se sigue inmediatamente que
+	\eqref{dp:base} es el valor óptimo para todo presupuesto $0 \leq \hat{u} \leq u$. Ahora bien,
+	supongamos inductivamente que $f_{m-1}(\hat{u})$ es el valor óptimo para alguna $m > 1$ y para
+	todo $0 \leq \hat{u} \leq u$. De \eqref{dp:rec} junto con la hipótesis inductiva sobre $m$ se
+	sigue que, si $\hat{u} < p_m$, entonces $f_m(\hat{u}) = f_{m-1}(\hat{u})$ es óptimo. Ahora
+	utilizamos un argumento fuertemente inductivo sobre $\hat{u}$ para mostrar que $f_m(\hat{u})$ es
+	el valor óptimo para todo $0 \leq \hat{u} \leq u$, donde el caso base es la optimalidad para
+	$\hat{u} < p_m$. Supongamos inductivamente que $f_m(\hat{u})$ es el valor óptimo para todo $0 \leq \hat{u}
+	< \tilde{u} \leq u$, por lo que debemos mostrar que $f_m(\hat{u} + 1)$ también es el valor
+	óptimo. Por el caso base podemos suponer que $\hat{u} \geq p_m$. Observemos que $\hat{u} + 1 -
+	p_m \leq \hat{u}$ pues $p_m > 0$, de donde se sigue que $f_m(\hat{u} + 1 - p_m) + p_m$ es óptimo
+	por hipótesis fuertemente inductiva sobre $\hat{u}$, así también, $f_{m-1}(\hat{u} + 1)$ es
+	óptimo por hipótesis inductiva sobre $m$. De \eqref{dp:rec} y del hecho que $\hat{u} \geq p_m$,
+	se sigue que $f_m(\hat{u} + 1)$ es el valor óptimo. Utilizando el caso base sobre $\hat{u}$
+	encontramos que $f_m(\hat{u})$ es el valor óptimo para todo $0 \leq \hat{u} \leq u$. Luego, del caso
+	base sobre $m$, concluimos que $f_m(\hat{u})$ es el valor óptimo para todo $1 \leq m \leq n$ y
+	para todo $0 \leq \hat{u} \leq u$.
+\end{proof}
 
-A continuación mostramos informalmente que esta formulación dinámica es correcta. Esta demostración
-consiste en realizar una inducción lexicográfica sobre el conjunto de tuplas $\braces{(m, \hat{u})
-\vcentcolon 1 \leq m \leq n, 0 \leq \hat{u} \leq u}$. Si $m = 1$, se sigue inmediatamente que
-\eqref{dp:base} es el valor óptimo para todo presupuesto $0 \leq \hat{u} \leq u$. Ahora bien,
-supongamos inductivamente que $f_{m-1}(\hat{u})$ es el valor óptimo para alguna $m > 1$ y para todo
-$0 \leq \hat{u} \leq u$.
-De \eqref{dp:rec}
-junto con la hipótesis inductiva sobre $m$ se sigue que, si $\hat{u} < p_m$, entonces $f_m(\hat{u})
-= f_{m-1}(\hat{u})$ es óptimo. 
-Ahora utilizamos un argumento fuertemente inductivo sobre $\hat{u}$ para
-mostrar que $f_m(\hat{u})$ es el valor óptimo para todo $0 \leq \hat{u} \leq u$, donde el caso
-base es el punto anterior.
-Suponemos ahora que $f_m(\hat{u})$ es el valor
-óptimo para todo $0 \leq \hat{u} < \tilde{u} \leq u$, por lo que debemos mostrar que $f_m(\hat{u} +
-1)$ también es el valor óptimo. Por el caso base podemos suponer que $\hat{u} \geq p_m$.
-Observemos que $\hat{u} + 1 - p_m \leq \hat{u}$ pues $p_m > 0$, de
-donde se sigue que $f_m(\hat{u} + 1 - p_m) + p_m$ es óptimo por hipótesis fuertemente inductiva sobre
-$\hat{u}$, así también, $f_{m-1}(\hat{u} + 1)$ es óptimo por hipótesis inductiva sobre $m$.
-De \eqref{dp:rec} y del hecho que $\hat{u} \geq p_m$, se sigue que $f_m(\hat{u} + 1)$ es el valor óptimo.
-Utilizando el caso base sobre $\hat{u}$ encontramos que
-$f_m(\hat{u})$ es el valor óptimo para todo $0 \leq u \leq u$. Luego, del caso base sobre $m$,
-concluimos que $f_m(\hat{u})$ es el valor óptimo para todo $1 \leq m \leq n$ y para todo $0 \leq
-\hat{u} \leq u$.
-
-Finalmente, para obtener el valor óptimo de \eqref{theory:formulation}, debemos calcular $f_n(u)$,
-lo cual implica calcular, en el peor de los casos, $f_m(\hat{u})$ para todo $1 \leq m \leq n$ y para
-todo $0 \leq \hat{u} \leq u$. Se desprende que el costo de calcular $f_n(u)$ es $\mathcal{O}(nu)$.
-No obstante, ambos R\&A y los métodos diofantinos (\texttt{dioph\_left} y \texttt{dioph\_right})
-terminan con la solución óptima y no solo el valor óptimo, así que la implementación realizada por
-el autor de esta formulación dinámica incluye una manera de construir la solución, a pesar del costo
-adicional en eficiencia, el cual es $\mathcal{O}(u)$.
+Observemos que para calcular $f_n(u)$, debemos calcular, en el peor de los casos, $f_m(\hat{u})$ para
+todo $1 \leq m \leq n$ y para todo $0 \leq \hat{u} \leq u$. Se desprende que el costo de calcular
+$f_n(u)$ es $\mathcal{O}(nu)$. No obstante, ambos R\&A y los métodos diofantinos
+(\texttt{dioph\_left} y \texttt{dioph\_right}) terminan con la solución óptima y no solo con el valor
+óptimo. Para obtener comparaciones justas, nuestra implementación de esta FPD incluye una manera de
+construir la solución, a pesar del costo adicional en eficiencia, el cual es $\mathcal{O}(u)$.
 
 \subsection{Experimentos en la dimensión}
 \label{subsec:exp:fin:n}
@@ -1503,10 +1506,10 @@ reducción al problema binario
 \end{equation*}
 para alguna $\vec{\hat{p}} \in \Z^{n_b}$ que puede ser obtenida de $\vec{p}$ (ver páginas 82 a 84 de \cite{martello}).
 Observemos que si $u \geq \sum_{i=1}^{n_b}\hat{p}_i$, entonces obtenemos la solución trivial
-$\vec{x} = \vec{e} \in \Z^{n_b}$. Puesto que existen \textit{solvers} que implícitamente reducen
+$x_i = 1$ para todo $1 \leq i \leq n_b$. Puesto que existen \textit{solvers} que implícitamente reducen
 problemas como \eqref{theory:formulation} a su forma binaria (el ejemplo más famoso es
 \texttt{KnapsackSolver} de Google OR-Tools), debemos ser cuidadosos con introducir este tipo de
-trivialidades. Afortunadamente, una forma de evitar esta situación es exigir que el lado derecho de
+trivialidades. Una forma simple de evitar esta situación es exigir que el lado derecho de
 \eqref{theory:constraint:budget} satisfaga $u < \sum_{i=1}^{n}p_i$.
 
 En tercer lugar, tenemos que si el vector $\vec{p}$ contiene entradas repetidas, entonces podemos
@@ -1554,26 +1557,26 @@ medidos, respectivamente. Las casillas vacías indican que el método no encontr
 problema correspondiente en menos de los 300 segundos de tolerancia.
 
 De manera más inmediata, tenemos que los métodos diofantinos son significativamente más rápidos.
-Además, los tiempos de terminación de los métodos diofantinos así como de la formulación dinámica
-(FD) están altamente concentrados alrededor de la media, por lo que son estables. En efecto, los
+Además, los tiempos de terminación de los métodos diofantinos así como de la formulación de programación dinámica
+(FPD) están altamente concentrados alrededor de la media, por lo que son estables. En efecto, los
 coeficientes de variación de los métodos diofantinos estuvieron, en la gran mayoría de los casos,
-por debajo de 0.5\%, mientras que los de FD estuvieron por debajo de 1\%. En contraste, solo la
+por debajo de 0.5\%, mientras que los de FPD estuvieron por debajo de 1\%. En contraste, solo la
 mitad de los coeficientes de variación de R\&A estuvo por debajo del 1\%.
 
-A pesar de que FD sea, en términos prácticos, igual de estable que los métodos diofantinos, no
-debemos olvidar que FD no encontró una solución en el 61\% de los experimentos realizados.
+A pesar de que FPD sea, en términos prácticos, igual de estable que los métodos diofantinos, no
+debemos olvidar que FPD no encontró una solución en el 61\% de los experimentos realizados.
 
 \begin{table}[Ht]
 	\centering
 	\sisetup{round-precision=2}
 
 	\begin{subtable}{\linewidth}
-	\caption{Tamaños pequeños (ms).}
+	\caption{Tamaños pequeños (milisegundos). Valores: media $\pm$ desviación estándar.}
 	\setlength{\tabcolsep}{3pt}\renewcommand{\arraystretch}{1.1}
 	\begin{tabularx}{\linewidth}{@{}r *{4}{S[table-format=3.2]@{\,}l}@{}}
 		\toprule
 		{$n$}
-		& \multicolumn{2}{c}{FD}
+		& \multicolumn{2}{c}{FPD}
 		& \multicolumn{2}{c}{R\&A}
 		& \multicolumn{2}{c}{\texttt{dioph\_left}}
 		& \multicolumn{2}{c}{\texttt{dioph\_right}} \\
@@ -1590,12 +1593,12 @@ debemos olvidar que FD no encontró una solución en el 61\% de los experimentos
 
 	\begin{subtable}{\linewidth}
 	\centering
-	\caption{Tamaños grandes (s).}
+	\caption{Tamaños grandes (segundos). Valores: media $\pm$ desviación estándar.}
 	\setlength{\tabcolsep}{3pt}\renewcommand{\arraystretch}{1.1}
 	\begin{tabularx}{\linewidth}{@{}r *{4}{S[table-format=3.3]@{\,}l}@{}}
 		\toprule
 		{$n$}
-		& \multicolumn{2}{c}{FD}
+		& \multicolumn{2}{c}{FPD}
 		& \multicolumn{2}{c}{R\&A}
 		& \multicolumn{2}{c}{\texttt{dioph\_left}}
 		& \multicolumn{2}{c}{\texttt{dioph\_right}} \\
@@ -1617,8 +1620,7 @@ debemos olvidar que FD no encontró una solución en el 61\% de los experimentos
 		\bottomrule
 	\end{tabularx}
 	\end{subtable}
-	\caption{Tiempos de terminación promedio de los distintos métodos cuando varía la dimensión.
-			La desviación estándar se encuentra entre paréntesis.}
+	\caption{Tiempos de terminación promedio de los distintos métodos cuando varía la dimensión.}
 	\label{table:fin:mt:times}
 \end{table}
 
@@ -1629,7 +1631,7 @@ debemos olvidar que FD no encontró una solución en el 61\% de los experimentos
 	\begin{tabular}{r S S S S}
 		\toprule
 		{$n$}
-		& {FD}
+		& {FPD}
 		& {R\&A}
 		& {\texttt{dioph\_left}}
 		& {\texttt{dioph\_right}} \\ \midrule
@@ -1693,8 +1695,8 @@ la figura \ref{fig:exp:fin:rhs:cv} muestra la distribución de sus coeficientes 
 \begin{figure}[hbtp]
 	\centering
 	\includegraphics[width=0.9\linewidth]{/home/tempdata/repos/thesis/static/fin/rhs/times-macro.pdf}
-	\caption{Tiempos de terminación promedio de los distintos métodos cuando varía el presupuesto.
-		Para observar mejor los tiempos, eliminamos el método más lento y hacemos \textit{zoom} a la
+	\caption{Tiempos de terminación promedio en milisegundos de los distintos métodos cuando varía el presupuesto.
+		Para observar mejor los tiempos, eliminamos el método más lento y realizamos \textit{zoom} a la
 		imagen.}
 	\label{fig:exp:fin:rhs:zoom}
 \end{figure}
@@ -1708,8 +1710,8 @@ la figura \ref{fig:exp:fin:rhs:cv} muestra la distribución de sus coeficientes 
 \end{figure}
 
 Como mostramos en la subsección \ref{subsec:fin:dp}, se ilustra gráficamente que los tiempos de
-terminación de FD crecen linealmente con respecto al presupuesto. Aún así, destaca el hecho de que
-FD resultó ser más consistente en sus tiempos de terminación que los otros tres métodos. Ambos FD y
+terminación de FPD crecen linealmente con respecto al presupuesto. Aún así, destaca el hecho de que
+FPD resultó ser más consistente en sus tiempos de terminación que los otros tres métodos. Ambos FPD y
 \texttt{dioph\_right} tuvieron coeficientes de variación menor que 2.5\%, al igual que
 \texttt{dioph\_left} con excepción de dos experimentos anómalos.
 
@@ -1748,7 +1750,7 @@ Ramificación y Acotamiento tuviera una mayor varianza relativa en los tiempos d
 En conclusión, el autor considera que el argumento a favor del uso de métodos diofantinos es fuerte.
 Mostramos en ambos experimentos de esta sección que los métodos diofantinos son más rápidos, más
 estables y significativamente más robustos ante cambios en la dimensión o en el presupuesto del
-problema \eqref{theory:formulation} que sus contrapartes FD o R\&A. El siguiente capítulo propone
+problema \eqref{theory:formulation} que sus contrapartes FPD o R\&A. El siguiente capítulo propone
 una extensión de estos métodos diofantinos para resolver programas lineales enteros generales.
 
 \begin{figure}[hbtp]

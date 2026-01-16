@@ -1,6 +1,6 @@
 \chapter*{Introducción}
 \noindent
-En gran medida, esta tesis analiza programas lineales enteros del tipo
+Esta tesis analiza a profundidad el programa lineal entero
 \begin{subequations}
 	\label{eq:base}
 	\begin{align}
@@ -13,13 +13,13 @@ En gran medida, esta tesis analiza programas lineales enteros del tipo
 \end{subequations}
 donde $\vec{p} \in \R^n \setminus \braces{\vec{0}}$ pertenece a una clase de vectores que
 definiremos en el primer capítulo, y $u \in \R$ es un escalar. Son dos las razones por las que nos
-dedicamos a estudiar casi exclusivamente estas instancias: en primer lugar, el hecho de que este
-problema tenga una sola restricción facilita su análisis y su interpretación geométrica; y, en segundo
+dedicamos a estudiar casi exclusivamente este problema: en primer lugar, el hecho de que
+tenga una sola restricción facilita su análisis y su interpretación geométrica; y, en segundo
 lugar, las simetrías introducidas por el hecho de que el vector $\vec{p}$ define tanto la función
 objetivo \eqref{eq:base:1} como la restricción \eqref{eq:base:2} causan ineficiencias en el
 método de R\&A al momento de resolver el problema. De esta manera, el programa
 lineal entero \eqref{eq:base} es una especie de ``ejemplo minimal'' que motiva el diseño de
-algoritmos alternativos y posiblemente más eficientes que R\&A.
+algoritmos alternativos a Ramificación y Acotamiento.
 
 % Se ha observado que esto último ocurre siempre que el vector objetivo es ortogonal a una de las
 % restricciones activas del programa lineal entero. En este caso, el programa relajado cuenta con una
@@ -70,8 +70,8 @@ En el capítulo 4 se introduce el caso de múltiples restricciones, y resulta se
 casos del teorema \ref{theory:th:feasibility} deja de ser vigente. Por lo tanto, se desarrolla un
 nuevo método que permite resolver este tipo de problemas más generales bajo la perspectiva de
 sistemas de ecuaciones lineales diofantinas. Puesto que un análisis detallado sería demasiado
-extenso para añadirlo a la tesis, la discusión en este capítulo es más superficial, pero no por ello
-menos rigurosa.
+extenso para añadirlo a esta tesis de licenciatura, la discusión en este capítulo es más
+superficial, pero no por ello menos formal.
 
 Finalmente, en el capítulo 5 se presenta una recopilación de los resultados originales y más
 destacables obtenidos a lo largo de esta tesis. Así también, se presenta una recopilación de
