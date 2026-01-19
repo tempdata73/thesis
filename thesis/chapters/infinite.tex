@@ -432,22 +432,28 @@ terminación de este método.
 	como sufijo al subíndice si la última restricción añadida fue del tipo $\leq$ y, similarmente,
 	agregamos un 1 si la última restricción añadida fue del tipo $\geq$.
 
-	En la figura \ref{fig:infrec} se muestra el poliedro asociado a su problema relajado $S$.
+	En la figura \ref{fig:infrec} se muestra la región factible $S$ del problema relajado asociado.
 	Encontramos que su solución es $(0.3, 0)$. Puesto que $0.3$ no es entero, ramificamos sobre esta
-	variable y generamos dos subproblemas $S_{0}$ y $S_{1}$ con las restricciones añadidas $x \leq
-	0$ y $x \geq 1$, respectivamente. La solución de $S_{0}$ es $(0, 0)$ y podamos por
-	integralidad.
+	variable y generamos los subproblemas cuyas regiones factibles son
+	\begin{align*}
+		S_0 &\coloneq S \cap \braces{(x, y) \in \R^2 \vcentcolon x \leq 0}, \\
+		S_1 &\coloneq S \cap \braces{(x, y) \in \R^2 \vcentcolon x \geq 1}.
+	\end{align*}
+	La solución del subproblema con región factible $S_{0}$ es $(0, 0)$ y podamos por integralidad.
+	Ahora bien, la solución de $S_{1}$ es $(1, 0.7)$ y como $0.7$ no es entero, generamos los
+	subproblemas con regiones factibles
+	\begin{align*}
+		S_{10} &\coloneq S_1 \cap \braces{(x, y) \in \R^2 \vcentcolon y \leq 0}, \\
+		S_{11} &\coloneq S_1 \cap \braces{(x, y) \in \R^2 \vcentcolon y \geq 1}.
+	\end{align*}
+	Encontramos que el poliedro $S_{10}$ es vacío, así que podamos por infactibilidad.
 
-	Ahora bien, la solución de $S_{1}$ es $(1, 0.7)$ y como $0.7$ no es entero, generamos $S_{10}$
-	y $S_{11}$ con las restricciones añadidas $y \leq 0$ y $y \geq 1$. Encontramos que el poliedro
-	de $S_{10}$ es vacío, así que podamos por infactibilidad.
-
-	En la parte derecha de la figura \ref{fig:infrec} se muestra el poliedro asociado a $S_{11}$.
-	Observemos que este poliedro es una traslación del asociado a $S$. En otras palabras, $S_{11}$
-	es un caso particular de una homotecia de $S$. Consecuentemente, hay un comportamiento periódico
-	en cuanto a la ramificación y solución de estos problemas: resolver $S_{11}$ se reduce a
-	resolver $S$, pero el primero es un subproblema del segundo. Siguiendo este razonamiento,
-	encontramos que R\&A genera la cadena de subproblemas autosimilares
+	En la figura \ref{fig:infrec} se muestra el poliedro $S_{11}$ es una traslación de $S$. En otras
+	palabras, $S_{11}$ es un caso particular de una homotecia de $S$. Consecuentemente, hay un
+	comportamiento periódico en cuanto a la ramificación y solución de estos problemas: resolver el
+	subproblema con región factible $S_{11}$ se reduce a resolver el que tiene como región factible
+	a  $S$, pero el primero es un subproblema del segundo. Siguiendo este razonamiento, encontramos
+	que R\&A genera una cadena de subproblemas con regiones factibles autosimilares
 	\begin{equation*}
 		S, S_{11}, S_{1111}, S_{111111}, \ldots
 	\end{equation*}

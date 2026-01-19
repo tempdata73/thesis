@@ -443,8 +443,8 @@ solución óptima. Ilustramos estas políticas a partir de un ejemplo.
 	3)^T$. Como $x_1^{(0)} = 20/7$ no es entero, generamos dos nuevos subproblemas con regiones
 	factibles
 	\begin{align*}
-		S_{0} &\coloneq S \cup \braces{ x_1 \leq \floor{20/7} = 2}, \\
-		S_{1} &\coloneq S \cup \braces{ x_1 \geq \ceil{20/7} = 3}.
+		S_{0} &\coloneq S \cap \braces{ (x_1, x_2) \in \R^2 \vcentcolon x_1 \leq \floor{20/7} = 2}, \\
+		S_{1} &\coloneq S \cap \braces{ (x_1, x_2) \in \R^2 \vcentcolon x_1 \geq \ceil{20/7} = 3}.
 	\end{align*}
 	De la figura \ref{fig:feas}, observamos que $S_{1}$ es vacío y por lo tanto de este problema no
 	podemos generar otros subproblemas. En este caso, decimos que \textbf{podamos $S_{1}$ por
@@ -453,8 +453,8 @@ solución óptima. Ilustramos estas políticas a partir de un ejemplo.
 	Ahora bien, la solución al problema $S_{0}$ está dada por $\vec{x}^{(1)} \coloneq (2, 1/2)^T$.
 	Encontramos que $x_2^{(1)}$ = 1/2 no es entero y por lo tanto generamos dos nuevos subproblemas:
 	\begin{align*}
-		S_{00} &\coloneq S_{0} \cup \braces{ x_2 \leq \floor{1/2} = 0}, \\
-		S_{01} &\coloneq S_{0} \cup \braces{ x_2 \geq \ceil{1/2} = 1}.
+		S_{00} &\coloneq S_{0} \cap \braces{ (x_1, x_2) \in \R^2 \vcentcolon x_2 \leq \floor{1/2} = 0}, \\
+		S_{01} &\coloneq S_{0} \cap \braces{ (x_1, x_2) \in \R^2 \vcentcolon x_2 \geq \ceil{1/2} = 1}.
 	\end{align*}
 	Observemos que la solución $\vec{x}^{(2)}$ de $S_{01}$ es $(2, 1)^T$, la cual es entera y tiene valor
 	objetivo $z_2^* \coloneq 7$. No generamos otros subproblemas a partir de este problema porque
