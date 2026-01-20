@@ -275,7 +275,7 @@ estándar en la literatura.
 		\For{$i \leftarrow 1$ \KwTo $m - 1$}{ \label{alg:inf:loop}
 			\If{$\tilde{q}_i < 0$}{
 				$j \leftarrow i$\;
-				ir al paso \ref{alg:subr:switch3}\;
+				ir a la línea \ref{alg:subr:switch3}\;
 			}
 		}
 		\switch{$\tvec{q}$, $j$, $m - 1$}\quad\tcp*[h]{$\tvec{q}_{m-1} < 0$}\; \label{alg:subr:switch3}
@@ -617,7 +617,7 @@ A pesar de que implementaciones comerciales y de código abierto utilicen otro o
 ramifiquen de distinta manera, extiendan las políticas de poda, introduzcan heurísticas, preprocesen
 el problema, etcétera, veremos en la siguiente subsección que la obtención de soluciones por parte
 del \textit{solver} CBC (\cite{coin}) todavía es lenta si comparamos sus tiempos de terminación con
-nuestro algoritmo \eqref{algo:inf:ext}, o incluso con la cota inferior \eqref{eq:bbound}.
+nuestro algoritmo \ref{algo:inf:ext}, o incluso con la cota inferior \eqref{eq:bbound}.
 \subsection{Análisis de resultados}
 \label{subsec:inf:res}
 \noindent
@@ -636,12 +636,12 @@ computadora, o por cargar cosas a la memoria, o por compilación al momento de c
 \texttt{.pyc}, etcétera. En total, cada observación es el resultado de haber corrido el mismo
 experimento 22 veces.
 
-Por cuestiones de tiempo, cada corrida fue automáticamente terminada si sobrepasaba los 300 segundos
-Decimos que el método no encontró una solución si fue automáticamente terminado en más de 10 de las
-20 veces que medimos el tiempo de terminación. Para verificar la correctud en la implementación de
-nuestro algoritmo, comparamos los valores objetivo de nuestra implementación con los de CBC y en
-ningún momento encontramos que fueran distintos. Nuestra implementación se encuentra libre en
-GitHub.\footnote{Véase: \url{https://github.com/tempdata73/thesis}}
+Por cuestiones de tiempo, cada corrida fue automáticamente terminada si sobrepasaba los 300
+segundos. Decimos que el método no encontró una solución si fue automáticamente terminado en más de
+10 de las 20 veces que medimos el tiempo de terminación. Para verificar la correctud en la
+implementación de nuestro algoritmo, comparamos los valores objetivo de nuestra implementación con
+los de CBC y en ningún momento encontramos que fueran distintos. Nuestra implementación se encuentra
+libre en GitHub.\footnote{Véase: \url{https://github.com/tempdata73/thesis}}
 
 Finalmente, los experimentos fueron realizados en una computadora portátil Dell XPS 15 equipada con
 un procesador Intel Core i7-8750H (6 núcleos físicos y 12 hilos, frecuencia base de 2.20 GHz y
@@ -686,7 +686,7 @@ solución antes de los 300 segundos.
   \end{subfigure}
 
   \caption{Tiempos de terminación promedio cuando varía el presupuesto y el
-			número de digitos. \textit{Arriba}: Resultados en segundos de CBC. \textit{Abajo}:
+	  número de digitos. \textit{Arriba}: Resultados en segundos de R\&A implementado en CBC. \textit{Abajo}:
 			Resultados en milisegundos de nuestro método \texttt{dioph}.}
   \label{fig:exp:inf:rhs}
 \end{figure}
@@ -700,22 +700,21 @@ En realidad nos interesa mostrar la sensibilidad en los tiempos de terminación 
 la precisión del vector objetivo $\vec{p}$ aumenta. Es decir, si $T(\vec{p}_i)$ es el tiempo de
 terminación de CBC con una instancia usando el vector esencialmente entero $\vec{p}_i$ que tiene
 $i$ cifras decimales, entonces queremos medir la proporción $T(\vec{p}_{i+1}) / T(\vec{p}_i)$.
-Denominamos como multiplicadores a las razones anteriores, pues representan el factor de aumento en
+Llamamos \textbf{multiplicadores} a estas proporciones, pues representan el factor de aumento en
 los tiempos de terminación de CBC cuando utilizamos una cifra decimal adicional. Puesto que cada
 instancia depende del presupuesto $u$ de la restricción \eqref{theory:constraint:budget} y tomamos
 128 de estos presupuestos por cada nivel de precisión $i$, obtenemos a lo más $128 \times (3 - 1) =
 256$ multiplicadores registrados, pues no podemos medir aquellos en donde $T(\vec{p}_i)$ es mayor a
-300 segundos. La figura \ref{fig:exp:inf:hist} muestra la distribución acumulada de estos
-multiplicadores. Por cuestiones visuales, recortamos la gráfica para que el multiplicador más grande
-fuera 100, pues 49 multiplicadores se encontraban en el rango (100, 5{,}422] y
-generaban un sesgo innecesario en la distribución.
+300 segundos. La figura \ref{fig:exp:inf:hist} en la página \pageref{fig:exp:inf:hist} muestra la
+distribución acumulada de estos multiplicadores. Por cuestiones visuales, juntamos todos los
+multiplicadores que fueron mayores a 100 en la última columna.
 
 De acuerdo a la subsección anterior, deberíamos esperar que la gran mayoría de los multiplicadores
 se concentren alrededor de 10. Esto último ocurrió en el 40\% de los casos. Después de realizar un
-conteo en los archivos de registro generados por CBC, descubrimos que en
-\textbf{todos} los casos que se encontró una solución fue a causa de una heurística y no por el
-método de ramificación. Debido la dificultad del árbol que genera el problema
-\eqref{theory:formulation}, de acuerdo a la subsección anterior, esto parece ser razonable.
+conteo en los archivos de registro generados por CBC, descubrimos que en todos los casos que se
+encontró una solución fue a causa de una heurística de redondeo y no por el método de ramificación.
+Debido la dificultad del árbol que genera el problema \eqref{theory:formulation}, de acuerdo a la
+subsección anterior, esto parece ser razonable.
 
 Aún cuando las soluciones fueron obtenidas exclusivamente a través de heurísticas, en el 60\% de los
 casos el multiplicador es mayor a 10. Es decir, una cifra decimal adicional en $\vec{p}$ provoca, en la
@@ -732,12 +731,12 @@ desarrollo del segundo caso del teorema \ref{theory:th:feasibility}.
   \centering
   \begin{subfigure}{0.80\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/mult-hist-cum-sep.pdf}
+    \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/mult-hist-cum-sep-v2.pdf}
   \end{subfigure}
   \hfill
   \begin{subfigure}{0.80\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/mult-hist-cum.pdf}
+    \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/mult-hist-cum-v2.pdf}
   \end{subfigure}
 
   \caption{Distribución acumulada de los multiplicadores de tiempo. \textit{Arriba:} Separados por

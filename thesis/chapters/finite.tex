@@ -1303,13 +1303,13 @@ divisor en la línea \ref{alg:fin:g}. En efecto, supongamos que un intervalo de 
 definido en la línea \ref{alg:fin:feas} causa que $\vec{x}^{\texttt{tail}}$ sea \NIL~ para todo
 $t \in I$. Entonces estaríamos haciendo $|I|$ llamadas recursivas a \texttt{NonNegativeIntSolFin} en
 la línea \ref{alg:fin:subeq} con el mismo vector $\vec{q}^{\texttt{tail}}$ y, por lo tanto,
-estaríamos calculando $|I|$ veces la misma $g$ en la línea \ref{alg:fin:g}. Lo mismo ocurre con el
-cálculo de los coeficientes de Bézout $x'$ y $\omega'$ en la línea \ref{alg:fin:bez2}.
+estaríamos calculando $|I|$ veces la misma $g$ y los mismos coeficientes de Bézout $x', \omega'$ en
+las líneas \ref{alg:fin:g} y \ref{alg:fin:bez2}, respectivamente.
 
-A pesar de los puntos anteriores, el autor decidió escribir el algoritmo \ref{algo:fin:helper} de
-esa manera debido a que se simplificaba de manera significativa la demostración del teorema
-\ref{th:fin:helper:correct}. Sin embargo, el autor realizó una implementación equivalente más
-eficiente a través de ciclos para obtener los resultados de la siguiente sección.
+A pesar de los puntos anteriores, decidimos escribir el algoritmo \ref{algo:fin:helper} de esa
+manera debido a que se simplificaba de manera significativa la demostración del teorema
+\ref{th:fin:helper:correct}. Realizamos una implementación equivalente más eficiente a través de
+ciclos para obtener los resultados de la siguiente sección.
 
 \begin{algorithm}[ht]
 	\LinesNumbered
@@ -1345,17 +1345,17 @@ En esta sección medimos la eficiencia y estabilidad del algoritmo \ref{algo:fin
 detalles de implementación del algoritmo \ref{algo:fin:helper}. Introducimos una formulación de
 programación dinámica (FPD) capaz de resolver instancias de \eqref{theory:formulation} cuando
 $\vec{q} > \vec{0}$, de manera que obtenemos otro punto de comparación para nuestro algoritmo además
-de Ramificación y Acotamiento (R\&A). Finalmente, explicamos y realizamos nuestro experimentos
-numéricos.
+de Ramificación y Acotamiento (R\&A) implementado en el \textit{solver} COIN-OR Branch and Cut
+(CBC) (\cite{coin}). Finalmente, explicamos y realizamos nuestros experimentos numéricos.
 
-Utilizamos el mismo equipo así como la misma configuración de R\&A que se detalla en la sección
-\ref{subsec:inf:complex} para la realización de estos experimentos.
+Utilizamos el mismo equipo así como la misma configuración de CBC que se detalla en la subsección
+\ref{subsec:inf:res} para la realización de estos experimentos.
 
 \subsection{Detalles de implementación}
 \label{subsec:fin:details}
 \noindent
 Mencionamos en la sección pasada que el algoritmo \ref{algo:fin:helper} fue escrito de esa manera para demostrar la
-correctud de nuestro método. El autor optó por realizar una implementación equivalente en ciclos
+correctud de nuestro método. En esta sección preferimos realizar una implementación equivalente en ciclos
 debido al límite suave en las llamadas de recursión que permite Python. Este límite es de 3{,}000
 llamadas recursivas en la máquina donde se realizaron los experimentos. Esto significa que, de
 manera predeterminada, solamente podríamos resolver problemas de dimensión $n \leq 3{,}000$. No
@@ -1367,11 +1367,11 @@ divisores $g$ y los mismos coeficientes de Bézout $x', \omega'$. Puesto que est
 exclusivamente del vector $\vec{q}$, decidimos calcularlos en una fase de preprocesamiento antes de
 llamar \texttt{NonNegativeIntSolFin}.
 
-La implementación por ciclos utiliza una pila de estados $(i, b_1, b_2, \omega)$, donde $i$ indica el nivel o
-la variable $t_i$ que debemos escoger; el resto de los parámetros están definidos en el algoritmo
-\ref{algo:fin:helper}. La elección de $t_i$ ciertamente es la más importante, pues determina el
-intervalo de factibilidad $I = [b_1, b_2]$ en el siguiente nivel $i + 1$. Existen, \textit{a
-priori}, dos estrategias que podemos adoptar para este tipo de elecciones.
+La implementación por ciclos utiliza una pila (\textit{stack}) de estados $(i, b_1, b_2, \omega)$,
+donde $i$ indica el nivel o la variable $t_i$ que debemos escoger; el resto de los parámetros están
+definidos en el algoritmo \ref{algo:fin:helper}. La elección de $t_i$ ciertamente es la más
+importante, pues determina el intervalo de factibilidad $I = [b_1, b_2]$ en el siguiente nivel $i +
+1$. Existen, \textit{a priori}, dos estrategias que podemos adoptar para este tipo de elecciones.
 
 La primera estrategia escoge $t_i \leftarrow b_1$ o $t_i \leftarrow b_2$ para todo nivel $i$. Si, en
 tal nivel $i$, el intervalo de factibilidad es vacío, entonces retrocedemos en la pila y hacemos la
@@ -1393,19 +1393,18 @@ estado del siguiente nivel con parámetros $b_1$, $b_2$ y $\omega$ calculados co
 del vector solución $\vec{x} \geq \vec{0}$ de manera que $x_i \geq 0$ pero también que $x_{i + 1}$
 pueda ser no negativo. Puesto que empujamos a la pila un estado del siguiente nivel $i + 1$ antes de
 agotar el intervalo de factiblidad en el nivel $i$, realizamos una búsqueda en profundidad del
-árbol.
+árbol (\textit{depth-first search}).
 
-El autor encontró en los experimentos preliminares que la segunda estrategia es mucho más eficaz. En
+Encontramos en los experimentos preliminares que la segunda estrategia es mucho más eficaz. En
 los experimentos de la subsección \ref{subsec:exp:fin:n}, la primera estrategia tenía tiempos de
-terminación aproximadamente equivalentes a los de R\&A. Para los experimentos de la subsección
+terminación aproximadamente equivalentes a los de CBC. Para los experimentos de la subsección
 \ref{subsec:exp:fin:rhs}, ambas estrategias tenían tiempos de terminación significativamente menores
-que R\&A. Por ello, decidimos realizar el análisis de resultados utilizando únicamente la estrategia
-del árbol.
+que CBC. Por ello, decidimos omitir los resultados de la primera estrategia.
 
 Observemos que el orden en el que consideramos los estados $(i, b_1, t_i - 1, \omega)$ y $(i, t_i +
-1, b_2, \omega)$ determina si visitamos primero el lado izquierdo o el lado derecho del árbol. El
-autor realizó los experimentos con ambas posibilidades. Así pues, llamaremos \texttt{dioph\_left} a
-la implementación que recorre primero el subintervalo izquierdo y definimos análogamente
+1, b_2, \omega)$ determina si visitamos primero el lado izquierdo o el lado derecho del árbol.
+Realizamos los experimentos con ambas posibilidades. Así pues, llamaremos \texttt{dioph\_left} a la
+implementación que recorre primero el subintervalo izquierdo y definimos análogamente
 \texttt{dioph\_right}.
 
 \subsection{Una formulación de programación dinámica}
@@ -1543,27 +1542,28 @@ lado derecho de la restricción \eqref{theory:constraint:budget} de manera que
 		0.1\sum_{i=1}^{n}p_i & n > 20{,}000,
 	\end{cases}
 \end{equation*}
-para evitar obtener un problema trivial de acuerdo a la reducción binaria. El autor decidió cambiar
-el coeficiente de 0.5 a 0.1 cuando $n > 20{,}000$ para disminuir la probabilidad de que existan
-múltiples soluciones óptimas en problemas de tamaño grande.
+para evitar obtener un problema trivial de acuerdo a la reducción binaria. Decidimos cambiar el
+coeficiente de 0.5 a 0.1 para disminuir la probabilidad de que existan múltiples soluciones óptimas
+en problemas de tamaño grande.
 
-La tabla \ref{table:fin:mt:times} muestra los tiempos promedios de terminación así como las
-desviaciones estándar de los métodos utilizados para realizar cada experimento. La tabla
-\ref{table:fin:mt:cv} muestra los coeficientes de variación de estos tiempos. Un coeficiente de
-variación mide, en proporción, qué tan concentrados están los tiempos alrededor de su media, y se
-calcula como $\sigma / \mu$, donde $\mu$ y $\sigma$ son la media y desviación estándar de los tiempos
-medidos, respectivamente. Las casillas vacías indican que el método no encontró una solución para el
-problema correspondiente en menos de los 300 segundos de tolerancia.
+La tabla \ref{table:fin:mt:times} en la página \pageref{table:fin:mt:times} muestra los tiempos
+promedios de terminación así como las desviaciones estándar de los métodos utilizados para realizar
+cada experimento. La tabla \ref{table:fin:mt:cv} en la página \pageref{table:fin:mt:cv} muestra los
+coeficientes de variación de estos tiempos. Un coeficiente de variación mide, en proporción, qué tan
+concentrados están los tiempos alrededor de su media, y se calcula como $\sigma / \mu$, donde $\mu$
+y $\sigma$ son la media y desviación estándar de los tiempos medidos, respectivamente. Las casillas
+vacías indican que el método no encontró una solución para el problema correspondiente en menos de
+los 300 segundos de tolerancia.
 
 De manera más inmediata, tenemos que los métodos diofantinos son significativamente más rápidos.
-Además, los tiempos de terminación de los métodos diofantinos así como de la formulación de programación dinámica
-(FPD) están altamente concentrados alrededor de la media, por lo que son estables. En efecto, los
-coeficientes de variación de los métodos diofantinos estuvieron, en la gran mayoría de los casos,
-por debajo de 0.5\%, mientras que los de FPD estuvieron por debajo de 1\%. En contraste, solo la
-mitad de los coeficientes de variación de R\&A estuvo por debajo del 1\%.
+Además, los tiempos de terminación de los métodos diofantinos así como de la FPD están altamente
+concentrados alrededor de la media, por lo que son estables. En efecto, los coeficientes de
+variación de los métodos diofantinos estuvieron, en la gran mayoría de los casos, por debajo de
+0.5\%, mientras que los de la FPD estuvieron por debajo de 1\%. En contraste, solo la mitad de los
+coeficientes de variación de CBC estuvo por debajo del 1\%.
 
-A pesar de que FPD sea, en términos prácticos, igual de estable que los métodos diofantinos, no
-debemos olvidar que FPD no encontró una solución en el 61\% de los experimentos realizados.
+A pesar de que la FPD sea, en términos prácticos, igual de estable que los métodos diofantinos, no
+debemos olvidar que la FPD no encontró una solución en el 61\% de los experimentos realizados.
 
 \begin{table}[ht]
 	\centering
@@ -1576,7 +1576,7 @@ debemos olvidar que FPD no encontró una solución en el 61\% de los experimento
 		\toprule
 		{$n$}
 		& \multicolumn{2}{c}{FPD}
-		& \multicolumn{2}{c}{R\&A}
+		& \multicolumn{2}{c}{CBC}
 		& \multicolumn{2}{c}{\texttt{dioph\_left}}
 		& \multicolumn{2}{c}{\texttt{dioph\_right}} \\
 		\midrule
@@ -1598,7 +1598,7 @@ debemos olvidar que FPD no encontró una solución en el 61\% de los experimento
 		\toprule
 		{$n$}
 		& \multicolumn{2}{c}{FPD}
-		& \multicolumn{2}{c}{R\&A}
+		& \multicolumn{2}{c}{CBC}
 		& \multicolumn{2}{c}{\texttt{dioph\_left}}
 		& \multicolumn{2}{c}{\texttt{dioph\_right}} \\
 		\midrule
@@ -1631,7 +1631,7 @@ debemos olvidar que FPD no encontró una solución en el 61\% de los experimento
 		\toprule
 		{$n$}
 		& {FPD}
-		& {R\&A}
+		& {CBC}
 		& {\texttt{dioph\_left}}
 		& {\texttt{dioph\_right}} \\ \midrule
 		50      & 0.091 & 0.741 & 0.019 & 0.029 \\
@@ -1658,7 +1658,7 @@ debemos olvidar que FPD no encontró una solución en el 61\% de los experimento
 	\label{table:fin:mt:cv}
 \end{table}
 
-Una de las hipótesis por las que el autor cree que \texttt{dioph\_left} presenta resultados aún más
+Una de las hipótesis por las que creemos que \texttt{dioph\_left} presenta resultados aún más
 rápidos que su contraparte \texttt{dioph\_right} es la que sigue. Puesto que estamos generando
 vectores aleatorios con dimensiones grandes, la probabilidad de que las últimas $n - i$ entradas
 tengan factores en común es pequeña. Por lo tanto, obtenemos $g_{i+1} = 1$. Recordando que los
@@ -1680,20 +1680,20 @@ ascendente o descendente sobre $\vec{q}$.
 \subsection{Experimentos en el presupuesto}
 \label{subsec:exp:fin:rhs}
 \noindent
-Recordemos que nos referimos al lado derecho $u$ de la desigualdad \eqref{theory:constraint:budget}
-como el presupuesto del problema \eqref{theory:formulation}. Tomamos las mismas precauciones que en
-la subsección pasada para evitar soluciones triviales.
+Tomamos las mismas precauciones que en la subsección pasada para evitar soluciones triviales.
 
 En este caso, fijamos la dimensión en $n = 1{,}000$ y dejamos que el vector esencialmente entero
-$\vec{p} \in \Z^n$ sea un vector aleatorio tomado de una distribución uniforme discreta y entera sobre el
-intervalo $[10, 10{,}000)^n$. Luego, tomamos 128 puntos enteros equidistantes sobre el intervalo
-$[.01S, S)$, donde $S \coloneq \sum_{i=1}^np_i$. y medimos los tiempos de terminación promedio sobre
-las 20 corridas. La figura \ref{fig:exp:fin:rhs:zoom} muestra estos tiempos de terminación, mientras que
-la figura \ref{fig:exp:fin:rhs:cv} muestra la distribución de sus coeficientes de variación.
+$\vec{p} \in \Z^n$ sea un vector aleatorio tomado de una distribución uniforme discreta y entera
+sobre el intervalo $[10, 10{,}000)^n$. Luego, tomamos 128 puntos enteros aproximadamente
+equidistantes sobre el intervalo $[.01S, S)$, donde $S \coloneq \sum_{i=1}^np_i$ y cada punto
+representa el lado derecho de la restricción presupuestaria \eqref{theory:constraint:budget}.
+Medimos los tiempos de terminación promedio sobre las 20 corridas. La figura
+\ref{fig:exp:fin:rhs:zoom} muestra estos tiempos de terminación, mientras que la figura
+\ref{fig:exp:fin:rhs:cv} muestra la distribución de sus coeficientes de variación.
 
 \begin{figure}[hbtp]
 	\centering
-	\includegraphics[width=0.9\linewidth]{/home/tempdata/repos/thesis/static/fin/rhs/times-macro.pdf}
+	\includegraphics[width=0.8\linewidth]{/home/tempdata/repos/thesis/static/fin/rhs/times-macro.pdf}
 	\caption{Tiempos de terminación promedio en milisegundos de los distintos métodos cuando varía el presupuesto.
 		Para observar mejor los tiempos, eliminamos el método más lento y realizamos \textit{zoom} a la
 		imagen.}
@@ -1702,55 +1702,53 @@ la figura \ref{fig:exp:fin:rhs:cv} muestra la distribución de sus coeficientes 
 
 \begin{figure}[hbtp]
 	\centering
-	\includegraphics[width=0.9\linewidth]{/home/tempdata/repos/thesis/static/fin/rhs/boxplot-cv.pdf}
+	\includegraphics[width=0.8\linewidth]{/home/tempdata/repos/thesis/static/fin/rhs/boxplot-cv.pdf}
 	\caption{Coeficientes de variación en los tiempos de terminación a medida que el presupuesto
 	varía.}
 	\label{fig:exp:fin:rhs:cv}
 \end{figure}
 
 Como mostramos en la subsección \ref{subsec:fin:dp}, se ilustra gráficamente que los tiempos de
-terminación de FPD crecen linealmente con respecto al presupuesto. Aún así, destaca el hecho de que
-FPD resultó ser más consistente en sus tiempos de terminación que los otros tres métodos. Ambos FPD y
+terminación de la FPD crecen linealmente con respecto al presupuesto. Aún así, destaca el hecho de que
+la FPD resultó ser más consistente en sus tiempos de terminación que los otros tres métodos. Ambos FPD y
 \texttt{dioph\_right} tuvieron coeficientes de variación menor que 2.5\%, al igual que
 \texttt{dioph\_left} con excepción de dos experimentos anómalos.
 
-En ambos R\&A y los métodos diofantinos hay presencia de un comportamiento oscilatorio. El autor
-confirmó para los métodos diofantinos que esto coincide en la mayoría de los casos cuando el
-presupuesto $u$ es múltiplo de una de las entradas de $\vec{q}$. En estos casos el problema es
-trivial, pues si $q_j \mid u$, entonces uno de \texttt{dioph\_left} o \texttt{dioph\_right}
-encuentra inmediatamente la solución $\vec{x} = \floor{u/q_j}\vec{e}_j$.
+En ambos CBC y los métodos diofantinos hay presencia de un comportamiento oscilatorio. Se confirmó
+para los métodos diofantinos que esto coincide en la mayoría de los casos cuando el presupuesto $u$
+es múltiplo de una de las entradas de $\vec{q}$. En estos casos el problema es trivial, pues si $q_j
+\mid u$, entonces uno de \texttt{dioph\_left} o \texttt{dioph\_right} encuentra inmediatamente la
+solución $\vec{x} = \floor{u/q_j}\vec{e}_j$. En estos casos donde una entrada de $\vec{q}$ divide a
+$u$, se observó que un repunte en \texttt{dioph\_left} coincide con una caída en
+\texttt{dioph\_right} y viceversa. Las excepciones más notables a este comportamiento fueron las dos
+observaciones anómalas en \texttt{dioph\_left} (ver figuras \ref{fig:exp:fin:rhs:zoom} y
+\ref{fig:exp:fin:rhs:cv}). El comportamiento oscilatorio en CBC no coincide con los
+casos en los que el presupuesto $u$ es múltiplo de alguna entrada de $\vec{p}$.
 
-En los casos que una entrada de $\vec{q}$ divide a $u$, el autor encontró que un repunte en
-\texttt{dioph\_left} coincide con una caída en \texttt{dioph\_right} y viceversa. Las excepciones
-más notables a este comportamiento fueron las dos observaciones anómalas en \texttt{dioph\_left}
-(ver figuras \ref{fig:exp:fin:rhs:zoom} y \ref{fig:exp:fin:rhs:cv}). En cambio, el comportamiento
-oscilatorio en R\&A no coincide con los casos en los que el presupuesto $u$ es múltiplo de alguna
-entrada de $\vec{p}$.
-
-Observamos de la figura \ref{fig:exp:fin:rhs:cv} que el algoritmo de Ramificación y Acotamiento es
-sumamente inestable. El autor hipotetizó que esto se debe a la constante sobrecarga computacional de
-transferir datos entre los módulos del problema relajado y la generación de cortes (ver figura
-\ref{p1c11:fig:MIP_solver_flowchart}) dentro del \textit{solver} CBC. Por ello, el autor decidió
-correr el mismo experimento tomando en cuenta una configuración de R\&A que prohíba la generación de
-cortes. Debido a la dimensión $n = 1{,}000$ del problema y al fenómeno expuesto en la sección
+Observamos en la figura \ref{fig:exp:fin:rhs:cv} que la implementación de R\&A en CBC es sumamente
+inestable. Se hipotetizó que esto se debe a la constante sobrecarga computacional de transferir
+datos entre los módulos del problema relajado y la generación de cortes dentro de CBC. Por ello,
+corrimos el mismo experimento tomando en cuenta una configuración de R\&A que prohíba la generación
+de cortes. Debido a la dimensión $n = 1{,}000$ del problema y al fenómeno expuesto en la sección
 \ref{sec:inf:exp}, no prohibimos el uso de heurísticas.
 
-El autor encontró que los tiempos de terminación son similares y por lo tanto no tiene sentido
+Se encontró que los tiempos de terminación son similares y por lo tanto no tiene sentido
 mostrarlos, pero sí hay un cambio significativo en la estabilidad de esta nueva configuración. La
 comparación de coeficientes de variación se muestra en la figura \ref{fig:exp:fin:rhs:cv-wbb}, en la
 cual se observa que la mediana de los coeficientes de variación es aproximadamente un tercio en la
-implementación sin cortes. Es decir, en el 50\% de los 128 experimentos que realizamos, las
+configuración sin cortes. Es decir, en el 50\% de los 128 experimentos que realizamos, las
 distribuciones de los tiempos de terminación están tres veces más concentradas alrededor de su media
 en la configuración sin cortes que en la configuración original. Aún así, el rango de ambas
 distribuciones es la misma, lo que sugiere que en ningún momento la generación de cortes ayudó a
-encontrar más rápidamente las soluciones óptimas. En realidad, la generación de cortes provocó que
-Ramificación y Acotamiento tuviera una mayor varianza relativa en los tiempos de terminación.
+encontrar más rápidamente las soluciones óptimas. Al contrario, la generación de cortes provocó que
+CBC tuviera una mayor varianza relativa en los tiempos de terminación.
 
-En conclusión, el autor considera que el argumento a favor del uso de métodos diofantinos es fuerte.
+En conclusión, consideramos que el argumento a favor del uso de métodos diofantinos es fuerte.
 Mostramos en ambos experimentos de esta sección que los métodos diofantinos son más rápidos, más
 estables y significativamente más robustos ante cambios en la dimensión o en el presupuesto del
-problema \eqref{theory:formulation} que sus contrapartes FPD o R\&A. El siguiente capítulo propone
-una extensión de estos métodos diofantinos para resolver programas lineales enteros generales.
+problema \eqref{theory:formulation} que sus contrapartes FPD o R\&A implementado en CBC. El
+siguiente capítulo propone una extensión de estos métodos diofantinos para encontrar soluciones de
+programas lineales enteros generales.
 
 \begin{figure}[hbtp]
 	\centering

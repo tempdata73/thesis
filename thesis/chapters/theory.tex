@@ -379,8 +379,8 @@ objetivo de esta tesis exponer la teoría detrás de estos algoritmos. Sin embar
 lector interesado le recomendamos leer los capítulos 13 y 14 de \cite{nocedal}.
 
 Ahora describimos brevemente los programas lineales enteros y explicamos el método de R\&A.
-Supondremos en lo que resta de esta tesis que contamos con un algoritmo para resolver problemas del tipo
-\eqref{prerreq:formulation}.
+Supondremos en lo que resta de esta tesis que contamos con un algoritmo para resolver problemas
+lineales.
 \begin{definition}
 	Sean $A \in \R^{m \times n}$ una matriz con renglones linealmente independientes, $\vec{c} \in
 	\R^n$ un vector, y $\vec{b} \in \R^m$ otro vector. Al problema de optimización lineal
@@ -474,7 +474,7 @@ que caracterizan a la familia de métodos.
 	sea menor o igual que $z_2^*$. En estos casos diremos que podamos esos subproblemas por
 	\textbf{cota}. No es difícil ver que cualquier descendiente de $S_{01}$ será podado por cota.
 	Además, observemos que la solución de $S_{00}$ es $\vec{x}^{(3)} \coloneq (3/2, 0)$, por lo que
-	su valor objetivo es $6 < z_2*$, así que también podamos $S_{01}$ por cota.
+	su valor objetivo es $6 < z_2*$, así que también podamos $S_{00}$ por cota.
 
 	Como hemos agotado todos los subproblemas que podríamos explorar, concluimos que la solución
 	óptima de este programa lineal entero es la única solución incumbente obtenida $\vec{x}^{(2)} =
@@ -524,8 +524,8 @@ Como pudimos apreciar en este ejemplo, los componentes principales que caracteri
 Acotamiento fueron la estrategia de búsqueda, que indica el orden en el que resolvemos los
 subproblemas; la estrategia de ramificación, que indica cómo generar los descendientes de un nodo; y
 las políticas de poda, que son reglas para eliminar subárboles de nuestra búsqueda. Estas tres
-características están interrelacionadas: si hubiéramos resuelto el subproblema $S_{01}$ antes que
-$S_{00}$, no habríamos tenido una solución incumbente, así que no lo habríamos podado y
+características están interrelacionadas: si hubiéramos resuelto el subproblema $S_{00}$ antes que
+$S_{01}$, no habríamos tenido una solución incumbente, así que no lo habríamos podado y
 entonces lo habríamos ramificado en otros dos subproblemas. En \cite{morrison} se recopilan avances
 en estos tres componentes que constituyen líneas de investigación abiertas.
 
@@ -535,10 +535,10 @@ ejemplo, a excepción de la búsqueda en anchura, pero que es posible implementa
 supondremos que nos referimos a este algoritmo en específico cuando hagamos mención genérica de
 R\&A, y nos reservamos el calificativo de ``implementación pura'', pues es común que se enseñe esta
 versión en cursos introductorios de investigación de operaciones. En cuanto a los resultados
-numéricos, utilizaremos la implementación de código abierto \emph{COIN-OR Branch and Cut} (CBC)
-\textit{solver} de la fundación COIN-OR \cite{coin} para encontrar soluciones a programas lineales
-enteros. Otras implementaciones comúnes de código abierto son HiGHS y SCIP, mientras que algunas
-implementaciones comerciales son Gurobi Optimizer, IBM ILOG CPLEX Optimizer, y Fico Xpress Solver.
+numéricos, utilizaremos la implementación de código abierto \emph{COIN-OR Branch and Cut} (CBC) de
+la fundación COIN-OR \cite{coin} para encontrar soluciones a programas lineales enteros. Otras
+implementaciones comúnes de código abierto son HiGHS y SCIP, mientras que algunas implementaciones
+comerciales son Gurobi Optimizer, IBM ILOG CPLEX Optimizer, y Fico Xpress Solver.
 
 \begin{algorithm}[ht]
 	\LinesNumbered
