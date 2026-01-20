@@ -93,7 +93,7 @@ Para que esta manera de definir el máximo común divisor sea equivalente a la d
 \ref{prerreq:def:gcd}, deberemos presuponer o bien que $a_{n - 1} \neq 0$ o bien que $a_n \neq 0$. A
 partir de este punto usaremos ambas definiciones de manera indistinta. Independientemente de la
 definición que utilicemos, es posible calcular el máximo común divisor a través del algoritmo
-de Euclides.
+de Euclides, el cual es introducido en la sección 4.5 de \cite{knuth}.
 
 % \begin{observation}
 % 	No porque una colección de enteros sea coprima se sigue que estos enteros son coprimos a pares.
@@ -171,7 +171,7 @@ solución particular.
 	$a$ y $b$, respectivamente.
 \end{definition}
 Los coeficientes de Bézout se pueden calcular a través del algoritmo extendido
-de Euclides. Observemos que estos coeficientes no son únicos. En efecto, si
+de Euclides, el cual es presentado en la sección 4.5 de \cite{knuth}. Observemos que estos coeficientes no son únicos. En efecto, si
 $x', y'$ son coeficientes de Bézout de $a$ y $b$, entonces $x' + b$, $y' - a$
 también lo son:
 \begin{equation*}
@@ -372,11 +372,11 @@ lineales.
 
 Este teorema constituye el primer paso para la construcción de varios algoritmos que encuentran
 soluciones del problema \eqref{prerreq:formulation}. El más famoso de todos es el algoritmo
-\emph{simplex}, el cual ``salta'' de vértice en vértice hasta llegar a uno con valor óptimo. Otros,
-más modernos y conocidos como \emph{métodos de puntos interiores}, comienzan en el interior del
-poliedro $P$ y son ``atraídos'' como imanes a uno de los vértices con valor óptimo. No es el
-objetivo de esta tesis exponer la teoría detrás de estos algoritmos. Sin embargo, al
-lector interesado le recomendamos leer los capítulos 13 y 14 de \cite{nocedal}.
+\emph{simplex} (capítulo 13 de \cite{nocedal}), el cual ``salta'' de vértice en vértice hasta llegar
+a uno con valor óptimo. Otros, más modernos y conocidos como \emph{métodos de puntos interiores}
+(capítulo 14 de \cite{nocedal}), comienzan en el interior del poliedro $P$ y son ``atraídos'' como
+imanes a uno de los vértices con valor óptimo. No es el objetivo de esta tesis exponer la teoría
+detrás de estos algoritmos.
 
 Ahora describimos brevemente los programas lineales enteros y explicamos el método de R\&A.
 Supondremos en lo que resta de esta tesis que contamos con un algoritmo para resolver problemas

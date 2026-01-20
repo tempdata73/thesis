@@ -240,19 +240,18 @@ por
 \end{equation*}
 es entero, no negativo, y también satisface $\vec{q}^T\vec{x} = \eta$.
 
-El algoritmo \ref{algo:inf:ext} (pág.~\pageref{algo:inf:ext}) extiende el algoritmo \ref{algo:inf} en
-el sentido que incorpora esta forma de manejar las entradas nulas de $\vec{q}$. Además, modifica el
-vector $\tvec{q}$ de manera que aseguramos que su penúltima entrada es negativa y su última entrada
-es positiva, por lo que podemos deshacernos de este supuesto. Al igual que en el algoritmo anterior,
-suponemos la existencia de las subrutinas \texttt{length} y \texttt{switch}, las cuales determinan
-la dimensión de un vector $\vec{q}$ y permutan dos de sus entradas, respectivamente. Ambas subrutinas son
-estándar en la literatura.
+El algoritmo \ref{algo:inf:ext} (pág.~\pageref{algo:inf:ext}) extiende el algoritmo \ref{algo:inf}
+en el sentido que incorpora esta forma de manejar las entradas nulas de $\vec{q}$. Además, modifica
+el vector $\tvec{q}$ de manera que aseguramos que su penúltima entrada es negativa y su última
+entrada es positiva, por lo que podemos deshacernos de este supuesto. Suponemos la existencia de las
+subrutinas \texttt{length} y \texttt{swap} (véase capítulos 1 y 2 de \cite{knuth1}), las cuales
+determinan la dimensión de un vector $\vec{q}$ y permutan dos de sus entradas, respectivamente.
 
 \begin{algorithm}[ht]
 	\LinesNumbered
 	\DontPrintSemicolon
 	\SetKwProg{Fn}{Fn}{\string:}{}
-	\SetKwFunction{switch}{switch}
+	\SetKwFunction{swap}{swap}
 	\SetKwFunction{NonNegativeIntSol}{NonNegativeIntSolInf}
 	\SetKwFunction{FindNegEntry}{FindNegEntry}
 	\SetKwFunction{length}{length}
@@ -270,19 +269,19 @@ estándar en la literatura.
 		\label{alg:def:inf:tilde-q}
 
 		$m \leftarrow$ \length{$\tvec{q}$}\; \label{alg:subr:length}
-		\switch{$\tvec{q}$, $1$, $m$}\quad\tcp*[h]{$\tvec{q}_m > 0$}\; \label{alg:subr:switch1}
+		\swap{$\tvec{q}$, $1$, $m$}\quad\tcp*[h]{$\tvec{q}_m > 0$}\; \label{alg:subr:swap1}
 
 		\For{$i \leftarrow 1$ \KwTo $m - 1$}{ \label{alg:inf:loop}
 			\If{$\tilde{q}_i < 0$}{
 				$j \leftarrow i$\;
-				ir a la línea \ref{alg:subr:switch3}\;
+				ir a la línea \ref{alg:subr:swap3}\;
 			}
 		}
-		\switch{$\tvec{q}$, $j$, $m - 1$}\quad\tcp*[h]{$\tvec{q}_{m-1} < 0$}\; \label{alg:subr:switch3}
+		\swap{$\tvec{q}$, $j$, $m - 1$}\quad\tcp*[h]{$\tvec{q}_{m-1} < 0$}\; \label{alg:subr:swap3}
 		$\tvec{x} \leftarrow$ \NonNegativeIntSol{$\tvec{q}$, $\eta$}\quad\tcp*[h]{algoritmo
 		\ref{algo:inf}}\;
-		\switch{$\tvec{x}$, $j$, $m - 1$}\; \label{alg:subr:switch2}
-		\switch{$\tvec{x}$, $1$, $m$}\;
+		\swap{$\tvec{x}$, $j$, $m - 1$}\; \label{alg:subr:swap2}
+		\swap{$\tvec{x}$, $1$, $m$}\;
 
 		\For{$i \leftarrow 1$ \KwTo $m$}{ \label{alg:inf:loop2}
 			$x_{\sigma_i} \leftarrow \tilde{x}_i$\;
@@ -303,12 +302,12 @@ estándar en la literatura.
 
 	Recordemos de la definición \ref{theory:def:rational} que, como $\vec{q}$ es el múltiplo coprimo
 	de un vector esencialmente entero $\vec{p}$, su primera entrada no nula es positiva. Así, es
-	cierto que $\tilde{q}_1 > 0$. A partir de la transposición en la línea \ref{alg:subr:switch1}
+	cierto que $\tilde{q}_1 > 0$. A partir de la transposición en la línea \ref{alg:subr:swap1}
 	encontramos que $\tilde{q}_m > 0$.
 
 	Del ciclo que comienza en la línea \ref{alg:inf:loop} recuperamos el primer índice $j$ tal que
 	$\tilde{q}_j < 0$ y lo transponemos con la $(m - 1)$-ésima entrada de $\tvec{q}$ en la línea
-	\ref{alg:subr:switch3}, de manera que obtenemos $\tilde{q}_{m-1} < 0$.
+	\ref{alg:subr:swap3}, de manera que obtenemos $\tilde{q}_{m-1} < 0$.
 
 	Con los tres puntos anteriores, encontramos que el vector $\tvec{q}$ satisface las
 	hipótesis del algoritmo \ref{algo:inf} y por lo tanto el vector $\tvec{x}$ es no negativo
@@ -387,18 +386,17 @@ divisor entre dos números. Así pues, comparando estas aproximadamente $n$ llam
 con el cálculo de aproximadamente $n^2$ máximos común divisores entre dos números, podemos ignorar las
 llamadas a la subrutina \texttt{Bezout}.
 
-Es posible mostrar\footnote{
-	Véase \url{https://en.wikipedia.org/wiki/Euclidean_algorithm}.
-}  que la complejidad de calcular el máximo común divisor entre dos enteros $a \leq b$ es
-$\mathcal{O}(\log_2 b)$. De esta manera, tenemos de las $\mathcal{O}(n)$ multiplicaciones y
-$\mathcal{O}(n^2)$ divisiones, así como de \eqref{eq:numgcd} que la complejidad del algoritmo \ref{algo:inf} es
+En la sección 4.5 de \cite{knuth} se muestra que la complejidad de calcular el máximo común divisor
+entre dos enteros $a \leq b$ es $\mathcal{O}(\log_2 b)$. De esta manera, tenemos de las
+$\mathcal{O}(n)$ multiplicaciones y $\mathcal{O}(n^2)$ divisiones, así como de \eqref{eq:numgcd} que
+la complejidad del algoritmo \ref{algo:inf} es
 \begin{equation*}
 	\mathcal{O}(n^2\log_2\norm{\vec{q}}_\infty) + \mathcal{O}(n) + \mathcal{O}(n^2) =
 	\mathcal{O}(n^2(1 + \log_2\norm{\vec{q}}_\infty)).
 \end{equation*}
 
 Del algoritmo \ref{algo:inf:ext} tenemos que las subrutinas \texttt{length} y
-\texttt{switch} tienen complejidad constante. Además, recorremos el vector $\vec{q}$ en el ciclo
+\texttt{swap} tienen complejidad constante. Además, recorremos el vector $\vec{q}$ en el ciclo
 \ref{alg:inf:loop} una sola vez así como el vector $\tvec{x}$ en el ciclo \ref{alg:inf:loop2}.
 Entonces, debido a la única llamada del algoritmo \ref{algo:inf}, este algoritmo también tiene
 complejidad cuadrática.

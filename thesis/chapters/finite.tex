@@ -1049,20 +1049,18 @@ encontrar una solución.
 	\eqref{theory:formulation}.
 \end{proof}
 
-El teorema \ref{th:intnonneg1} provee, hasta donde llega el
-conocimiento del autor, nuevas cotas superiores para los números de Frobenius\footnote{
-	Véase el Problema de la Moneda en \url{https://en.wikipedia.org/wiki/Coin_problem}.
-}. De manera resumida,
-dada una colección de enteros $q_1, \ldots, q_n$ coprimos, el número de Frobenius es el entero $F$
-más grande tal que $F$ no pueda ser expresado como una combinación lineal entera no negativa de
-$q_1, \ldots, q_n$. En efecto, o bien $F$ es mayor o igual que el lado derecho de
+El teorema \ref{th:intnonneg1} provee, hasta donde llega el conocimiento del autor, nuevas cotas
+superiores para el número de Frobenius en el Problema Diofantino de Frobenius \cite{frob}. De manera
+resumida, dada una colección de enteros $q_1, \ldots, q_n$ coprimos, el número de Frobenius es el
+entero $F$ más grande tal que $F$ no pueda ser expresado como una combinación lineal entera no
+negativa de $q_1, \ldots, q_n$. En efecto, o bien $F$ es mayor o igual que el lado derecho de
 \eqref{eq:eta-limit} o bien es estrictamente menor. El primer caso no puede ocurrir porque el
 teorema \ref{th:intnonneg1} asegura que la ecuación lineal diofantina $\vec{q}^T\vec{x} = F$ tiene
 una solución no negativa, es decir, que $F$ puede ser escrito como una combinación lineal entera no
 negativa de $q_1, \ldots, q_n$, pero entonces $F$ no puede ser el número de Frobenius de estos
 enteros. Así pues, $F$ debe ser estrictamente menor que el lado derecho de \eqref{eq:eta-limit}. Un
-estudio sobre cómo se compara esta colección de cotas con respecto a la literatura existente, si
-bien interesante, queda fuera del propósito de esta tesis.
+estudio sobre cómo se compara esta colección de cotas con respecto a las presentadas en el capítulo
+3 de \cite{frob}, por ejemplo, queda fuera del propósito de esta tesis.
 
 En último lugar, mencionamos que eventualmente es suficiente con revisar la primera capa entera. No
 hemos demostrado, empero, que el número de capas enteras a revisar eventualmente decrece en cuanto
@@ -1287,24 +1285,22 @@ Sabemos, en realidad, por el lema \ref{lemma:tau} que el parámetro $k$ definido
 \ref{alg:fin:loop} descenderá hasta 0 si y solo si el parámetro $\tau$ definido en \eqref{eq:tau}
 es nulo. No obstante, la demostración del teorema \ref{th:fin:dioph:correct} deviene más simple
 cuando en el algoritmo \ref{algo:fin:dioph} dejamos que $k$ se encuentre en $[0, \eta]$ en vez de
-$[\tau, \eta]$. Esta modificación, sin embargo, no afecta en lo más mínimo la correctud o la
-complejidad del algoritmo.
+$[\tau, \eta]$. Esta modificación no afecta en lo más mínimo la correctud o la complejidad del
+algoritmo.
 
 Siguiendo la misma directriz, vale la pena mencionar lo siguiente con respecto al algoritmo
 \ref{algo:fin:helper}. Varios lenguajes de programación, tales como Python, cuentan con un límite en
 las llamadas de recursión que el usuario puede realizar. Si bien este límite puede modificarse,
 aumenta la posibilidad de encontranos con un desbordamiento de pila, pues el algoritmo
-\ref{algo:fin:helper} no está expresado en forma de recursión terminal\footnote{Véase
-\url{https://en.wikipedia.org/wiki/Tail_call}.}, debido a la evaluación del resultado entre las líneas
-\ref{alg:fin:subeq} y \ref{alg:fin:branch}.
+\ref{algo:fin:helper} no está expresado en forma de recursión terminal.
 
-Además, este algoritmo, por ejemplo, no minimiza el número de llamadas para calcular el máximo común
-divisor en la línea \ref{alg:fin:g}. En efecto, supongamos que un intervalo de factibilidad finito $I$
-definido en la línea \ref{alg:fin:feas} causa que $\vec{x}^{\texttt{tail}}$ sea \NIL~ para todo
-$t \in I$. Entonces estaríamos haciendo $|I|$ llamadas recursivas a \texttt{NonNegativeIntSolFin} en
-la línea \ref{alg:fin:subeq} con el mismo vector $\vec{q}^{\texttt{tail}}$ y, por lo tanto,
-estaríamos calculando $|I|$ veces la misma $g$ y los mismos coeficientes de Bézout $x', \omega'$ en
-las líneas \ref{alg:fin:g} y \ref{alg:fin:bez2}, respectivamente.
+Además, este algoritmo no minimiza, por ejemplo, el número de llamadas para calcular el máximo común
+divisor en la línea \ref{alg:fin:g} o los coeficientes de Bézout en la línea \ref{alg:fin:bez2}. En
+efecto, supongamos que un intervalo de factibilidad finito $I$ definido en la línea
+\ref{alg:fin:feas} causa que $\vec{x}^{\texttt{tail}}$ sea \NIL~ para todo $t \in I$. Entonces
+estaríamos haciendo $|I|$ llamadas recursivas a \texttt{NonNegativeIntSolFin} en la línea
+\ref{alg:fin:subeq} con el mismo vector $\vec{q}^{\texttt{tail}}$ y, por lo tanto, estaríamos
+calculando $|I|$ veces la misma $g$ y los mismos $x', \omega'$.
 
 A pesar de los puntos anteriores, decidimos escribir el algoritmo \ref{algo:fin:helper} de esa
 manera debido a que se simplificaba de manera significativa la demostración del teorema
