@@ -213,7 +213,7 @@ algoritmo extendido de Euclides.
 
 \begin{lemma}
 	\label{lemma:alg:inf:correct}
-	El algoritmo \ref{algo:inf} de la página \pageref{algo:inf} es correcto.
+	El algoritmo \ref{algo:inf} en la página \pageref{algo:inf} es correcto.
 \end{lemma}
 \begin{proof}
 	Basta observar que el algoritmo sigue la construcción recursiva de la sección
@@ -294,7 +294,7 @@ estándar en la literatura.
 
 \begin{theorem}
 	\label{th:alg:inf}
-	El algoritmo \ref{algo:inf:ext} de la página \pageref{algo:inf:ext} es correcto.
+	El algoritmo \ref{algo:inf:ext} en la página \pageref{algo:inf:ext} es correcto.
 \end{theorem}
 \begin{proof}
 	Primero mostramos que el vector $\tvec{q}$ satisface las hipótesis del algoritmo
@@ -355,10 +355,9 @@ estándar en la literatura.
 \noindent
 En primer lugar, determinamos la complejidad algorítmica del algoritmo \ref{algo:inf:ext} y lo
 usamos como base de nuestras comparaciones. En segundo lugar, mostramos que la complejidad del
-algoritmo \ref{algo:bb} del apéndice \ref{app:bb} (es decir, de una implementación ``pura'' de
-Ramificación y Acotamiento) depende del número de decimales utilizados para especificar las entradas
-del vector objetivo, así como de la magnitud en el lado derecho de las restricciones. En tercer
-lugar, diseñamos un experimento numérico que ilustre esta dependencia.
+algoritmo \ref{algo:bb2} en la página \pageref{algo:bb2} depende del número de decimales utilizados
+para especificar las entradas del vector objetivo, así como de la magnitud en el lado derecho de las
+restricciones. En tercer lugar, diseñamos un experimento numérico que ilustre esta dependencia.
 
 \subsection{Análisis de la complejidad de nuestros algoritmos}
 \label{subsec:inf:complex}
@@ -398,7 +397,7 @@ $\mathcal{O}(n^2)$ divisiones, así como de \eqref{eq:numgcd} que la complejidad
 	\mathcal{O}(n^2(1 + \log_2\norm{\vec{q}}_\infty)).
 \end{equation*}
 
-Ahora bien, del algoritmo \ref{algo:inf:ext} tenemos que las subrutinas \texttt{length} y
+Del algoritmo \ref{algo:inf:ext} tenemos que las subrutinas \texttt{length} y
 \texttt{switch} tienen complejidad constante. Además, recorremos el vector $\vec{q}$ en el ciclo
 \ref{alg:inf:loop} una sola vez así como el vector $\tvec{x}$ en el ciclo \ref{alg:inf:loop2}.
 Entonces, debido a la única llamada del algoritmo \ref{algo:inf}, este algoritmo también tiene
@@ -412,11 +411,11 @@ subsección \ref{subsec:inf:res} confirman esto.
 \subsection{Árbol de Ramificación y Acotamiento con profundidad dependiente del número de decimales}
 \label{subsec:inf:int}
 \noindent
-Primero ilustramos a través de un ejemplo que el árbol generado por R\&A correspondiente a instancias de
-\eqref{theory:formulation} tiene profundidad infinita en algunos casos. Luego mostramos que, aún
-cuando esta profundidad sea finita, el número de decimales utilizados para expresar el vector
-objetivo de \eqref{theory:formulation} afecta exponencialmente en los tiempos de
-terminación de este método.
+Primero ilustramos a través de un ejemplo que el árbol generado por una implementación pura de R\&A
+correspondiente a instancias de \eqref{theory:formulation} tiene profundidad infinita en algunos
+casos. Luego mostramos que, aún cuando esta profundidad sea finita, el número de decimales
+utilizados para expresar el vector objetivo de \eqref{theory:formulation} afecta exponencialmente en
+los tiempos de terminación de este método.
 
 \begin{example}
 	\label{ex:inf}
@@ -432,32 +431,35 @@ terminación de este método.
 	como sufijo al subíndice si la última restricción añadida fue del tipo $\leq$ y, similarmente,
 	agregamos un 1 si la última restricción añadida fue del tipo $\geq$.
 
-	En la figura \ref{fig:infrec} se muestra la región factible $S$ del problema relajado asociado.
-	Encontramos que su solución es $(0.3, 0)$. Puesto que $0.3$ no es entero, ramificamos sobre esta
-	variable y generamos los subproblemas cuyas regiones factibles son
+	En el lado izquierdo de la figura \ref{fig:infrec} (página \pageref{fig:infrec}) se muestra la
+	región factible $S$ del problema relajado asociado. Encontramos que su solución es $(0.3, 0)$.
+	Puesto que $0.3$ no es entero, ramificamos sobre esta variable y generamos los subproblemas
+	con regiones factibles
 	\begin{align*}
 		S_0 &\coloneq S \cap \braces{(x, y) \in \R^2 \vcentcolon x \leq 0}, \\
 		S_1 &\coloneq S \cap \braces{(x, y) \in \R^2 \vcentcolon x \geq 1}.
 	\end{align*}
-	La solución del subproblema con región factible $S_{0}$ es $(0, 0)$ y podamos por integralidad.
-	Ahora bien, la solución de $S_{1}$ es $(1, 0.7)$ y como $0.7$ no es entero, generamos los
-	subproblemas con regiones factibles
+	La solución del subproblema con región factible $S_{0}$ es $(0, 0)$, así que obtenemos una
+	solución incumbente y podamos por cota. Ahora bien, la solución del subproblema con región
+	factible $S_{1}$ es $(1, 0.7)$ y como $0.7$ no es entero, generamos los subproblemas con
+	regiones factibles
 	\begin{align*}
 		S_{10} &\coloneq S_1 \cap \braces{(x, y) \in \R^2 \vcentcolon y \leq 0}, \\
 		S_{11} &\coloneq S_1 \cap \braces{(x, y) \in \R^2 \vcentcolon y \geq 1}.
 	\end{align*}
-	Encontramos que el poliedro $S_{10}$ es vacío, así que podamos por infactibilidad.
+	Encontramos que el poliedro $S_{10}$ es vacío, así que no ramificamos.
 
-	En la figura \ref{fig:infrec} se muestra el poliedro $S_{11}$ es una traslación de $S$. En otras
-	palabras, $S_{11}$ es un caso particular de una homotecia de $S$. Consecuentemente, hay un
-	comportamiento periódico en cuanto a la ramificación y solución de estos problemas: resolver el
-	subproblema con región factible $S_{11}$ se reduce a resolver el que tiene como región factible
-	a  $S$, pero el primero es un subproblema del segundo. Siguiendo este razonamiento, encontramos
-	que R\&A genera una cadena de subproblemas con regiones factibles autosimilares
+	En el lado derecho de la figura \ref{fig:infrec} se muestra el poliedro $S_{11}$ es una
+	traslación de $S$. En otras palabras, $S_{11}$ es un caso particular de una homotecia de $S$.
+	Consecuentemente, hay un comportamiento periódico en cuanto a la ramificación y solución de
+	estos problemas: resolver el subproblema con región factible $S_{11}$ se reduce a resolver el
+	que tiene como región factible a  $S$, pero el primero es un subproblema del segundo. Siguiendo
+	este razonamiento, encontramos que R\&A genera una cadena de subproblemas con regiones factibles
+	autosimilares
 	\begin{equation*}
 		S, S_{11}, S_{1111}, S_{111111}, \ldots
 	\end{equation*}
-	y el algoritmo \ref{algo:bb} del apéndice \ref{app:bb} jamás terminará con una solución.
+	y el algoritmo \ref{algo:bb2} jamás terminará con una solución.
 \end{example}
 
 \begin{figure}
@@ -506,23 +508,24 @@ terminación de este método.
 	\label{fig:infrec}
 \end{figure}
 
-Observemos que si el lado derecho hubiera sido $0$ en lugar de $0.3$, R\&A hubiera terminado
-inmediatamente con la solución $(0, 0)$ al resolver el problema relajado. Es decir, un cambio de
-$0.3$ unidades en el lado derecho de la única desigualdad provocó que el árbol generado por R\&A
-tuviera profundidad unitaria a profundida infinita. Así pues, este ejemplo también muestra que
-implementaciones puras de R\&A dependen de la magnitud del lado derecho de las restricciones.
+Observemos que si el lado derecho hubiera sido $0$ en lugar de $0.3$, una implementación pura de
+R\&A habría terminado inmediatamente con la solución $(0, 0)$ al resolver el problema relajado. Es
+decir, un cambio de $0.3$ unidades en el lado derecho de la única desigualdad provocó que el árbol
+generado por R\&A tuviera profundidad unitaria a profundida infinita. Así pues, este ejemplo también
+muestra que implementaciones puras de R\&A dependen de la magnitud del lado derecho de las
+restricciones.
 
 Sospechamos que el fenómeno presentado en el ejemplo anterior ocurre en todas las instancias de
 \eqref{theory:formulation} cuando $\vec{p}$ es esencialmente entero y el lado derecho $u$ de
 \eqref{theory:constraint:budget} es tal que $u/m \not\in \Z$, donde $m$ es el escalar que satisface
-$\vec{p} = m\vec{q}$, y donde $\vec{q}$ es el múltiplo coprimo de $\vec{p}$. Es decir, conjeturamos
+$\vec{p} = m\vec{q}$, y $\vec{q}$ es el múltiplo coprimo de $\vec{p}$. Es decir, conjeturamos
 que, para problemas que cumplen con estas condiciones, existe una colección de subproblemas
 homotéticos entre sí. Además, si el múltiplo coprimo $\vec{q}$ de $\vec{p}$ tiene una entrada
 negativa, entonces esta colección es infinita. Por cuestiones de longitud de esta tesis de
 licenciatura y por el hecho de que es un tema de carácter abierto, no investigamos más en este
 respecto.
 
-Para que una implementación pura de Ramificación y Acotamiento termine en tiempo finito al resolver
+Para que una implementación pura de R\&A termine en tiempo finito al resolver
 una de estas instancias, debe ser el caso que el valor óptimo del problema relajado de
 \eqref{theory:formulation} sea el mismo que el de su programa entero. Es decir, tenemos terminación
 finita si y solo si el hiperplano definido por
@@ -531,26 +534,26 @@ contiene un punto entero, donde $u$ es el lado derecho de \eqref{theory:constrai
 teorema \ref{phase-1:th:cover}, hay terminación finita si y solo si este hiperplano en realidad es
 una capa entera $\qlayer{q}{k}$ con parámetro $k \in \Z$.
 
-Supongamos que tenemos terminación finita y que estamos utilizando el método de Ramificación y
-Acotamiento para resolver una instancia. Por lo que hemos discutido anteriormente, todas las
-soluciones de los subproblemas se encuentran en la $k$-ésima capa entera. El algoritmo de R\&A
-genera cortes del estilo
+Supongamos que tenemos terminación finita y que estamos utilizando una implementación pura de R\&A
+para resolver una instancia. Por lo discutido anteriormente, todas las soluciones de los
+subproblemas se encuentran en la $k$-ésima capa entera. El algoritmo de R\&A genera cortes del
+estilo
 \begin{equation}
 	\label{eq:cuts}
 	x_i \leq \big\lfloor x_i^* \big\rfloor,\quad x_i \geq \big\lceil x_i^* \big\rceil,
 \end{equation}
-donde $\vec{x}^*$ es la solución de un subproblema relajado con $x_i \not\in \Z$. Sin pérdida de
+donde $\vec{x}^*$ es la solución de un subproblema relajado con $x_i^* \not\in \Z$. Sin pérdida de
 generalidad, supongamos que añadimos a este subproblema relajado un corte como el de la derecha de
-\eqref{eq:cuts} y que se mantiene la factibilidad. El punto de intersección entre esta restricción junto con la restricción
-presupuestaria \eqref{theory:constraint:budget} introduce un único vértice nuevo para el siguiente
-subproblema relajado. Tenemos entonces del teorema \ref{prerreq:th:linear-sol} que este único vértice es una
-solución. Los algoritmos más comúnes para resolver
-problemas relajados siempre encuentran como solución un vértice del poliedro, por lo que podemos
-suponer razonablemente que R\&A encontrará este vértice como solución del siguiente subproblema
-relajado. Es
-decir, si $\vec{x}^*$ es solución de un subproblema relajado, entonces $\big\lceil x_i^* \big\rceil$
-constituye la $i$-ésima entrada de la solución del siguiente subproblema relajado obtenido al añadir el corte $x_i \geq
-\big\lceil x_i^* \big\rceil$. En particular, encontramos que
+\eqref{eq:cuts} y que se mantiene la factibilidad. El punto de intersección entre esta restricción
+junto con la restricción presupuestaria \eqref{theory:constraint:budget} introduce un único vértice
+nuevo para el siguiente subproblema relajado. Tenemos entonces del teorema
+\ref{prerreq:th:linear-sol} que este único vértice es una solución. Los algoritmos más comúnes para
+resolver problemas relajados siempre encuentran como solución un vértice del poliedro, por lo que
+podemos suponer razonablemente que R\&A encontrará este vértice como solución del siguiente
+subproblema relajado. Es decir, si $\vec{x}^*$ es solución de un subproblema relajado, entonces
+$\big\lceil x_i^* \big\rceil$ constituye la $i$-ésima entrada de la solución del siguiente
+subproblema relajado obtenido al añadir el corte $x_i \geq \big\lceil x_i^* \big\rceil$. En
+particular, encontramos que
 \begin{equation}
 	\label{eq:dembound}
 	0 <
@@ -600,40 +603,45 @@ de decimales utilizados para expresar $\vec{p}$, pues R\&A requiere 10 veces má
 adicional. No obstante, es cierto que los cortes se vuelven más efectivos una vez que $\vec{x}^*$ se
 encuentra cerca de una solución entera, pues $\norm{\vec{\delta}}_\infty \approx 0$.
 
-En la práctica no existen implementaciones puras de R\&A, sino que existe un ecosistema de módulos
-que combinan R\&A con otro tipo de generación de cortes, con la manera de elegir subproblemas, con
-métodos de presolución, con heurísticas, etcétera (ver figura \ref{p1c11:fig:MIP_solver_flowchart}).
-Estas técnicas evitan, en primer lugar, que se genere un árbol de profundidad infinita y, en segundo
-lugar, encuentran soluciones eficientemente.
+Como mencionamos en la subsección \ref{subsec:lp}, R\&A encapsula una familia de métodos para
+encontrar soluciones de programas lineales enteros. Los resultados hasta ahora obtenidos solamente
+aplican para el algoritmo \ref{algo:bb2}, donde contamos con una política de poda y ramificamos
+binariamente. Si en el ejemplo \ref{ex:inf} hubiéramos deducido una cota superior más justa que $x -
+y \leq 0.3$, R\&A habría encontrado inmediatamente la solución. En efecto, como $(x, y) \in \Z^2$,
+se sigue que $x - y \in \Z$ y puesto que $x - y \leq 0.3$, obtenemos la cota superior $x - y \leq
+0$. De esta manera, la implementación pura de R\&A falla en este ejemplo particular porque no genera
+cortes de Gomory. Redirigimos al lector interesado en esta y otras políticas de poda a la sección 5
+del artículo \cite{morrison}.
 
-En la siguiente subsección mostramos que la obtención de soluciones de \eqref{theory:formulation}
-todavía es lenta cuando una entrada del vector coprimo $\vec{q}$ del vector objetivo $\vec{p}$ es
-negativa.
-
+A pesar de que implementaciones comerciales y de código abierto utilicen otro orden de búsqueda,
+ramifiquen de distinta manera, extiendan las políticas de poda, introduzcan heurísticas, preprocesen
+el problema, etcétera, veremos en la siguiente subsección que la obtención de soluciones por parte
+del \textit{solver} CBC (\cite{coin}) todavía es lenta si comparamos sus tiempos de terminación con
+nuestro algoritmo \eqref{algo:inf:ext}, o incluso con la cota inferior \eqref{eq:bbound}.
 \subsection{Análisis de resultados}
 \label{subsec:inf:res}
 \noindent
-En primer lugar, detallamos la manera en la que medimos los resultados de nuestro experimento
-numérico. En segundo lugar, explicamos y justificamos el diseño del experimento. En tercer lugar,
-mostramos y analizamos los resultados obtenidos.
+Primero detallamos la manera en la que medimos los resultados de nuestro experimento numérico.
+Luego explicamos y justificamos el diseño del experimento. Finalmente mostramos y analizamos los
+resultados obtenidos.
 
-Para realizar nuestro experimentos con R\&A, usamos el COIN-OR Branch-and-Cut (CBC) \textit{solver}
-por medio de la interfaz de PuLP 3.1 implementada en Python 3.12. La configuración
-usada permite métodos de presolución, cortes de mochila y de Gomory-Chvátal. Prohibimos el uso de
+Para realizar nuestro experimento numérico con R\&A, usamos el \textit{solver} CBC a través de la
+interfaz de PuLP versión 3.1 implementada en Python versión 3.12. Nuestra configuración permite
+métodos de preprocesamiento, cortes de mochila y de Gomory-Chvátal. Prohibimos el uso de
 múltiples hilos (\textit{threads}) a fin de garantizar una comparación justa con nuestro método.
 
-Cada observación de tiempo de cada método representa el promedio de 20 corridas. Para cada
-observación realizamos 2 corridas preliminares a fin de evitar sesgos en el tiempo por cuestión de
-temperatura en la computadora, o por cargar cosas a la memoria, o por compilación al momento de
-crear archivos \texttt{.pyc}, etcétera. En total, cada observación es el resultado de haber corrido
-el mismo experimento 22 veces.
+Cada observación de tiempo representa el promedio de 20 corridas. Para cada observación realizamos 2
+corridas preliminares a fin de evitar sesgos en el tiempo por cuestión de temperatura en la
+computadora, o por cargar cosas a la memoria, o por compilación al momento de crear archivos
+\texttt{.pyc}, etcétera. En total, cada observación es el resultado de haber corrido el mismo
+experimento 22 veces.
 
-Por cuestiones de tiempo, cada proceso tenía un tiempo límite de 300 segundos para terminar de
-correr. De esta manera, decimos que el método no encontró una solución en caso de que más de 10
-observaciones sobrepasaran este límite. Además, comparamos los valores objetivo de nuestra
-implementación con los de Ramificación y Acotamiento y en ningún momento encontramos que estos
-fueran distintos. Cabe mencionar que nuestra implementación se encuentra libre en
-GitHub\footnote{Véase: \url{https://github.com/tempdata73/thesis}.}
+Por cuestiones de tiempo, cada corrida fue automáticamente terminada si sobrepasaba los 300 segundos
+Decimos que el método no encontró una solución si fue automáticamente terminado en más de 10 de las
+20 veces que medimos el tiempo de terminación. Para verificar la correctud en la implementación de
+nuestro algoritmo, comparamos los valores objetivo de nuestra implementación con los de CBC y en
+ningún momento encontramos que fueran distintos. Nuestra implementación se encuentra libre en
+GitHub.\footnote{Véase: \url{https://github.com/tempdata73/thesis}}
 
 Finalmente, los experimentos fueron realizados en una computadora portátil Dell XPS 15 equipada con
 un procesador Intel Core i7-8750H (6 núcleos físicos y 12 hilos, frecuencia base de 2.20 GHz y
@@ -641,11 +649,11 @@ frecuencia máxima de 4.10 GHz). El sistema cuenta con 12 CPU lógicos disponibl
 de 32 GiB. Todos los cálculos fueron ejecutados bajo la arquitectura x86-64. El sistema operativo
 usado fue Fedora Linux 42 (Server Edition).
 
-Ahora bien, debido a que Ramificación y Acotamiento es sensible ante la precisión numérica,
-generamos instancias de \eqref{theory:formulation} con dimensión $n = 4$. Este experimento tiene por
-objetivo mostrar que los tiempos de terminación de R\&A son lentos y aumentan significativamente
-cuando utilizamos más cifras decimales para especificar el vector objetivo $\vec{p}$ de
-\eqref{theory:formulation}.
+Inspirados por el hecho de que la implementación pura de R\&A es sensible ante la precisión
+numérica, generamos instancias de \eqref{theory:formulation} con dimensión $n = 4$. Este experimento
+tiene por objetivo mostrar que los tiempos de terminación de CBC son lentos y aumentan
+significativamente cuando utilizamos más cifras decimales para especificar el vector objetivo
+$\vec{p}$ de \eqref{theory:formulation}.
 
 Así pues, generamos un vector $\vec{p}_3$ tomado de una distribución uniforme discreta de enteros sobre el
 intervalo $[9{,}000, 10{,}000)^n$. A este vector inicial lo dividimos por 1{,}000, de manera que sea
@@ -657,15 +665,13 @@ Luego, muestreamos $n = 4$ observaciones de una distribución uniforme discreta 
 10)$, las multiplicamos por $10^{-4}$ y sumamos cada observación a una entrada de $\vec{p}_3$, de
 manera que obtenemos un vector racional $\vec{p}_4$ con cuatro cifras decimales. Repetimos una vez
 más el procedimiento anterior pero usando $\vec{p}_4$ para generar el vector racional $\vec{p}_5$
-con cinco cifras decimales. Evidentemente, los vectores coprimos $\vec{q}_4$ y $\vec{q}_5$ asociados
-respectivamente a $\vec{p}_4$ y $\vec{p}_5$ tienen entradas negativas en los mismo lugares que
-$\vec{q}_3$.
+con cinco cifras decimales.
 
 En último lugar, para obtener el lado derecho de \eqref{theory:constraint:budget}, calculamos 128
 puntos $u \in \Z_{\geq 0}$ espaciados aproximadamente logarítmicamente en el intervalo $[10^3,
 10^7)$. En la figura \ref{fig:exp:inf:rhs} se muestran los tiempos de terminación promedio de las 20
-corridas. Las rupturas de continuidad en las líneas son causadas porque R\&A no encontró una
-solución antes del límite de 300 segundos.
+corridas. Las rupturas de continuidad en las líneas son causadas porque CBC no encontró una
+solución antes de los 300 segundos.
 
 \begin{figure}[hbtp]
   \centering
@@ -680,22 +686,22 @@ solución antes del límite de 300 segundos.
   \end{subfigure}
 
   \caption{Tiempos de terminación promedio cuando varía el presupuesto y el
-			número de digitos. \textit{Arriba}: Resultados en segundos de R\&A. \textit{Abajo}:
+			número de digitos. \textit{Arriba}: Resultados en segundos de CBC. \textit{Abajo}:
 			Resultados en milisegundos de nuestro método \texttt{dioph}.}
   \label{fig:exp:inf:rhs}
 \end{figure}
 
 Por los resultados obtenidos en las dos subsecciones anteriores, no sorprende que el algoritmo
-\ref{algo:inf} tenga mejores tiempos de terminación que R\&A, y que no se vea afectado por la
+\ref{algo:inf} tenga mejores tiempos de terminación que CBC, y que no se vea afectado por la
 precisión numérica del vector objetivo $\vec{p}$. Esto solo muestra que los tiempos de terminación
-de R\&A son lentos para instancias de \eqref{theory:formulation}.
+de CBC son lentos para instancias de \eqref{theory:formulation}.
 
-En realidad nos interesa mostrar la sensibilidad en los tiempos de terminación de R\&A a medida que
+En realidad nos interesa mostrar la sensibilidad en los tiempos de terminación de CBC a medida que
 la precisión del vector objetivo $\vec{p}$ aumenta. Es decir, si $T(\vec{p}_i)$ es el tiempo de
-terminación de R\&A con una instancia usando el vector esencialmente entero $\vec{p}_i$ que tiene
+terminación de CBC con una instancia usando el vector esencialmente entero $\vec{p}_i$ que tiene
 $i$ cifras decimales, entonces queremos medir la proporción $T(\vec{p}_{i+1}) / T(\vec{p}_i)$.
 Denominamos como multiplicadores a las razones anteriores, pues representan el factor de aumento en
-los tiempos de terminación de R\&A cuando utilizamos una cifra decimal adicional. Puesto que cada
+los tiempos de terminación de CBC cuando utilizamos una cifra decimal adicional. Puesto que cada
 instancia depende del presupuesto $u$ de la restricción \eqref{theory:constraint:budget} y tomamos
 128 de estos presupuestos por cada nivel de precisión $i$, obtenemos a lo más $128 \times (3 - 1) =
 256$ multiplicadores registrados, pues no podemos medir aquellos en donde $T(\vec{p}_i)$ es mayor a
@@ -706,22 +712,21 @@ generaban un sesgo innecesario en la distribución.
 
 De acuerdo a la subsección anterior, deberíamos esperar que la gran mayoría de los multiplicadores
 se concentren alrededor de 10. Esto último ocurrió en el 40\% de los casos. Después de realizar un
-conteo en los archivos de registro generados por el \textit{solver} CBC, descubrimos que en
-\textbf{todos} los casos que R\&A encontró una solución fue a causa de una heurística y no por el
+conteo en los archivos de registro generados por CBC, descubrimos que en
+\textbf{todos} los casos que se encontró una solución fue a causa de una heurística y no por el
 método de ramificación. Debido la dificultad del árbol que genera el problema
 \eqref{theory:formulation}, de acuerdo a la subsección anterior, esto parece ser razonable.
 
 Aún cuando las soluciones fueron obtenidas exclusivamente a través de heurísticas, en el 60\% de los
 casos el multiplicador es mayor a 10. Es decir, una cifra decimal adicional en $\vec{p}$ provoca, en la
-mayoría de los casos, que el tiempo de terminación en R\&A sea al menos diez veces mayor. Así pues,
-los cortes generados por Ramificación y Acotamiento son más ineficientes de lo que habíamos
-predicho.
+mayoría de los casos, que el tiempo de terminación de CBC sea al menos diez veces mayor. Así pues,
+los cortes generados por R\&A son más ineficientes de lo que habíamos predicho.
 
-Esperamos que lo realizado en estos experimentos numéricos muestre categóricamente que el método de
-Ramificación y Acotamiento no depende solo del número de variables o de desigualdades utilizadas,
-sino que también de la precisión numérica con la que se especifican los datos. Con esto damos por
-concluido este capítulo y continuamos con nuestro desarrollo del segundo caso del teorema
-\ref{theory:th:feasibility}.
+Esperamos que lo realizado en esta sección muestre categóricamente que implementaciones puras
+(algoritmo \ref{algo:bb2}) o prácticas (CBC) de Ramificación y Acotamiento no dependen solo del
+número de variables o de desigualdades utilizadas, sino que también de la precisión numérica con la
+que se especifican los datos. Con esto damos por concluido este capítulo y continuamos con nuestro
+desarrollo del segundo caso del teorema \ref{theory:th:feasibility}.
 
 \begin{figure}[hbtp]
   \centering

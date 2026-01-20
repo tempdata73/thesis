@@ -1091,7 +1091,7 @@ estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
 
 \begin{theorem}
 	\label{th:fin:helper:correct}
-	El algoritmo \ref{algo:fin:helper} de la página \pageref{algo:fin:helper} es correcto.
+	El algoritmo \ref{algo:fin:helper} en la página \pageref{algo:fin:helper} es correcto.
 \end{theorem}
 \begin{proof}
 	Hacemos la demostración por inducción en la dimensión $n$ del vector $\vec{q}$. Supongamos, para
@@ -1261,18 +1261,17 @@ estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
 	\label{algo:fin:helper}
 \end{algorithm}
 
-Si recordamos el algoritmo de Ramificación y Acotamiento ilustrado en el ejemplo \ref{ex:ilp} (y
-documentado en el apéndice \ref{app:bb}), podemos observar que la elección del parámetro libre $t$
-en el intervalo de factiblidad $I$ definido en la línea \ref{alg:fin:feas} del algoritmo
-\ref{algo:fin:helper} es similar a la elección del subproblema $S_i$ de optimización definido en la
-línea \ref{p1c9:alg:BB_loop} del algoritmo \ref{algo:bb}. La diferencia radica en que, como todos
-los puntos enteros sobre la $k$-ésima capa entera tienen el mismo nivel de utilidad $k$, no es
-necesario desarrollar políticas de poda así como lo hicimos en el ejemplo \ref{ex:ilp}. De cierta
-manera, la única política de poda posible es la de infactibilidad por no respetar la no negatividad
-de un punto entero.
+Si recordamos el método de Ramificación y Acotamiento documentado en el algoritmo \ref{algo:bb2},
+podemos observar que la elección del parámetro libre $t$ en el intervalo de factiblidad $I$ definido
+en la línea \ref{alg:fin:feas} del algoritmo \ref{algo:fin:helper} es similar a la elección del
+subproblema $S_i$ definido en la línea \ref{algo:bb:loop} del algoritmo \ref{algo:bb2}. La
+diferencia radica en que, como todos los puntos enteros sobre la $k$-ésima capa entera tienen el
+mismo nivel de utilidad $k$, no es necesario desarrollar políticas de poda así como lo hicimos en el
+ejemplo \ref{ex:ilp}. De cierta manera, la única política de poda posible es la de infactibilidad
+por no respetar la no negatividad de un punto entero.
 \begin{theorem}
 	\label{th:fin:dioph:correct}
-	El algoritmo \ref{algo:fin:dioph} de la página \pageref{algo:fin:dioph} es correcto.
+	El algoritmo \ref{algo:fin:dioph} en la página \pageref{algo:fin:dioph} es correcto.
 \end{theorem}
 \begin{proof}
 	A causa del teorema \ref{th:fin:helper:correct} basta verificar que el algoritmo termina y no

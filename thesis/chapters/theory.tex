@@ -413,24 +413,33 @@ problemas de maximización y es cierto que $P \cap \Z^n \subseteq P$. De aquí s
 $\optilp{z} = z^*$, entonces la solución óptima $\vec{x}^*$ del problema relajado también es la
 solución óptima del programa lineal entero si $\vec{x}^* \in \Z^n$.
 
-El algoritmo estándar para encontrar soluciones de programas lineales enteros es Ramificación y
-Acotamiento. Este método consiste en generar un árbol binario donde cada nodo representa un
-subproblema lineal a resolver. En la raíz del árbol resolvemos el problema relajado
-\eqref{prerreq:formulation} y, si la solución óptima $\vec{x}^* \in \R^n$ no es entera, entonces
-escogemos alguna entrada no entera $x_i^*$, creamos el nodo hijo izquierdo añadiendo la restricción
-$x_i \leq \floor{x_i^*}$ y también creamos el nodo hijo derecho añadiendo la restricción $x_i \geq
-\ceil{x_i^*}$. Este procedimiento se realiza de manera recursiva.
+Ramificación y Acotamiento encapsula una familia de métodos que comparten la misma estructura para
+encontrar soluciones de programas lineales enteros. Específicamente, R\&A construye recursivamente
+un árbol de subproblemas lineales relajados a resolver. Si la solución de un subproblema no es entera,
+entonces su región factible es \textbf{ramificada} para generar otra colección de subproblemas y
+cuyas soluciones podrían ser enteras. Es posible aplicar \textbf{criterios de poda} para eliminar
+porciones del árbol que no contienen soluciones óptimas del problema original. Ilustramos el
+procedimiento a través de un ejemplo concreto, en el cual enfatizamos estos componentes principales
+que caracterizan a la familia de métodos.
 
-Observemos que, si decidimos recorrer todos los nodos del árbol binario, entonces tendremos que
-resolver al menos $2^n$ subproblemas, donde $n$ es la dimensión del problema lineal. Por esta razón,
-el algoritmo cuenta con políticas de poda para deshacerse de ramas cuyos nodos nunca proveerán la
-solución óptima. Ilustramos estas políticas a partir de un ejemplo.
+% El algoritmo estándar para encontrar soluciones de programas lineales enteros es Ramificación y
+% Acotamiento. Este método consiste en generar un árbol binario donde cada nodo representa un
+% subproblema lineal a resolver. En la raíz del árbol resolvemos el problema relajado
+% \eqref{prerreq:formulation} y, si la solución óptima $\vec{x}^* \in \R^n$ no es entera, entonces
+% escogemos alguna entrada no entera $x_i^*$, creamos el nodo hijo izquierdo añadiendo la restricción
+% $x_i \leq \floor{x_i^*}$ y también creamos el nodo hijo derecho añadiendo la restricción $x_i \geq
+% \ceil{x_i^*}$. Este procedimiento se realiza de manera recursiva.
+% 
+% Observemos que, si decidimos recorrer todos los nodos del árbol binario, entonces tendremos que
+% resolver al menos $2^n$ subproblemas, donde $n$ es la dimensión del problema lineal. Por esta razón,
+% el algoritmo cuenta con políticas de poda para deshacerse de ramas cuyos nodos nunca proveerán la
+% solución óptima. Ilustramos estas políticas a partir de un ejemplo.
 
 \begin{example}[\cite{fabs}]
 	\label{ex:ilp}
 	Consideremos el programa lineal entero
 	\begin{align*}
-		\max_{\vec{x} \in \Z^2} \quad
+		\max_{(x_1, x_2) \in \Z^2} \quad
 			& 4x_1 - x_2, \\
 			\text{s.a.} \quad
 			& 7x_1 - 2x_2 \leq 14, \\
@@ -438,41 +447,38 @@ solución óptima. Ilustramos estas políticas a partir de un ejemplo.
 			& x_2 \leq 3, \\
 			& x_1, x_2 \geq 0.
 	\end{align*}
-	La región factible de este problema se muestra en la figura \ref{fig:feas}. La solución al problema
+	La región factible de este problema se muestra en la figura \ref{fig:feas} en la página
+	\pageref{fig:feas}. La solución al problema
 	relajado, cuya región factible denotamos por $S$, está dada por $\vec{x}^{(0)} \coloneq (20/7,
-	3)^T$. Como $x_1^{(0)} = 20/7$ no es entero, generamos dos nuevos subproblemas con regiones
-	factibles
+	3)$. Como $x_1^{(0)} = 20/7$ no es entero, \textbf{ramificamos binariamente} para generar los
+	subproblemas con regiones factibles
 	\begin{align*}
 		S_{0} &\coloneq S \cap \braces{ (x_1, x_2) \in \R^2 \vcentcolon x_1 \leq \floor{20/7} = 2}, \\
 		S_{1} &\coloneq S \cap \braces{ (x_1, x_2) \in \R^2 \vcentcolon x_1 \geq \ceil{20/7} = 3}.
 	\end{align*}
-	De la figura \ref{fig:feas}, observamos que $S_{1}$ es vacío y por lo tanto de este problema no
-	podemos generar otros subproblemas. En este caso, decimos que \textbf{podamos $S_{1}$ por
-	infactibilidad}.
+	En este nivel del árbol así como en los siguientes, preferimos encontrar las soluciones de ambos
+	subproblemas antes de ramificar cualesquiera de ellos. Es decir, realizamos una \textbf{búsqueda
+	en anchura} (\textit{breadth-first search}) para resolver el problema original.
 
-	Ahora bien, la solución al problema $S_{0}$ está dada por $\vec{x}^{(1)} \coloneq (2, 1/2)^T$.
-	Encontramos que $x_2^{(1)}$ = 1/2 no es entero y por lo tanto generamos dos nuevos subproblemas:
+	Observamos en la figura \ref{fig:feas} que $S_{1}$ es vacío, así que no será posible
+	ramificarlo. Ahora bien, la solución del problema con región factible $S_{0}$ es $\vec{x}^{(1)}
+	\coloneq (2, 1/2)$. Puesto que $x_2^{(1)} = 1/2$ no es entero, ramificamos binariamente para
+	generar los nuevos subproblemas con regiones factibles
 	\begin{align*}
 		S_{00} &\coloneq S_{0} \cap \braces{ (x_1, x_2) \in \R^2 \vcentcolon x_2 \leq \floor{1/2} = 0}, \\
 		S_{01} &\coloneq S_{0} \cap \braces{ (x_1, x_2) \in \R^2 \vcentcolon x_2 \geq \ceil{1/2} = 1}.
 	\end{align*}
-	Observemos que la solución $\vec{x}^{(2)}$ de $S_{01}$ es $(2, 1)^T$, la cual es entera y tiene valor
-	objetivo $z_2^* \coloneq 7$. No generamos otros subproblemas a partir de este problema porque
-	las posibles subregiones factibles estarán contenidas en $S_{01}$ y por lo tanto sus valores objetivos
-	serán menores o iguales al de $S_{01}$. Así pues, decimos que \textbf{podamos $S_{01}$ por
-	integralidad}.
+	La solución $\vec{x}^{(2)}$ del subproblema con región factible $S_{01}$ es $(2, 1)$, y entonces
+	es entera con valor objetivo $z_2^* \coloneq 7$. Decimos que esta solución es la
+	\textbf{solución incumbente}: no vale la pena ramificar otros subproblemas cuyo valor objetivo
+	sea menor o igual que $z_2^*$. En estos casos diremos que podamos esos subproblemas por
+	\textbf{cota}. No es difícil ver que cualquier descendiente de $S_{01}$ será podado por cota.
+	Además, observemos que la solución de $S_{00}$ es $\vec{x}^{(3)} \coloneq (3/2, 0)$, por lo que
+	su valor objetivo es $6 < z_2*$, así que también podamos $S_{01}$ por cota.
 
-	La solución de $S_{00}$, en cambio, es $\vec{x}^{(3)} \coloneq (3/2, 0)^T$ y tendríamos que
-	ramificar de nuevo en otros dos subproblemas. No obstante, el valor objetivo de este subproblema
-	es $z_3^* \coloneq 6$, el cual es menor que $z_2^* = 7$. Como la región factible de cualquier
-	subproblema generado a partir de este último problema estára contenido en $S_{00}$, se sigue
-	que su valor objetivo será menor o igual al de $S_{00}$. Es decir, no encontraremos otro vector
-	cuyo valor objetivo sea mayor que $z_2^*$. Decimos entonces que \textbf{podamos $S_{00}$ por
-	cota}.
-
-	Como hemos agotado todos los subproblemas que podríamos generar, entonces concluimos que la
-	solución óptima de este programa  lineal entero es $\vec{x}^{(2)} = (2, 1)^T$ y tiene valor objetivo
-	$z_2^* = 7$.
+	Como hemos agotado todos los subproblemas que podríamos explorar, concluimos que la solución
+	óptima de este programa lineal entero es la única solución incumbente obtenida $\vec{x}^{(2)} =
+	(2, 1)$ con valor objetivo 7.
 \end{example}
 \begin{figure}
 	\centering
@@ -514,11 +520,67 @@ solución óptima. Ilustramos estas políticas a partir de un ejemplo.
 	\label{fig:feas}
 \end{figure}
 
-En el algoritmo \ref{algo:bb} de la página \pageref{app:bb} se formalizan estos pasos. Así también,
-en el apéndice \ref{app:bb} se contextualiza y detalla el uso de Ramificación y Acotamiento, pues
-está continuamente sujeto a extensiones y mejoras por parte de los investigadores en optimización e
-investigación de operaciones. Por ello, tendremos en mente el algoritmo \ref{algo:bb} cuando hagamos
-referencia a R\&A a menos que mencionemos explícitamente lo contrario.
+Como pudimos apreciar en este ejemplo, los componentes principales que caracterizan a Ramificación y
+Acotamiento fueron la estrategia de búsqueda, que indica el orden en el que resolvemos los
+subproblemas; la estrategia de ramificación, que indica cómo generar los descendientes de un nodo; y
+las políticas de poda, que son reglas para eliminar subárboles de nuestra búsqueda. Estas tres
+características están interrelacionadas: si hubiéramos resuelto el subproblema $S_{01}$ antes que
+$S_{00}$, no habríamos tenido una solución incumbente, así que no lo habríamos podado y
+entonces lo habríamos ramificado en otros dos subproblemas. En \cite{morrison} se recopilan avances
+en estos tres componentes que constituyen líneas de investigación abiertas.
+
+El algoritmo \ref{algo:bb2} en la página \pageref{algo:bb2} formaliza el procedimiento seguido en este
+ejemplo, a excepción de la búsqueda en anchura, pero que es posible implementar con una fila
+(\textit{queue}). En cuanto a los resultados teóricos que obtendremos a lo largo de esta tesis,
+supondremos que nos referimos a este algoritmo en específico cuando hagamos mención genérica de
+R\&A, y nos reservamos el calificativo de ``implementación pura'', pues es común que se enseñe esta
+versión en cursos introductorios de investigación de operaciones. En cuanto a los resultados
+numéricos, utilizaremos la implementación de código abierto \emph{COIN-OR Branch and Cut} (CBC)
+\textit{solver} de la fundación COIN-OR \cite{coin} para encontrar soluciones a programas lineales
+enteros. Otras implementaciones comúnes de código abierto son HiGHS y SCIP, mientras que algunas
+implementaciones comerciales son Gurobi Optimizer, IBM ILOG CPLEX Optimizer, y Fico Xpress Solver.
+
+\begin{algorithm}[ht]
+	\LinesNumbered
+	\DontPrintSemicolon
+	\KwData{
+		Problema lineal relajado $S$.
+		}
+	\KwResult{
+		Solución óptima entera $\vec{x}^*$ y valor óptimo $\optilp{z}$.
+	}
+	\Begin{
+		$\mathcal{L} \leftarrow \braces{S}$\;
+		$\vec{x}^* \leftarrow -\vec{\infty}$\;
+		$\optilp{z} \leftarrow -\infty$\;
+		\While{$\mathcal{L} \neq \emptyset$}{ \label{algo:bb:loop}
+			elegir subproblema $S_i$\ de $\mathcal{L}$\quad\tcp*[h]{estrategia de búsqueda}\;
+			obtener valor óptimo $z^*_i$ y solución óptima $\vec{x}^{(i)}$\ de $S_i$\;
+			$\mathcal{L} \leftarrow \mathcal{L} \setminus \braces{S_i}$\;
+			\If{$S_i = \emptyset$ o $z^*_i \leq \optilp{z}$}{
+				\tcp*[h]{podar por cota}\;
+				ir a la línea \ref{algo:bb:loop}\;
+			}
+			\If{$\vec{x}^{(i)} \in \Z^n$}{
+				\tcp*[h]{solución incumbente}\;
+				$\vec{x}^* \leftarrow \vec{x}^{(i)}$\;
+				$\optilp{z} \leftarrow z^*_i$\;
+				ir a la línea \ref{algo:bb:loop}\;
+			}
+			\tcp*[h]{ramificación binaria}\;
+			elegir $x^{(i)}_j \not \in \Z$ y definir
+			\begin{align*}
+				S_{i0} \leftarrow S_{i} \cap \braces{\vec{x} \in \R^n \vcentcolon x_j \leq \lfloor x^{(i)}_j \rfloor}, \\
+				S_{i1} \leftarrow S_{i} \cap \braces{\vec{x} \in \R^n \vcentcolon x_j \geq \lceil
+				x^{(i)}_j \rceil}\;
+			\end{align*}
+			$\mathcal{L} \leftarrow \mathcal{L} \cup \braces{S_{i0}, S_{i1}}$.
+		}
+		\Return{$(\vec{x}^*, \optilp{z})$}
+	}
+	\caption{Ramificación y Acotamiento. Adaptado de \cite{fabs}.}
+	\label{algo:bb2}
+\end{algorithm}
 
 \section{Fundamentos}
 \label{sec:foundations}
