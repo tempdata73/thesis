@@ -1,0 +1,658 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage[T1]{fontenc}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\decimalpoint
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+
+\usepackage{subcaption}
+\usepackage{caption}
+
+\usepackage{graphicx}
+\usepackage{geometry}
+
+\usepackage{tikz}
+\usetikzlibrary{intersections}
+\usetikzlibrary{babel}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{fillbetween}
+
+\usepackage{hyperref}
+
+\allowdisplaybreaks
+
+% theorems
+\newtheorem{stheorem}{Teorema}
+\newtheorem{scorollary}[theorem]{Corolario}
+\newtheorem{slemma}[theorem]{Lema}
+\newtheorem{sprop}[theorem]{Proposición}
+\newtheorem{sexample}[theorem]{Ejemplo}
+\newtheorem{sproblem}[theorem]{Problema}
+
+\theoremstyle{definition}
+\newtheorem{sdefinition}[theorem]{Definición}
+
+% custom commands
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\NIL}{\textnormal{\textsc{NIL}}}
+
+% vectors and linear algebra
+\newcommand{\img}{\operatorname{im}}
+\renewcommand{\ker}{\operatorname{ker}}
+
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\renewcommand{\vec}[1]{\boldsymbol{#1}}
+\newcommand{\inv}[1]{#1^{-1}}
+
+% algebra
+\DeclareMathOperator{\orb}{orb}
+
+% optimization
+\DeclareMathOperator{\argmax}{arg\,max}
+
+% convex geom
+\DeclareMathOperator{\gen}{gen}
+\DeclareMathOperator{\aff}{aff}
+\DeclareMathOperator{\conv}{conv}
+
+% shortcuts
+\newcommand{\braces}[1]{\lbrace #1 \rbrace}
+\newcommand{\paren}[1]{\left( #1 \right)}
+\newcommand{\tvec}[1]{\vec{\tilde{#1}}}
+
+\newcommand{\optilp}[1]{#1^*_{\text{PE}}}
+\newcommand{\optr}[1]{#1^*_{\text{PR}}}
+
+\newcommand{\est}[1]{\hat{\vec{ #1 }}}
+
+\newcommand{\clayer}[2]{H_{#1, #2}}
+\newcommand{\qlayer}[2]{\clayer{\vec{#1}}{#2/\norm{\vec{#1}}^{2}}}
+
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+
+\renewcommand{\gcd}[1]{\mathop{\mathrm{mcd}{\left\lbrace #1 \right\rbrace}}}
+\newcommand{\lcm}[1]{\mathop{\mathrm{mcm}{\left\lbrace #1 \right\rbrace}}}
+
+% beamer template
+\usetheme{default}
+\usecolortheme{default}
+\usefonttheme{serif}
+\useinnertheme{default}
+\useoutertheme{default}
+
+\setbeamertemplate{navigation symbols}{}
+
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}{}
+
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{enumerate items}[default]
+
+\setbeamercolor{background canvas}{bg=white}
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{structure}{fg=black}
+
+\title{Ecuaciones lineales diofantinas aplicadas a programas lineales enteros}
+\author{Iñaki Sebastian Liendo Infante}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}{Tabla de contenidos}
+  \tableofcontents
+\end{frame}
+
+\section{Contexto}
+
+\begin{frame}{Ejemplo minimal}
+	\begin{align*}
+		\max_{(x, y) \in \Z^2} \quad
+			& x - y, \\
+		\text{s.a.} \quad
+			& x - y \leq 0.3, \\
+			& x, y \geq 0.
+	\end{align*}
+\end{frame}
+
+\begin{frame}{Ejemplo minimal}
+	\begin{figure}
+		\begin{minipage}{0.45\textwidth}
+			\centering
+			\begin{tikzpicture}[scale=0.7]
+				\begin{axis}[
+				  axis lines=middle,
+				  xmin=0, xmax=2.2,
+				  ymin=0, ymax=2.2,
+				  xlabel={$x$}, ylabel={$y$},
+				  clip=false
+				]
+					\addplot [name path=top, draw=none, domain=0:2.2] {2.2};
+					\addplot [name path=lower, draw=none, samples=200, domain=0:2.2]
+					  {max(x-0.3, 0)};
+					\addplot [blue!25] fill between[of=top and lower];
+					\addplot [blue, thick, domain=0.3:2.2] {x - 0.3};
+					\addplot [blue, thick, domain=0:0.3] {0};
+					\node at (axis cs:0.7,1.25) {\Large $S$};
+				\end{axis}
+			\end{tikzpicture}
+		\end{minipage}
+		\begin{minipage}{0.45\textwidth}
+			\centering
+			\begin{tikzpicture}[scale=0.7, >= stealth]
+				\begin{axis}[
+				  axis lines=middle,
+				  xmin=0, xmax=2.2,
+				  ymin=0, ymax=2.2,
+				  xlabel={$x$}, ylabel={$y$},
+				  clip=false
+				]
+					\addplot [name path=top, draw=none, domain=1:2.2] {2.2};
+					\addplot [name path=lower, draw=none, samples=200, domain=1:2.2]
+					  {1 + max(x-1.3, 0)};
+					\addplot [blue!25] fill between[of=top and lower];
+					\addplot [blue, thick, domain=1.3:2.2] {x - 0.3};
+					\addplot [blue, thick, domain=1:1.3] {1};
+					\node at (axis cs:1.5,1.7) {\Large $S_{11}$};
+				\end{axis}
+			\end{tikzpicture}
+		\end{minipage}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Problema simétrico}
+	\begin{align*}
+		\max_{\vec{x} \in \Z^n} \quad
+			& \vec{p}^T\vec{x}, \\ 
+		\text{s.a.} \quad
+			& \vec{p}^T\vec{x} \leq u, \\ 
+			& \vec{x} \geq \vec{0}.
+	\end{align*}
+\end{frame}
+
+\begin{frame}{Algunas definiciones}
+	\begin{sdefinition}
+		Un vector $\vec{p} \in \R^n\setminus\braces{\vec{0}}$ es
+		\textbf{esencialmente entero} si existe un vector $\vec{q} \in \Z^n$ y
+		un escalar $m \in \R \setminus\braces{0}$ tal que $\vec{p} =
+		m\vec{q}$. Decimos que $\vec{q}$ es el \textbf{múltiplo coprimo} de
+		$\vec{p}$ si sus entradas son coprimas y si su primera entrada no nula
+		es positiva.
+	\end{sdefinition}
+
+	\begin{sdefinition}
+		Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $t \in \R$
+		un escalar. El hiperplano afín
+		\begin{equation*}
+			\clayer{\vec{p}}{t} \coloneq \ker\braces{\vec{x} \mapsto \vec{p}^T\vec{x}} + t\vec{p}
+		\end{equation*}
+		es una \textbf{capa entera} si contiene al menos un punto entero.
+	\end{sdefinition}
+\end{frame}
+
+\begin{frame}{Algunos ejemplos}
+	\begin{sexample}
+		El vector $\left(-\sqrt{2}, 1/\sqrt{2}\right) = -\frac{1}{\sqrt{2}}(2, -1)$ es esencialmente
+		entero.
+	\end{sexample}
+	\begin{sexample}
+		El vector $\paren{\sqrt{2}, \sqrt{3}}$ no es esencialmente entero. Supongamos que existe un
+		escalar $m \neq 0$ y enteros $a, b$ tales que $m(a, b) = \paren{\sqrt{2}, \sqrt{3}}$. Luego,
+		$a/b = \sqrt{2/3}$, pero el lado izquierdo es racional mientras que el derecho es
+		irracional (!)
+	\end{sexample}
+\end{frame}
+
+\begin{frame}{Algunos ejemplos}
+	\begin{center}
+		\begin{tikzpicture}[scale=0.8]
+			\draw[step=1cm,gray!20,thin] (-2,-3) grid (6,5);
+			
+			\draw[->] (-2,0) -- (6,0) node[right] {$x$};
+			\draw[->] (0,-3) -- (0,5) node[above] {$y$};
+			
+			\draw[thick,black] (-1,4) -- (5,-2) node[pos=0.9, above right, black] {$y = -x + 3$};
+			\draw[thick,black,dashed] (-1,3.5) -- (5,-2.5) node[pos=0.9, below left, black] {$y = -x + 2.5$};
+			
+			\foreach \x in {-1,0,1,2,3,4,5} {
+				\pgfmathsetmacro{\y}{- \x + 3}
+				\fill[fill=white, draw=black] (\x,\y) circle (2pt);
+			}
+		\end{tikzpicture}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Algunos resultados}
+	\begin{stheorem}
+		Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q}$ su múltiplo coprimo.
+		Entonces la familia de hiperplanos afínes $\braces{\qlayer{w}{k} \vcentcolon k \in \Z}$
+		cubre a $\Z^n$.
+	\end{stheorem}
+	\begin{slemma}
+		Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q}$ su múltiplo coprimo.
+		Entonces $\vec{q}^T\vec{x} = q_1x_1 + \cdots + q_nx_n = k$ para todo $\vec{x} \in \qlayer{q}{k}$.
+	\end{slemma}
+\end{frame}
+
+\begin{frame}{Construcción de soluciones}
+	\begin{stheorem}
+		Sea $\vec{q} \in \Z^n$ un vector coprimo. Entonces todas las soluciones enteras de la
+		ecuación lineal diofantina $\vec{q}^T\vec{x} = k$ son de la forma
+		\begin{equation*}
+			\vec{x} = k\vec{\nu} + M\vec{t},
+		\end{equation*}
+		donde $\vec{t} \in \Z^{n-1}$ es un vector de variables libres, y el vector $\vec{\nu} \in
+		\Z^n$ junto con la matriz $M \in \Z^{n \times (n - 1)}$ pueden calcularse en tiempo
+		polinomial a partir de $\vec{q}$.
+	\end{stheorem}
+\end{frame}
+
+\begin{frame}{Construcción de soluciones}
+	\begin{slemma}
+		Sea $\vec{q} \in \Z^{n}$ un vector coprimo. Entonces
+		\begin{equation*}
+			\vec{q}^T\vec{\nu} = 1,
+		\end{equation*}
+		y
+		\begin{equation*}
+			\vec{q}^T\vec{m}_i = 0,
+		\end{equation*}
+		para toda columna $\vec{m}_i$ de $M = [\vec{m}_1 \mid \cdots \mid \vec{m}_{n-1}]$.
+	\end{slemma}
+\end{frame}
+
+\begin{frame}{Construcción de soluciones}
+	\begin{sdefinition}
+		Un subconjunto $\Lambda$ del espacio vectorial $\paren{\R^n, +, \cdot}$ es un
+		\textbf{grupo aditivo} si
+		\begin{enumerate}
+			\item $\vec{0} \in \Lambda$, y
+			\item si $\vec{x}, \vec{y} \in \Lambda$, entonces $\vec{x} + \vec{y} \in \Lambda$, y también
+				$-\vec{x} \in \Lambda$.
+		\end{enumerate}
+		Además, $\Lambda$ es una \textbf{red} si existen vectores $\vec{v}_1, \ldots, \vec{v}_n$
+		linealmente independientes tales que
+		\begin{equation*}
+			\Lambda = \lbrace \vec{x} \vcentcolon \vec{x} = \lambda_1\vec{v}_1 + \cdots +
+			\lambda_n\vec{v}_n, \lambda_i \in
+			\Z \rbrace.
+		\end{equation*}
+		A los vectores $\vec{v}_1, \ldots, \vec{v}_n$ los llamamos la \textbf{base de la red} $\Lambda$.
+	\end{sdefinition}
+
+	\begin{stheorem}
+		Sea $\vec{q} \in \Z^{n}$ un vector coprimo. Entonces los vectores $\braces{\vec{\nu},
+		\vec{m}_1, \ldots, \vec{m}_{n-1}}$ forman una base de la red $\Z^n$.
+	\end{stheorem}
+\end{frame}
+
+\begin{frame}
+	\begin{center}
+		\begin{tikzpicture}[scale=0.8]
+			% canonical basis
+			\begin{scope}[xshift=0cm]
+				\foreach \x in {-3,...,3} {
+					\foreach \y in {-3,...,3} {
+						\fill[black!60] (\x,\y) circle (1.2pt);
+					}
+				}
+				
+				\draw[->, thin, gray] (-3.5,0) -- (3.5,0) node[right] {$x$};
+				\draw[->, thin, gray] (0,-3.5) -- (0,3.5) node[above] {$y$};
+				
+				% fundamental parallelogram
+				\draw[thick, orange, fill=orange!10] (0,0) -- (1,0) -- (1,1) -- (0,1) -- cycle;
+
+				\draw[->, thick, red] (0,0) -- (1,0) node[midway, below] {$\vec{e}_1$};
+				\draw[->, thick, blue] (0,0) -- (0,1) node[midway, left] {$\vec{e}_2$};
+				\draw[->, thick, black] (0, 0) -- (2, 3) node[above] {$\vec{q} = (2, 3)$};
+				
+				\node[below] at (0,-3.7) {Base: $\{\vec{e}_1, \vec{e}_2\}$};
+			\end{scope}
+
+			% q \eqdef (2, 3) acting on $Z^2$:
+			\begin{scope}[xshift=8cm]
+				\foreach \x in {-3,...,3} {
+					\foreach \y in {-3,...,3} {
+						\fill[black!60] (\x,\y) circle (1.2pt);
+					}
+				}
+				
+				\draw[->, thin, gray] (-3.5,0) -- (3.5,0) node[right] {$x$};
+				\draw[->, thin, gray] (0,-3.5) -- (0,3.5) node[above] {$y$};
+
+				% fundamental parallelogram
+				\draw[thick, orange, fill=orange!10] 
+					(0,0) -- (-1,1) -- (2,-1) -- (3,-2) -- cycle;
+				
+				\draw[->, thick, red] (0,0) -- (-1,1) node[midway, below left] {$\vec{\nu}$};
+				\draw[->, thick, blue] (0,0) -- (3,-2) node[midway, below left] {$\vec{m}_1$};
+				\draw[->, thick, black] (0, 0) -- (2, 3) node[above] {$\vec{q} = (2, 3)$};
+				
+				\node[below] at (0,-3.7) {Base: $\{(-1,1),\ (3,-2)\}$};
+			\end{scope}
+		\end{tikzpicture}
+	\end{center}
+\end{frame}
+
+\begin{frame}
+	\begin{center}
+		\begin{tikzpicture}
+			\foreach \x in {-3,...,3} {
+				\foreach \y in {-3,...,3} {
+					\fill[black!60] (\x,\y) circle (1.2pt);
+				}
+			}
+
+			\draw[->, thin, gray] (-3.5,0) -- (3.5,0) node[right] {$x$};
+			\draw[->, thin, gray] (0,-3.5) -- (0,3.5) node[above] {$y$};
+			\draw[->, thick, black] (0, 0) -- (2, 3) node[above] {$\vec{q} = (2, 3)$};
+
+			% homogeneous vector v = (3, -2)
+			\def\vx{3}
+			\def\vy{-2}
+
+			% three affine lines: shift = k * (-1, 1) for k=1,2,3
+			\foreach \k [count=\c] in {1,2,3} {
+				\pgfmathsetmacro{\sx}{-\k}   % x-shift = -k
+				\pgfmathsetmacro{\sy}{\k}    % y-shift =  k
+
+				\ifnum\c=1 \def\col{red!70!black} \fi
+				\ifnum\c=2 \def\col{blue!70!black} \fi
+				\ifnum\c=3 \def\col{green!60!black} \fi
+
+				\draw[<->, \col, thick, domain=-0.3:1.6, smooth, variable=\t]
+					plot ({\sx + \t*\vx}, {\sy + \t*\vy});
+
+				\fill[\col] (\sx,\sy) circle (2pt);
+				\node[below left, \col] at (\sx,\sy) {$k=\k$};
+			}
+
+			\fill[green!60!black] (0, 1) circle (2pt);
+			\fill[blue!70!black] (1, 0) circle (2pt);
+			\fill[red!70!black] (2, -1) circle (2pt);
+		\end{tikzpicture}
+	\end{center}
+\end{frame}
+
+\begin{frame}
+	Tenemos la descomposición en subredes
+	\begin{align*}
+		\Z^n =
+		\underbrace{\braces{k\vec{\nu} \vcentcolon k \in \Z}}_{\coloneq \Lambda_p} \oplus
+		\underbrace{\braces{M\vec{t} \vcentcolon \vec{t} \in \Z^{n-1}}}_{\coloneq
+		\Lambda_h}.
+	\end{align*}
+	\begin{center}
+		¿Qué propiedades de estas subredes se mantienen si cambiamos de un vector coprimo $\vec{q}
+		\in \Z^n$ a otro $\tvec{q} \in \Z^n$?
+	\end{center}
+\end{frame}
+
+\begin{frame}
+	\begin{sdefinition}
+		La \textbf{órbita} de un vector coprimo $\vec{q} \in \Z^n$ es
+		\begin{equation*}
+			\orb(\vec{q}) \coloneq \braces{P\vec{q} \vcentcolon P \in \Z^{n\times n} ~\text{es matriz de
+			permutación}}.
+		\end{equation*}
+	\end{sdefinition}
+	\begin{stheorem}
+		Sea $\vec{q} \in \Z^n$ un vector coprimo y sea $\tvec{q} \in \orb(\vec{q})$. Entonces
+		$\tilde{\Lambda}_p \cong \Lambda_p$ y $\tilde{\Lambda}_h \cong \Lambda_h$.
+	\end{stheorem}
+\end{frame}
+
+\begin{frame}
+	\begin{center}
+		\begin{tikzpicture}[scale=0.8]
+			% q \eqdef (3, 2) acting on $Z^2$:
+			\begin{scope}[xshift=8cm]
+				\foreach \x in {-3,...,3} {
+					\foreach \y in {-3,...,3} {
+						\fill[black!60] (\x,\y) circle (1.2pt);
+					}
+				}
+				
+				\draw[->, thin, gray] (-3.5,0) -- (3.5,0) node[right] {$x$};
+				\draw[->, thin, gray] (0,-3.5) -- (0,3.5) node[above] {$y$};
+				
+				% fundamental parallelogram
+				\draw[thick, orange, fill=orange!10] (0,0) -- (1,-1) -- (3,-4) -- (2,-3) -- cycle;
+
+				\draw[->, thick, red] (0,0) -- (1,-1) node[midway, below left] {$\tvec{\nu}$};
+				\draw[->, thick, blue] (0,0) -- (2,-3) node[midway, below left] {$\tvec{m}_1$};
+				\draw[->, thick, black] (0, 0) -- (3, 2) node[above] {$\tvec{q} = (3, 2)$};
+				
+				\node[below] at (0,-3.7) {Base: $\{(1, -1), (2, -3)\}$};
+			\end{scope}
+
+			% q \eqdef (2, 3) acting on $Z^2$:
+			\begin{scope}[xshift=0cm]
+				\foreach \x in {-3,...,3} {
+					\foreach \y in {-3,...,3} {
+						\fill[black!60] (\x,\y) circle (1.2pt);
+					}
+				}
+				
+				\draw[->, thin, gray] (-3.5,0) -- (3.5,0) node[right] {$x$};
+				\draw[->, thin, gray] (0,-3.5) -- (0,3.5) node[above] {$y$};
+
+				% fundamental parallelogram
+				\draw[thick, orange, fill=orange!10] 
+					(0,0) -- (-1,1) -- (2,-1) -- (3,-2) -- cycle;
+				
+				\draw[->, thick, red] (0,0) -- (-1,1) node[midway, below left] {$\vec{\nu}$};
+				\draw[->, thick, blue] (0,0) -- (3,-2) node[midway, below left] {$\vec{m}_1$};
+				\draw[->, thick, black] (0, 0) -- (2, 3) node[above] {$\vec{q} = (2, 3)$};
+				
+				\node[below] at (0,-3.7) {Base: $\{(-1,1),\ (3,-2)\}$};
+			\end{scope}
+		\end{tikzpicture}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Sobre la restricción presupuestaria}
+	\begin{slemma}
+		Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q}$ su múltiplo coprimo,
+		de manera que $\vec{p} = m\vec{q}$ para algún escalar $m \neq 0$. Entonces la primera capa
+		entera $\qlayer{q}{\eta}$ en satisfacer la restricción presupuestaria está parametrizada por
+		\begin{equation*}
+			\eta \coloneq \begin{cases}
+				\ceil{u/m}, & m < 0, \\
+				\floor{u/m}, & m > 0.
+			\end{cases}
+		\end{equation*}
+	\end{slemma}
+\end{frame}
+
+\begin{frame}
+	\begin{center}
+		\begin{tikzpicture}
+			\foreach \x in {-3,...,3} {
+				\foreach \y in {-3,...,3} {
+					\fill[black!60] (\x,\y) circle (1.2pt);
+				}
+			}
+
+			\draw[->, thin, gray] (-3.5,0) -- (3.5,0) node[right] {$x$};
+			\draw[->, thin, gray] (0,-3.5) -- (0,3.5) node[above] {$y$};
+			\draw[->, thick, black] (0, 0) -- (2, 3) node[above] {$\vec{q} = (2, 3)$};
+			\draw[<->, thick, dashed, black] (-3, 3.8) -- (3.5, -0.533) node[below right] {$2x + 3y \leq 5.4$};
+			\draw[<->, thick, red!70] (3.5, -0.66) -- (-3, 3.67) node[below left] {$\qlayer{q}{\eta}$};
+			\fill[red!70!black] (-2, 3) circle (1.7pt);
+			\fill[red!70!black] (1, 1) circle (1.7pt);
+
+		\end{tikzpicture}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Sobre la factibilidad}
+	\begin{stheorem}
+		Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q}$ su múltiplo coprimo.
+		Entonces el problema (PS) es infactible si y solo si $\vec{q} \geq \vec{0}$ y $u < 0$.
+	\end{stheorem}
+
+	\begin{stheorem}
+		Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q}$ su múltiplo coprimo.
+		Si (PS) es factible, es cierto que
+		\begin{enumerate}
+			\item si $q_i < 0$ para algún $i \in \braces{1, \ldots, n}$, entonces la $\eta$-ésima
+				capa entera $\qlayer{q}{\eta}$ contiene un número infinito de puntos factibles;
+			\item si $\vec{q} > \vec{0}$ entonces, para todo $k \in \braces{\eta, \eta - 1, \ldots, 0}$,
+				la $k$-ésima capa entera $\qlayer{q}{k}$ contiene un número finito de puntos factibles.
+		\end{enumerate}
+	\end{stheorem}
+\end{frame}
+
+\begin{frame}
+	\begin{center}
+		\begin{tikzpicture}[scale=0.8]
+			% infinite case
+			\begin{scope}[xshift=0cm]
+				\fill[pink, opacity=0.7] (0, 0) -- (2.2, 0) -- (3.5, 1.3) -- (3.5, 3.5) -- (0, 3.5)
+					-- (0, 0);
+				\draw[->, thin, gray] (-3.5,0) -- (3.5,0) node[right] {$x$};
+				\draw[->, thin, gray] (0,-3.5) -- (0,3.5) node[above] {$y$};
+				\draw[->, thick, black] (2, 0) -- (3.5, 1.5);
+
+				\foreach \x in {-3,...,3} {
+					\foreach \y in {-3,...,3} {
+						\pgfmathparse{int(\x - \y <= 2.2 && \x >= 0 && \y >= 0 ? 1 : 0)}
+						\ifnum\pgfmathresult=1
+							\fill[fill=white, draw=black] (\x,\y) circle (2pt);
+						\else
+							\fill[black!60] (\x,\y) circle (1.2pt);
+						\fi
+					}
+				}
+
+				\draw[->, thick, black] (0, 0) -- (1, -1) node[below right] {$\vec{q} = (1, -1)$};
+				\node[below] at (0,-3.7) {$x - y \leq 2.2$};
+			\end{scope}
+
+			% finite case
+			\begin{scope}[xshift=8cm]
+				\fill[pink, opacity=0.7] (0, 2.2) -- (2.2, 0) -- (0, 0) -- (0, 2.2);
+				\draw[->, thin, gray] (-3.5,0) -- (3.5,0) node[right] {$x$};
+				\draw[->, thin, gray] (0,-3.5) -- (0,3.5) node[above] {$y$};
+
+				\draw[thick, black] (0, 2) -- (2, 0);
+				\draw[thick, black] (0, 1) -- (1, 0);
+
+				\foreach \x in {-3,...,3} {
+					\foreach \y in {-3,...,3} {
+						\pgfmathparse{int(\x + \y <= 2.2 && \x >= 0 && \y >= 0 ? 1 : 0)}
+						\ifnum\pgfmathresult=1
+							\fill[fill=white, draw=black] (\x,\y) circle (2pt);
+						\else
+							\fill[black!60] (\x,\y) circle (1.2pt);
+						\fi
+					}
+				}
+				
+				\draw[->, thick, black] (0, 0) -- (1, 1) node[above right] {$\vec{q} = (1, 1)$};
+				\node[below] at (0,-3.7) {$x + y \leq 2.2$};
+			\end{scope}
+		\end{tikzpicture}
+	\end{center}
+\end{frame}
+
+\begin{frame}{El caso infinito}
+	Una medida de eficiencia para los cortes de R\&A en (PS) es
+	\begin{equation*}
+		\bigg| \frac{x_i^* - x_i}{x_i^* - \big\lceil x_i^*\big\rceil} \bigg|
+		\geq \big|\vec{e}_i^TM\vec{\delta}\big|,
+	\end{equation*}
+	donde
+	\begin{itemize}
+		\item $\vec{x}^*$ es la solución a un subproblema relajado obtenido por R\&A,
+		\item $\ceil{x_i^*}$ es la $i$-ésima entrada de la solución del siguiente subproblema con restricción añadida $x_i \geq \ceil{x_i^*}$,
+		\item $\vec{x}$ es la solución la solución de (PS) más cercana a $\vec{x}^*$,
+		\item $\norm{\vec{\delta}}_{\infty} \leq 0.5$.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\begin{figure}
+		\centering
+		\begin{minipage}{.45\textwidth}
+			\centering
+			\includegraphics[scale=0.38]{../static/inf/digits-bb_full.pdf}
+		\end{minipage}
+		\begin{minipage}{.45\textwidth}
+			\centering
+			\includegraphics[scale=0.38]{../static/inf/digits-dioph.pdf}
+		\end{minipage}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\centering
+	\includegraphics[scale=0.38]{../static/inf/mult-hist-cum-sep-v2.pdf}
+\end{frame}
+
+\begin{frame}{El caso finito (variando el presupuesto)}
+	\centering
+	\includegraphics[scale=0.60]{static/finrhs1.pdf}
+\end{frame}
+
+\begin{frame}
+	\centering
+	\includegraphics[scale=0.60]{static/finrhs2.pdf}
+\end{frame}
+
+\begin{frame}
+	\centering
+	\includegraphics[scale=0.60]{static/finrhs3.pdf}
+\end{frame}
+
+\begin{frame}{El caso finito (variando la dimensión)}
+	\centering
+	\includegraphics[scale=0.40]{static/fintimes1.png}
+\end{frame}
+
+\begin{frame}
+	\centering
+	\includegraphics[scale=0.35]{static/fintimes2.png}
+\end{frame}
+
+\begin{frame}{Eventualidad de una sola ecuación lineal diofantina}
+	\begin{stheorem}
+		Sea $\vec{q} \in \Z^n$ un vector coprimo con entradas estrictamente positivas. Entonces la
+		ecuación lineal diofantina $\vec{q}^T\vec{x} = k$ tiene soluciones enteras no negativas si
+		$k \in \Z$ satisface
+		\begin{equation*}
+			k \geq \frac{n\sqrt{n-1}}{2}\norm{M}\max_{1 \leq j \leq n}\braces{q_j^2\sqrt{q_j^{-2} +
+			\norm{\vec{q}}^{-2}}}.
+		\end{equation*}
+	\end{stheorem}
+\end{frame}
+
+\begin{frame}{El Problema Diofantino de Frobenius}
+	\begin{sproblem}
+		Dado un vector $\vec{q} \in \Z^n$ coprimo con entradas estrictamente positivas, encontrar el
+		entero $F$ más grande tal que $\vec{q}^T\vec{x} \neq F$ para todo $\vec{x} \in \Z^n$ con
+		$\vec{x} \geq \vec{0}$.
+	\end{sproblem}
+\end{frame}
+
+\section{Conclusion}
+\begin{frame}{Conclusion}
+  Summarize key takeaways.
+\end{frame}
+
+\end{document}

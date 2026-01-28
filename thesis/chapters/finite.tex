@@ -1,8 +1,8 @@
 \chapter{El caso finito}
 \noindent
-Inspirados por el teorema \ref{theory:th:feasibility}, en este capítulo analizamos el
-caso en el que el vector coprimo $\vec{q}$ tiene entradas estrictamente positivas. De esta manera,
-el problema \eqref{theory:formulation} deviene una instancia particular del famoso \emph{Problema de la
+Inspirados por el teorema \ref{theory:th:feasibility}, en este capítulo analizamos el caso en el que
+el vector coprimo $\vec{q}$ tiene entradas estrictamente positivas. Bajo este supuesto adicional, el
+problema \eqref{theory:formulation} es una instancia particular del famoso \emph{Problema de la
 Mochila}:
 \begin{subequations}
 	\label{knapsack-formulation}
@@ -17,7 +17,8 @@ Mochila}:
 donde los vectores positivos $\vec{s}, \vec{w} \in \Z^n$ son conocidos como vector de útiles y
 vector de pesos, respectivamente. Puesto que no acotamos $\vec{x}$, el problema recibe el nombre de
 \emph{Problema de la Mochila no Acotado}. Analizaremos el caso $\vec{p} = \vec{s} = \vec{w}$, el cual es es
-considerado como un \emph{Problema de la Suma de Conjuntos no Acotado}.
+considerado como un \emph{Problema de la Suma de Conjuntos no Acotado}. Referimos a los capítulos 3 y 4 de
+\cite{martello} para una descripción más detallada de estos problemas.
 
 En la primera sección realizamos un análisis de capas enteras a fin de obtener un resultado análogo
 al teorema \ref{infinite:th:complexity}. En concreto, el teorema \ref{th:intnonneg2} enuncia que,
@@ -43,10 +44,17 @@ negativos sobre la $k$-ésima capa entera es finito y, por lo tanto, puede ser c
 ecuación lineal diofantina \eqref{eq:dioph}, por lo que implementamos la misma estrategia para
 plantear una formulación recursiva. 
 
-Debido al supuesto $\vec{q} > \vec{0}$, observemos de \eqref{dummy:eq:ith-equation} que podemos
-agregar la condición $\omega_{i} \geq 0$, en efecto, buscamos que $\vec{x}$ sea no negativo y
-recordemos que $g_i$ es un máximo común divisor (ver \eqref{dummy:eq:ith-g}), por lo que es
-estrictamente positivo. Juntando esto con el supuesto $\vec{q} > \vec{0}$, encontramos que
+Debido al supuesto $\vec{q} > \vec{0}$, observemos de \eqref{dummy:eq:ith-equation}:
+\begin{equation*}
+	\frac{q_i}{\prod_{j=1}^{i}g_j}x_i
+	+ \frac{q_{i+1}}{\prod_{j=1}^{i}g_j}x_{i+1}
+	+ \cdots
+	+ \frac{q_{n}}{\prod_{j=1}^{i}g_j}x_n
+	= \omega_i,
+\end{equation*}
+que podemos agregar la condición $\omega_{i} \geq 0$, en efecto, buscamos que $\vec{x}$ sea no
+negativo y recordemos que $g_i$ es un máximo común divisor (ver \eqref{dummy:eq:ith-g}), por lo que
+es estrictamente positivo. Juntando esto con el supuesto $\vec{q} > \vec{0}$, encontramos que
 $\omega_i$ es no negativo para toda $i \in \braces{1, \ldots, n - 1}$. Así pues, despejando $t_i$ de
 \eqref{eq:recurrence} obtenemos los intervalos de factibilidad
 \begin{equation*}
@@ -267,13 +275,11 @@ entero no negativo sobre una de estas capas enteras.
 
 Si queremos aplicar el lema \ref{lemma:layer-dist} a la función de la definición anterior, debemos
 reducir nuestra atención a vectores $\vec{p}$ enteros. Esto se debe a que debemos asegurar que el
-múltiplo $m$ sea entero\footnote{
-	Es la creencia del autor que el lema \ref{lemma:layer-dist} puede ser generalizado para
-	$m$ racional.
-}. Independientemente del comportamiento
-periódico de $\Delta^*$, tenemos que esta función varía significativamente ante cambios en $m$.
-Esto último implica que el número de capas enteras a revisar depende del número de cifras decimales
-usadas para especificar $\vec{p}$.
+múltiplo $m$ sea entero. Aunque no lo demostraremos, es nuestra creencia que este resultado puede
+ser generalizado para $m$ racional. Independientemente del comportamiento periódico de $\Delta^*$,
+tenemos que esta función varía significativamente ante cambios en $m$. Esto último implica que el
+número de capas enteras a revisar depende del número de cifras decimales utilizadas para especificar
+$\vec{p}$.
 
 \begin{example}
 	\label{ex:decimals}
@@ -415,14 +421,14 @@ esta sección con los teoremas \ref{th:intnonneg1} y \ref{th:intnonneg2}.
 		H_{\vec{q}, k\norm{\vec{q}}^{-2}} \subseteq
 		\bigcup_{\vec{t} \in \Z^{n-1}}B_r^{(k)}(k\vec{\nu} + M\vec{t}).
 	\end{equation}
-	Juntando esto con (\ref{eq:ball-cover:1}) obtenemos lo que queríamos demostrar.
+	Juntando esto con \eqref{eq:ball-cover:1} obtenemos lo que queríamos demostrar.
 \end{proof}
 
 Lo que se encuentra a continuación se encarga de formalizar y caracterizar lo
 que nos referíamos anteriormente como ``trozo no negativo'' de la $k$-ésima
 capa entera. Todas las definiciones fueron tomadas del capítulo 2 de
 \cite{boyd} a excepción del baricentro, mientras que las demostraciones de los
-lemas y teoremas fueron realizadas completamente por el autor.
+lemas y teoremas fueron realizadas de manera independiente.
 \begin{definition}
 	\label{def:aff}
 	Sean $\vec{v}_1, \ldots, \vec{v}_m \in \R^n$ una colección de vectores,
@@ -436,15 +442,17 @@ lemas y teoremas fueron realizadas completamente por el autor.
 \begin{lemma}
 	\label{lemma:aff}
 	Sean $\vec{v}_1, \ldots, \vec{v}_m \in \R^n$ una colección de vectores. Entonces
+	para todo $1 \leq j \leq m$ se tiene que
 	\begin{equation*}
 		\aff\braces{\vec{v}_1, \ldots, \vec{v}_m} = \vec{v}_j + \gen\braces{\vec{v}_i -
-		\vec{v}_j}_{i=1}^{n} = \vec{v}_j + \gen\braces{\vec{v}_i - \vec{v}_j}_{i\neq j}.
+		\vec{v}_j}_{i=1}^{m} = \vec{v}_j + \gen\braces{\vec{v}_i - \vec{v}_j}_{i\neq j}.
 	\end{equation*}
 \end{lemma}
 \begin{proof}
-	Puesto que $\vec{v}_j - \vec{v}_j = \vec{0}$, se sigue inmediatamente que
+	Puesto que $\vec{v}_j - \vec{v}_j = \vec{0}$ es linealmente dependiente de los vectores
+	$\braces{\vec{v}_i - \vec{v}_j}_{i \neq j}$, se sigue que
 	\begin{equation*}
-		\vec{v}_j + \gen\braces{\vec{v}_i - \vec{v}_j}_{i = 1}^{n}
+		\vec{v}_j + \gen\braces{\vec{v}_i - \vec{v}_j}_{i = 1}^{m}
 		=
 		\vec{v}_j + \gen\braces{\vec{v}_i - \vec{v}_j}_{i \neq j}.
 	\end{equation*}
@@ -700,9 +708,8 @@ es paralelo a $\qlayer{q}{k}$. El siguiente lema caracteriza este vector.
 
 Ahora que encontramos vectores normales $\vec{\mu}_j$ para cada faceta $\sigma_j$, podemos
 simplificar un poco más \eqref{eq:dist:v1}. Aprovechando el hecho de que los vectores
-$\braces{\vec{u}_i}_{i=1}^{n}$ son todos ortogonales entre sí, a partir de la
-definición \ref{def:barycenter} y de la ecuación \eqref{def:u-basis} obtenemos cálculos
-simples:
+$\braces{\vec{u}_i}_{i=1}^{n}$ son todos ortogonales entre sí, a partir de la definición
+\ref{def:barycenter} y de la ecuación \eqref{def:u-basis} obtenemos los siguientes cálculos:
 \begin{align*}
 	\vec{\mu}_j^T\est{\sigma}
 	&=
@@ -717,7 +724,7 @@ A través de un procedimiento similar, encontramos para el baricentro
 $\est{\sigma}_j$ de la $j$-ésima faceta $\sigma_j$ que
 \begin{equation}
 	\label{eq:facetaux}
-	\vec{\mu}_j^T\est{\sigma}_j = -\frac{k}{\norm{\vec{q}}^2},
+	\vec{\mu}_j^T\est{\sigma}_j = -\frac{k^2}{\norm{\vec{q}}^2},
 \end{equation}
 y por lo tanto
 \begin{equation}
@@ -737,7 +744,7 @@ interpretarlo como un poliedro y que es importante para demostrar el teorema \re
 		\label{eq:sigmachar2}
 		\sigma = \bigcap_{j=1}^{n}
 		\braces{\vec{x} \in \R^n \colon \uvec{\mu}_j^T(\vec{x} - \est{\sigma}_j) \geq 0}
-		\cap H_{\vec{q}, k\norm{\vec{q}}^{-2}},
+		\cap \qlayer{\vec{q}}{k},
 	\end{equation}
 	donde $\uvec{\mu}_j$ es el vector $\vec{\mu}_j$ definido en \eqref{eq:normal} normalizado.
 \end{lemma}
@@ -757,17 +764,31 @@ interpretarlo como un poliedro y que es importante para demostrar el teorema \re
 	ejemplo \ref{ex:aff}, que existen escalares no negativos $\theta_1, \ldots,
 	\theta_n$ que suman 1 y que satisfacen $\vec{x} = \theta_1\vec{u}_1 +
 	\cdots + \theta_n\vec{u}_n$. Tenemos entonces
+	% \begin{align*}
+	% 	\vec{\mu}_j^T\vec{x}
+	% 	&=
+	% 	\left(\vec{u}_j - \frac{k}{\norm{\vec{q}}^2}\vec{q}\right)^T
+	% 	\left(\theta_j\vec{u}_j + \sum_{i \neq j}\theta_i\vec{u}_i\right) \\
+	% 	&= \theta_j\norm{\vec{u}_j}^2 - \frac{k}{\norm{\vec{q}}^2}\sum_{i \neq j}
+	% 	\theta_i\vec{q}^T\vec{u}_i \\
+	% 	&= \theta_j\frac{k^2}{q_j^2} - \frac{k}{\norm{\vec{q}}^2}\sum_{i \neq j}k\theta_i \\
+	% 	&= \theta_j\frac{k^2}{q_j^2} - \frac{k^2}{\norm{\vec{q}}^2}(1 - \theta_j) \\
+	% 	&= \theta_j\left(\frac{k^2}{q_j^2} + \frac{k^2}{\norm{\vec{q}}^2}\right)
+	% 	- \frac{k^2}{\norm{\vec{q}}^2}.
+	% \end{align*}
 	\begin{align*}
-		\vec{\mu}_j^T\vec{x}
+		\vec{\mu}_i^T\vec{x}
 		&=
-		\left(\vec{u}_j - \frac{k}{\norm{\vec{q}}^2}\vec{q}\right)^T
-		\left(\theta_j\vec{u}_j + \sum_{i \neq j}\theta_i\vec{u}_i\right) \\
-		&= \theta_j\norm{\vec{u}_j}^2 - \frac{k}{\norm{\vec{q}}^2}\sum_{i \neq j}
-		\theta_i\vec{q}^T\vec{u}_i \\
-		&= \theta_j\frac{k^2}{q_j^2} - \frac{k}{\norm{\vec{q}}^2}\sum_{i \neq j}k\theta_i \\
-		&= \theta_j\frac{k^2}{q_j^2} - \frac{k^2}{\norm{\vec{q}}^2}(1 - \theta_j) \\
-		&= \theta_j\left(\frac{k^2}{q_j^2} + \frac{k^2}{\norm{\vec{q}}^2}\right)
-		- \frac{k^2}{\norm{\vec{q}}^2}.
+		\paren{\vec{u}_j - \frac{k}{\norm{\vec{q}}^2}\vec{q}}^T
+		\sum_{i=1}^{n}\theta_i\vec{u}_i \\
+		&=
+		\vec{u}_j^T\paren{\theta_j\vec{u}_j + \sum_{i \neq j}\theta_i\vec{u}_i}
+		- \frac{k}{\norm{\vec{q}}^2}\sum_{i=1}^{n}\theta_i\vec{q}^T\vec{u}_i \\
+		&=
+		\theta_j\norm{\vec{u}_j}^2
+		- \frac{k}{\norm{\vec{q}}^2}\sum_{i=1}^{n}\theta_ik \\
+		&=
+		\theta_j\norm{\vec{u}_j}^2 - \frac{k^2}{\norm{\vec{q}}^2}.
 	\end{align*}
 	Retomamos de \eqref{eq:facetaux} el valor de $\vec{\mu}_j^T\est{\sigma}_j$, así que obtenemos
 	\begin{equation*}
@@ -775,25 +796,24 @@ interpretarlo como un poliedro y que es importante para demostrar el teorema \re
 		= 
 		\vec{\mu}_j^T\vec{x} - \vec{\mu}_j^T\est{\sigma}_j
 		=
-		\theta_j\left(\frac{k^2}{q_j^2} + \frac{k^2}{\norm{\vec{q}}^2}\right),
+		\theta_j\norm{\vec{u}_j}^2,
 	\end{equation*}
-	lo cual es no negativo para todo $j \in \braces{1, \ldots, n}$.
+	lo cual es no negativo para todo $1 \leq j \leq n$.
 
-	Ahora mostramos la otra contención por contrapositiva, así que supongamos
-	que $\vec{x} \not\in \sigma$. Por el lema \ref{lemma:sigmachar1} se sigue o
-	bien que $\vec{x} \not\in H_{\vec{q}, k\norm{\vec{q}}^{-2}}$ o bien que
-	$\vec{x} \not\in \R^n_{\geq \vec{0}}$. En el primer caso obtenemos
-	inmediatamente que $\vec{x}$ no se encuentra en el lado derecho de
-	\eqref{eq:sigmachar2}.
-
-	Supongamos, pues, que $\vec{x}$ está en la $k$-ésima capa entera pero que tiene al menos una
-	entrada negativa con respecto a la base canónica. Como $\braces{\vec{u}_i}_{i=1}^{n}$ es base de
-	$\R^n$, existen escalares $\braces{\lambda_i}_{i=1}^{n}$ tales que
+	Ahora mostramos la contención de derecha a izquierda por contraposición. Es decir, mostramos que
+	si $\vec{x}$ no se encuentra en el lado izquierdo de \eqref{eq:sigmachar2}, entonces tampoco se
+	encuentra en el lado derecho. Así pues, supongamos que $\vec{x} \not\in \sigma$. Por el lema
+	\ref{lemma:sigmachar1} se sigue o bien que $\vec{x} \not\in \qlayer{\vec{q}}{k}$ o bien que
+	$\vec{x} \not\in \R^n_{\geq \vec{0}}$. En el primer caso obtenemos inmediatamente que $\vec{x}$
+	no se encuentra en el lado derecho de \eqref{eq:sigmachar2}. Luego, como $\vec{x} \not \in
+	\sigma$, es válido suponer que $\vec{x} \in \qlayer{\vec{q}}{k}$ pero $\vec{x} \not\in \R_{\geq
+	\vec{0}}$. Como $\braces{\vec{u}_i}_{i=1}^{n}$ es base de $\R^n$, existen escalares
+	$\braces{\lambda_i}_{i=1}^{n}$ tales que
 	\begin{equation*}
 		\vec{x} = \sum_{i=1}^{n}\lambda_i\vec{u}_i.
 	\end{equation*}
 	Como las entradas de $\vec{u}_1, \ldots, \vec{u}_n$ son todas no negativas y $x_j < 0$ para
-	alguna $j \in \braces{1, \ldots, n}$, se sigue que $\lambda_j < 0$. Observemos que
+	alguna $1 \leq j \leq n$, se sigue que $\lambda_j < 0$. Observemos que
 	\begin{align*}
 		\vec{\mu}_j^T\vec{x}
 		&=
@@ -806,17 +826,17 @@ interpretarlo como un poliedro y que es importante para demostrar el teorema \re
 		&=
 		\lambda_j\norm{\vec{u}_j}^2 - \frac{k^2}{\norm{\vec{q}}} \sum_{i=1}^{n}\lambda_i.
 	\end{align*}
-	Pero $\vec{x} \in H_{\vec{q}, k\norm{\vec{q}}^{-2}} = \aff\braces{\vec{u}_1, \ldots, \vec{u}_n}$
-	(ver ejemplo \ref{ex:aff}) y entonces los escalares $\lambda_1, \ldots, \lambda_n$ suman a 1.
+	Pero $\vec{x} \in \qlayer{\vec{q}}{k} = \aff\braces{\vec{u}_1, \ldots, \vec{u}_n}$
+	(véase el ejemplo \ref{ex:aff}) y entonces los escalares $\lambda_1, \ldots, \lambda_n$ suman a 1.
 	Sustituyendo,
 	\begin{equation*}
-		\vec{\mu}_j^T\vec{x} = \lambda_j\frac{k^2}{q_j^2} - \frac{k^2}{\norm{\vec{q}}^2},
+		\vec{\mu}_j^T\vec{x} = \lambda_j\norm{\vec{u}_j}^2 - \frac{k^2}{\norm{\vec{q}}^2},
 	\end{equation*}
 	retomando el valor de $\vec{\mu}_j^T\est{\sigma}_j$ en \eqref{eq:facetaux}, encontramos que
 	\begin{equation*}
-		\vec{\mu}_j^T(\vec{x} - \est{\sigma}_j) = \lambda_j\frac{k^2}{q_j^2} < 0
+		\vec{\mu}_j^T(\vec{x} - \est{\sigma}_j) = \lambda_j\norm{\vec{u}_j}^2 = \lambda_j\frac{k^2}{q_j^2} < 0
 	\end{equation*}
-	y entonces $\vec{x}$ no es elemento del semi-espacio $\braces{\vec{x} \colon
+	y entonces $\vec{x}$ no es elemento del semi-espacio afín $\braces{\vec{x} \vcentcolon
 	\vec{\mu}_j^T(\vec{x} - \est{\sigma}_j) \geq 0}$, por lo que tampoco es elemento del lado
 	derecho de \eqref{eq:sigmachar2}.
 \end{proof}
@@ -885,9 +905,9 @@ símplice $\sigma$ (ver definición \ref{def:r-sigma}).
 	\end{equation}
 
 	Ahora bien, supongamos que $r > d(\est{\sigma}, \sigma_j)$ para alguna $j \in \lbrace 1, \ldots,
-	n \rbrace$. Consideremos el punto $\vec{x} \in \sigma_j$ que satisface $d(\est{\sigma}, \sigma_j) =
-	d(\est{\sigma}, \vec{x})$. Tal punto existe porque $\sigma_j$ es cerrado. Luego,
-	$\norm{\vec{x} - \est{\sigma}} < r$. Entonces existe $\varepsilon > 0$ tal que
+	n \rbrace$. Como $\sigma_j$ es cerrado, existe un punto $\vec{x} \in \sigma_j$ que satisface
+	$d(\est{\sigma}, \sigma_j) = d(\est{\sigma}, \vec{x})$. Luego, $\norm{\vec{x} - \est{\sigma}} <
+	r$. Entonces existe $\varepsilon > 0$ tal que
 	\begin{equation*}
 		\norm{(\vec{x} - \varepsilon\est{\mu}_j) - \est{\sigma}} \leq r,
 	\end{equation*}
@@ -909,7 +929,7 @@ símplice $\sigma$ (ver definición \ref{def:r-sigma}).
 		= -\varepsilon < 0,
 	\end{equation*}
 	lo cual implica que $\vec{x} - \varepsilon\uvec{\mu}_j$ no se encuentra en el semi-espacio
-	definido por $\braces{\vec{x} \colon \uvec{\mu}^T(\vec{x} - \est{\sigma}_j) \geq 0}$. Así pues,
+	afín definido por $\braces{\vec{x} \vcentcolon \uvec{\mu}^T(\vec{x} - \est{\sigma}_j) \geq 0}$. Así pues,
 	por el lema \ref{lemma:sigmachar2}, encontramos que $\vec{x} - \varepsilon\uvec{\mu}_j \not\in
 	\sigma$. Pero $\vec{x} - \varepsilon\uvec{\mu}_j \in B_r^{(k)}(\est{\sigma})$. De aquí se desprende
 	que $B_r^{(k)}(\est{\sigma}) \not\subseteq \sigma$ si $r > d(\est{\sigma}, \sigma_j)$ para
@@ -924,7 +944,7 @@ símplice $\sigma$ (ver definición \ref{def:r-sigma}).
 \end{proof}
 
 Continuamos con el cálculo de la distancia entre el baricentro $\est{\sigma}$ del símplice $\sigma$
-y cada una de sus facetas $\sigma_j$. A causa del teorema enterior, esto permitirá tener una
+y cada una de sus facetas $\sigma_j$. Aplicando el teorema anterior, podemos obtener una
 expresión explícita del radio de la bola inscrita en $\sigma$. De \eqref{eq:dist:v1} tenemos
 \begin{equation}
 	\label{dist:v2}
@@ -963,6 +983,20 @@ inscrita en el símplice $\sigma$ con baricentro $\est{\sigma}$ está dado por
 	r_\sigma = \min_{1 \leq j \leq n} \braces{d(\est{\sigma}, \sigma_j)} = \frac{k}{n} \cdot
 	\frac{1}{\max_{1 \leq j \leq n} \braces{ q_j^2\sqrt{q_j^{-2} + \norm{\vec{q}}^{-2}}}}
 \end{equation}
+
+Recordemos que la motivación detrás de todos estos cálculos se fundamenta en determinar la
+existencia de un punto entero sobre el ``trozo'' no negativo de la $k$-ésima capa entera. Esto
+permitirá determinar la existencia de soluciones enteras no negativas de la ecuación lineal
+diofantina $\vec{q}^T\vec{x} = k$ y por lo tanto de obtener un resultado análogo al teorema
+\ref{infinite:th:complexity}.
+
+Para empezar, en el siguiente teorema se proporciona una cota
+inferior de manera que podamos asegurar la existencia de puntos enteros en una vecindad del
+baricentro $\est{\sigma}$. Este punto no es especial, pues en realidad podemos realizar el mismo
+procedimiento enfocándonos en otros puntos del símplice $\sigma$ para asegurar soluciones en sus
+respectivas vecindades. Entonces, dependiendo del punto, podemos obtener mejores o peores cotas para
+$k$. El punto más interesante es aquel que provee la cota inferior más pequeña. Aunque no lo
+demostraremos, creemos que el baricentro $\est{\sigma}$ provee la mejor cota.
 
 \begin{theorem}
 	\label{th:intsimplex}
@@ -1003,15 +1037,6 @@ inscrita en el símplice $\sigma$ con baricentro $\est{\sigma}$ está dado por
 % \end{equation*}
 % Esta cota, no obstante, es más grande que la propuesta inicialmente.
 
-El resultado que obtuvimos es más fuerte de lo que aparenta. Hemos encontrado una
-cota inferior de manera que podamos asegurar la existencia de puntos enteros en una vecindad del
-baricentro $\est{\sigma}$. Este punto no es especial, pues en realidad podemos realizar el mismo
-procedimiento enfocándonos en otros puntos del símplice $\sigma$ para asegurar soluciones en sus
-respectivas vecindades. Entonces, dependiendo del punto, podemos obtener mejores o peores cotas para
-$k$. El punto más interesante es aquel que provee la cota inferior más pequeña\footnote{
-	Una hipótesis del autor es que el baricentro $\est{\sigma}$ provee, en efecto, la mejor cota.
-}.
-
 De manera inmediata obtenemos también los siguientes teoremas. Cabe mencionar que estos resultados
 solamente muestran la existencia de una solución entera $\vec{x}$ no negativa para la ecuación lineal
 diofantina $\vec{q}^T\vec{x} = k$. Será en la sección \ref{subsec:complex} que discutiremos cómo
@@ -1044,28 +1069,28 @@ encontrar una solución.
 	que si $\eta$ es suficientemente grande, entonces la ecuación lineal diofantina
 	$\vec{q}^T\vec{x} = \eta$ tiene al menos una solución entera no negativa $\vec{x}$. Luego,
 	$\vec{x}$ es factible para el problema \eqref{theory:formulation}, pero por la maximalidad de
-	$\eta$ encontramos que $\vec{x}$ también es un punto óptimo. En conclusión, solo deviene
+	$\eta$ encontramos que $\vec{x}$ también es un punto óptimo. Así, solo es
 	necesario resolver una ecuación lineal diofantina para determinar la solución del problema
 	\eqref{theory:formulation}.
 \end{proof}
 
-El teorema \ref{th:intnonneg1} provee, hasta donde llega el conocimiento del autor, nuevas cotas
-superiores para el número de Frobenius en el Problema Diofantino de Frobenius \cite{frob}. De manera
-resumida, dada una colección de enteros $q_1, \ldots, q_n$ coprimos, el número de Frobenius es el
-entero $F$ más grande tal que $F$ no pueda ser expresado como una combinación lineal entera no
-negativa de $q_1, \ldots, q_n$. En efecto, o bien $F$ es mayor o igual que el lado derecho de
-\eqref{eq:eta-limit} o bien es estrictamente menor. El primer caso no puede ocurrir porque el
-teorema \ref{th:intnonneg1} asegura que la ecuación lineal diofantina $\vec{q}^T\vec{x} = F$ tiene
-una solución no negativa, es decir, que $F$ puede ser escrito como una combinación lineal entera no
-negativa de $q_1, \ldots, q_n$, pero entonces $F$ no puede ser el número de Frobenius de estos
-enteros. Así pues, $F$ debe ser estrictamente menor que el lado derecho de \eqref{eq:eta-limit}. Un
-estudio sobre cómo se compara esta colección de cotas con respecto a las presentadas en el capítulo
-3 de \cite{frob}, por ejemplo, queda fuera del propósito de esta tesis.
+El teorema \ref{th:intnonneg1} provee nuevas cotas superiores para el número de Frobenius en el
+Problema Diofantino de Frobenius \cite{frob}. De manera resumida, dada una colección de enteros
+$q_1, \ldots, q_n$ coprimos, el número de Frobenius es el entero $F$ más grande tal que $F$ no pueda
+ser expresado como una combinación lineal entera no negativa de $q_1, \ldots, q_n$. En efecto, o
+bien $F$ es mayor o igual que el lado derecho de \eqref{eq:eta-limit} o bien es estrictamente menor.
+El primer caso no puede ocurrir porque el teorema \ref{th:intnonneg1} asegura que la ecuación lineal
+diofantina $\vec{q}^T\vec{x} = F$ tiene una solución no negativa, es decir, que $F$ puede ser
+escrito como una combinación lineal entera no negativa de $q_1, \ldots, q_n$, pero entonces $F$ no
+puede ser el número de Frobenius de estos enteros. Así pues, $F$ debe ser estrictamente menor que el
+lado derecho de \eqref{eq:eta-limit}. Un estudio sobre cómo se compara esta colección de cotas con
+respecto a las presentadas en el capítulo 3 de \cite{frob}, por ejemplo, queda fuera del propósito
+de esta tesis.
 
-En último lugar, mencionamos que eventualmente es suficiente con revisar la primera capa entera. No
-hemos demostrado, empero, que el número de capas enteras a revisar eventualmente decrece en cuanto
-el presupuesto $u$ aumenta. Demostrar que este comportamiento siempre se cumple es mucho más difícil
-y,  queda fuera del propósito de esta tesis.
+En último lugar, mencionamos que eventualmente es suficiente con revisar la primera capa entera. Sin
+embargo, no hemos demostrado que el número de capas enteras a revisar eventualmente decrece en
+cuanto el presupuesto $u$ aumenta. Demostrar que este comportamiento siempre se cumple es mucho más
+difícil y queda fuera del propósito de esta tesis.
 
 \section{Construcción de soluciones}
 \label{subsec:complex}
@@ -1073,14 +1098,18 @@ y,  queda fuera del propósito de esta tesis.
 \noindent
 Sea $\vec{p} \in \R^n$ un vector esencialmente entero y supongamos que las entradas de su múltiplo
 coprimo $\vec{q}$ son todas estrictamente positivas. Supongamos, sin pérdida de generalidad, que el
-escalar $m$ que satisface $\vec{p} = m\vec{q}$ es también positivo. Bastante hemos discutido sobre
-cómo la solución del problema \eqref{theory:formulation} se traduce a la búsqueda de una solución
-entera no negativa de la ecuación lineal diofantina $\vec{q}^T\vec{x} = k$ para alguna $k \leq \eta$,
-donde $\eta$ es tomada del lema \ref{phase-1:lemma:eta}.
+escalar $m$ que satisface $\vec{p} = m\vec{q}$ es también positivo. Ya hemos visto cómo la
+solución del problema \eqref{theory:formulation} se traduce a la búsqueda de una solución entera no
+negativa de la ecuación lineal diofantina $\vec{q}^T\vec{x} = k$ para alguna $k \leq \eta$, donde
+$\eta$ es tomada del lema \ref{phase-1:lemma:eta}.
 
-En esta sección presentamos los algoritmos \ref{algo:fin:helper} y \ref{algo:fin:dioph} los cuales
-se encargan de obtener estas soluciones enteras no negativas que tanto buscamos. Consecuentemente,
-estos algoritmos se encargan de resolver el problema \eqref{theory:formulation}.
+En esta sección presentamos los algoritmos \ref{algo:fin:helper} y \ref{algo:fin:dioph} en las
+páginas \pageref{algo:fin:helper} y \pageref{algo:fin:dioph}, que se encargan de obtener soluciones
+enteras no negativas de la ecuación $\vec{q}^T\vec{x} = k$. De manera resumida, el algoritmo
+\ref{algo:fin:helper} utiliza la estrategia de ``vuelta atrás'' (\textit{backtracking}) para
+buscar una solución entera no negativa de la ecuación anterior. En caso de que este algoritmo no
+encuentre ninguna solución, el algoritmo \ref{algo:fin:dioph} desciende a la $(k - 1)$-ésima capa
+entera para volver a realizar la búsqueda.
 
 % En la segunda parte de esta sección discutimos de manera un tanto informal la complejidad
 % algorítmica del algoritmo \ref{algo:fin:dioph}. Por lo tanto, también discutimos, así como lo
@@ -1281,9 +1310,9 @@ por no respetar la no negatividad de un punto entero.
 	\ref{th:fin:helper:correct}.
 \end{proof}
 
-Sabemos, en realidad, por el lema \ref{lemma:tau} que el parámetro $k$ definido en la línea
+En realidad, sabemos por el lema \ref{lemma:tau} que el parámetro $k$ definido en la línea
 \ref{alg:fin:loop} descenderá hasta 0 si y solo si el parámetro $\tau$ definido en \eqref{eq:tau}
-es nulo. No obstante, la demostración del teorema \ref{th:fin:dioph:correct} deviene más simple
+es nulo. No obstante, la demostración del teorema \ref{th:fin:dioph:correct} se vuelve más simple
 cuando en el algoritmo \ref{algo:fin:dioph} dejamos que $k$ se encuentre en $[0, \eta]$ en vez de
 $[\tau, \eta]$. Esta modificación no afecta en lo más mínimo la correctud o la complejidad del
 algoritmo.
@@ -1344,8 +1373,8 @@ $\vec{q} > \vec{0}$, de manera que obtenemos otro punto de comparación para nue
 de Ramificación y Acotamiento (R\&A) implementado en el \textit{solver} COIN-OR Branch and Cut
 (CBC) (\cite{coin}). Finalmente, explicamos y realizamos nuestros experimentos numéricos.
 
-Utilizamos el mismo equipo así como la misma configuración de CBC que se detalla en la subsección
-\ref{subsec:inf:res} para la realización de estos experimentos.
+Utilizamos el mismo equipo así como la misma configuración de CBC que se detalla en la página
+\pageref{subsec:inf:res} para la realización de estos experimentos.
 
 \subsection{Detalles de implementación}
 \label{subsec:fin:details}
@@ -1493,18 +1522,19 @@ entrada $p_i$ tal que todas las entradas que le sigan sean múltiplos de $p_i$. 
 tendremos $g_{i + 1} = p_i$ y por lo tanto $q_i = 1$.
 
 En segundo lugar, es posible mostrar que todo problema \eqref{theory:formulation} tiene una
-reducción al problema binario
+reducción al problema binario con dimensión $n_b \in \N$:
 \begin{equation*}
 	\max_{\vec{x} \in \braces{0, 1}^{n_b}} \braces{ \vec{\hat{p}}^T\vec{x} \vcentcolon \vec{\hat{p}}^T\vec{x} \leq
 	u},
 \end{equation*}
-para alguna $\vec{\hat{p}} \in \Z^{n_b}$ que puede ser obtenida de $\vec{p}$ (ver páginas 82 a 84 de \cite{martello}).
-Observemos que si $u \geq \sum_{i=1}^{n_b}\hat{p}_i$, entonces obtenemos la solución trivial
-$x_i = 1$ para todo $1 \leq i \leq n_b$. Puesto que existen \textit{solvers} que implícitamente reducen
-problemas como \eqref{theory:formulation} a su forma binaria (el ejemplo más famoso es
-\texttt{KnapsackSolver} de Google OR-Tools), debemos ser cuidadosos con introducir este tipo de
-trivialidades. Una forma simple de evitar esta situación es exigir que el lado derecho de
-\eqref{theory:constraint:budget} satisfaga $u < \sum_{i=1}^{n}p_i$.
+y para alguna $\vec{\hat{p}} \in \Z^{n_b}$ que puede ser obtenida de
+$\vec{p}$ (ve página 82 de \cite{martello}). Observemos que si $u \geq
+\sum_{i=1}^{n_b}\hat{p}_i$, entonces obtenemos la solución trivial $x_i = 1$ para todo $1 \leq i
+\leq n_b$. Puesto que existen \textit{solvers} que implícitamente reducen problemas como
+\eqref{theory:formulation} a su forma binaria (el ejemplo más famoso es \texttt{KnapsackSolver} de
+Google OR-Tools), debemos ser cuidadosos con no introducir este tipo de trivialidades. Una forma simple
+de evitar esta situación es exigir que el lado derecho de \eqref{theory:constraint:budget} satisfaga
+$u < \sum_{i=1}^{n}p_i$.
 
 En tercer lugar, tenemos que si el vector $\vec{p}$ contiene entradas repetidas, entonces podemos
 reducir trivialmente la dimensión del problema \eqref{theory:formulation}. En efecto, si $p_j =
@@ -1547,9 +1577,7 @@ promedios de terminación así como las desviaciones estándar de los métodos u
 cada experimento. La tabla \ref{table:fin:mt:cv} en la página \pageref{table:fin:mt:cv} muestra los
 coeficientes de variación de estos tiempos. Un coeficiente de variación mide, en proporción, qué tan
 concentrados están los tiempos alrededor de su media, y se calcula como $\sigma / \mu$, donde $\mu$
-y $\sigma$ son la media y desviación estándar de los tiempos medidos, respectivamente. Las casillas
-vacías indican que el método no encontró una solución para el problema correspondiente en menos de
-los 300 segundos de tolerancia.
+y $\sigma$ son la media y desviación estándar de los tiempos medidos, respectivamente.
 
 De manera más inmediata, tenemos que los métodos diofantinos son significativamente más rápidos.
 Además, los tiempos de terminación de los métodos diofantinos así como de la FPD están altamente
@@ -1615,7 +1643,9 @@ debemos olvidar que la FPD no encontró una solución en el 61\% de los experime
 		\bottomrule
 	\end{tabularx}
 	\end{subtable}
-	\caption{Tiempos de terminación promedio de los distintos métodos cuando varía la dimensión.}
+	\caption{Tiempos de terminación promedio de los distintos métodos cuando varía la dimensión. Las
+	casillas vacías indican que el método no encontró una solución para el problema correspondiente
+	en menos de los 300 segundos de tolerancia. }
 	\label{table:fin:mt:times}
 \end{table}
 
@@ -1650,7 +1680,8 @@ debemos olvidar que la FPD no encontró una solución en el 61\% de los experime
 		150,000 &      &       & 0.000 &       \\ \bottomrule
 	\end{tabular}
 	\caption{Coeficientes de variación en los tiempos de terminación de acuerdo a la tabla
-	\ref{table:fin:mt:times}.}
+	\ref{table:fin:mt:times}. Las casillas vacías indican que el método no encontró una solución
+	para el problema correspondiente en menos de los 300 segundos de tolerancia. }
 	\label{table:fin:mt:cv}
 \end{table}
 
@@ -1698,7 +1729,7 @@ Medimos los tiempos de terminación promedio sobre las 20 corridas. La figura
 
 \begin{figure}[hbtp]
 	\centering
-	\includegraphics[width=0.8\linewidth]{/home/tempdata/repos/thesis/static/fin/rhs/boxplot-cv.pdf}
+	\includegraphics[width=0.7\linewidth]{/home/tempdata/repos/thesis/static/fin/rhs/boxplot-cv.pdf}
 	\caption{Coeficientes de variación en los tiempos de terminación a medida que el presupuesto
 	varía.}
 	\label{fig:exp:fin:rhs:cv}
@@ -1748,7 +1779,7 @@ programas lineales enteros generales.
 
 \begin{figure}[hbtp]
 	\centering
-	\includegraphics[width=0.9\linewidth]{/home/tempdata/repos/thesis/static/fin/rhs/boxplot-cv-wbb.pdf}
+	\includegraphics[width=0.7\linewidth]{/home/tempdata/repos/thesis/static/fin/rhs/boxplot-cv-wbb.pdf}
 	\caption{Comparación en la estabilidad de Ramificación y Acotamiento al prohibir la generación
 		de cualquier tipo de corte.}
 	\label{fig:exp:fin:rhs:cv-wbb}

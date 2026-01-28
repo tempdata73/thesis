@@ -143,7 +143,7 @@ Con esto en mente, introducimos el subproblema de \eqref{formulation:lattice} co
 			& k, \\
 		\text{s.a.} \quad
 		k &\leq \eta, \\
-			A\tvec{y} &= \vec{b} - kA\vec{\nu},
+			A\tvec{y} &= \vec{b} - kA\vec{\nu} \label{subformulation:lattice:rest},
 	\end{align}
 \end{subequations}
 donde 
@@ -161,7 +161,8 @@ Observemos que para toda $k \in \Z$ se cumple
 	[H, \vec{0}] \begin{pmatrix} \inv{H}\left(\vec{b} - kA\vec{\nu}\right) \\ \tvec{y}_{n-m} \end{pmatrix}
 	= \vec{b} - kA\vec{\nu},
 \end{equation}
-lo cual sugiere definir
+comparando con la restricción \eqref{subformulation:lattice:rest} y la definición de $\tvec{y}$ en
+\eqref{eq:tvecy}, esto sugiere definir
 \begin{equation}
 	\label{eq:ym}
 	\tvec{y}_m \coloneq \inv{H}(\vec{b} - kA\vec{\nu}).
@@ -248,7 +249,7 @@ libres $\vec{s} \in \Z^{n-m-1}$:
 	=
 	\begin{pmatrix} \vec{r} \\ \vec{s} \end{pmatrix}.
 \end{equation*}
-Por lo tanto, nuestro vector $\vec{t}$ es una función afina de $\vec{s}$, es decir, $\vec{t} =
+Por lo tanto, nuestro vector $\vec{t}$ es una función afín de $\vec{s}$, es decir, $\vec{t} =
 \vec{t}(\vec{s})$. En términos del problema original \eqref{formulation:multiple}, hemos encontrado,
 hasta este punto, los vectores $\vec{x}(\vec{s}) \coloneq k^*\vec{\nu} + M\vec{t}(\vec{s})$ que
 maximizan la utilidad y que satisfacen todas las restricciones excepto, posiblemente, las de no
@@ -268,8 +269,9 @@ polinomial que lo pueda resolver.
 Por el otro lado, a lo largo de este capítulo hemos resuelto todos los problemas en tiempo
 polinomial. En efecto, obtener $M$ y $\vec{\nu}$ de \eqref{eq:mat-T} y \eqref{eq:vec-omega} se
 reduce a multiplicar números y calcular coeficientes de Bézout, al igual que máximos común
-divisores. En \cite{alex} y \cite{morris} se muestra que realizar este tipo de cálculos, así como de
-obtener las formas normales de Hermite y de Smith, son problemas acotados en tiempo polinomial.
+divisores. En \cite{knuth1}, \cite{alex} y \cite{morris} se muestra que realizar este tipo de
+cálculos, así como de obtener las formas normales de Hermite y de Smith, son problemas acotados en
+tiempo polinomial.
 
 Entonces, la única deducción posible es que el problema de determinar si el conjunto $\mathcal{S}$
 es vacío, o cuántos elementos tiene, o cuáles son los elementos que contiene, son todos problemas
@@ -340,7 +342,7 @@ deshacernos del ciclo infinito en la línea \ref{algo:mult:infloop}.
 \renewcommand{\algorithmcfname}{Algoritmo}
 
 A fin de obtener las formas normales de Hermite y de Smith de la matriz de restricciones $A \in
-\Z^{m \times n}$ de los siguiente ejemplos, el autor utilizó la librería \texttt{hsnf} de
+\Z^{m \times n}$ de los siguiente ejemplos, utilizamos la librería \texttt{hsnf} de
 Python\footnote{
 	Véase \url{https://hsnf.readthedocs.io/en/latest/index.html}.
 }.
@@ -567,12 +569,11 @@ preprocesamiento. Recordemos que el método de Ramificación y Acotamiento, en e
 necesita resolver un número exponencial de problemas relajados de \eqref{formulation:last}. Nuestro
 método, en cambio, solo necesita resolver, en el peor de los casos, dos problemas relajados.
 
-A modo de conclusión de este capítulo, al autor le gustaría mencionar que
-futuras líneas de investigación podrían estar concentradas en resolver el
-problema de la línea \ref{algo:mult:hard}. Esto se reduce a investigar sistemas
-de desigualdades lineales en los enteros. Existen tres posibilidades para estas
-investigaciones con respecto al vector de variables libres $\vec{s} \in
-\Z^{n-m-1}$:
+A modo de conclusión de este capítulo, mencionamos que futuras líneas de
+investigación podrían estar concentradas en resolver el problema de la línea \ref{algo:mult:hard}
+del pseudocódigo \ref{algo:multiple}. Esto se reduce a investigar sistemas de desigualdades lineales
+en los enteros. Existen tres posibilidades para estas investigaciones con respecto al vector de
+variables libres $\vec{s} \in \Z^{n-m-1}$:
 \begin{enumerate}
 	\item Decidir la existencia de este vector: si bien no podríamos obtener la solución entera
 		$\vec{x}^*$, sí podríamos concluir que $k^*$ es el valor óptimo de
@@ -587,7 +588,7 @@ investigaciones con respecto al vector de variables libres $\vec{s} \in
 \end{enumerate}
 
 Otra posible futura línea de investigación, más aplicada pero no por ello menos interesante, es
-desarrollar las consecuencias del teorema \ref{th:bbspeed}. Es una creencia del autor que los
+desarrollar las consecuencias del teorema \ref{th:bbspeed}. Es nuestra creencia que los
 tiempos de terminación de Ramificación y Acotamiento usando la formulación equivalente
 \eqref{formulation:lattice} serán menores que usando la formulación tradicional
 \eqref{formulation:multiple}. Para lograr esto, necesitaremos calcular rápida y eficientemente la

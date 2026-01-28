@@ -1,0 +1,122 @@
+\usepackage[T1]{fontenc}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, es-tabla, es-nodecimaldot]{babel}
+\usepackage{paperHeaderSpaces}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+
+\usepackage{subcaption}
+\usepackage{caption}
+
+\usepackage{graphicx}
+\usepackage{geometry}
+% \geometry{margin=1in}
+
+\usepackage{tikz}
+\usetikzlibrary{intersections}
+\usetikzlibrary{babel}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{fillbetween}
+
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+\usepackage{epigraph}
+\renewcommand{\epigraphsize}{\footnotesize}
+
+\usepackage{nomencl}
+\makenomenclature
+\renewcommand{\nomname}{Nomenclatura}
+\renewcommand{\pagedeclaration}[1]{\dotfill página~#1}
+\usepackage{etoolbox}
+\renewcommand\nomgroup[1]{%
+  \item[\bfseries
+  \ifstrequal{#1}{A}{Abreviaciones}{%
+  \ifstrequal{#1}{B}{Símbolos reservados}{%
+  \ifstrequal{#1}{C}{Convenciones}{}}}%
+]}
+
+% tables
+\usepackage{booktabs, tabularx, siunitx, subcaption}
+
+\sisetup{
+  round-mode=places,
+  group-separator = {\,},
+  table-number-alignment = center,
+  table-text-alignment = center
+}
+
+\usepackage[spanish,onelanguage,ruled,vlined,commentsnumbered,rightnl]{algorithm2e}
+% \RestyleAlgo{boxed}
+
+\allowdisplaybreaks
+
+% theorems
+\newtheorem{theorem}{Teorema}[chapter]
+\newtheorem{corollary}[theorem]{Corolario}
+\newtheorem{lemma}[theorem]{Lema}
+\newtheorem{prop}[theorem]{Proposición}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definición}
+
+\newtheorem{example}[theorem]{Ejemplo}
+
+\theoremstyle{remark}
+\newtheorem*{observation}{Observación}
+
+\numberwithin{theorem}{section}
+
+% custom commands
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\NIL}{\textnormal{\textsc{NIL}}}
+
+% vectors and linear algebra
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\renewcommand{\ker}[1]{\operatorname{ker}\braces{#1}}
+\newcommand{\img}{\operatorname{im}}
+\renewcommand{\vec}[1]{\boldsymbol{#1}}
+\newcommand{\inv}[1]{#1^{-1}}
+\DeclarePairedDelimiter\braket{\langle}{\rangle}
+
+% algebra
+\DeclareMathOperator{\GL}{GL}
+\newcommand{\glz}[2]{\GL_{#1}\left(#2\right)}
+\DeclareMathOperator{\orb}{orb}
+\newcommand{\uvec}[1]{\hat{\vec{#1}}}
+
+% optimization
+\DeclareMathOperator{\argmax}{arg\,max}
+
+% convex geom
+\DeclareMathOperator{\gen}{gen}
+\DeclareMathOperator{\aff}{aff}
+\DeclareMathOperator{\conv}{conv}
+
+% shortcuts
+\newcommand{\est}[1]{\hat{\vec{ #1 }}}
+\newcommand{\optilp}[1]{#1^*_{\text{PE}}}
+\newcommand{\optr}[1]{#1^*_{\text{PR}}}
+\newcommand{\braces}[1]{\lbrace #1 \rbrace}
+\newcommand{\paren}[1]{\left( #1 \right)}
+\newcommand{\tvec}[1]{\vec{\tilde{#1}}}
+\newcommand{\proy}[1]{\pi^{(#1)}}
+
+\newcommand{\clayer}[2]{H_{#1, #2}}
+\newcommand{\qlayer}[2]{\clayer{\vec{#1}}{#2/\norm{\vec{#1}}^{2}}}
+
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+
+\renewcommand{\gcd}[1]{\mathop{\mathrm{mcd}{\left\lbrace #1 \right\rbrace}}}
+\newcommand{\lcm}[1]{\mathop{\mathrm{mcm}{\left\lbrace #1 \right\rbrace}}}
