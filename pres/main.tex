@@ -112,13 +112,16 @@
 
 \frame{\titlepage}
 
-\begin{frame}{Tabla de contenidos}
-  \tableofcontents
+\begin{frame}{Sobre Ramificación y Acotamiento}
+	Utilizado para resolver programas lineales enteros o programas lineales mixtos. 
+	\begin{itemize}
+		\item Interés académico: ¿$P \subsetneq NP$?, ¿$P = NP$-completo?
+		\item Interés comercial: Nvidia, IBM, Gurobi, FICO, Artelys, Cardinal Operations, Alibaba
+			MindOpt, MOSEK,...
+	\end{itemize}
 \end{frame}
 
-\section{Contexto}
-
-\begin{frame}{Ejemplo minimal}
+\begin{frame}{Ejemplo patológico}
 	\begin{align*}
 		\max_{(x, y) \in \Z^2} \quad
 			& x - y, \\
@@ -128,7 +131,7 @@
 	\end{align*}
 \end{frame}
 
-\begin{frame}{Ejemplo minimal}
+\begin{frame}{Ejemplo patológico}
 	\begin{figure}
 		\begin{minipage}{0.45\textwidth}
 			\centering
@@ -173,7 +176,7 @@
 	\end{figure}
 \end{frame}
 
-\begin{frame}{Problema simétrico}
+\begin{frame}{Problema Simétrico}
 	\begin{align*}
 		\max_{\vec{x} \in \Z^n} \quad
 			& \vec{p}^T\vec{x}, \\ 
@@ -260,7 +263,7 @@
 	\end{stheorem}
 \end{frame}
 
-\begin{frame}{Construcción de soluciones}
+\begin{frame}{Redes e isomorfismos}
 	\begin{slemma}
 		Sea $\vec{q} \in \Z^{n}$ un vector coprimo. Entonces
 		\begin{equation*}
@@ -274,7 +277,7 @@
 	\end{slemma}
 \end{frame}
 
-\begin{frame}{Construcción de soluciones}
+\begin{frame}{Redes e isomorfismos}
 	\begin{sdefinition}
 		Un subconjunto $\Lambda$ del espacio vectorial $\paren{\R^n, +, \cdot}$ es un
 		\textbf{grupo aditivo} si
@@ -388,7 +391,7 @@
 	\end{center}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{Redes e isomorfismos}
 	Tenemos la descomposición en subredes
 	\begin{align*}
 		\Z^n =
@@ -402,7 +405,7 @@
 	\end{center}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{Órbitas e isomorfismos}
 	\begin{sdefinition}
 		La \textbf{órbita} de un vector coprimo $\vec{q} \in \Z^n$ es
 		\begin{equation*}
@@ -581,7 +584,7 @@
 	\begin{itemize}
 		\item $\vec{x}^*$ es la solución a un subproblema relajado obtenido por R\&A,
 		\item $\ceil{x_i^*}$ es la $i$-ésima entrada de la solución del siguiente subproblema con restricción añadida $x_i \geq \ceil{x_i^*}$,
-		\item $\vec{x}$ es la solución la solución de (PS) más cercana a $\vec{x}^*$,
+		\item $\vec{x}$ es la solución de (PS) más cercana a $\vec{x}^*$,
 		\item $\norm{\vec{\delta}}_{\infty} \leq 0.5$.
 	\end{itemize}
 \end{frame}
@@ -650,9 +653,150 @@
 	\end{sproblem}
 \end{frame}
 
-\section{Conclusion}
-\begin{frame}{Conclusion}
-  Summarize key takeaways.
+\begin{frame}{Múltiples restricciones (caso particular)}
+	\begin{stheorem}
+		\begin{minipage}[t]{\textwidth}
+			\vspace{-0.5\baselineskip}
+			Sea $\vec{q} \in \Z^n$ un vector coprimo, $A \in \Q^{m \times n}$ una matriz con
+			renglones linealmente independientes y $\vec{b} \in \Q^m$ un vector. Entonces los
+			siguientes dos problemas son equivalentes
+			\begin{columns}[T]
+				\column{0.48\textwidth}
+				\begin{align*}
+					\max_{x \in \mathbb{Z}^n} \quad & \vec{q}^T\vec{x}, \\
+					\text{s.a.} \quad & \vec{q}^T \vec{x} \leq \eta, \\
+								& A \vec{x} = \vec{b}, \\
+								& \vec{x} \geq \vec{0}.
+				\end{align*}
+				\column{0.48\textwidth}
+				\begin{align*}
+					\max_{(k, \vec{t}) \in \Z^n} & \quad k, \\
+					\text{s.a.} \quad & k \leq \eta, \\
+									  & A M \vec{t} = \vec{b} - k A \vec{\nu}, \\
+								& M \vec{t} \geq -k \vec{\nu}.
+				\end{align*}
+			\end{columns}
+		\end{minipage}
+	\end{stheorem}
+\end{frame}
+
+\begin{frame}{Un ejemplo}
+	\begin{minipage}[t]{\textwidth}
+		\vspace{-0.5\baselineskip}
+		\begin{columns}[T]
+			\column{0.48\textwidth}
+			\begin{align*}
+				\max_{(x, y) \in \mathbb{Z}^2} \quad & 2x + 3y \\
+				\text{s.a.} \quad & 2x + 3y \leq 25, \\
+								  & -3x + 4y \leq 4, \\
+								  & x + y \geq 7, \\
+								& x \geq 0, \\
+								& y \geq 0.
+			\end{align*}
+			\column{0.48\textwidth}
+			\begin{align*}
+				\max_{(k, t) \in \Z^2} & \quad k, \\
+				\text{s.a.} \quad & k \leq 25, \\
+								  & 4k - 11t \leq 4, \\
+								  & t \geq 7, \\
+								  & 2t \leq k, \\
+								  & 3t \geq k.
+			\end{align*}
+		\end{columns}
+	\end{minipage}
+\end{frame}
+
+
+\begin{frame}{Un ejemplo}
+	\begin{center}
+		\begin{tikzpicture}[scale=0.2]
+			% canonical basis
+			\begin{scope}[xshift=0cm]
+				\draw[thick, orange, fill=orange!10] (0.75,6.25) -- (1.18, 7.55) -- (12.5,0) -- (7,0) -- cycle;
+
+				\foreach \x in {0,...,25} {
+					\foreach \y in {0,...,15} {
+						\fill[black!60] (\x,\y) circle (1.2pt);
+					}
+				}
+				
+				\draw[->, thin, gray] (0,0) -- (25.5,0) node[right] {$x$};
+				\draw[->, thin, gray] (0,0) -- (0,15.5) node[above] {$y$};
+				\draw[->, thick, black] (0, 0) -- (6, 9) node[above] {$\vec{q} = (6, 9)$};
+
+				\fill[fill=white, draw=orange] (2, 7) circle (6pt);
+				\fill[fill=white, draw=orange] (5, 5) circle (6pt);
+				\fill[fill=white, draw=orange] (8, 3) circle (6pt);
+				\fill[fill=white, draw=orange] (11, 1) circle (6pt);
+			\end{scope}
+
+			% q \eqdef (2, 3) acting on $Z^2$:
+			\begin{scope}[xshift=30cm]
+				\draw[thick, orange, fill=orange!10] (14,7) -- (25, 12.5) -- (25,8.73) -- (20.25,7) -- cycle;
+				\foreach \x in {0,...,25} {
+					\foreach \y in {0,...,15} {
+						\fill[black!60] (\x,\y) circle (1.2pt);
+					}
+				}
+				
+				\draw[->, thin, gray] (0,0) -- (25.5,0) node[right] {$k$};
+				\draw[->, thin, gray] (0,0) -- (0,15.5) node[above] {$t$};
+				\draw[->, thick, black] (0, 0) -- (10, 0) node[above] {$(k, t) = (10, 0)$};
+
+				\fill[fill=white, draw=orange] (25, 9) circle (6pt);
+				\fill[fill=white, draw=orange] (25, 10) circle (6pt);
+				\fill[fill=white, draw=orange] (25, 11) circle (6pt);
+				\fill[fill=white, draw=orange] (25, 12) circle (6pt);
+			\end{scope}
+		\end{tikzpicture}
+	\end{center}
+\end{frame}
+
+
+\begin{frame}{Sobre los cortes de Ramificación y Acotamiento}
+	\begin{stheorem}
+		Sea $(\optr{k}, \optr{\vec{t}})$ el óptimo del problema relajado de (PE) y supongamos que
+		$\optr{k}$ no es entero. Entonces el subproblema generado al añadir la restricción $k \geq
+		\ceil{\optr{k}}$ es infactible.
+	\end{stheorem}
+\end{frame}
+
+\begin{frame}{Sobre la separabilidad del Problema Equivalente}
+	Podemos separar (PE) en un problema de maximización
+	\begin{align*}
+		\max_{k \in \Z, \tvec{y} \in \Z^n} \quad & k, \\
+		\text{s.a.} \quad & k \leq \eta, \\
+						  & A \tvec{y} = \vec{b} - kA\vec{\nu}, \\
+	\end{align*}
+	y uno de factibilidad
+	\begin{align*}
+		M\vec{t} &= \tvec{y}, \\
+		M\vec{t} &\geq -k^*\vec{\nu},
+	\end{align*}
+	donde $k^*$ es la solución del problema de maximización.
+\end{frame}
+
+\begin{frame}{Múltiples restricciones (caso general)}
+	\begin{align*}
+		\max_{\vec{x} \in \Z^n} \quad & \vec{q}^T\vec{x}, \\
+		\text{s.a.} \quad
+			& A\vec{x} = \vec{b}, \\
+			& \vec{x} \geq \vec{0}.
+	\end{align*}
+\end{frame}
+
+
+\begin{frame}{Conclusión}
+	\begin{itemize}
+		\item Clasificación de programas lineales enteros a partir de isomorfismo de redes.
+		\item Nuevas cotas superiores para el número de Frobenius.
+		\item Generalización para resolver programas lineales enteros con múltiples restricciones.
+		\item Introducción de (PE) que se deshace de subproblemas infactibles rápidamente.
+		\item Exhibición de casos patológicos de Ramificación y Acotamiento.
+		\item Medidas de eficiencia de cortes en Ramificación y Acotamiento.
+		\item Desarrollo de algoritmos basados en métodos diofantinos que superan \textbf{una
+			implementación} de Ramificación y Acotamiento en \textbf{ciertas instancias}.
+	\end{itemize}
 \end{frame}
 
 \end{document}
