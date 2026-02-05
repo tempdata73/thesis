@@ -447,11 +447,10 @@ que caracterizan a la familia de métodos.
 			& x_2 \leq 3, \\
 			& x_1, x_2 \geq 0.
 	\end{align*}
-	La región factible de este problema se muestra en la figura \ref{fig:feas} en la página
-	\pageref{fig:feas}. La solución al problema
-	relajado, cuya región factible denotamos por $S$, está dada por $\vec{x}^{(0)} \coloneq (20/7,
-	3)$. Como $x_1^{(0)} = 20/7$ no es entero, \textbf{ramificamos binariamente} para generar los
-	subproblemas con regiones factibles
+	La región factible de este problema se muestra en la figura \ref{fig:feas}. La solución al
+	problema relajado, cuya región factible denotamos por $S$, está dada por $\vec{x}^{(0)} \coloneq
+	(20/7, 3)$. Como $x_1^{(0)} = 20/7$ no es entero, \textbf{ramificamos binariamente} para generar
+	los subproblemas con regiones factibles
 	\begin{align*}
 		S_{0} &\coloneq S \cap \braces{ (x_1, x_2) \in \R^2 \vcentcolon x_1 \leq \floor{20/7} = 2}, \\
 		S_{1} &\coloneq S \cap \braces{ (x_1, x_2) \in \R^2 \vcentcolon x_1 \geq \ceil{20/7} = 3}.
@@ -480,9 +479,10 @@ que caracterizan a la familia de métodos.
 	óptima de este programa lineal entero es la única solución incumbente obtenida $\vec{x}^{(2)} =
 	(2, 1)$ con valor objetivo 7.
 \end{example}
-\begin{figure}
+
+\begin{figure}[H]
 	\centering
-	\begin{tikzpicture}[scale=1.2]
+	\begin{tikzpicture}[scale=0.9]
 		\begin{axis}[
 			axis lines=left,
 			xmin=-0.5, xmax=3.5,
@@ -529,8 +529,8 @@ $S_{01}$, no habríamos tenido una solución incumbente, así que no lo habríam
 entonces lo habríamos ramificado en otros dos subproblemas. En \cite{morrison} se recopilan avances
 en estos tres componentes que constituyen líneas de investigación abiertas.
 
-El algoritmo \ref{algo:bb2} en la página \pageref{algo:bb2} formaliza el procedimiento seguido en este
-ejemplo, a excepción de la búsqueda en anchura, pero que es posible implementar con una fila
+El algoritmo \ref{algo:bb2} en la página \pageref{algo:bb2} formaliza el procedimiento seguido en
+este ejemplo, a excepción de la búsqueda en anchura, pero que es posible implementar con una fila
 (\textit{queue}). En cuanto a los resultados teóricos que obtendremos a lo largo de esta tesis,
 supondremos que nos referimos a este algoritmo en específico cuando hagamos mención genérica de
 R\&A, y nos reservamos el calificativo de ``implementación pura'', pues es común que se enseñe esta
@@ -540,7 +540,8 @@ la fundación COIN-OR \cite{coin} para encontrar soluciones a programas lineales
 implementaciones comúnes de código abierto son HiGHS y SCIP, mientras que algunas implementaciones
 comerciales son Gurobi Optimizer, IBM ILOG CPLEX Optimizer, y Fico Xpress Solver.
 
-\begin{algorithm}[ht]
+\newpage
+\begin{algorithm}[H]
 	\LinesNumbered
 	\DontPrintSemicolon
 	\KwData{
@@ -775,9 +776,10 @@ siguiente lema.
 
 Puesto que la gran mayoría de nuestros enunciados y algoritmos dependen del parámetro
 $\eta$, tendremos que separarlos al menos en dos casos. Creemos que es prudente
-considerar solamente el caso $m > 0$, ya que los enunciados y demostraciones para
-el caso $m < 0$ son completamente análogos. Las diferencias recaen, por ejemplo, en que el orden de
-las desigualdades cambian o las funciones piso se reemplazan por funciones techo.
+considerar solamente el caso $m > 0$, ya que las demostraciones y los enunciados para
+el caso $m < 0$ son completamente análogos.
+% Las diferencias recaen, por ejemplo, en que el orden de
+% las desigualdades cambian o las funciones piso se reemplazan por funciones techo.
 
 En resumen, si $m > 0$, encontramos que las capas enteras que satisfacen la restricción
 \eqref{theory:constraint:budget} están parametrizadas por $k \in \braces{\eta, \eta - 1, \ldots}$.
@@ -791,7 +793,7 @@ ecuación $\vec{q}^T\vec{x} = k \leq \eta \leq u$, donde $u$ es el lado derecho 
 	\vec{0}$ y el lado derecho $u$ de la restricción \eqref{theory:constraint:budget} es negativo. 
 \end{theorem}
 \begin{proof}
-	$(\implies)$ Supongamos que $\vec{q} \geq \vec{0}$ y $u < 0$. Si $\vec{x} \in \Z_{\geq
+	$(\Rightarrow)$ Supongamos que $\vec{q} \geq \vec{0}$ y $u < 0$. Si $\vec{x} \in \Z_{\geq
 	\vec{0}}^n$ entonces $\vec{q}^T\vec{x} \geq 0 > u$ y por lo tanto $\vec{x}$ no es factible.
 	Luego,
 	\begin{equation*}
@@ -800,7 +802,7 @@ ecuación $\vec{q}^T\vec{x} = k \leq \eta \leq u$, donde $u$ es el lado derecho 
 	\end{equation*}
 	y el problema no es factible.
 
-	$(\impliedby)$ Procedemos por contraposición. Si $u
+	$(\Leftarrow)$ Procedemos por contraposición. Si $u
 	\geq 0$ observamos que $\vec{0} \in \Z^n$ es factible. Se debe cumplir $u < 0$. Similarmente, si
 	$q_i < 0$ para algún $i \in \lbrace 1, \ldots, n \rbrace$, encontramos que $\lceil u/q_i
 	\rceil\vec{e}_i \in \Z^n$ es factible:
@@ -812,10 +814,11 @@ ecuación $\vec{q}^T\vec{x} = k \leq \eta \leq u$, donde $u$ es el lado derecho 
 	además, como $u < 0$, concluimos que $\lceil u/q_i \rceil\vec{e}_i$ es no negativo.
 \end{proof}
 
-Debido al teorema anterior, somos capaces de determinar automáticamente si el problema
-\eqref{theory:formulation} es infactible, por lo que supondremos de ahora en adelante que es
-factible. El siguiente teorema muestra que nuestro análisis para resolver este problema debe
-dividirse en dos casos.
+% Debido al teorema anterior, somos capaces de determinar automáticamente si el problema
+% \eqref{theory:formulation} es infactible, por lo que supondremos de ahora en adelante que es
+% factible.
+El siguiente teorema muestra que nuestro análisis para resolver los problemas
+factibles debe dividirse en dos casos.
 
 \begin{theorem}
 	\label{theory:th:feasibility}
@@ -910,7 +913,7 @@ dividirse en dos casos.
 			\vec{0}$ y también $x_i > \ell_i$ para alguna $i \in \braces{1, \ldots, n}$. Por el lema
 			\ref{theory:lemma:utility} tenemos
 			\begin{equation*}
-				k = \vec{q}^T\vec{x} > \sum_{j \neq i}q_jx_j + q_i\ceil{\frac{k}{q_i}}
+				k = \vec{q}^T\vec{x} > \sum_{j \neq i}q_jx_j + q_i\ell_i = \sum_{j \neq i}q_jx_j + q_i\ceil{\frac{k}{q_i}}
 			\end{equation*}
 			y entonces
 			\begin{equation*}
@@ -920,7 +923,7 @@ dividirse en dos casos.
 			no negativos. Así pues, obtenemos una contradicción y la contención anterior es cierta.
 			De esta manera, obtenemos
 			\begin{equation*}
-				\paren{\qlayer{q}{k} \cap \R^n_{\geq \vec{0}}} \cap \Z^n_{\geq \vec{0}} = P_k
+				\paren{\qlayer{q}{k} \cap \R^n_{\geq \vec{0}}} \cap \Z^n = P_k
 				\subseteq \paren{\prod_{i = 1}^{n} [0, \ell_i]} \cap \Z^n = \prod_{i = 1}^{n}
 				\left( [0, \ell_i] \cap \Z \right).
 			\end{equation*}
@@ -1310,8 +1313,7 @@ También definimos la matriz $M \in \Z^{n \times (n - 1)}$ a través de
 		0, &\quad \text{e.o.c.}
 	\end{cases}
 \end{equation}
-Sustituyendo estas definiciones en \eqref{eq:x:i} y \eqref{eq:x:last} obtenemos la siguiente
-proposición original.
+Sustituyendo en \eqref{eq:x:i} y \eqref{eq:x:last} obtenemos la siguiente proposición original.
 \begin{prop}
 	\label{prop:xint}
 	Sea $\vec{q} \in \Z^n$ un vector con entradas coprimas y última entrada no nula. Entonces todas
@@ -1431,10 +1433,10 @@ $\vec{q}$ y no de $\vec{x}$.
 	\begin{equation*}
 		M_{n-1, n-1} = \frac{q_n}{\prod_{j=1}^{n-1}g_j} \neq 0.
 	\end{equation*}
-	Se sigue que las columnas de $M$ son linealmente
-	independientes, y entonces su imagen tiene dimensión $n - 1$. Por lo tanto, $M^T$ tiene $n - 1$
-	renglones linealmente independientes y entonces $\dim
-	\ker{M^T} = 1$, así que basta mostrar que $\vec{q} \in \ker{M^T}$.
+	Se sigue que las $n - 1$ columnas de $M$ son linealmente independientes.
+	Por lo tanto, $M^T$ tiene $n - 1$ renglones linealmente independientes y
+	entonces $\dim \ker{M^T} = 1$, así que basta mostrar que $\vec{q} \in
+	\ker{M^T}$.
 
 	Sea $\vec{x} \in \Z^n$. Por el teorema \ref{phase-1:th:cover}, existe una capa entera
 	$\qlayer{q}{k}$ que contiene a $\vec{x}$. Así, por el lema
@@ -1568,7 +1570,7 @@ vector $\vec{x} \in \Lambda_h$ es una solución de la ecuación lineal diofantin
 $\vec{q}^T\vec{x} = 0$.
 
 Por el teorema \ref{th:lattice}, encontramos que $\Z^n$ se puede descomponer como la suma directa de
-sus subredes $\Lambda_p$ y $\Lambda_h$, es decir, $\Z^n \cong \Lambda_p \oplus \Lambda_h$. De esta
+sus subredes $\Lambda_p$ y $\Lambda_h$, es decir, $\Z^n = \Lambda_p \oplus \Lambda_h$. De esta
 manera, tenemos que todo vector $\vec{x} \in \Z^n$ se puede descomponer de la forma $\vec{x} =
 \vec{x}_p + \vec{x}_h$, donde $\vec{x}_p \in \Lambda_p$ por lo que $\vec{q}^T\vec{x}_p = k$ para
 alguna $k$ entera y, similarmente, $\vec{x}_h \in \Lambda_h$ lo que implica que $\vec{q}^T\vec{x}_h
@@ -1613,7 +1615,12 @@ pregunta.
 	Si $\tvec{q} = P\vec{q}$ no es cierto que $\tilde{M} = PM$. Por ejemplo, consideremos el vector
 	$\vec{q} \coloneq (1, 1, -2)^T$ y la matriz de permutación
 	\begin{equation*}
-		P \coloneq [ \vec{e}_1 \mid \vec{e}_3 \mid \vec{e}_2 ],
+		P \coloneq \begin{pmatrix}
+			1 & 0 & 0 \\
+			0 & 0 & 1 \\
+			0 & 1 & 0 \\
+		\end{pmatrix},
+		% P \coloneq [ \vec{e}_1 \mid \vec{e}_3 \mid \vec{e}_2 ],
 	\end{equation*}
 	de donde obtenemos $\tvec{q} = (1, -2, 1)^T$. Calculamos de \eqref{eq:mat-T} que
 	\begin{equation*}
@@ -1670,11 +1677,11 @@ coprimo en vez del vector esencialmente entero $\vec{p}$ en el problema original
 	$\tvec{q} \in \orb(\vec{q})$ si y solo si $\orb(\tvec{q}) = \orb(\vec{q})$.
 \end{lemma}
 \begin{proof}
-	$(\implies)$ Supongamos que $\orb(\tvec{q}) = \orb(\vec{q})$. Debemos mostrar que $\tvec{q} \in
+	$(\Rightarrow)$ Supongamos que $\orb(\tvec{q}) = \orb(\vec{q})$. Debemos mostrar que $\tvec{q} \in
 	\orb(\tvec{q})$, lo cual se cumple puesto que $\tvec{q} = I_n\tvec{q}$ y la
 	matriz identidad $I_n \in \Z^{n \times n}$ es una matriz de permutación.
 
-	$(\impliedby)$ Supongamos que $\tvec{q} \in \orb(\vec{q})$, luego existe una matriz de permutación $P \in \Z^{n\times
+	$(\Leftarrow)$ Supongamos que $\tvec{q} \in \orb(\vec{q})$, luego existe una matriz de permutación $P \in \Z^{n\times
 	n}$ tal que $\tvec{q} = P\vec{q}$. Ahora bien, sea $\vec{\hat{q}} \in \orb(\tvec{q})$, por lo
 	que existe una matriz de permutación $P' \in \Z^{n\times n}$ tal que se satisface $\vec{\hat{q}} = P'\tvec{q}
 	= (P'P)\vec{q}$. Como el producto de matrices de permutación también es una matriz de

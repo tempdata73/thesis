@@ -38,13 +38,14 @@ calcular en tiempo polinomial la cota superior \eqref{eq:eta-limit} de $F(q_1, \
 $n \in \Z_{> 0}$ fija y para cualesquiera $q_1, \ldots, q_n$.
 
 Finalmente, en el teorema \ref{th:multeq} se demuestra que la formulación \eqref{formulation:lattice} es
-equivalente al problema \eqref{formulation:multiple}. Si comparamos las respectivas restricciones
-\eqref{lattice:c-layer} y \eqref{formulation:multiple:constraint:budget}, encontramos que ambas son
-ortogonales al vector objetivo, no obstante, la primera es mucho más fácil de controlar que la
-segunda, pues esta ortogonalidad ocurre a lo largo de un solo eje y no de muchos. En el teorema
-\ref{th:bbspeed} se muestra que, en efecto, el algoritmo de Ramificación y Acotamiento podría
-beneficiarse al utilizar esta formulación equivalente, pues automáticamente tenemos que uno de los
-subproblemas es infactible.
+equivalente al problema \eqref{formulation:multiple}.
+% Si comparamos las respectivas restricciones
+% \eqref{lattice:c-layer} y \eqref{formulation:multiple:constraint:budget}, encontramos que ambas son
+% ortogonales al vector objetivo, no obstante, la primera es mucho más fácil de controlar que la
+% segunda, pues esta ortogonalidad ocurre a lo largo de un solo eje y no de muchos.
+En el teorema \ref{th:bbspeed} se muestra que el algoritmo de Ramificación y Acotamiento podría
+beneficiarse al utilizar esta formulación equivalente, pues podemos priorizar ramificaciones en $k$
+para deshacernos rápidamente de subproblemas infactibles.
 
 Ahora presentamos problemas abiertos que fueron descubiertos a lo largo de esta tesis y que podrían
 ser de interés para futuras líneas de investigación:
@@ -60,9 +61,9 @@ ser de interés para futuras líneas de investigación:
 		Es cierto que podemos obtener distintas cotas inferiores si centramos la bola inscrita en
 		$\sigma$ en distintos puntos de este símplice. Mostrar o refutar que el baricentro
 		$\est{\sigma}$ genera la menor de estas cotas.
-	\item Dada una distribución uniforme discreta $U_{\braces{1, \ldots, N}}$ sobre las entradas del
-		vector coprimo $\vec{q}$, determinar la complejidad promedio de recorrer el árbol generado
-		por el procedimiento descrito en la subsección \ref{subsec:fin:details}.
+	\item Realizar un análisis detallado de la cota superior dada en el lado derecho de
+		\eqref{eq:eta-limit} para el número de Frobenius $F(q_1, \ldots, q_n ; n)$ y compararla con
+		las cotas establecidas en el capítulo 3 de \cite{frob}.
 	\item Construir un algoritmo que resuelva uno de los tres problemas descritos en la conclusión del capítulo
 		4.
 	\item Realizar experimentos numéricos que comparen los tiempos de terminación de Ramificación y

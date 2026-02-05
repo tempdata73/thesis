@@ -36,20 +36,20 @@ renglones linealmente independientes y sea $\vec{b} \in \Q^m$ un vector. Conside
 	\end{align}
 \end{subequations}
 
-\begin{observation}
-	En contraste con el primer caso del teorema \ref{theory:th:feasibility}, no podemos asegurar que
-	la solución se encuentre sobre la $\eta$-ésima capa entera $\qlayer{q}{\eta}$ aún cuando
-	$\vec{q}$ tenga una entrada negativa. En efecto, si $A = \vec{q}^T$ y $\vec{b} = \eta - 1$, la
-	restricción \eqref{formulation:multiple:constraint:budget} se vuelve redundante y obtenemos un
-	problema similar a \eqref{theory:formulation}. En caso de que $\vec{q}$ tenga al menos una
-	entrada negativa, el primer caso del teorema \ref{theory:th:feasibility} nos indica que el
-	problema es factible y que la solución se encuentra en la $(\eta - 1)$-ésima capa entera.
-\end{observation}
+% \begin{observation}
+% 	En contraste con el primer caso del teorema \ref{theory:th:feasibility}, no podemos asegurar que
+% 	la solución se encuentre sobre la $\eta$-ésima capa entera $\qlayer{q}{\eta}$ aún cuando
+% 	$\vec{q}$ tenga una entrada negativa. En efecto, si $A = \vec{q}^T$ y $\vec{b} = \eta - 1$, la
+% 	restricción \eqref{formulation:multiple:constraint:budget} se vuelve redundante y obtenemos un
+% 	problema similar a \eqref{theory:formulation}. En caso de que $\vec{q}$ tenga al menos una
+% 	entrada negativa, el primer caso del teorema \ref{theory:th:feasibility} nos indica que el
+% 	problema es factible y que la solución se encuentra en la $(\eta - 1)$-ésima capa entera.
+% \end{observation}
 
 Supongamos que el problema \eqref{formulation:multiple} es factible. Debido a la restricción
 presupuestaria \eqref{formulation:multiple:constraint:budget}, sabemos que la solución se encuentra
-en alguna capa entera $\qlayer{q}{k}$ con parámetro entero $k \leq \eta$. Esto motiva el siguiente
-resultado.
+en alguna capa entera $\qlayer{q}{k}$ con parámetro entero $k \leq \eta$.
+% Esto motiva el siguiente resultado.
 
 \begin{theorem}
 	\label{th:multeq}
@@ -69,13 +69,12 @@ resultado.
 	\end{subequations}
 \end{theorem}
 \begin{proof}
-	Por el teorema \ref{th:lattice} y la discusión que le sucede, sabemos que la transformación
-	lineal
+	Por el teorema \ref{th:lattice} sabemos que la transformación lineal
 	\begin{align*}
 		(k, \vec{t}) &\mapsto \vec{x} \coloneq k\vec{\nu} + M\vec{t}
 	\end{align*}
-	es un isomorfismo entre las redes $\Lambda_p \oplus \Lambda_h$ definidas en \eqref{eq:dec} y
-	$\Z^n$. Así, tenemos
+	es una descomposición de $\Z^n$ entre las redes $\Lambda_p \oplus \Lambda_h$ definidas en
+	\eqref{eq:dec}. Por consiguiente,
 	\begin{align*}
 		A\vec{x} = \vec{b} &\iff AM\vec{t} = \vec{b} - kA\vec{\nu}, \\
 		\vec{x} \geq \vec{0} &\iff M\vec{t} \geq -k\vec{\nu},
@@ -93,24 +92,29 @@ resultado.
 	y entonces $(k, \vec{t})$ es factible. Como $\vec{x}$ fue arbitrario, se sigue que la solución
 	del problema (\ref{formulation:multiple}) es una cota inferior del problema
 	\eqref{formulation:lattice}. La demostración de que la solución de \eqref{formulation:lattice}
-	es una cota inferior de \eqref{formulation:multiple} es análoga usando el mismo isomorfismo.
+	es una cota inferior de \eqref{formulation:multiple} es análoga.
 
-	Finalmente, supongamos que $(k, \vec{t}) \in \Z^n$ es solución de \eqref{formulation:lattice}.
-	Si existe $\tvec{x}$ factible para \eqref{formulation:multiple} con utilidad $\vec{q}^T\tvec{x}
-	= \tilde{k}$ estrictamente mayor, entonces consideramos ($\tilde{k}, \tvec{t})$ tal que
-	$\tvec{x} = \tilde{k}\vec{\nu} + M\tvec{t}$. Este vector también es factible con utilidad $k <
-	\tilde{k} \leq \eta$, y entonces $(k, \vec{t})$ no era la solución de
+	Ahora mostramos por contradicción que podemos recuperar la solución de un problema a partir de
+	la solución del otro. Supongamos que $(k, \vec{t}) \in \Z^n$ es solución de
+	\eqref{formulation:lattice}. Si existe $\tvec{x}$ factible para \eqref{formulation:multiple} con
+	utilidad $\vec{q}^T\tvec{x} = \tilde{k}$ estrictamente mayor, entonces consideramos ($\tilde{k},
+	\tvec{t})$ tal que $\tvec{x} = \tilde{k}\vec{\nu} + M\tvec{t}$. Este vector también es factible
+	con utilidad $k < \tilde{k} \leq \eta$, y entonces $(k, \vec{t})$ no era la solución de
 	\eqref{formulation:lattice}. Obtenemos una contradicción.
 \end{proof}
 
-Al inicio de esta tesis mencionamos que las políticas de poda de Ramificación y Acotamiento operan
-ineficientemente cuando el vector objetivo es ortogonal a una de sus restricciones. Observemos
-en los problemas \eqref{theory:formulation} y \eqref{formulation:multiple} que el vector objetivo
-$\vec{q}$ es ortogonal a las restricciones presupuestarias \eqref{theory:constraint:budget} y
-\eqref{formulation:multiple:constraint:budget}. Esto también es cierto para el problema
-equivalente \eqref{formulation:lattice}, pues el vector objetivo $k\vec{e}_1 \in \Z^n$ es ortogonal
-a la restricción \eqref{lattice:c-layer}. A pesar de lo anterior, este problema equivalente induce a
-que las políticas de poda sean más eficientes.
+% Al inicio de esta tesis mencionamos que las políticas de poda de Ramificación y Acotamiento operan
+% ineficientemente cuando el vector objetivo es ortogonal a una de sus restricciones. Observemos
+% en los problemas \eqref{theory:formulation} y \eqref{formulation:multiple} que el vector objetivo
+% $\vec{q}$ es ortogonal a las restricciones presupuestarias \eqref{theory:constraint:budget} y
+% \eqref{formulation:multiple:constraint:budget}. Esto también es cierto para el problema
+% equivalente \eqref{formulation:lattice}, pues el vector objetivo $k\vec{e}_1 \in \Z^n$ es ortogonal
+% a la restricción \eqref{lattice:c-layer}.
+
+Este problema equivalente induce a que las políticas de poda en Ramificación y Acotamiento sean más
+eficientes. En efecto, la consecuencia principal del siguiente teorema es que siempre es mejor
+priorizar ramificaciones en $k$ puesto que eliminamos de manera inmediata subproblemas
+infactibles.
 \begin{theorem}
 	\label{th:bbspeed}
 	Sea $(\optr{k}, \optr{\vec{t}})$ el óptimo del problema relajado de \eqref{formulation:lattice}
@@ -125,9 +129,6 @@ que las políticas de poda sean más eficientes.
 	problemas de maximización el valor óptimo de un problema es una cota superior del valor óptimo
 	de cualesquiera de sus subproblemas.
 \end{proof}
-Debido a este teorema, siempre es mejor priorizar ramificaciones en $\optr{k}$ puesto que nos
-deshacemos de manera inmediata subproblemas infactibles.
-
 A continuación desacoplamos el problema \eqref{formulation:lattice} en un subproblema de
 maximización y en otro de factibilidad. Supongamos, sin pérdida de generalidad, que las entradas de
 $A$ y $\vec{b}$ son enteras. En el capítulo 2 de \cite{morris} es introducida la forma normal de
@@ -231,9 +232,9 @@ $n - m - 1$ son cero. Si multiplicamos $S$ por la izquierda en ambos lados de la
 \begin{equation}
 	\label{eq:sum}
 	D\inv{T}\begin{pmatrix} \vec{t} \\ \tvec{y}_{n-m} \end{pmatrix}
-	= SU_m\tvec{y}_{m}.
+	= SU_m\tvec{y}_{m} \eqcolon \vec{z}.
 \end{equation}
-Si $d_i$ no divide a $(SU_m\tvec{y}_{m})_i$ para alguna $i \in \lbrace 1, \ldots, n \rbrace$,
+Si $D_{ii}$ no divide a $z_i$ para alguna $i \in \lbrace 1, \ldots, n \rbrace$,
 encontramos que la primera ecuación del subproblema \eqref{subformulation:feasibility} no tiene
 solución en los enteros, lo que implica que la elección de $k^*$ fue la incorrecta para asegurar
 soluciones enteras a este subproblema. De ser este el caso, redefinimos nuestro conjunto de
@@ -241,9 +242,9 @@ factibilidad $\mathcal{F}$ (ver \eqref{eq:feas-set}) como $\mathcal{F} \leftarro
 \setminus \braces{k^*}$. Si $\mathcal{F}$ ahora es vacío, entonces \eqref{formulation:lattice} es
 infactible, y en caso contrario escogemos el nuevo elemento maximal de $\mathcal{F}$ y repetimos el proceso.
 
-Supongamos, pues, que $d_i \mid (SU_m\tvec{y}_{m})_i$ para todo $i \in \lbrace 1, \ldots,
-n\rbrace$, por lo que obtenemos $n$ soluciones enteras $\vec{r} \in \Z^n$ y $n - m - 1$ variables
-libres $\vec{s} \in \Z^{n-m-1}$:
+Supongamos, pues, que $D_{ii} \mid z_i$ para todo $i \in \lbrace 1, \ldots, n\rbrace$, por lo que
+obtenemos un vector $\vec{r} \in \Z^n$ de soluciones enteras con $r_i \coloneq z_i / D_{ii}$ y otro
+vector $\vec{s} \in \Z^{n-m-1}$ de variables libres:
 \begin{equation*}
 	\inv{T}\begin{pmatrix} \vec{t} \\ \tvec{y}_{n-m} \end{pmatrix}
 	=
@@ -255,7 +256,7 @@ hasta este punto, los vectores $\vec{x}(\vec{s}) \coloneq k^*\vec{\nu} + M\vec{t
 maximizan la utilidad y que satisfacen todas las restricciones excepto, posiblemente, las de no
 negatividad.
 
-Consideremos el conjunto de vectores $\vec{s} \in \Z^{n-m-1}$ que inducen a que $\vec{t}(\vec{s})$
+Consideremos el conjunto de vectores $\vec{s} \in \Z^{n-m-1}$ que obligan a que $\vec{t}(\vec{s})$
 satisfaga \eqref{subf:feas:ineq}:
 \begin{equation*}
 	\mathcal{S} \coloneq \lbrace \vec{s} \in \Z^{n-m-1} \vcentcolon M\vec{t}(\vec{s}) \geq -k^*\vec{\nu} \rbrace
@@ -282,21 +283,20 @@ factible resultante es un semirrayo o un segmento de línea. Al momento de escog
 capa entera, estamos agregando la ecuación $k = k^*$, con lo que obtenemos un sistema lineal entero
 de $n$ ecuaciones con $n$ incógnitas, y entonces la solución es única. Resta verificar que esta
 solución es entera y satisface \eqref{subf:feas:ineq}. Este caso se ilustra en el ejemplo
-\ref{ex:two-var}.
+\ref{ex:two-var}. En segundo lugar, si $m = n - 2$, obtenemos un solo parámetro libre $s \in \Z$,
+con lo que podemos determinar rápidamente la existencia o inexistencia de un conjunto de
+factibilidad en $s$ que obliga a que $\vec{t}(s)$ satisfaga \eqref{subf:feas:ineq}. Este caso se
+ilustra en el ejemplo \ref{ex:three-var}.
 
-En segundo lugar, si $m = n - 2$, obtenemos un solo parámetro libre $s \in \Z$, con lo que podemos
-determinar rápidamente la existencia o inexistencia de un conjunto de factibilidad en $s$ que induce
-a que $\vec{t}(s)$ satisfaga \eqref{subf:feas:ineq}. Este caso se ilustra en el ejemplo
-\ref{ex:three-var}.
-
-A modo de resumen, mostramos en el pseudocódigo \ref{algo:multiple} (pág.~\pageref{algo:multiple})
-la forma de resolver problemas del tipo \eqref{formulation:lattice}. Por el teorema \ref{th:multeq},
-este método también resuelve problemas del tipo \eqref{formulation:multiple}. Después de presentar
-los ejemplos \ref{ex:two-var} y \ref{ex:three-var}, mostramos una manera con la cual podemos
-deshacernos del ciclo infinito en la línea \ref{algo:mult:infloop}.
+A modo de resumen, mostramos en el pseudocódigo \ref{algo:multiple} en la página
+\pageref{algo:multiple} la forma de resolver problemas del tipo \eqref{formulation:lattice}. Por el
+teorema \ref{th:multeq}, este método también resuelve problemas del tipo
+\eqref{formulation:multiple}. Después de presentar los ejemplos \ref{ex:two-var} y
+\ref{ex:three-var}, mostramos una manera con la cual podemos deshacernos del ciclo infinito en la
+línea \ref{algo:mult:infloop} de este pseudocódigo.
 
 \renewcommand{\algorithmcfname}{Pseudocódigo}
-\begin{algorithm}[ht]
+\begin{algorithm}[H]
 	\LinesNumbered
 	\KwData{
 		Vector coprimo $\vec{q} \in \Z^n$, $\eta \in \Z$, $A \in \Z^{m \times n}$ y $\vec{b} \in
@@ -322,14 +322,14 @@ deshacernos del ciclo infinito en la línea \ref{algo:mult:infloop}.
 		$\vec{z} \leftarrow SU_m\tvec{y}_m$\; \label{algo:mult:z}
 		$\vec{r} \leftarrow \vec{0}_n$\;
 		\For{$i \leftarrow 1$ \KwTo $n$}{
-			\If{$D_{ii} \nmid z_i$}{
+			\If{$D_{ii}$ \textnormal{no divide a} $z_i$}{
 				$k \leftarrow k - 1$\;
 				ir a la línea \ref{algo:mult:infloop}\;
 			}
 			$r_i \leftarrow z_i / D_{ii}$\;
 		}
 		$(\vec{t}(\vec{s}), \tvec{y}_{n-m}(\vec{s})) \leftarrow T(\vec{r}, \vec{s})^T$\; \label{algo:mult:free}
-		\If{existe $\vec{s}$ tal que $M\vec{t}(\vec{s}) \geq -k\vec{\nu}$\label{algo:mult:hard}}{
+		\If{\textnormal{existe} $\vec{s}$ \textnormal{tal que} $M\vec{t}(\vec{s}) \geq -k\vec{\nu}$\label{algo:mult:hard}}{
 			$\vec{x}^* \leftarrow k\vec{\nu} + M\vec{t}(\vec{s})$\;
 			\Return{$\vec{x}^*$}\;
 		}
@@ -341,7 +341,8 @@ deshacernos del ciclo infinito en la línea \ref{algo:mult:infloop}.
 \end{algorithm}
 \renewcommand{\algorithmcfname}{Algoritmo}
 
-A fin de obtener las formas normales de Hermite y de Smith de la matriz de restricciones $A \in
+\newpage
+Para calcular las formas normales de Hermite y de Smith de la matriz de restricciones $A \in
 \Z^{m \times n}$ de los siguiente ejemplos, utilizamos la librería \texttt{hsnf} de
 Python\footnote{
 	Véase \url{https://hsnf.readthedocs.io/en/latest/index.html}.
@@ -387,7 +388,7 @@ Python\footnote{
 		= \begin{pmatrix} 22 \\ -33 \end{pmatrix}.
 	\end{equation*}
 
-	Observemos que $D_{22} \nmid z_2$, y entonces el subproblema \eqref{subformulation:feasibility}
+	Observemos que $D_{22}$ no divide a $z_2$, y entonces el subproblema \eqref{subformulation:feasibility}
 	no es factible para la elección de $k^* = 12$. Escogemos el segundo elemento de $\mathcal{F}$
 	más grande, con lo que tenemos $k^* = 11$. Siguiendo con el mismo procedimiento, encontramos
 	ahora que $\vec{z} = (16, -24)$. En este caso, la diagonal de $D$ sí divide, elemento a elemento,
@@ -417,6 +418,7 @@ Python\footnote{
 	\eqref{formulation:lattice}. Por el teorema \ref{th:multeq}, concluimos que $(x^*, y^*) = (5,
 	2)$ es el óptimo de \eqref{formulation:multiple}.
 \end{example}
+\newpage
 \begin{example}
 	\label{ex:three-var}
 	Ahora consideremos el problema con $n = 3$ variables y $m = 1$ restricciones de igualdad
@@ -481,10 +483,9 @@ Python\footnote{
 		s\begin{pmatrix} 1 \\ 0 \\ -1 \end{pmatrix} \geq
 		\begin{pmatrix} -5 \\ 0 \\ 0 \end{pmatrix},
 	\end{equation*}
-	de donde se sigue inmediatamente que $s \in \lbrace -5, -4, \ldots, 0 \rbrace$. Sustituyendo
-	cada posible valor de $s$ en $\vec{t}(s)$ y transformando a $\vec{x}^*(s) = k^*\vec{\nu} +
-	M\vec{t}(s)$,
-	encontramos que
+	de donde se sigue inmediatamente que $-5 \leq s \leq 0$. Sustituyendo
+	cada valor entero de $s$ en $\vec{t}(s)$ y transformando a $\vec{x}^*(s) = k^*\vec{\nu} +
+	M\vec{t}(s)$, tenemos que
 	\begin{equation*}
 		\left\lbrace
 			\begin{pmatrix} 0 \\ 5 \\ 5 \end{pmatrix},
@@ -567,7 +568,7 @@ capaces de resolver rápidamente problemas lineales del estilo \eqref{eq:last:bo
 parte de calcular los valores $\tau$ y $\eta$ puede ser considerada como una parte de
 preprocesamiento. Recordemos que el método de Ramificación y Acotamiento, en el peor de los casos,
 necesita resolver un número exponencial de problemas relajados de \eqref{formulation:last}. Nuestro
-método, en cambio, solo necesita resolver, en el peor de los casos, dos problemas relajados.
+método, en cambio, solo necesita resolver dos problemas relajados.
 
 A modo de conclusión de este capítulo, mencionamos que futuras líneas de
 investigación podrían estar concentradas en resolver el problema de la línea \ref{algo:mult:hard}

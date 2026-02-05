@@ -157,59 +157,12 @@ El siguiente lema fortalece nuestros resultados al generalizarlo para todo lado 
 En la práctica es mejor usar la relación de recurrencia \eqref{eq:recurrence} y ``construir'' las
 entradas $x_i$ al mismo tiempo que definimos $t_i$ de manera que satisfaga \eqref{eq:param-lb} y
 \eqref{eq:feasible-param:collapsed}. Si procedemos de esta forma no tenemos que encontrar primero
-$\vec{\nu}$ y $M$, determinar $\vec{t}$ y luego recuperar $\vec{x}$.
-
-El algoritmo \ref{algo:inf} (pág.~\pageref{algo:inf}) muestra aquel procedimiento constructivo.
-Para ello, suponemos la existencia de una subrutina \texttt{Bezout} que, como su nombre lo indica,
-calcula los coeficientes de Bézout entre dos enteros. Reiteramos, así como lo hicimos en la
-sección \ref{section:number-theory}, que estos coeficientes se pueden calcular por medio del
-algoritmo extendido de Euclides.
-
-\begin{algorithm}[ht]
-	\LinesNumbered
-	\DontPrintSemicolon
-	\SetKwProg{Fn}{Fn}{\string:}{}
-	\SetKwFunction{Bezout}{Bezout}
-	\SetKwFunction{NonNegativeIntSol}{NonNegativeIntSolInf}
-		\KwData{\\
-			$\vec{q} \in \Z^n$ con entradas coprimas no nulas y tal que $q_{n-1} < 0 < q_n$. \\
-			$\eta \in \Z_{\geq 0}$.
-			}
-		\KwResult{\\
-			$\vec{x} \in \Z^n_{\geq \vec{0}}$ tal que $\vec{q}^T\vec{x} = \eta$.
-		}
-		\Begin{
-			$\vec{x} \leftarrow \vec{0}$\;
-			$\omega_1 \leftarrow \eta$\;
-			$p \leftarrow 1$\;
-			\For{$i \leftarrow 1$ \KwTo $n - 2$\label{alg:def:inf:loop}}{
-				$g_{i+1} \leftarrow \gcd{q_{i+1} / p, \ldots, q_n / p}$\quad\tcp*[h]{ecuación
-				\eqref{dummy:next-g}}\; \label{alg:def:inf:g}
-				$x_i', \omega_{i+1}' \leftarrow$ \Bezout{$q_i / p$, $g_{i+1}$}\; \label{alg:def:inf:bez}
-				$t_i \leftarrow \ceil{-\omega_i x_i' / g_{i+1}}$\quad\tcp*[h]{ecuación
-				\eqref{eq:param-lb}}\; \label{alg:def:inf:t}
-				\tcp*[h]{ecuación \eqref{eq:recurrence}}\;
-				$x_i \leftarrow \omega_i x_i' + g_{i+1}t_i$\; \label{alg:def:inf:x}
-				$\omega_{i+1} \leftarrow \omega_i \omega_{i+1}' - q_i t_i / p$\; \label{alg:def:inf:w}
-				\tcp*[h]{actualizar producto}\;
-				$p \leftarrow pg_{i+1}$\;
-			}
-
-			$x_{n-1}', x_n' \leftarrow$ \Bezout{$q_{n-1} / p$, $q_n / p$}\; \label{alg:def:inf:lastw}
-			\tcp*[h]{ecuación \eqref{eq:lr-bounds}}\;
-			$b_1 \leftarrow -\omega_{n-1} x_{n-1}' \cdot p/ q_n$\;
-			$b_2 \leftarrow \omega_{n-1} x_n' \cdot p/ q_{n-1}$\;
-			$t_{n-1} \leftarrow \ceil{\max\lbrace b_1, b_2\rbrace}$\quad\tcp*[h]{ecuación
-			\eqref{eq:feasible-param:collapsed}}\;
-			\tcp*[h]{ecuación \eqref{eq:last-solution}}\;
-			$x_{n-1} \leftarrow \omega_{n-1}x_{n-1}' + q_nt_{n-1} / p$\;
-			$x_{n} \leftarrow \omega_{n-1}x_{n}' - q_{n-1}t_{n-1} / p$\;
-
-			\Return{$\vec{x}$}\;
-		}
-	\caption{\texttt{NonNegativeIntSolInf}}
-	\label{algo:inf}
-\end{algorithm}
+$\vec{\nu}$ y $M$, determinar $\vec{t}$ y luego recuperar $\vec{x}$. El algoritmo \ref{algo:inf} en
+la página \pageref{algo:inf} muestra este procedimiento constructivo. Para ello, suponemos la
+existencia de una subrutina \texttt{Bezout} que, como su nombre lo indica, calcula los coeficientes
+de Bézout entre dos enteros. Reiteramos, así como lo hicimos en la sección
+\ref{section:number-theory}, que estos coeficientes se pueden calcular por medio del algoritmo
+extendido de Euclides.
 
 \begin{lemma}
 	\label{lemma:alg:inf:correct}
@@ -240,14 +193,99 @@ por
 \end{equation*}
 es entero, no negativo, y también satisface $\vec{q}^T\vec{x} = \eta$.
 
-El algoritmo \ref{algo:inf:ext} (pág.~\pageref{algo:inf:ext}) extiende el algoritmo \ref{algo:inf}
-en el sentido que incorpora esta forma de manejar las entradas nulas de $\vec{q}$. Además, modifica
-el vector $\tvec{q}$ de manera que aseguramos que su penúltima entrada es negativa y su última
-entrada es positiva, por lo que podemos deshacernos de este supuesto. Suponemos la existencia de las
-subrutinas \texttt{length} y \texttt{swap} (véase capítulos 1 y 2 de \cite{knuth1}), las cuales
-determinan la dimensión de un vector $\vec{q}$ y permutan dos de sus entradas, respectivamente.
+El algoritmo \ref{algo:inf:ext} en la página \pageref{algo:inf:ext} extiende el algoritmo
+\ref{algo:inf} en el sentido que incorpora esta forma de manejar las entradas nulas de $\vec{q}$.
+Además, modifica el vector $\tvec{q}$ de manera que aseguramos que su penúltima entrada es negativa
+y su última entrada es positiva, por lo que podemos deshacernos de este supuesto. Suponemos la
+existencia de las subrutinas \texttt{length} y \texttt{swap} (véase capítulos 1 y 2 de
+\cite{knuth1}), las cuales determinan la dimensión de un vector $\vec{q}$ y permutan dos de sus
+entradas, respectivamente.
 
-\begin{algorithm}[ht]
+\begin{theorem}
+	\label{th:alg:inf}
+	El algoritmo \ref{algo:inf:ext} en la página \pageref{algo:inf:ext} es correcto.
+\end{theorem}
+\begin{proof}
+	Primero mostramos que el vector $\tvec{q}$ satisface las hipótesis del algoritmo
+	\ref{algo:inf}. Por definición, en la línea \ref{alg:def:inf:tilde-q}, tenemos que ninguna
+	entrada de $\tvec{q}$ es nula.
+
+	Recordemos de la definición \ref{theory:def:rational} que, como $\vec{q}$ es el múltiplo coprimo
+	de un vector esencialmente entero $\vec{p}$, su primera entrada no nula es positiva. Así, es
+	cierto que $\tilde{q}_1 > 0$. A partir de la transposición en la línea \ref{alg:subr:swap1}
+	encontramos que $\tilde{q}_m > 0$.
+
+	Del ciclo que comienza en la línea \ref{alg:inf:loop} recuperamos el primer índice $j$ tal que
+	$\tilde{q}_j < 0$ y lo transponemos con la $(m - 1)$-ésima entrada de $\tvec{q}$ en la línea
+	\ref{alg:subr:swap3}, de manera que obtenemos $\tilde{q}_{m-1} < 0$.
+
+	Con los tres puntos anteriores, encontramos que el vector $\tvec{q}$ satisface las
+	hipótesis del algoritmo \ref{algo:inf} y por lo tanto el vector $\tvec{x}$ es no negativo
+	y satisface la ecuación lineal diofantina $\tvec{q}^T\tvec{x} = \eta$.
+
+	Las siguientes dos líneas se encargan de invertir las transposiciones hechas previamente.
+	Finalmente, en el ciclo que comienza en la línea \ref{alg:inf:loop2} insertamos en $\vec{x}$ los
+	valores de $\tvec{x}$ donde las entradas de $\vec{q}$ son no nulas. En otro caso, donde las
+	entradas de $\vec{q}$ son nulas, podemos escoger cualquier no negativo para las entradas
+	correspondientes de $\vec{x}$, entonces dejamos que estas entradas sean
+	cero. Así pues, el vector $\vec{x} \in \Z^n$ es no negativo y también satisface
+	\begin{equation*}
+		\vec{q}^T\vec{x} = \sum_{i = 1}^{n}q_ix_i
+		% = \sum_{i = 1}^{m}q_{\sigma_i}x_{\sigma_i}
+		= \sum_{i = 1}^{m}\tilde{q}_i\tilde{x}_i
+		= \eta,
+	\end{equation*}
+	por lo que concluimos que el algoritmo \ref{algo:inf:ext} es correcto.
+\end{proof}
+
+\begin{algorithm}[H]
+	\LinesNumbered
+	\DontPrintSemicolon
+	\SetKwProg{Fn}{Fn}{\string:}{}
+	\SetKwFunction{Bezout}{Bezout}
+	\SetKwFunction{NonNegativeIntSol}{NonNegativeIntSolInf}
+		\KwData{\\
+			$\vec{q} \in \Z^n$ con entradas coprimas no nulas y tal que $q_{n-1} < 0 < q_n$. \\
+			$\eta \in \Z_{\geq 0}$.
+			}
+		\KwResult{\\
+			$\vec{x} \in \Z^n_{\geq \vec{0}}$ tal que $\vec{q}^T\vec{x} = \eta$.
+		}
+		\Begin{
+			$\vec{x} \leftarrow \vec{0}$\;
+			$\omega_1 \leftarrow \eta$\;
+			$p \leftarrow 1$\quad\tcp*[h]{producto acumulado $g_1g_2\cdots g_{i+1}$}\;
+			\For{$i \leftarrow 1$ \KwTo $n - 2$\label{alg:def:inf:loop}}{
+				$g_{i+1} \leftarrow \gcd{q_{i+1} / p, \ldots, q_n / p}$\quad\tcp*[h]{ecuación
+				\eqref{dummy:next-g}}\; \label{alg:def:inf:g}
+				$x_i', \omega_{i+1}' \leftarrow$ \Bezout{$q_i / p$, $g_{i+1}$}\; \label{alg:def:inf:bez}
+				$t_i \leftarrow \ceil{-\omega_i x_i' / g_{i+1}}$\quad\tcp*[h]{ecuación
+				\eqref{eq:param-lb}}\; \label{alg:def:inf:t}
+				\tcp*[h]{ecuación \eqref{eq:recurrence}}\;
+				$x_i \leftarrow \omega_i x_i' + g_{i+1}t_i$\; \label{alg:def:inf:x}
+				$\omega_{i+1} \leftarrow \omega_i \omega_{i+1}' - q_i t_i / p$\; \label{alg:def:inf:w}
+				\tcp*[h]{actualizar producto}\;
+				$p \leftarrow pg_{i+1}$\;
+			}
+
+			$x_{n-1}', x_n' \leftarrow$ \Bezout{$q_{n-1} / p$, $q_n / p$}\; \label{alg:def:inf:lastw}
+			\tcp*[h]{ecuación \eqref{eq:lr-bounds}}\;
+			$b_1 \leftarrow -\omega_{n-1} x_{n-1}' \cdot p/ q_n$\;
+			$b_2 \leftarrow \omega_{n-1} x_n' \cdot p/ q_{n-1}$\;
+			$t_{n-1} \leftarrow \ceil{\max\lbrace b_1, b_2\rbrace}$\quad\tcp*[h]{ecuación
+			\eqref{eq:feasible-param:collapsed}}\;
+			\tcp*[h]{ecuación \eqref{eq:last-solution}}\;
+			$x_{n-1} \leftarrow \omega_{n-1}x_{n-1}' + q_nt_{n-1} / p$\;
+			$x_{n} \leftarrow \omega_{n-1}x_{n}' - q_{n-1}t_{n-1} / p$\;
+
+			\Return{$\vec{x}$}\;
+		}
+	\caption{\texttt{NonNegativeIntSolInf}}
+	\label{algo:inf}
+\end{algorithm}
+
+
+\begin{algorithm}[H]
 	\LinesNumbered
 	\DontPrintSemicolon
 	\SetKwProg{Fn}{Fn}{\string:}{}
@@ -290,43 +328,18 @@ determinan la dimensión de un vector $\vec{q}$ y permutan dos de sus entradas, 
 	\caption{\texttt{Dioph}}
 	\label{algo:inf:ext}
 \end{algorithm}
+\newpage
 
-\begin{theorem}
-	\label{th:alg:inf}
-	El algoritmo \ref{algo:inf:ext} en la página \pageref{algo:inf:ext} es correcto.
-\end{theorem}
-\begin{proof}
-	Primero mostramos que el vector $\tvec{q}$ satisface las hipótesis del algoritmo
-	\ref{algo:inf}. Por definición, en la línea \ref{alg:def:inf:tilde-q}, tenemos que ninguna
-	entrada de $\tvec{q}$ es nula.
-
-	Recordemos de la definición \ref{theory:def:rational} que, como $\vec{q}$ es el múltiplo coprimo
-	de un vector esencialmente entero $\vec{p}$, su primera entrada no nula es positiva. Así, es
-	cierto que $\tilde{q}_1 > 0$. A partir de la transposición en la línea \ref{alg:subr:swap1}
-	encontramos que $\tilde{q}_m > 0$.
-
-	Del ciclo que comienza en la línea \ref{alg:inf:loop} recuperamos el primer índice $j$ tal que
-	$\tilde{q}_j < 0$ y lo transponemos con la $(m - 1)$-ésima entrada de $\tvec{q}$ en la línea
-	\ref{alg:subr:swap3}, de manera que obtenemos $\tilde{q}_{m-1} < 0$.
-
-	Con los tres puntos anteriores, encontramos que el vector $\tvec{q}$ satisface las
-	hipótesis del algoritmo \ref{algo:inf} y por lo tanto el vector $\tvec{x}$ es no negativo
-	y satisface la ecuación lineal diofantina $\tvec{q}^T\tvec{x} = \eta$.
-
-	Las siguientes dos líneas se encargan de invertir las transposiciones hechas previamente.
-	Finalmente, en el ciclo que comienza en la línea \ref{alg:inf:loop2} insertamos en $\vec{x}$ los
-	valores de $\tvec{x}$ donde las entradas de $\vec{q}$ son no nulas. En otro caso, donde las
-	entradas de $\vec{q}$ son nulas, podemos escoger cualquier no negativo para las entradas
-	correspondientes de $\vec{x}$, entonces dejamos que estas entradas sean
-	cero. Así pues, el vector $\vec{x} \in \Z^n$ es no negativo y también satisface
-	\begin{equation*}
-		\vec{q}^T\vec{x} = \sum_{i = 1}^{n}q_ix_i
-		% = \sum_{i = 1}^{m}q_{\sigma_i}x_{\sigma_i}
-		= \sum_{i = 1}^{m}\tilde{q}_i\tilde{x}_i
-		= \eta,
-	\end{equation*}
-	por lo que concluimos que el algoritmo \ref{algo:inf:ext} es correcto.
-\end{proof}
+La correctud de los dos algoritmos anteriores nos permite mostrar el siguiente teorema, el cual
+postula que existe una ``reducción'' del problema \eqref{theory:formulation} al problema de resolver
+una sola ecuación lineal diofantina. Cuando determinemos en la siguiente sección la complejidad de
+ambos algoritmos, observaremos que el problema de resolver esta única ecuación lineal diofantina se
+puede resolver en tiempo polinomial para un vector coprimo $\vec{q}$ fijo. En caso de que esta
+reducción sea también polinomial, el problema \eqref{theory:formulation} se puede resolver
+en tiempo polinomial con respecto a la dimensión del vector objetivo. A fin de evitar introducir
+formalmente estos conceptos y arriesgar desviarnos por una tangente, no mostramos que esta reducción es,
+en efecto, polinomial. Todo esto se cumple bajo el supuesto adicional de que el vector coprimo
+$\vec{q}$ contenga al menos una entrada negativa.
 
 \begin{theorem}
 	\label{infinite:th:complexity}
@@ -639,7 +652,7 @@ segundos. Decimos que el método no encontró una solución si fue automáticame
 10 de las 20 veces que medimos el tiempo de terminación. Para verificar la correctud en la
 implementación de nuestro algoritmo, comparamos los valores objetivo de nuestra implementación con
 los de CBC y en ningún momento encontramos que fueran distintos. Nuestra implementación se encuentra
-libre en GitHub.\footnote{Véase: \url{https://github.com/tempdata73/thesis}}
+libre en GitHub.\footnote{Véase \url{https://github.com/tempdata73/thesis}}
 
 Finalmente, los experimentos fueron realizados en una computadora portátil Dell XPS 15 equipada con
 un procesador Intel Core i7-8750H (6 núcleos físicos y 12 hilos, frecuencia base de 2.20 GHz y
