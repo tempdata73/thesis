@@ -35,6 +35,7 @@
 \newtheorem{sprop}[theorem]{Proposición}
 \newtheorem{sexample}[theorem]{Ejemplo}
 \newtheorem{sproblem}[theorem]{Problema}
+\newtheorem{fproblem}[theorem]{Problema Diofantino de Frobenius}
 
 \theoremstyle{definition}
 \newtheorem{sdefinition}[theorem]{Definición}
@@ -112,22 +113,263 @@
 
 \frame{\titlepage}
 
-\begin{frame}{Sobre Ramificación y Acotamiento}
-	Utilizado para resolver programas lineales enteros o programas lineales mixtos. 
-	\begin{itemize}
-		\item Interés académico: ¿$P \subsetneq NP$?, ¿$P = NP$-completo?
-		\item Interés comercial: Nvidia, IBM, Gurobi, FICO, Artelys, Cardinal Operations, Alibaba
-			MindOpt, MOSEK,...
-	\end{itemize}
+\frame{\tableofcontents}
+
+\section{Motivación}
+\begin{frame}
+	\centering
+	\Large{Motivación}
+\end{frame}
+
+
+\begin{frame}
+	Un \textbf{programa lineal} es un problema de optimización de la forma
+	\begin{align*}
+		\max_{\vec{x} \in \R^n} \quad
+			& \vec{p}^T\vec{x}, \\ 
+		\text{s.a.} \quad
+			& A\vec{x} = \vec{b}, \\
+			& \vec{x} \geq \vec{0},
+	\end{align*}
+	donde $\vec{p} \in \R^n$, $\vec{b} \in \R^m$ y $A \in \R^{m\times n}$ tiene $m$ renglones
+	linealmente independientes.
+
+	\vspace{0.4in}
+
+	\textbf{Algoritmos:} simplex y métodos de puntos interiores.
+\end{frame}
+
+\begin{frame}
+	Un \textbf{programa lineal entero} es un problema de optimización de la forma
+	\begin{align*}
+		\max_{\vec{x} \in \Z^n} \quad
+			& \vec{p}^T\vec{x}, \\ 
+		\text{s.a.} \quad
+			& A\vec{x} = \vec{b}, \\
+			& \vec{x} \geq \vec{0},
+	\end{align*}
+	donde $\vec{p} \in \R^n$, $\vec{b} \in \R^m$ y $A \in \R^{m\times n}$ tiene $m$ renglones
+	linealmente independientes.
+
+	\vspace{0.4in}
+
+	\textbf{Algoritmos:} Ramificación y Acotamiento.
+\end{frame}
+
+\begin{frame}{Ejemplificando Ramificación y Acotamiento}
+	\begin{align*}
+		\max_{(x_1, x_2) \in \Z^2} \quad
+			& 4x_1 - x_2, \\
+			\text{s.a.} \quad
+			& 7x_1 - 2x_2 \leq 14, \\
+			& 2x_1 - 2x_2 \leq 3, \\
+			& x_2 \leq 3, \\
+			& x_1, x_2 \geq 0.
+	\end{align*}
+\end{frame}
+
+\begin{frame}{Ejemplificando Ramificación y Acotamiento}
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			axis lines=middle,
+			xlabel=$x_1$,
+			ylabel=$x_2$,
+			xmin=-0.5, xmax=4.0,
+			ymin=-0.5, ymax=4.0,
+			grid=major,
+			width=\textwidth,
+			height=8cm,
+			axis equal image,
+		]
+		\addplot[fill=blue!20, draw=none, opacity=0.5] coordinates {
+			(0,0) (1.5,0) (2.2,0.7) (2.857,3) (0,3) (0,0)
+		};
+
+		\addplot[only marks, mark=square*, blue, mark size=2pt] coordinates {
+			(0,0) (1,0) (0,1) (1,1) (2,1) (0,2) (1,2) (2,2) (0, 3) (1, 3) (2, 3)
+		};
+		
+		\addplot[blue, thick, domain=1.5:2.2, samples=2] {(2*x - 3)/2};
+		\addplot[blue, thick, domain=2.2:2.857, samples=2] {(7*x-14)/2};
+		\addplot[blue, thick, domain=0:2.857, samples=2] {3.0};
+
+		\node[above right] at (2.857,3) {$(20/7,3)$};
+		\addplot[only marks, mark=triangle*, red!80, mark size=4pt] coordinates { (2.857,3) };
+		\node[above] at (2,3.5) {$z^* \approx 8.43$};
+
+		\draw[->, black, thick] (0,3) -- (1,2.8) node[right] {};
+		
+		\end{axis}
+	\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Ejemplificando Ramificación y Acotamiento}
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			axis lines=middle,
+			xlabel=$x_1$,
+			ylabel=$x_2$,
+			xmin=-0.5, xmax=4.0,
+			ymin=-0.5, ymax=4.0,
+			grid=major,
+			width=\textwidth,
+			height=8cm,
+			axis equal image,
+		]
+		\addplot[fill=blue!20, draw=none, opacity=0.5] coordinates {
+			(0,0) (1.5,0) (2,0.5) (2,3) (0,3) (0,0)
+		};
+
+		\addplot[only marks, mark=square*, blue, mark size=2pt] coordinates {
+			(0,0) (1,0) (0,1) (1,1) (2,1) (0,2) (1,2) (2,2) (0, 3) (1, 3) (2, 3)
+		};
+		
+		\addplot[blue, thick, domain=1.5:2, samples=2] {(2*x - 3)/2};
+		\addplot[blue, thick, domain=0:2, samples=2] {3.0};
+		\addplot[blue, thick, domain=0:2.857, samples=2] coordinates {(2,0.5) (2,3)};
+
+		\addplot[black, dashed, thick, domain=2:2.2, samples=2] {(2*x - 3)/2};
+		\addplot[black, dashed, thick, domain=2.2:2.857, samples=2] {(7*x-14)/2};
+		\addplot[black, dashed, thick, domain=2:2.857, samples=2] {3.0};
+
+
+		\node[below right] at (2,0.5) {$(2,1/2)$};
+		\addplot[only marks, mark=triangle*, red!80, mark size=4pt] coordinates { (2,0.5) };
+
+		\draw[->, black, thick] (0,3) -- (1,2.8) node[right] {};
+		\node[above] at (2,3.5) {$z^* = 7.5$};
+		
+		\end{axis}
+	\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Ejemplificando Ramificación y Acotamiento}
+	\centering
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[
+				axis lines=middle,
+				xlabel=$x_1$,
+				ylabel=$x_2$,
+				xmin=-0.5, xmax=4.0,
+				ymin=-0.5, ymax=4.0,
+				grid=major,
+				width=\textwidth,
+				height=8cm,
+				axis equal image,
+			]
+			\addplot[fill=blue!20, draw=none, opacity=0.5] coordinates {
+				(0,1) (2,1) (2,3) (0,3) (0,1)
+			};
+
+			\addplot[only marks, mark=square*, blue, mark size=2pt] coordinates {
+				(0,1) (1,1) (2,1) (0,2) (1,2) (2,2) (0, 3) (1, 3) (2, 3)
+			};
+			
+			\addplot[blue, thick, domain=0:2, samples=2] {3.0};
+			\addplot[blue, thick, domain=0:2, samples=2] {1.0};
+			\addplot[blue, thick, domain=0:2, samples=2] coordinates {(2,1) (2,3)};
+
+			\addplot[black, dashed, thick, domain=1.5:2.2, samples=2] {(2*x - 3)/2};
+			\addplot[black, dashed, thick, domain=2.2:2.857, samples=2] {(7*x-14)/2};
+			\addplot[black, dashed, thick, domain=2:2.857, samples=2] {3.0};
+
+
+			\node[below left] at (2,1) {$(2,1)$};
+			\addplot[only marks, mark=triangle*, red!80, mark size=4pt] coordinates { (2,1) };
+			\node[above] at (2,3.5) {$z^* = 7$};
+
+			\draw[->, black, thick] (0,3) -- (1,2.8) node[right] {};
+			
+			\end{axis}
+		\end{tikzpicture}
+	\end{minipage}
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[
+				axis lines=middle,
+				xlabel=$x_1$,
+				ylabel=$x_2$,
+				xmin=-0.5, xmax=4.0,
+				ymin=-0.5, ymax=4.0,
+				grid=major,
+				width=\textwidth,
+				height=8cm,
+				axis equal image,
+			]
+			\addplot[only marks, mark=square*, blue, mark size=2pt] coordinates { (0,0) (1,0) };
+
+			\addplot[black, dashed, thick, domain=1.5:2.2, samples=2] {(2*x - 3)/2};
+			\addplot[black, dashed, thick, domain=2.2:2.857, samples=2] {(7*x-14)/2};
+			\addplot[black, dashed, thick, domain=0:2.857, samples=2] {3.0};
+			
+			\node[above left] at (1.5,0) {$(3/2,0)$};
+			\addplot[only marks, mark=triangle*, red!80, mark size=4pt] coordinates { (1.5,0) };
+
+			\draw[->, black, thick] (0,3) -- (1,2.8) node[right] {};
+			\node[above] at (2,3.5) {$z^* = 6$};
+			
+			\end{axis}
+		\end{tikzpicture}
+	\end{minipage}
+\end{frame}
+
+
+
+\begin{frame}{Ejemplificando Ramificación y Acotamiento}
+	\centering
+	\begin{tikzpicture}[
+		level distance=2cm,
+		level 1/.style={sibling distance=6cm},
+		level 2/.style={sibling distance=3cm},
+		node distance=1.8cm,
+		box/.style={rectangle, draw, rounded corners, align=center, minimum width=2.5cm},
+		sol/.style={rectangle, draw, fill=green!20, rounded corners, align=center},
+		infeas/.style={rectangle, draw, fill=red!20, rounded corners, align=center}
+		]
+		\node[box] {
+			\footnotesize $\vec{x}^* = (20/7, 3)$\\
+			\footnotesize $z^* \approx 8.43$
+		}
+		child {
+			node[infeas] {
+			\footnotesize $x_1 \geq 3$\\
+			\footnotesize \textbf{podar por infactibilidad}}
+		}
+		child {
+			node[box] {
+			\footnotesize $x_1 \leq 2$\\
+			\footnotesize $\vec{x}^* = (2, 1/2)$\\
+			\footnotesize $z^* = 7.5$}
+			child {
+				node[sol] {
+				\footnotesize $x_2 \geq 1$\\
+				\footnotesize $\vec{x}^* = (2, 1)$\\
+				\footnotesize $z^* = 7$\\
+				\footnotesize \textbf{entera factible}}
+			}
+			child {
+				node[infeas] {
+				\footnotesize $x_2 \leq 0$\\
+				\footnotesize $\vec{x}^* = (3/2, 0)$\\
+				\footnotesize $z^* = 6$\\
+				\footnotesize \textbf{podar por cota}}
+			}
+		};
+	\end{tikzpicture}
 \end{frame}
 
 \begin{frame}{Ejemplo patológico}
 	\begin{align*}
-		\max_{(x, y) \in \Z^2} \quad
-			& x - y, \\
+		\max_{(x_1, x_2) \in \Z^2} \quad
+			& x_1 - x_2, \\
 		\text{s.a.} \quad
-			& x - y \leq 0.3, \\
-			& x, y \geq 0.
+			& x_1 - x_2 \leq 0.3, \\
+			& x_1, x_2 \geq 0.
 	\end{align*}
 \end{frame}
 
@@ -140,16 +382,19 @@
 				  axis lines=middle,
 				  xmin=0, xmax=2.2,
 				  ymin=0, ymax=2.2,
-				  xlabel={$x$}, ylabel={$y$},
-				  clip=false
+				  xlabel={$x_1$}, ylabel={$x_2$},
+				  clip=false,
+				  grid=major
 				]
 					\addplot [name path=top, draw=none, domain=0:2.2] {2.2};
 					\addplot [name path=lower, draw=none, samples=200, domain=0:2.2]
 					  {max(x-0.3, 0)};
-					\addplot [blue!25] fill between[of=top and lower];
+					\addplot [blue!20, draw=none, opacity=0.5] fill between[of=top and lower];
 					\addplot [blue, thick, domain=0.3:2.2] {x - 0.3};
 					\addplot [blue, thick, domain=0:0.3] {0};
-					\node at (axis cs:0.7,1.25) {\Large $S$};
+					\addplot[only marks, mark=square*, blue, mark size=2pt] coordinates { (0,0)
+						(0,1) (0,2) (1,1) (1,2) (2,2) };
+					\draw[->, black, thick] (1.3,1) -- (1.6,0.7) node[right] {};
 				\end{axis}
 			\end{tikzpicture}
 		\end{minipage}
@@ -160,23 +405,27 @@
 				  axis lines=middle,
 				  xmin=0, xmax=2.2,
 				  ymin=0, ymax=2.2,
-				  xlabel={$x$}, ylabel={$y$},
-				  clip=false
+				  xlabel={$x_1$}, ylabel={$x_2$},
+				  clip=false,
+				  grid=major
 				]
 					\addplot [name path=top, draw=none, domain=1:2.2] {2.2};
 					\addplot [name path=lower, draw=none, samples=200, domain=1:2.2]
 					  {1 + max(x-1.3, 0)};
-					\addplot [blue!25] fill between[of=top and lower];
+					\addplot [blue!20, draw=none, opacity=0.5] fill between[of=top and lower];
 					\addplot [blue, thick, domain=1.3:2.2] {x - 0.3};
 					\addplot [blue, thick, domain=1:1.3] {1};
-					\node at (axis cs:1.5,1.7) {\Large $S_{11}$};
+					\addplot [blue, thick, domain=1:2.2] coordinates {(1,1) (1,2.2)};
+					\addplot[only marks, mark=square*, blue, mark size=2pt] coordinates { (1,1) (1,2) (2,2) };
+					\addplot[black, dashed, thick, domain=0.3:1.3, samples=2] {x - 0.3};
+					\draw[->, black, thick] (1.3,1) -- (1.6,0.7) node[right] {};
 				\end{axis}
 			\end{tikzpicture}
 		\end{minipage}
 	\end{figure}
 \end{frame}
 
-\begin{frame}{Problema Simétrico}
+\begin{frame}{Problema Simétrico (PS)}
 	\begin{align*}
 		\max_{\vec{x} \in \Z^n} \quad
 			& \vec{p}^T\vec{x}, \\ 
@@ -186,7 +435,14 @@
 	\end{align*}
 \end{frame}
 
-\begin{frame}{Algunas definiciones}
+\section{Fundamentos teóricos}
+
+\begin{frame}
+	\centering
+	\Large{Fundamentos teóricos}
+\end{frame}
+
+\begin{frame}
 	\begin{sdefinition}
 		Un vector $\vec{p} \in \R^n\setminus\braces{\vec{0}}$ es
 		\textbf{esencialmente entero} si existe un vector $\vec{q} \in \Z^n$ y
@@ -197,8 +453,7 @@
 	\end{sdefinition}
 
 	\begin{sdefinition}
-		Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $t \in \R$
-		un escalar. El hiperplano afín
+		Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $t$ un escalar. El hiperplano afín
 		\begin{equation*}
 			\clayer{\vec{p}}{t} \coloneq \ker\braces{\vec{x} \mapsto \vec{p}^T\vec{x}} + t\vec{p}
 		\end{equation*}
@@ -206,10 +461,13 @@
 	\end{sdefinition}
 \end{frame}
 
-\begin{frame}{Algunos ejemplos}
+\begin{frame}
 	\begin{sexample}
-		El vector $\left(-\sqrt{2}, 1/\sqrt{2}\right) = -\frac{1}{\sqrt{2}}(2, -1)$ es esencialmente
-		entero.
+		Todo vector racional $\vec{v} \in \Q^n$  no nulo es esencialmente
+		entero. Para cada $1 \leq i \leq n$ existen $p_i, q_i \in
+		\Z$ con $q_i \neq 0$ tales que $v_i = p_i/q_i$. Luego, si definimos $m \coloneq \lcm{q_1,
+		\ldots, q_n} \neq 0$ y también $\vec{w} \coloneq m\vec{v} \in \Z^n$, encontramos que $\vec{v} =
+		\frac{1}{m}\vec{w}$.
 	\end{sexample}
 	\begin{sexample}
 		El vector $\paren{\sqrt{2}, \sqrt{3}}$ no es esencialmente entero. Supongamos que existe un
@@ -219,7 +477,7 @@
 	\end{sexample}
 \end{frame}
 
-\begin{frame}{Algunos ejemplos}
+\begin{frame}
 	\begin{center}
 		\begin{tikzpicture}[scale=0.8]
 			\draw[step=1cm,gray!20,thin] (-2,-3) grid (6,5);
@@ -238,19 +496,23 @@
 	\end{center}
 \end{frame}
 
-\begin{frame}{Algunos resultados}
+\begin{frame}{Sobre las soluciones enteras}
 	\begin{stheorem}
 		Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q}$ su múltiplo coprimo.
-		Entonces la familia de hiperplanos afínes $\braces{\qlayer{w}{k} \vcentcolon k \in \Z}$
+		Entonces la familia de hiperplanos afínes $\braces{\qlayer{q}{k} \vcentcolon k \in \Z}$
 		cubre a $\Z^n$.
 	\end{stheorem}
 	\begin{slemma}
 		Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q}$ su múltiplo coprimo.
-		Entonces $\vec{q}^T\vec{x} = q_1x_1 + \cdots + q_nx_n = k$ para todo $\vec{x} \in \qlayer{q}{k}$.
+		Entonces se satisface la ecuación lineal
+		\begin{equation*}
+			\vec{q}^T\vec{x} = q_1x_1 + \cdots + q_nx_n = k
+		\end{equation*}
+		para todo $\vec{x} \in \qlayer{q}{k}$.
 	\end{slemma}
 \end{frame}
 
-\begin{frame}{Construcción de soluciones}
+\begin{frame}
 	\begin{stheorem}
 		Sea $\vec{q} \in \Z^n$ un vector coprimo. Entonces todas las soluciones enteras de la
 		ecuación lineal diofantina $\vec{q}^T\vec{x} = k$ son de la forma
@@ -263,44 +525,45 @@
 	\end{stheorem}
 \end{frame}
 
-\begin{frame}{Redes e isomorfismos}
+\begin{frame}
 	\begin{slemma}
 		Sea $\vec{q} \in \Z^{n}$ un vector coprimo. Entonces
 		\begin{equation*}
-			\vec{q}^T\vec{\nu} = 1,
-		\end{equation*}
-		y
-		\begin{equation*}
-			\vec{q}^T\vec{m}_i = 0,
+			\vec{q}^T\vec{\nu} = 1, \quad \vec{q}^T\vec{m}_i = 0,
 		\end{equation*}
 		para toda columna $\vec{m}_i$ de $M = [\vec{m}_1 \mid \cdots \mid \vec{m}_{n-1}]$.
 	\end{slemma}
-\end{frame}
-
-\begin{frame}{Redes e isomorfismos}
-	\begin{sdefinition}
-		Un subconjunto $\Lambda$ del espacio vectorial $\paren{\R^n, +, \cdot}$ es un
-		\textbf{grupo aditivo} si
-		\begin{enumerate}
-			\item $\vec{0} \in \Lambda$, y
-			\item si $\vec{x}, \vec{y} \in \Lambda$, entonces $\vec{x} + \vec{y} \in \Lambda$, y también
-				$-\vec{x} \in \Lambda$.
-		\end{enumerate}
-		Además, $\Lambda$ es una \textbf{red} si existen vectores $\vec{v}_1, \ldots, \vec{v}_n$
-		linealmente independientes tales que
-		\begin{equation*}
-			\Lambda = \lbrace \vec{x} \vcentcolon \vec{x} = \lambda_1\vec{v}_1 + \cdots +
-			\lambda_n\vec{v}_n, \lambda_i \in
-			\Z \rbrace.
-		\end{equation*}
-		A los vectores $\vec{v}_1, \ldots, \vec{v}_n$ los llamamos la \textbf{base de la red} $\Lambda$.
-	\end{sdefinition}
-
 	\begin{stheorem}
 		Sea $\vec{q} \in \Z^{n}$ un vector coprimo. Entonces los vectores $\braces{\vec{\nu},
 		\vec{m}_1, \ldots, \vec{m}_{n-1}}$ forman una base de la red $\Z^n$.
 	\end{stheorem}
 \end{frame}
+
+
+% \begin{frame}{Redes e isomorfismos}
+% 	\begin{sdefinition}
+% 		Un subconjunto $\Lambda$ del espacio vectorial $\paren{\R^n, +, \cdot}$ es un
+% 		\textbf{grupo aditivo} si
+% 		\begin{enumerate}
+% 			\item $\vec{0} \in \Lambda$, y
+% 			\item si $\vec{x}, \vec{y} \in \Lambda$, entonces $\vec{x} + \vec{y} \in \Lambda$, y también
+% 				$-\vec{x} \in \Lambda$.
+% 		\end{enumerate}
+% 		Además, $\Lambda$ es una \textbf{red} si existen vectores $\vec{v}_1, \ldots, \vec{v}_n$
+% 		linealmente independientes tales que
+% 		\begin{equation*}
+% 			\Lambda = \lbrace \vec{x} \vcentcolon \vec{x} = \lambda_1\vec{v}_1 + \cdots +
+% 			\lambda_n\vec{v}_n, \lambda_i \in
+% 			\Z \rbrace.
+% 		\end{equation*}
+% 		A los vectores $\vec{v}_1, \ldots, \vec{v}_n$ los llamamos la \textbf{base de la red} $\Lambda$.
+% 	\end{sdefinition}
+% 
+% 	\begin{stheorem}
+% 		Sea $\vec{q} \in \Z^{n}$ un vector coprimo. Entonces los vectores $\braces{\vec{\nu},
+% 		\vec{m}_1, \ldots, \vec{m}_{n-1}}$ forman una base de la red $\Z^n$.
+% 	\end{stheorem}
+% \end{frame}
 
 \begin{frame}
 	\begin{center}
@@ -351,6 +614,7 @@
 	\end{center}
 \end{frame}
 
+
 \begin{frame}
 	\begin{center}
 		\begin{tikzpicture}
@@ -391,82 +655,82 @@
 	\end{center}
 \end{frame}
 
-\begin{frame}{Redes e isomorfismos}
-	Tenemos la descomposición en subredes
-	\begin{align*}
-		\Z^n =
-		\underbrace{\braces{k\vec{\nu} \vcentcolon k \in \Z}}_{\coloneq \Lambda_p} \oplus
-		\underbrace{\braces{M\vec{t} \vcentcolon \vec{t} \in \Z^{n-1}}}_{\coloneq
-		\Lambda_h}.
-	\end{align*}
-	\begin{center}
-		¿Qué propiedades de estas subredes se mantienen si cambiamos de un vector coprimo $\vec{q}
-		\in \Z^n$ a otro $\tvec{q} \in \Z^n$?
-	\end{center}
-\end{frame}
-
-\begin{frame}{Órbitas e isomorfismos}
-	\begin{sdefinition}
-		La \textbf{órbita} de un vector coprimo $\vec{q} \in \Z^n$ es
-		\begin{equation*}
-			\orb(\vec{q}) \coloneq \braces{P\vec{q} \vcentcolon P \in \Z^{n\times n} ~\text{es matriz de
-			permutación}}.
-		\end{equation*}
-	\end{sdefinition}
-	\begin{stheorem}
-		Sea $\vec{q} \in \Z^n$ un vector coprimo y sea $\tvec{q} \in \orb(\vec{q})$. Entonces
-		$\tilde{\Lambda}_p \cong \Lambda_p$ y $\tilde{\Lambda}_h \cong \Lambda_h$.
-	\end{stheorem}
-\end{frame}
-
-\begin{frame}
-	\begin{center}
-		\begin{tikzpicture}[scale=0.8]
-			% q \eqdef (3, 2) acting on $Z^2$:
-			\begin{scope}[xshift=8cm]
-				\foreach \x in {-3,...,3} {
-					\foreach \y in {-3,...,3} {
-						\fill[black!60] (\x,\y) circle (1.2pt);
-					}
-				}
-				
-				\draw[->, thin, gray] (-3.5,0) -- (3.5,0) node[right] {$x$};
-				\draw[->, thin, gray] (0,-3.5) -- (0,3.5) node[above] {$y$};
-				
-				% fundamental parallelogram
-				\draw[thick, orange, fill=orange!10] (0,0) -- (1,-1) -- (3,-4) -- (2,-3) -- cycle;
-
-				\draw[->, thick, red] (0,0) -- (1,-1) node[midway, below left] {$\tvec{\nu}$};
-				\draw[->, thick, blue] (0,0) -- (2,-3) node[midway, below left] {$\tvec{m}_1$};
-				\draw[->, thick, black] (0, 0) -- (3, 2) node[above] {$\tvec{q} = (3, 2)$};
-				
-				\node[below] at (0,-3.7) {Base: $\{(1, -1), (2, -3)\}$};
-			\end{scope}
-
-			% q \eqdef (2, 3) acting on $Z^2$:
-			\begin{scope}[xshift=0cm]
-				\foreach \x in {-3,...,3} {
-					\foreach \y in {-3,...,3} {
-						\fill[black!60] (\x,\y) circle (1.2pt);
-					}
-				}
-				
-				\draw[->, thin, gray] (-3.5,0) -- (3.5,0) node[right] {$x$};
-				\draw[->, thin, gray] (0,-3.5) -- (0,3.5) node[above] {$y$};
-
-				% fundamental parallelogram
-				\draw[thick, orange, fill=orange!10] 
-					(0,0) -- (-1,1) -- (2,-1) -- (3,-2) -- cycle;
-				
-				\draw[->, thick, red] (0,0) -- (-1,1) node[midway, below left] {$\vec{\nu}$};
-				\draw[->, thick, blue] (0,0) -- (3,-2) node[midway, below left] {$\vec{m}_1$};
-				\draw[->, thick, black] (0, 0) -- (2, 3) node[above] {$\vec{q} = (2, 3)$};
-				
-				\node[below] at (0,-3.7) {Base: $\{(-1,1),\ (3,-2)\}$};
-			\end{scope}
-		\end{tikzpicture}
-	\end{center}
-\end{frame}
+% \begin{frame}{Órbitas e isomorfismos}
+% 	Tenemos la descomposición en subredes
+% 	\begin{align*}
+% 		\Z^n =
+% 		\underbrace{\braces{k\vec{\nu} \vcentcolon k \in \Z}}_{\coloneq \Lambda_p} \oplus
+% 		\underbrace{\braces{M\vec{t} \vcentcolon \vec{t} \in \Z^{n-1}}}_{\coloneq
+% 		\Lambda_h}.
+% 	\end{align*}
+% 	\begin{center}
+% 		¿Qué propiedades de estas subredes se mantienen si cambiamos de un vector coprimo $\vec{q}
+% 		\in \Z^n$ a otro $\tvec{q} \in \Z^n$?
+% 	\end{center}
+% \end{frame}
+% 
+% \begin{frame}
+% 	\begin{sdefinition}
+% 		La \textbf{órbita} de un vector coprimo $\vec{q} \in \Z^n$ es
+% 		\begin{equation*}
+% 			\orb(\vec{q}) \coloneq \braces{P\vec{q} \vcentcolon P \in \Z^{n\times n} ~\text{es matriz de
+% 			permutación}}.
+% 		\end{equation*}
+% 	\end{sdefinition}
+% 	\begin{stheorem}
+% 		Sea $\vec{q} \in \Z^n$ un vector coprimo y sea $\tvec{q} \in \orb(\vec{q})$. Entonces
+% 		$\tilde{\Lambda}_p \cong \Lambda_p$ y $\tilde{\Lambda}_h \cong \Lambda_h$.
+% 	\end{stheorem}
+% \end{frame}
+% 
+% \begin{frame}
+% 	\begin{center}
+% 		\begin{tikzpicture}[scale=0.8]
+% 			% q \eqdef (3, 2) acting on $Z^2$:
+% 			\begin{scope}[xshift=8cm]
+% 				\foreach \x in {-3,...,3} {
+% 					\foreach \y in {-3,...,3} {
+% 						\fill[black!60] (\x,\y) circle (1.2pt);
+% 					}
+% 				}
+% 				
+% 				\draw[->, thin, gray] (-3.5,0) -- (3.5,0) node[right] {$x$};
+% 				\draw[->, thin, gray] (0,-3.5) -- (0,3.5) node[above] {$y$};
+% 				
+% 				% fundamental parallelogram
+% 				\draw[thick, orange, fill=orange!10] (0,0) -- (1,-1) -- (3,-4) -- (2,-3) -- cycle;
+% 
+% 				\draw[->, thick, red] (0,0) -- (1,-1) node[midway, below left] {$\tvec{\nu}$};
+% 				\draw[->, thick, blue] (0,0) -- (2,-3) node[midway, below left] {$\tvec{m}_1$};
+% 				\draw[->, thick, black] (0, 0) -- (3, 2) node[above] {$\tvec{q} = (3, 2)$};
+% 				
+% 				\node[below] at (0,-3.7) {Base: $\{(1, -1), (2, -3)\}$};
+% 			\end{scope}
+% 
+% 			% q \eqdef (2, 3) acting on $Z^2$:
+% 			\begin{scope}[xshift=0cm]
+% 				\foreach \x in {-3,...,3} {
+% 					\foreach \y in {-3,...,3} {
+% 						\fill[black!60] (\x,\y) circle (1.2pt);
+% 					}
+% 				}
+% 				
+% 				\draw[->, thin, gray] (-3.5,0) -- (3.5,0) node[right] {$x$};
+% 				\draw[->, thin, gray] (0,-3.5) -- (0,3.5) node[above] {$y$};
+% 
+% 				% fundamental parallelogram
+% 				\draw[thick, orange, fill=orange!10] 
+% 					(0,0) -- (-1,1) -- (2,-1) -- (3,-2) -- cycle;
+% 				
+% 				\draw[->, thick, red] (0,0) -- (-1,1) node[midway, below left] {$\vec{\nu}$};
+% 				\draw[->, thick, blue] (0,0) -- (3,-2) node[midway, below left] {$\vec{m}_1$};
+% 				\draw[->, thick, black] (0, 0) -- (2, 3) node[above] {$\vec{q} = (2, 3)$};
+% 				
+% 				\node[below] at (0,-3.7) {Base: $\{(-1,1),\ (3,-2)\}$};
+% 			\end{scope}
+% 		\end{tikzpicture}
+% 	\end{center}
+% \end{frame}
 
 \begin{frame}{Sobre la restricción presupuestaria}
 	\begin{slemma}
@@ -506,17 +770,17 @@
 \begin{frame}{Sobre la factibilidad}
 	\begin{stheorem}
 		Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q}$ su múltiplo coprimo.
-		Entonces el problema (PS) es infactible si y solo si $\vec{q} \geq \vec{0}$ y $u < 0$.
+		Entonces (PS) es infactible si y solo si $\vec{q} \geq \vec{0}$ y $u < 0$.
 	\end{stheorem}
 
 	\begin{stheorem}
 		Sea $\vec{p} \in \R^n$ un vector esencialmente entero y sea $\vec{q}$ su múltiplo coprimo.
 		Si (PS) es factible, es cierto que
 		\begin{enumerate}
-			\item si $q_i < 0$ para algún $i \in \braces{1, \ldots, n}$, entonces la $\eta$-ésima
+			\item si $q_i < 0$ para alguna $1 \leq i \leq n$, entonces la $\eta$-ésima
 				capa entera $\qlayer{q}{\eta}$ contiene un número infinito de puntos factibles;
-			\item si $\vec{q} > \vec{0}$ entonces, para todo $k \in \braces{\eta, \eta - 1, \ldots, 0}$,
-				la $k$-ésima capa entera $\qlayer{q}{k}$ contiene un número finito de puntos factibles.
+			\item si $\vec{q} > \vec{0}$, entonces la $k$-ésima capa entera $\qlayer{q}{k}$ contiene
+				un número finito de puntos factibles para toda $0 \leq k \leq \eta$.
 		\end{enumerate}
 	\end{stheorem}
 \end{frame}
@@ -574,19 +838,36 @@
 	\end{center}
 \end{frame}
 
+\begin{frame}{Más sobre los fundamentos teóricos}
+	Tenemos la descomposición en subredes
+	\begin{align*}
+		\Z^n =
+		\underbrace{\braces{k\vec{\nu} \vcentcolon k \in \Z}}_{\coloneq \Lambda_p} \oplus
+		\underbrace{\braces{M\vec{t} \vcentcolon \vec{t} \in \Z^{n-1}}}_{\coloneq
+		\Lambda_h}.
+	\end{align*}
+	\begin{center}
+		¿Qué propiedades de estas subredes se mantienen si cambiamos de un vector coprimo $\vec{q}
+		\in \Z^n$ a otro $\tvec{q} \in \Z^n$?
+	\end{center}
+\end{frame}
+
+\section{Resultados numéricos}
+\begin{frame}
+	\centering
+	\Large{Resultados numéricos}
+\end{frame}
+
 \begin{frame}{El caso infinito}
-	Una medida de eficiencia para los cortes de R\&A en (PS) es
-	\begin{equation*}
-		\bigg| \frac{x_i^* - x_i}{x_i^* - \big\lceil x_i^*\big\rceil} \bigg|
-		\geq \big|\vec{e}_i^TM\vec{\delta}\big|,
-	\end{equation*}
-	donde
-	\begin{itemize}
-		\item $\vec{x}^*$ es la solución a un subproblema relajado obtenido por R\&A,
-		\item $\ceil{x_i^*}$ es la $i$-ésima entrada de la solución del siguiente subproblema con restricción añadida $x_i \geq \ceil{x_i^*}$,
-		\item $\vec{x}$ es la solución de (PS) más cercana a $\vec{x}^*$,
-		\item $\norm{\vec{\delta}}_{\infty} \leq 0.5$.
-	\end{itemize}
+	\begin{stheorem}
+		Sea $\vec{p} \in \R^n$ un vector esencialmente entero tal que su múltiplo coprimo $\vec{q}
+		\in \Z^n$ tenga al menos una entrada negativa. Entonces (PS) se puede resolver a través de
+		encontrar la solución de una sola ecuación lineal diofantina en $n$ incógnitas.
+	\end{stheorem}
+
+	\vspace{0.2in}
+
+	Complejidad algorítmica de \texttt{dioph}: $\mathcal{O}(n^2(1 + \log_2\norm{\vec{q}}_\infty))$.
 \end{frame}
 
 \begin{frame}
@@ -604,11 +885,59 @@
 \end{frame}
 
 \begin{frame}
-	\centering
-	\includegraphics[scale=0.38]{../static/inf/mult-hist-cum-sep-v2.pdf}
+	Una medida de eficiencia para los cortes de R\&A en (PS) es
+	\begin{equation*}
+		\bigg| \frac{x_i^* - x_i}{x_i^* - \big\lceil x_i^*\big\rceil} \bigg|
+		\geq \big|\vec{e}_i^TM\vec{\delta}\big|,
+	\end{equation*}
+	donde
+	\begin{itemize}
+		\item $\vec{x}^*$ es la solución a un subproblema relajado obtenido por R\&A,
+		\item $\ceil{x_i^*}$ es la $i$-ésima entrada de la solución del siguiente subproblema con restricción añadida $x_i \geq \ceil{x_i^*}$,
+		\item $\vec{x}$ es la solución de (PS) más cercana a $\vec{x}^*$,
+		\item $\norm{\vec{\delta}}_{\infty} \leq 0.5$.
+	\end{itemize}
 \end{frame}
 
-\begin{frame}{El caso finito (variando el presupuesto)}
+\begin{frame}
+	\centering
+	\includegraphics[scale=0.38]{../static/inf/mult-hist-cum-v2.pdf}
+\end{frame}
+
+\begin{frame}{El caso finito}
+	\begin{stheorem}
+		Sea $\vec{p} \in \R^n$ un vector esencialmente entero tal que su múltiplo coprimo
+		$\vec{q}$ tenga entradas estrictamente positivas. Entonces (PS) se puede resolver a través
+		de encontrar la solución de una sola ecuación lineal en $n$ incógnitas para un presupuesto
+		$u$ suficientemente grande.
+	\end{stheorem}
+	
+	\vspace{0.2in}
+
+	Complejidad algorítmica de \texttt{dioph}: exponencial en $n$, constante en $u$.
+\end{frame}
+
+\begin{frame}{Una formulación de programación dinámica}
+	\begin{stheorem}
+		Supongamos que el vector objetivo $\vec{p}$ de (PS) es entero y tiene entradas estrictamente
+		positivas, y también supongamos que el presupuesto $u$ es entero y no negativo. Entonces
+		$f_n(u)$ dado recursivamente por
+		\begin{align*}
+			f_1(\hat{u}) &\coloneq \floor{\hat{u}/p_1}p_1, \\
+			f_m(\hat{u}) &\coloneq \begin{cases}
+				f_{m-1}(\hat{u}), & \hat{u} < p_m, \\
+				\max\braces{f_{m - 1}(\hat{u}), f_{m}(\hat{u} - p_m) + p_m}, & p_m \leq \hat{u} \leq u.
+			\end{cases}
+		\end{align*}
+		es el valor óptimo de este problema, donde $2 \leq m \leq n$.
+	\end{stheorem}
+
+	\vspace{0.2in}
+
+	Complejidad algorítmica de \texttt{FPD}: $\mathcal{O}(nu)$.
+\end{frame}
+
+\begin{frame}{Variando el presupuesto}
 	\centering
 	\includegraphics[scale=0.60]{static/finrhs1.pdf}
 \end{frame}
@@ -623,7 +952,7 @@
 	\includegraphics[scale=0.60]{static/finrhs3.pdf}
 \end{frame}
 
-\begin{frame}{El caso finito (variando la dimensión)}
+\begin{frame}{Variando la dimensión}
 	\centering
 	\includegraphics[scale=0.40]{static/fintimes1.png}
 \end{frame}
@@ -633,7 +962,15 @@
 	\includegraphics[scale=0.35]{static/fintimes2.png}
 \end{frame}
 
-\begin{frame}{Eventualidad de una sola ecuación lineal diofantina}
+\begin{frame}{Más sobre el caso finito}
+	\begin{fproblem}
+		Dado un vector $\vec{q} \in \Z^n$ coprimo con entradas estrictamente positivas, encontrar el
+		entero $F$ más grande tal que $\vec{q}^T\vec{x} \neq F$ para todo $\vec{x} \in \Z^n$ con
+		$\vec{x} \geq \vec{0}$.
+	\end{fproblem}
+\end{frame}
+
+\begin{frame}
 	\begin{stheorem}
 		Sea $\vec{q} \in \Z^n$ un vector coprimo con entradas estrictamente positivas. Entonces la
 		ecuación lineal diofantina $\vec{q}^T\vec{x} = k$ tiene soluciones enteras no negativas si
@@ -645,12 +982,10 @@
 	\end{stheorem}
 \end{frame}
 
-\begin{frame}{El Problema Diofantino de Frobenius}
-	\begin{sproblem}
-		Dado un vector $\vec{q} \in \Z^n$ coprimo con entradas estrictamente positivas, encontrar el
-		entero $F$ más grande tal que $\vec{q}^T\vec{x} \neq F$ para todo $\vec{x} \in \Z^n$ con
-		$\vec{x} \geq \vec{0}$.
-	\end{sproblem}
+\section{Múltiples restricciones}
+\begin{frame}
+	\centering
+	\Large{Múltiples restricciones}
 \end{frame}
 
 \begin{frame}{Múltiples restricciones (caso particular)}
@@ -680,7 +1015,7 @@
 	\end{stheorem}
 \end{frame}
 
-\begin{frame}{Un ejemplo}
+\begin{frame}
 	\begin{minipage}[t]{\textwidth}
 		\vspace{-0.5\baselineskip}
 		\begin{columns}[T]
@@ -706,10 +1041,9 @@
 	\end{minipage}
 \end{frame}
 
-
-\begin{frame}{Un ejemplo}
+\begin{frame}
 	\begin{center}
-		\begin{tikzpicture}[scale=0.2]
+		\begin{tikzpicture}[scale=0.25]
 			% canonical basis
 			\begin{scope}[xshift=0cm]
 				\draw[thick, orange, fill=orange!10] (0.75,6.25) -- (1.18, 7.55) -- (12.5,0) -- (7,0) -- cycle;
@@ -753,7 +1087,7 @@
 \end{frame}
 
 
-\begin{frame}{Sobre los cortes de Ramificación y Acotamiento}
+\begin{frame}
 	\begin{stheorem}
 		Sea $(\optr{k}, \optr{\vec{t}})$ el óptimo del problema relajado de (PE) y supongamos que
 		$\optr{k}$ no es entero. Entonces el subproblema generado al añadir la restricción $k \geq
@@ -761,7 +1095,20 @@
 	\end{stheorem}
 \end{frame}
 
-\begin{frame}{Sobre la separabilidad del Problema Equivalente}
+\begin{frame}{Múltiples restricciones (caso general)}
+	Dado el programa lineal entero
+	\begin{align*}
+		\max_{\vec{x} \in \Z^n} \quad & \vec{q}^T\vec{x}, \\
+		\text{s.a.} \quad
+			& A\vec{x} = \vec{b}, \\
+			& \vec{x} \geq \vec{0},
+	\end{align*}
+	podemos resolver su problema relajado para obtener el valor óptimo $u^*$. Luego, la restricción
+	$\vec{q}^T\vec{x} \leq \eta$ es válida, donde $\eta \coloneq \floor{u^*}$, y regresamos al caso
+	particular.
+\end{frame}
+
+\begin{frame}{Más sobre las múltiples restricciones}
 	Podemos separar (PE) en un problema de maximización
 	\begin{align*}
 		\max_{k \in \Z, \tvec{y} \in \Z^n} \quad & k, \\
@@ -774,29 +1121,28 @@
 		M\vec{t} &\geq -k^*\vec{\nu},
 	\end{align*}
 	donde $k^*$ es la solución del problema de maximización.
+	% Estos problemas, a excepción de la última desigualdad, se pueden resolver a partir de sistemas
+	% de ecuaciones lineales diofantinas.
 \end{frame}
 
-\begin{frame}{Múltiples restricciones (caso general)}
-	\begin{align*}
-		\max_{\vec{x} \in \Z^n} \quad & \vec{q}^T\vec{x}, \\
-		\text{s.a.} \quad
-			& A\vec{x} = \vec{b}, \\
-			& \vec{x} \geq \vec{0}.
-	\end{align*}
+\section{Conclusiones}
+\begin{frame}
+	\centering
+	\Large{Conclusiones}
 \end{frame}
 
 
-\begin{frame}{Conclusión}
-	\begin{itemize}
+\begin{frame}{Resultados más destacables}
+	\begin{enumerate}
 		\item Clasificación de programas lineales enteros a partir de isomorfismo de redes.
 		\item Nuevas cotas superiores para el número de Frobenius.
-		\item Generalización para resolver programas lineales enteros con múltiples restricciones.
 		\item Introducción de (PE) que se deshace de subproblemas infactibles rápidamente.
+		\item Generalización para resolver programas lineales enteros con múltiples restricciones.
 		\item Exhibición de casos patológicos de Ramificación y Acotamiento.
 		\item Medidas de eficiencia de cortes en Ramificación y Acotamiento.
 		\item Desarrollo de algoritmos basados en métodos diofantinos que superan \textbf{una
 			implementación} de Ramificación y Acotamiento en \textbf{ciertas instancias}.
-	\end{itemize}
+	\end{enumerate}
 \end{frame}
 
 \end{document}
