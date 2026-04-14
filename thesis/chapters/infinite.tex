@@ -108,19 +108,20 @@ $\omega_1 = \eta$, y $x_{n-1}', x_n'$ son coeficientes de Bézout que satisfacen
 	b_1 \coloneq -\frac{\omega_{n-1}x_{n-1}'}{q_n} \cdot \prod_{j=1}^{n-1}g_j, \quad
 	b_2 \coloneq \frac{\omega_{n-1}x_{n}'}{q_{n-1}} \cdot \prod_{j=1}^{n-1}g_j.
 \end{equation}
-Puesto que $q_{n-1} < 0 < q_n$, podemos despejar $t_{n-1}$ de las dos últimas soluciones de
-\eqref{eq:last-solution} y reproducidas aquí por conveniencia,
-\begin{equation*}
-	\begin{cases}
-		x_{n-1} = \omega_{n-1}x_{n-1}' + \frac{q_n}{\prod_{j=1}^{n-1}g_j}t_{n-1}, \\
-		x_n = \omega_{n-1}x_n' - \frac{q_{n-1}}{\prod_{j=1}^{n-1}g_j}t_{n-1},
-	\end{cases}
-\end{equation*}
-encontramos que las últimas dos entradas de $\vec{x}$ son no negativas si y solo si $t_{n-1}$ satisface
+Puesto que $q_{n-1} < 0 < q_n$, encontramos que las últimas dos entradas de
+$\vec{x}$ son no negativas si y solo si $t_{n-1}$ satisface
 \begin{equation}
 	\label{eq:feasible-param:collapsed}
 	t_{n-1} \geq \ceil{\max\lbrace b_1, b_2 \rbrace}.
 \end{equation}
+
+% \eqref{eq:last-solution} y reproducidas aquí por conveniencia,
+% \begin{equation*}
+% 	\begin{cases}
+% 		x_{n-1} = \omega_{n-1}x_{n-1}' + \frac{q_n}{\prod_{j=1}^{n-1}g_j}t_{n-1}, \\
+% 		x_n = \omega_{n-1}x_n' - \frac{q_{n-1}}{\prod_{j=1}^{n-1}g_j}t_{n-1},
+% 	\end{cases}
+% \end{equation*}
 
 El siguiente lema fortalece nuestros resultados al generalizarlo para todo lado derecho de
 \eqref{eq:dioph}.
@@ -688,12 +689,12 @@ solución antes de los 300 segundos.
   \centering
   \begin{subfigure}{0.80\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/digits-bb_full.pdf}
+    \includegraphics[width=\linewidth]{/home/sebastian/repos/thesis/static/inf/digits-bb_full.pdf}
   \end{subfigure}
   \hfill
   \begin{subfigure}{0.80\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/digits-dioph.pdf}
+    \includegraphics[width=\linewidth]{/home/sebastian/repos/thesis/static/inf/digits-dioph.pdf}
   \end{subfigure}
 
   \caption{Tiempos de terminación promedio cuando varía el presupuesto y el
@@ -742,12 +743,12 @@ desarrollo del segundo caso del teorema \ref{theory:th:feasibility}.
   \centering
   \begin{subfigure}{0.80\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/mult-hist-cum-sep-v2.pdf}
+    \includegraphics[width=\linewidth]{/home/sebastian/repos/thesis/static/inf/mult-hist-cum-sep-v2.pdf}
   \end{subfigure}
   \hfill
   \begin{subfigure}{0.80\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/inf/mult-hist-cum-v2.pdf}
+    \includegraphics[width=\linewidth]{/home/sebastian/repos/thesis/static/inf/mult-hist-cum-v2.pdf}
   \end{subfigure}
 
   \caption{Distribución acumulada de los multiplicadores de tiempo. \textit{Arriba:} Separados por

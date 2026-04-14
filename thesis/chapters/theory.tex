@@ -28,7 +28,7 @@ de $x_i$ ``cuesta'' $p_i$ unidades y queremos maximizar nuestro ``gasto''
 de generalidad, que todas las entradas de $\vec{p}$ son distintas de cero. En efecto, si alguna
 entrada $p_i$ es nula, cualquier elección entera y no negativa de $x_i$ es válida para este programa
 lineal entero. Esta suposición será implícita en lo que resta del capítulo, aunque se hará explícita
-al final cuando investiguemos la manera de clasificar instancias de este programa lineal entero.
+al final cuando investiguemos la manera de clasificar este programas lineales enteros.
 
 \section{Prerrequisitos}
 \label{sec:prerreq}
@@ -45,7 +45,7 @@ programación lineal son \cite{carmen} y \cite{fabs}, respectivamente.
 
 \begin{definition}
 	Dados dos enteros $a$ y $b$, decimos que \textbf{$a$ divide a $b$} (y escribimos $a \mid b$) si
-	existe un entero $k$ tal que $a = k \cdot b$. También denotamos por $D(a)$ al \textbf{conjunto de
+	existe un entero $k$ tal que $b = k \cdot a$. También denotamos por $D(a)$ al \textbf{conjunto de
 	divisores de $a$}, es decir, definimos
 	\begin{equation*}
 		D(a) \coloneq \braces{b \in \Z \vcentcolon b \mid a}.
@@ -82,7 +82,7 @@ común divisor de dos enteros $a_1, a_2$, no ambos iguales a cero, si se satisfa
 	\item si $d' \mid a_1$ y $d' \mid a_2$, entonces $d' \mid d$.
 \end{enumerate}
 Luego, para un conjunto de enteros $a_1, a_2 \ldots a_n$, no todos iguales a cero, definimos el máximo común
-divisor entre ellos de manera inductiva:
+divisor entre ellos de manera iterativa:
 \begin{equation*}
 	\gcd{a_1, a_2, \ldots, a_{n-1}, a_n} \coloneq \gcd{a_1, \gcd{a_2, \ldots, \gcd{a_{n-1}, a_n} \cdots }}.
 \end{equation*}
@@ -310,7 +310,7 @@ muestra la relación entre semi-espacios afines y poliedros.
 	\label{fig:hyp}
 \end{figure}
 
-\begin{definition}[\cite{fabs}]
+\begin{definition}
 	Sea $P \subseteq \R^n$ un poliedro. Decimos que el vector $\vec{x} \in P$ es un \textbf{vértice} de $P$ si existe
 	$\vec{c} \in \R^n$ de manera que $\vec{c}^T\vec{x} < \vec{c}^T\vec{y}$ para todo $\vec{y} \in P
 	\setminus \braces{\vec{x}}$.
@@ -606,13 +606,13 @@ teórica para los siguientes capítulos, en especial para el capítulo 4.
 
 Finalmente, se muestra que el vector objetivo $\vec{p}$ del problema original
 \eqref{theory:formulation} induce una descomposición de $\Z^n$ y se analiza cómo se relacionan las
-descomposiciones asociadas a distintos vectores $\vec{p}$. Esto permitirá mostrar equivalencias
-entre distintas instancias del problema \eqref{theory:formulation}.
+descomposiciones asociadas a distintos vectores $\vec{p}$. Esto permitirá analizar equivalencias
+entre distintos programas lineales enteros.
 
 \subsection{Capas enteras}
 \label{subsec:sym}
 
-\begin{definition}
+\begin{definition}[\cite{herr}]
 	\label{theory:def:rational}
 	Decimos que un vector $\vec{v} \in \R^n \setminus \lbrace \vec{0} \rbrace$ es
 	\textbf{esencialmente entero} si existen un vector $\vec{w} \in \Z^n$ y un escalar $m \in \R
@@ -621,7 +621,7 @@ entre distintas instancias del problema \eqref{theory:formulation}.
 	nula es positiva.
 \end{definition}
 \begin{example}
-	El vector $\left(-\sqrt{2}, 1/\sqrt{2}\right) = 2\sqrt{2}(-2, 1)$ es esencialmente entero
+	El vector $\left(-\sqrt{2}, 1/\sqrt{2}\right) = \frac{1}{\sqrt{2}}(-2, 1)$ es esencialmente entero
 	y $(2, -1)$ es su múltiplo coprimo. En contraste, el vector $\paren{\sqrt{2}, \sqrt{3}}$ no es
 	esencialmente entero. Para ver esto último, supongamos que existe un escalar $m \in
 	\R\setminus\braces{0}$ y enteros $a, b$ tales que $m(a, b) = \paren{\sqrt{2}, \sqrt{3}}$.
@@ -655,7 +655,7 @@ entre distintas instancias del problema \eqref{theory:formulation}.
 % otros textos de programación lineal. Por ejemplo, \cite{martello} y \cite{alex} toman en cuenta
 % vectores puramente racionales.
 
-\begin{definition}
+\begin{definition}[\cite{herr}]
 	\label{phase-1:def:c-layer}
 	Sea $\vec{v} \in \R^n$ un vector esencialmente entero y sea $t \in \R$ un escalar. Decimos que
 	su hiperplano afín asociado
@@ -673,7 +673,7 @@ sobre $\R^n$ o sobre $\Q^n$ se debe a que esta clase es la más grande, de acuer
 algoritmos que presentaremos en el capítulo 3 enumeran estas capas enteras, así que su finitud
 asegura la terminación en tiempo finito de estos algoritmos.
 
-\begin{lemma}
+\begin{lemma}[\cite{herr}]
 	\label{phase-1:lemma:layer}
 	Sean $\vec{v}, \vec{x} \in \R^n$ con $\vec{v}$ distinto de cero. Entonces $\vec{x} \in
 	\clayer{\vec{v}}{t_{\vec{x}}}$, donde $t_{\vec{x}} \coloneq
@@ -703,7 +703,7 @@ donde $m \neq 0$ es el escalar que satisface $\vec{v} = m\vec{w}$. Así pues, pa
 enteras, basta con fijarnos en los múltiplos coprimos que las definen en vez de sus vectores
 esencialmente enteros asociados.
 
-\begin{theorem}
+\begin{theorem}[\cite{herr}]
 	\label{phase-1:th:cover}
 	Sea $\vec{v} \in \R^n$ un vector esencialmente entero y sea $\vec{w}$ su múltiplo coprimo.
 	Entonces una cobertura de $\Z^n$ está dada por la familia de capas enteras
@@ -954,7 +954,7 @@ anterior.
 Así también, la construcción de soluciones enteras de ecuaciones lineales diofantinas proveerá
 herramientas teóricas útiles para demostrar la gran mayoría de resultados que presentaremos. Por lo
 tanto, la siguiente subsección se encarga de construir solamente soluciones enteras de estas
-ecuaciones. Será cuestión de los capítulos 2 y 3 obtener soluciones sean no negativas.
+ecuaciones. Será cuestión de los capítulos 2 y 3 obtener soluciones no negativas.
 
 \subsection{Construcción de soluciones enteras}
 \label{subsec:dioph-eq}
@@ -966,8 +966,7 @@ puntos $\vec{x} \in \Z^n$ que se encuentran sobre esa capa satisfacen la ecuaci�
 	\label{eq:dioph}
 	\vec{q}^T\vec{x} = q_1x_1 + q_2x_2 + \cdots + q_nx_n = k.
 \end{equation}
-con $\vec{q} = (q_1, \ldots, q_n)$. Como hemos mencionado previamente, podemos suponer sin pérdida
-de generalidad que ninguna entrada de $\vec{q}$ es nula.
+con $\vec{q} = (q_1, \ldots, q_n)$. A lo largo de esta subsección basta suponer que $q_n \neq 0$.
 
 En la sección \ref{section:number-theory} mostramos condiciones de existencia
 de este tipo de ecuaciones, así como su construcción, cuando $n = 2$. Partimos de la
@@ -1016,7 +1015,7 @@ donde $t_1 \in \Z$ es una variable libre.
 \end{observation}
 
 Para el siguiente paso de la recursión, escogemos cualquier $t_1 \in \Z$ para fijar $\omega_2$.
-Tenemos de \eqref{def:dummy:omega-2} que debemos resolvemos la ecuación
+Tenemos de \eqref{def:dummy:omega-2} que debemos resolver la ecuación
 \begin{equation}
 	\label{eq:dioph:second-step}
 	\frac{q_2}{g_2 \cdot g_1}x_2 +
@@ -1502,7 +1501,7 @@ caracterizarlos por medio de $\vec{q}$.
 	En el lema \ref{lemma:iso2} mostramos que las columnas de $M$ son linealmente independientes.
 	Ahora mostramos por contradicción que $\vec{\nu}$ es linealmente independiente de las columnas de
 	$M$, así que supongamos que no lo es, por lo que existen escalares $\lambda_1, \ldots,
-	\lambda_{n-1}$, no todos cero, tales que
+	\lambda_{n-1}$, tales que
 	\begin{equation*}
 		\vec{\nu} = \lambda_1 \vec{m}_1 + \cdots + \lambda_{n-1} \vec{m}_{n-1},
 	\end{equation*}
@@ -1537,13 +1536,14 @@ El siguiente corolario es presentado sin demostración, pero cabe mencionar que 
 directa del teorema anterior junto con las equivalencias encontradas en el teorema 4.3 de \cite{alex}.
 \begin{corollary}
 	\label{cor:unimodular}
-	Sea $\vec{q} \in \Z^n$ un vector coprimo y supongamos que $q_n$ es distinto de cero.
-	Consideremos $\vec{\nu} \in \Z^n$ y las columnas $\vec{m}_1, \ldots, \vec{m}_{n-1} \in \Z^n$ de
-	la matriz $M$ (definidas en \eqref{eq:vec-omega} y \eqref{eq:mat-T}, respectivamente), entonces
-	la matriz
-	\begin{equation*}
-		[ \vec{\nu} \mid \vec{m}_1 \mid \cdots \mid \vec{m}_{n-1} ] \in \Z^{n \times n}
-	\end{equation*}
+	Sea $\vec{q} \in \Z^n$ un vector coprimo y supongamos que $q_n \neq 0$.
+	Consideremos el vector $\vec{\nu} \in \Z^n$ definido en
+	\eqref{eq:vec-omega} y la matriz $M \in \Z^{n \times (n - 1)}$ definida en
+	\eqref{eq:mat-T}, entonces la matriz
+	\begin{equation}
+		\label{u-matrix}
+		U \coloneq [ \vec{\nu} \mid M] \in \Z^{n \times n}
+	\end{equation}
 	es unimodular, es decir, su determinante es $\pm 1$.
 \end{corollary}
 
@@ -1580,18 +1580,83 @@ encuentre sobre la $k$-ésima capa entera, mientras que el componente $\vec{x}_h
 esta capa. Esta idea de descomponer el espacio a partir de soluciones particulares y homogéneas de
 una ecuación no es novedosa, pues es sumamente frecuente hacerlo para espacios vectoriales.
 
-Observemos que si $q_n = 0$, es válido permutar las entradas de $\vec{q}$ de manera que el vector
-permutado $\tvec{q}$ cumpla el supuesto $\tilde{q}_n \neq 0$. Podemos preguntarnos cómo se
-relacionan las imágenes de las matrices $M$ y $\tilde{M}$ definidas en \eqref{eq:mat-T} y
-utilizando $\vec{q}$ y $\tvec{q}$ respectivamente para construirlas. Pero si $q_n = 0$, entonces
-puede ser que $M$ no esté bien definida. Requerimos de un supuesto más fuerte para responder la
-pregunta.
+Dados dos vectores coprimos $\vec{q}, \tvec{q} \in \Z^n$, podemos preguntarnos cómo se relacionan
+sus respectivas subredes asociadas. La respuesta a esta cuestión dará comienzo a nuestros intentos
+de clasificación de programas lineales enteros, como lo mencionamos en la introducción de esta
+tesis. Para ello, debemos especificar el concepto de isomorfismo de redes. Si bien la siguiente
+definición no se encuentra en \cite{alex}, estuvo fuertemente inspirada por las equivalencias del
+teorema 4.3 y del corolario 4.3a de esa misma referencia.
+
+\begin{definition}
+	\label{def:iso}
+	Sean $V, W$ dos espacios vectoriales y sea $T\colon V \to W$ una transformación lineal
+	invertible cuya matriz asociada es unimodular. Sean $\Lambda_V$ y $\Lambda_W$ dos redes
+	respectivas de $V, W$ y supongamos que la imagen de $T\big|_{\Lambda_V}$ es $\Lambda_W$. Entonces
+	decimos que $T$ es un \textbf{isomorfismo de redes} y escribimos $\Lambda_V \cong \Lambda_W$.
+\end{definition}
+
+Puesto que el símbolo $\cong$ también es utilizado para denotar isomorfismo entre espacios
+vectoriales, utilizaremos el calificativo completo de ``isomorfismo de redes'' cuando hablemos de
+redes, y diremos ``isomorfismo'' cuando la discusión se centre en espacios vectoriales. Cabe
+mencionar que todo isomorfismo de redes también es un isomorfismo de espacios vectoriales, y que el
+converso no es necesariamente cierto.
+
+El siguiente teorema es uno de los resultados más importantes de esta tesis, pues muestra que, bajo
+isomorfismo de redes, existe una sola clase de equivalencia entre las subredes inducidas por
+vectores coprimos con última entrada distinta de cero. Esto sugiere que todos los
+programas lineales enteros con la misma dimensión son equivalentes entre sí.
+\begin{theorem}
+	\label{th:equiv}
+	Sean $\vec{q}, \tvec{q} \in \Z^n$ vectores coprimos con últimas entradas no nulas, y sean
+	respectivamente $\Lambda_p, \Lambda_h$ y $\tilde{\Lambda}_p, \tilde{\Lambda}_h$ las subredes
+	inducidas por ellos (ver \eqref{eq:dec}). Entonces $\Lambda_p \cong \tilde{\Lambda_p}$ y
+	$\Lambda_h \cong \tilde{\Lambda}_h$.
+\end{theorem}
+\begin{proof}
+	Consideremos la matriz $U = [\vec{\nu} | M]$ inducida por $\vec{q}$ de acuerdo al corolario
+	\ref{cor:unimodular} y definida en \eqref{u-matrix}. Por este último corolario y por la
+	definición \ref{def:iso}, tenemos que $U$ testifica el isomorfismo de redes entre $\Z^n$ y
+	$\Lambda_p \oplus \Lambda_h$. Similarmente, la matriz $\tilde{U} = [\tvec{\nu} | \tilde{M}]$
+	inducida por $\tvec{q}$ testifica el isomorfismo de redes entre $\Z^n$ y $\tilde{\Lambda}_p
+	\oplus \tilde{\Lambda}_h$. Ahora bien, por cómo están construidas en \eqref{u-matrix}
+	encontramos que
+	\begin{subequations}
+		\begin{align}
+			\tvec{\nu} &\overset{\tilde{U}^{-1}}{\longmapsto} \vec{e}_1 \overset{U}{\longmapsto}
+			\vec{\nu}, \label{eq:equiv:1} \\
+			\tilde{M} &\overset{\tilde{U}^{-1}}{\longmapsto} [\vec{e}_2 \mid \cdots \mid \vec{e}_n]
+			\overset{U}{\longmapsto} M \label{eq:equiv:2}.
+		\end{align}
+	\end{subequations}
+
+	Como $\tvec{\nu}$ y $\vec{\nu}$ son bases respectivas de $\Lambda_p$ y $\tilde{\Lambda}_p$, se
+	sigue que la imagen de $U\tilde{U}^{-1}\big|_{\tilde{\Lambda}_p}$ es $\Lambda_p$. Análogamente,
+	tenemos que la imagen de $U\tilde{U}^{-1}\big|_{\tilde{\Lambda}_h}$ es $\Lambda_h$. También
+	tenemos por el corolario \ref{cor:unimodular} que $U\tilde{U}^{-1}$ es invertible y unimodular:
+	\begin{align*}
+		(U\tilde{U}^{-1})(\tilde{U}U^{-1}) &= U(\tilde{U}^{-1}\tilde{U})U^{-1} = UI_nU^{-1} =
+		UU^{-1} = I_n, \\
+		\det{(U\tilde{U}^{-1})} &= \det{(U)}\det{(\tilde{U}^{-1})} = \det{(U)}/\det{(\tilde{U})} = \pm 1.
+	\end{align*}
+	Se sigue de la definición \ref{def:iso} que $\tilde{\Lambda}_p \cong \Lambda_p$ y
+	$\tilde{\Lambda}_h \cong \Lambda_h$.
+\end{proof}
+
+Debido a este teorema podemos expresar un programa lineal entero en términos de otro, posiblemente
+más sencillo de resolver, a partir de un cambio de variables. Por ejemplo, el teorema
+\ref{th:multeq} del capítulo 4 muestra explícitamente este cambio de variables para ``alinear'' el
+vector $\vec{q}$ al vector canónico $\vec{e}_1$. Una consecuencia de esto será el teorema
+\ref{th:bbspeed}, el cual muestra que este problema transformado permite a R\&A
+podar lo más tempranamente posible algunos subproblemas infactibles. Así también, en el siguiente
+capítulo haremos uso implícito de este teorema para permutar las entradas del vector $\vec{q}$ de
+manera que podamos resolver el problema \ref{theory:formulation} en tiempo cuadrático (véase la
+subsección \ref{subsec:inf:complex}) cuando una de las entradas de $\vec{q}$ es negativa. El
+siguiente corolario es una extensión natural del teorema anterior.
 
 \begin{corollary}
 	\label{cor:iso3}
-	Sea $\vec{q}$ un vector coprimo y sea $\tvec{q}$ un vector con las entradas de $\vec{q}$
-	permutadas. Supongamos que $q_n, \tilde{q}_n \neq 0$. Sean $M$ y $\tilde{M}$ sus respectivas
-	matrices definidas en \eqref{eq:mat-T}, entonces se satisface
+	Sean $\vec{q}, \tvec{q} \in \Z^n$ vectores coprimos con últimas entradas no nulas, y
+	sean $M$ y $\tilde{M}$ sus respectivas matrices definidas en \eqref{eq:mat-T}, entonces
 	\begin{align*}
 		\ker{M} \cong \ker{\tilde{M}}, &\quad
 		\img\braces{M} \cong \img\braces{\tilde{M}}, \\
@@ -1600,68 +1665,98 @@ pregunta.
 	\end{align*}
 \end{corollary}
 \begin{proof}
-	Por el teorema de la dimensión basta mostrar uno de estos isomorfismos, así que mostramos que
-	$\img\braces{M} \cong \img\braces{\tilde{M}}$.
-	Por hipótesis, existe una matriz de permutación $P \in \Z^{n \times n}$ tal que $\tvec{q} = P\vec{q}$.
-	Puesto que $P$ es invertible, tenemos $\gen\braces{\vec{q}} \cong
-	\gen\braces{\tvec{q}}$. Usando el lema \ref{lemma:iso2} obtenemos
-	\begin{equation*}
-		\img\braces{M}^\perp = \gen\braces{\vec{q}} \cong \gen\braces{\tvec{q}} =
-		\img\braces{\tilde{M}}^\perp
-	\end{equation*}
-	y entonces $\img\braces{M} \cong \img\braces{\tilde{M}}$, que es lo que queríamos demostrar.
+	Se sigue inmediatamente de \eqref{eq:equiv:2}, ya que la independencia lineal de las columnas de
+	$M$ se mantiene bajo la premultiplicación de $\tilde{M}$ por la matriz $U\tilde{U}^{-1}$, pues
+	esta es invertible, de acuerdo a la demostración del teorema \ref{th:equiv}.
 \end{proof}
-\begin{observation}
-	Si $\tvec{q} = P\vec{q}$ no es cierto que $\tilde{M} = PM$. Por ejemplo, consideremos el vector
-	$\vec{q} \coloneq (1, 1, -2)^T$ y la matriz de permutación
-	\begin{equation*}
-		P \coloneq \begin{pmatrix}
-			1 & 0 & 0 \\
-			0 & 0 & 1 \\
-			0 & 1 & 0 \\
-		\end{pmatrix},
-		% P \coloneq [ \vec{e}_1 \mid \vec{e}_3 \mid \vec{e}_2 ],
-	\end{equation*}
-	de donde obtenemos $\tvec{q} = (1, -2, 1)^T$. Calculamos de \eqref{eq:mat-T} que
-	\begin{equation*}
-		M = \begin{pmatrix}
-			1 & 0 \\
-			1 & -2 \\
-			1 & -1 \\
-		\end{pmatrix}, \quad
-		\tilde{M} = \begin{pmatrix}
-			1 & 0 \\
-			1 & 1 \\
-			1 & 2 \\
-		\end{pmatrix}, \quad
-		PM = \begin{pmatrix}
-			1 & 0 \\
-			1 & -1 \\
-			1 & -2 \\
-		\end{pmatrix}.
-	\end{equation*}
-	% Sí se cumple que
-	% \begin{equation*}
-	% 	\ker{\tilde{M}^T} = \gen\braces{\tvec{q}}
-	% 	\cong \gen\braces{\vec{q}} = \ker{M^T},
-	% \end{equation*}
-	% pero
-	% \begin{equation*}
-	% 	PM = \begin{pmatrix}
-	% 		1 & 0 \\
-	% 		1 & -1 \\
-	% 		1 & -2 \\
-	% 	\end{pmatrix}
-	% 	\neq \tilde{M}.
-	% \end{equation*}
-	Se verifica inmediatamente que $\tilde{M} \neq PM$.
-\end{observation}
 
-En esta última parte del capítulo, exploramos las consecuencias del corolario \ref{cor:iso3}. Esto
-nos llevará de regreso a justificar de forma algebraica o geométrica por qué es posible ignorar las
-entradas nulas del vector $\vec{q}$, o tan siquiera por qué podemos concentrarnos en este vector
-coprimo en vez del vector esencialmente entero $\vec{p}$ en el problema original
-\eqref{theory:formulation}.
+A continuación enfocamos nuestra atención al caso particular de permutaciones del vector $\vec{q}$.
+La motivación principal de esto se debe a que los resultados principales del siguiente capítulo se
+fundamentan en este caso.
+
+Observemos que si $q_n = 0$, es válido permutar las entradas de $\vec{q}$ de manera que el vector
+permutado $\tvec{q}$ cumpla el supuesto $\tilde{q}_n \neq 0$. El corolario \ref{cor:iso3} responde a
+la pregunta de cómo se relacionan los espacios fundamentales asociados a las matrices $M$ y
+$\tilde{M}$ inducidas por $\vec{q}$ y $\tvec{q}$ respectivamente. Pero si $q_n = 0$, entonces puede
+ser que $M$ no esté bien definida. Lo que se encuentra a continuación también nos permite justificar
+por qué es posible ignorar las entradas nulas del vector $\vec{q}$.
+
+% En esta última parte del capítulo, exploramos las consecuencias del corolario \ref{cor:iso3}. Esto
+% nos llevará de regreso a justificar de forma algebraica o geométrica por qué es posible ignorar las
+% entradas nulas del vector $\vec{q}$, o tan siquiera por qué podemos concentrarnos en este vector
+% coprimo en vez del vector esencialmente entero $\vec{p}$ en el problema original
+% \eqref{theory:formulation}.
+
+% \begin{corollary}
+% 	\label{cor:iso3}
+% 	Sea $\vec{q}$ un vector coprimo y sea $\tvec{q}$ un vector con las entradas de $\vec{q}$
+% 	permutadas. Supongamos que $q_n, \tilde{q}_n \neq 0$. Sean $M$ y $\tilde{M}$ sus respectivas
+% 	matrices definidas en \eqref{eq:mat-T}, entonces se satisface
+% 	\begin{align*}
+% 		\ker{M} \cong \ker{\tilde{M}}, &\quad
+% 		\img\braces{M} \cong \img\braces{\tilde{M}}, \\
+% 		\ker{M^T} \cong \ker{\tilde{M}^T}, &\quad
+% 		\img\braces{M^T} \cong \img\braces{\tilde{M}^T}.
+% 	\end{align*}
+% \end{corollary}
+% \begin{proof}
+% 	Por el teorema de la dimensión basta mostrar uno de estos isomorfismos, así que mostramos que
+% 	$\ker{M^T} \cong \ker{\tilde{M}^T}$.
+% 	Por hipótesis, existe una matriz de permutación $P \in \Z^{n \times n}$ tal que $\tvec{q} = P\vec{q}$.
+% 	Puesto que $P$ es invertible, tenemos $\gen\braces{\vec{q}} \cong
+% 	\gen\braces{\tvec{q}}$. Usando el lema \ref{lemma:iso2} obtenemos
+% 	\begin{equation*}
+% 		\ker{M^T} = \img\braces{M}^\perp = \gen\braces{\vec{q}} \cong \gen\braces{\tvec{q}} =
+% 		\img\braces{\tilde{M}}^\perp = \ker{\tilde{M}^T}.
+% 	\end{equation*}
+% \end{proof}
+% \begin{observation}
+% 	Si $\tvec{q} = P\vec{q}$ no es cierto que $\tilde{M} = PM$. Por ejemplo, consideremos el vector
+% 	$\vec{q} \coloneq (1, 1, -2)^T$ y la matriz de permutación
+% 	\begin{equation*}
+% 		P \coloneq \begin{pmatrix}
+% 			1 & 0 & 0 \\
+% 			0 & 0 & 1 \\
+% 			0 & 1 & 0 \\
+% 		\end{pmatrix},
+% 		% P \coloneq [ \vec{e}_1 \mid \vec{e}_3 \mid \vec{e}_2 ],
+% 	\end{equation*}
+% 	de donde obtenemos $\tvec{q} = (1, -2, 1)^T$. Calculamos de \eqref{eq:mat-T} que
+% 	\begin{equation*}
+% 		M = \begin{pmatrix}
+% 			1 & 0 \\
+% 			1 & -2 \\
+% 			1 & -1 \\
+% 		\end{pmatrix}, \quad
+% 		\tilde{M} = \begin{pmatrix}
+% 			1 & 0 \\
+% 			1 & 1 \\
+% 			1 & 2 \\
+% 		\end{pmatrix}, \quad
+% 		PM = \begin{pmatrix}
+% 			1 & 0 \\
+% 			1 & -1 \\
+% 			1 & -2 \\
+% 		\end{pmatrix}.
+% 	\end{equation*}
+% 	% Sí se cumple que
+% 	% \begin{equation*}
+% 	% 	\ker{\tilde{M}^T} = \gen\braces{\tvec{q}}
+% 	% 	\cong \gen\braces{\vec{q}} = \ker{M^T},
+% 	% \end{equation*}
+% 	% pero
+% 	% \begin{equation*}
+% 	% 	PM = \begin{pmatrix}
+% 	% 		1 & 0 \\
+% 	% 		1 & -1 \\
+% 	% 		1 & -2 \\
+% 	% 	\end{pmatrix}
+% 	% 	\neq \tilde{M}.
+% 	% \end{equation*}
+% 	Se verifica inmediatamente que $\tilde{M} \neq PM$.
+% \end{observation}
+% 
+
 \begin{definition}
 	\label{def:orb}
 	Sea $\vec{q} \in \Z^n$ un vector coprimo con entradas distintas de cero, entonces
@@ -1691,15 +1786,15 @@ coprimo en vez del vector esencialmente entero $\vec{p}$ en el problema original
 	permutación.
 \end{proof}
 
-\begin{lemma}
-	\label{lemma:isoclass}
-	Sea $\vec{q} \in \Z^n$ un vector con entradas coprimas distintas de cero y sea $\tvec{q} \in
-	\orb(\vec{q})$. Entonces las redes $\tilde{\Lambda}_h$ y $\Lambda_h$ definidas en \eqref{eq:dec}
-	son isomorfas. Similarmente, las redes $\tilde{\Lambda}_p$ y $\Lambda_p$ son isomorfas.
-\end{lemma}
-\begin{proof}
-	Se sigue inmediatamente de la definición \ref{def:orb} junto con el corolario \ref{cor:iso3}.
-\end{proof}
+% \begin{lemma}
+% 	\label{lemma:isoclass}
+% 	Sea $\vec{q} \in \Z^n$ un vector con entradas coprimas distintas de cero y sea $\tvec{q} \in
+% 	\orb(\vec{q})$. Entonces las redes $\tilde{\Lambda}_h$ y $\Lambda_h$ definidas en \eqref{eq:dec}
+% 	son isomorfas. Similarmente, las redes $\tilde{\Lambda}_p$ y $\Lambda_p$ son isomorfas.
+% \end{lemma}
+% \begin{proof}
+% 	Se sigue inmediatamente de la definición \ref{def:orb} junto con el corolario \ref{cor:iso3}.
+% \end{proof}
 
 % Por la definición \ref{def:orb} y el corolario \ref{cor:iso3}, encontramos que si $\vec{q} \in \Z^n$
 % es un vector coprimo con entradas distintas de cero, entonces todos los vectores en
@@ -1712,21 +1807,18 @@ coprimo en vez del vector esencialmente entero $\vec{p}$ en el problema original
 % coprimo $\vec{q} \in \Z^n$ tiene $\ell$ entradas nulas, podemos proyectarlo sobre la subred $\Z^{n -
 % \ell}$ deshaciéndonos de esas entradas.
 
-El lema anterior nos permite identificar la descomposición de $\Z^n$ a partir de $\orb(\vec{q})$ y
-no solamente de $\vec{q}$. Ahora bien, supongamos que $\vec{q} \in \Z^{n + \ell}$ es un vector coprimo con
-$\ell$ entradas nulas. Definamos el conjunto ordenado de índices no nulos de $\vec{q}$ como $\sigma
-= (i \vcentcolon q_i \neq 0)$, y también definamos la proyección $\proy{n + \ell} \colon \Z^{n +
-\ell} \to \Z^{n}$ a partir de $\proy{n + \ell}(\vec{q})_i \coloneq q_{\sigma_i}$. Luego, $\proy{n +
-\ell}(\vec{q})$ es un vector coprimo con entradas distintas de cero. Por el teorema
-\ref{th:lattice} (y también por la discusión que le sucede), sabemos que $\proy{n + \ell}(\vec{q})$
-induce la descomposición
-\begin{equation*}
-	\Z^n \cong \Lambda_p \oplus \Lambda_h,
-\end{equation*}
-donde $\Lambda_p$ y $\Lambda_h$ están definidas en \eqref{eq:dec}. Pero en el lema
-\ref{lemma:isoclass} vimos que todo vector $\tvec{q} \in \orb(\proy{n + \ell}(\vec{q}))$ induce una
-descomposición isomorfa. Esto justifica el hecho de que podamos ignorar las entradas nulas del
-vector coprimo $\vec{q}$, y también motiva el siguiente resultado.
+El teorema \ref{th:equiv} nos permite identificar la descomposición de $\Z^n$ a partir de
+$\orb(\vec{q})$ y no solamente de $\vec{q}$. Ahora bien, supongamos que $\vec{q} \in \Z^{n + \ell}$
+es un vector coprimo con $\ell$ entradas nulas. Definamos el conjunto ordenado de índices no nulos
+de $\vec{q}$ como $\sigma = (i \vcentcolon q_i \neq 0)$, y también definamos la proyección $\proy{n
++ \ell} \colon \Z^{n + \ell} \to \Z^{n}$ a partir de $\proy{n + \ell}(\vec{q})_i \coloneq
+q_{\sigma_i}$. Luego, $\proy{n + \ell}(\vec{q})$ es un vector coprimo con entradas distintas de
+cero. Por el teorema \ref{th:lattice} (y también por la discusión que le sucede), sabemos que
+$\proy{n + \ell}(\vec{q})$ induce la descomposición $\Z^n = \Lambda_p \oplus \Lambda_h$, donde
+$\Lambda_p$ y $\Lambda_h$ están definidas en \eqref{eq:dec}. Pero una de las consecuencias del
+teorema \ref{th:equiv} es que todo vector $\tvec{q} \in \orb(\proy{n + \ell}(\vec{q}))$ induce una
+descomposición de redes isomorfa. Esto justifica el hecho de que podamos tanto ignorar las entradas nulas
+como permutar todas las entradas del vector coprimo $\vec{q}$, y también motiva el siguiente resultado.
 \begin{theorem}
 	\label{th:isoclass}
 	Sean $\vec{q} \in \Z^n$ y $\tvec{q} \in \Z^m$ vectores coprimos con $n < m$.
@@ -1735,28 +1827,39 @@ vector coprimo $\vec{q}$, y también motiva el siguiente resultado.
 \end{theorem}
 \begin{proof}
 	Supongamos, sin pérdida de generalidad, que $\vec{q}$ no tiene entradas nulas. Luego,
-	$\proy{n}(\vec{q}) = \vec{q}$. Entonces $\tvec{q}$ tiene $m - n$ entradas no nulas, pues de otra
+	$\proy{n}(\vec{q}) = \vec{q}$. Entonces $\tvec{q}$ tiene $m - n$ entradas nulas, pues de otra
 	forma las dimensiones de $\proy{n}(\vec{q})$ y $\proy{m}(\tvec{q})$ serían distintas y por lo
 	tanto sus órbitas no serían iguales. Tenemos por hipótesis y del lema \ref{lemma:orb} que
-	$\proy{m}(\tvec{q}) \in \orb(\vec{q})$. Finalmente, del lema \ref{lemma:isoclass} junto
-	con el teorema \ref{th:lattice} obtenemos lo que queríamos demostrar.
+	$\proy{m}(\tvec{q}) \in \orb(\vec{q})$. Finalmente, del teorema \ref{th:equiv} obtenemos lo que
+	queríamos demostrar.
 \end{proof}
 
+Hemos visto que el teorema \ref{th:equiv} nos permite definir una única clase de equivalencia entre
+programas lineales enteros siempre y cuando las últimas entradas de los vectores coprimos asociados
+a los vectores objetivo sean distintos de cero. No obstante, computar el cambio de variable entre
+cualesquiera dos programas lineales enteros puede ser costoso tanto en tiempo como en espacio. Otro
+candidato interesante para definir las clases de equivalencia son las órbitas. Aunque no lo
+mostraremos en esta tesis para evitar extendernos más allá de lo necesario, esto tiene su causa en
+que las matrices de permutación forman un subgrupo del grupo de matrices ortogonales sobre los
+enteros y, por lo tanto, es computacionalmente más sencillo determinar el cambio de variable que
+facilita la resolución del problema.
+
 \begin{definition}
-	Sean $\vec{p} \in \R^n$ y $\tvec{p} \in \R^m$ vectores esencialmente enteros (ver definición
-	\ref{theory:def:rational}). Entonces decimos que $\vec{p}$ y $\tvec{p}$ son equivalentes si y
-	solo si $\orb(\proy{n}(\vec{q})) = \orb(\proy{m}(\tvec{q}))$, donde $\vec{q}$ y $\tvec{q}$ son
-	sus respectivos múltiplos coprimos. En este caso escribimos $\vec{p} \sim \tvec{p}$.
+	Sean $\vec{p} \in \R^n$ y $\tvec{p} \in \R^m$ vectores esencialmente enteros
+	(ver definición \ref{theory:def:rational}). Entonces decimos que $\vec{p}$ y $\tvec{p}$ son
+	\textbf{equivalentes} si $\orb(\proy{n}(\vec{q})) = \orb(\proy{m}(\tvec{q}))$, donde $\vec{q}$ y
+	$\tvec{q}$ son sus respectivos múltiplos coprimos. En este caso escribimos $\vec{p} \sim
+	\tvec{p}$.
 \end{definition}
-Puesto que el múltiplo coprimo de un vector esencialmente entero es único (ver la discusión al
-inicio de la subsección \ref{subsec:sym}), esta relación está bien definida. Luego, por las
-propiedades de la igualdad, tenemos que esta relación es una de equivalencia sobre el conjunto de
-vectores esencialmente enteros, independientemente de su dimensión.
+Puesto que el múltiplo coprimo de un vector esencialmente entero es único esta relación está bien
+definida. Luego, por las propiedades de la igualdad, tenemos que esta relación es una de
+equivalencia sobre el conjunto de vectores esencialmente enteros, independientemente de su
+dimensión.
 
 Con esta definición y el teorema \ref{th:isoclass} encontramos que si los vectores esencialmente
 enteros $\vec{p} \in \R^n$ y $\tvec{p} \in \R^{m}$ son equivalentes, entonces el programa lineal
-\eqref{theory:formulation} es esencialmente el mismo. En conclusión, encontramos una especie de
-clasificación de este tipo de programas lineales.
+\eqref{theory:formulation} es esencialmente el mismo. Esto permite clasificar los programas lineales
+enteros de manera que determinar el cambio de variable entre ellos no sea tan costoso computacionalmente.
 
 % Hemos visto que el único representante importante
 % para resolver estos problemas es el múltiplo coprimo $\vec{q} \in \Z^n$ o, más bien, una proyección
@@ -1767,7 +1870,7 @@ coprimo $\vec{q} \in \Z^n$ de manera que se satisfaga $q_{n - 1} < 0 < q_n$. Est
 un elemento en $\orb(\vec{q})$ que cumpla con esta característica. Equivalentemente, dado un vector
 esencialmente entero $\vec{p} \in \R^{n + \ell}$ con $\ell$ entradas nulas, veremos que conviene
 escoger un representante en su clase de equivalencia $[\vec{p}]$ tal que su múltiplo coprimo
-asociado $\vec{q} \in \Z^n$ cumpla $q_{n-1} < 0 < q_n$. Esto ejemplificará concretamente la
+asociado $\vec{q} \in \Z^n$ cumpla $q_{n-1} < 0 < q_n$. Esto ilustrará concretamente la
 conveniencia de definir una clase de equivalencia sobre el conjunto de vectores esencialmente enteros.
 
 % Solamente cuando querramos relacionar los resultados con una instancia específica del problema

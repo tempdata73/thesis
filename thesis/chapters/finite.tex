@@ -290,12 +290,12 @@ $\vec{p}$.
 % 
 %   \begin{minipage}[t]{0.48\textwidth}
 %     \centering
-%     \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/misc/delta8m12q.pdf}
+%     \includegraphics[width=\linewidth]{/home/sebastian/repos/thesis/static/misc/delta8m12q.pdf}
 %   \end{minipage}
 %   \hfill
 %   \begin{minipage}[t]{0.48\textwidth}
 %     \centering
-%     \includegraphics[width=\linewidth]{/home/tempdata/repos/thesis/static/misc/delta008m960q.pdf}
+%     \includegraphics[width=\linewidth]{/home/sebastian/repos/thesis/static/misc/delta008m960q.pdf}
 %   \end{minipage}
 % 
 %   \caption{Número de capas a revisar en función del presupuesto. \textit{Izquierda: }Para los
@@ -424,7 +424,7 @@ que nos referíamos anteriormente como ``trozo no negativo'' de la $k$-ésima
 capa entera. Todas las definiciones fueron tomadas del capítulo 2 de
 \cite{boyd} a excepción del baricentro, mientras que las demostraciones de los
 lemas y teoremas fueron realizadas de manera independiente.
-\begin{definition}
+\begin{definition}[\cite{boyd}]
 	\label{def:aff}
 	Sean $\vec{v}_1, \ldots, \vec{v}_m \in \R^n$ una colección de vectores,
 	entonces definimos su \textbf{combinación afín} a partir de
@@ -523,7 +523,7 @@ lemas y teoremas fueron realizadas de manera independiente.
 	afín de los vectores $\vec{u}_1, \ldots, \vec{u}_n$.
 \end{example}
 
-\begin{definition}
+\begin{definition}[\cite{boyd}]
 	\label{def:simplex}
 	Sean $\vec{v}_1, \ldots, \vec{v}_m \in \R^n$ vectores linealmente
 	independientes. Entonces definimos el \textbf{símplice} $\sigma$ de
@@ -569,14 +569,14 @@ lemas y teoremas fueron realizadas de manera independiente.
 	\end{equation*}
 \end{lemma}
 \begin{proof}
-	En el ejemplo \ref{ex:aff} mostramos que
+	($\subseteq$) En el ejemplo \ref{ex:aff} mostramos que
 	\begin{equation*}
-		\label{eq:aff-layer}
-		\qlayer{\vec{q}}{k} = \aff\braces{\vec{u}_1, \ldots, \vec{u}_n}.
+		\qlayer{\vec{q}}{k} = \aff\braces{\vec{u}_1, \ldots, \vec{u}_n},
 	\end{equation*}
-	($\subseteq$) Sea $\vec{x} \in \sigma$, de la definición \ref{def:simplex} y de \eqref{aff:contention} encontramos
-	que $\vec{x}$ se encuentra en la $k$-ésima capa entera. Además, existen escalares $\theta_1,
-	\ldots, \theta_n$ no negativos tales que
+	y como $\sigma = \conv\braces{\vec{u}_1, \ldots, \vec{u}_n}$, automáticamente tenemos de
+	\eqref{aff:contention} que $\sigma \subseteq \qlayer{\vec{q}}{k}$, así que falta mostrar que
+	$\sigma \subseteq \R^n_{\geq \vec{0}}$. Sea $\vec{x} \in \sigma$, luego existen escalares
+	$\theta_1, \ldots, \theta_n$ no negativos tales que
 	\begin{equation*}
 		\vec{x} = \theta_1\vec{u}_1 + \cdots + \theta_n\vec{u}_n
 		= k\begin{pmatrix}
@@ -588,7 +588,18 @@ lemas y teoremas fueron realizadas de manera independiente.
 	Como $\vec{q} > \vec{0}$ y $k > 0$ por hipótesis, tenemos que $\vec{x} \geq \vec{0}$, lo que
 	implica que $\vec{x} \in \qlayer{\vec{q}}{k} \cap \R^n_{\geq \vec{0}}$.
 
-	($\supseteq$) El otro lado de la contención se muestra análogamente.
+	($\supseteq$) Como $\vec{x} \in \qlayer{\vec{q}}{k}$, existen escalares $\theta_1, \ldots,
+	\theta_n$ tales que
+	\begin{equation*}
+		\vec{x} = \theta_1\vec{u}_1 + \cdots + \theta_n\vec{u}_n,
+	\end{equation*}
+	y que satisfacen $\theta_1 + \cdots + \theta_n = 1$. Por la definición de $\sigma$, basta
+	mostrar que $\theta_i \geq 0$ para toda $1 \leq i \leq n$. Puesto que $\vec{x} \geq \vec{0}$
+	tenemos por la ortogonalidad de $\braces{\vec{u}_i}_{i=1}^{n}$ que
+	\begin{equation*}
+		0 \leq \frac{k}{q_i}x_i = \vec{u}_i^T\vec{x} = \norm{\vec{u}_i}^2\theta_i,
+	\end{equation*}
+	y como $\norm{\vec{u}_i}^2 \geq 0$ se sigue que $\theta_i \geq 0$ para toda $1 \leq i \leq n$.
 \end{proof}
 
 En el contexto del problema \eqref{theory:formulation}, sabemos que si $\sigma$ es generado por los
@@ -1461,6 +1472,12 @@ Proponemos la formulación de programación dinámica
 		\end{cases}
 	\end{align}
 \end{subequations}
+
+El siguiente teorema muestra la correctud de esta formulación de programación dinámica. Aunque no
+las realizaremos, pocas modificaciones son necesarias para mostrar la correctud de la variante más
+general presentada en \cite{martello}. Cabe mencionar que en esta referencia solo se propone la
+formulación y no se demuestra su correctud.
+
 \begin{theorem}
 	Supongamos que el vector objetivo $\vec{p}$ del problema \eqref{theory:formulation} es entero y
 	tiene entradas estrictamente positivas, y también supongamos que el lado derecho $u$ de
@@ -1521,7 +1538,7 @@ reducción al problema binario con dimensión $n_b \in \N$:
 	u},
 \end{equation*}
 y para alguna $\vec{\hat{p}} \in \Z^{n_b}$ que puede ser obtenida de
-$\vec{p}$ (ve página 82 de \cite{martello}). Observemos que si $u \geq
+$\vec{p}$ (ver página 82 de \cite{martello}). Observemos que si $u \geq
 \sum_{i=1}^{n_b}\hat{p}_i$, entonces obtenemos la solución trivial $x_i = 1$ para todo $1 \leq i
 \leq n_b$. Puesto que existen \textit{solvers} que implícitamente reducen problemas como
 \eqref{theory:formulation} a su forma binaria (el ejemplo más famoso es \texttt{KnapsackSolver} de
@@ -1715,7 +1732,7 @@ Medimos los tiempos de terminación promedio sobre las 20 corridas. La figura
 
 \begin{figure}[hbtp]
 	\centering
-	\includegraphics[width=0.8\linewidth]{/home/tempdata/repos/thesis/static/fin/rhs/times-macro.pdf}
+	\includegraphics[width=0.8\linewidth]{/home/sebastian/repos/thesis/static/fin/rhs/times-macro.pdf}
 	\caption{Tiempos de terminación promedio en milisegundos de los distintos métodos cuando varía el presupuesto.
 		Para observar mejor los tiempos, eliminamos el método más lento y realizamos \textit{zoom} a la
 		imagen.}
@@ -1724,7 +1741,7 @@ Medimos los tiempos de terminación promedio sobre las 20 corridas. La figura
 
 \begin{figure}[hbtp]
 	\centering
-	\includegraphics[width=0.7\linewidth]{/home/tempdata/repos/thesis/static/fin/rhs/boxplot-cv.pdf}
+	\includegraphics[width=0.7\linewidth]{/home/sebastian/repos/thesis/static/fin/rhs/boxplot-cv.pdf}
 	\caption{Coeficientes de variación en los tiempos de terminación a medida que el presupuesto
 	varía.}
 	\label{fig:exp:fin:rhs:cv}
@@ -1774,7 +1791,7 @@ programas lineales enteros generales.
 
 \begin{figure}[hbtp]
 	\centering
-	\includegraphics[width=0.7\linewidth]{/home/tempdata/repos/thesis/static/fin/rhs/boxplot-cv-wbb.pdf}
+	\includegraphics[width=0.7\linewidth]{/home/sebastian/repos/thesis/static/fin/rhs/boxplot-cv-wbb.pdf}
 	\caption{Comparación en la estabilidad de Ramificación y Acotamiento al prohibir la generación
 		de cualquier tipo de corte.}
 	\label{fig:exp:fin:rhs:cv-wbb}
